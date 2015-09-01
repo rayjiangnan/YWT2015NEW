@@ -21,6 +21,10 @@
 
 - (void)viewDidLoad
 {
+    //清掉ID
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setObject:NULL forKey:@"myidt"];
+    
     [super viewDidLoad];
    // self.navigationController.navigationBarHidden=YES;
     self.navigationItem.hidesBackButton=YES;
@@ -44,7 +48,7 @@
         
         self._locationManager.distanceFilter=distance;
         
-        [self._locationManager startUpdatingLocation];
+        //[self._locationManager startUpdatingLocation];
     }
     UIImageView *image=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dl_ren.png"]];
     self.useName.leftView=image;
@@ -105,53 +109,54 @@
                     if ([str isEqualToString:@"Success"]) {
                         NSString *idt=[NSString stringWithFormat:@"%@",dict[@"ResultObject"][@"ID"]];
                         NSString *idt2=[NSString stringWithFormat:@"%@",dict[@"ResultObject"][@"SupplierID"]];
-                         NSString *RealName=[NSString stringWithFormat:@"%@",dict[@"ResultObject"][@"RealName"]];
+                        NSString *RealName=[NSString stringWithFormat:@"%@",dict[@"ResultObject"][@"RealName"]];
                         NSString *Company=[NSString stringWithFormat:@"%@",dict[@"ResultObject"][@"Company"]];
-                         NSString *usertype=[NSString stringWithFormat:@"%@",dict[@"ResultObject"][@"UserType"]];
-                         NSString *UserImg=[NSString stringWithFormat:@"%@",dict[@"ResultObject"][@"UserImg"]];
-                         NSString *Mobile=[NSString stringWithFormat:@"%@",dict[@"ResultObject"][@"Mobile"]];
-                          NSString *Certify=[NSString stringWithFormat:@"%@",dict[@"ResultObject"][@"Certify"]];
+                        NSString *usertype=[NSString stringWithFormat:@"%@",dict[@"ResultObject"][@"UserType"]];
+                        NSString *UserImg=[NSString stringWithFormat:@"%@",dict[@"ResultObject"][@"UserImg"]];
+                        NSString *Mobile=[NSString stringWithFormat:@"%@",dict[@"ResultObject"][@"Mobile"]];
+                        NSString *Certify=[NSString stringWithFormat:@"%@",dict[@"ResultObject"][@"Certify"]];
                         
                         
                         if ([usertype isEqualToString:@"10"]&[idt2 isEqualToString:@""]) {
-                      [MBProgressHUD showSuccess:@"请完善账号！"];
-                     [self performSegueWithIdentifier:@"wan" sender:nil];
-                        }else{
-                         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-                        [userDefaults setObject:idt forKey:@"myidt"];
-                        [userDefaults setObject:idt2 forKey:@"myidt2"];
-                        [userDefaults setObject:self.useName.text forKey:@"iphone"];
+                            [MBProgressHUD showSuccess:@"请完善账号！"];
+                            [self performSegueWithIdentifier:@"wan" sender:nil];
+                        }else
+                        {
+                            NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+                            [userDefaults setObject:idt forKey:@"myidt"];
+                            [userDefaults setObject:idt2 forKey:@"myidt2"];
+                            [userDefaults setObject:self.useName.text forKey:@"iphone"];
                             [userDefaults setObject:RealName forKey:@"RealName"];
                             [userDefaults setObject:Company forKey:@"Company"];
                             [userDefaults setObject:usertype forKey:@"usertype"];
                             [userDefaults setObject:UserImg forKey:@"UserImg"];
                             [userDefaults setObject:Certify forKey:@"Certify"];
                             
-                        [userDefaults synchronize];
+                            [userDefaults synchronize];
                        
-                        if ([idt2 isEqualToString:@""]&[usertype isEqualToString:@"0"]) {
-                            [self performSegueWithIdentifier:@"wan" sender:nil];
-                            [MBProgressHUD showSuccess:@"请完善账号设置！"];
-                        }else{
-                          
-                            [MBProgressHUD showSuccess:@"登录成功！"];
-                            if ([usertype isEqualToString:@"10"]) {
-                            
-                                 [self performSegueWithIdentifier:@"login" sender:nil];
-                            }else if ([usertype isEqualToString:@"30"]) {
-                                
-                                [self performSegueWithIdentifier:@"login" sender:nil];
-                            }else if ([usertype isEqualToString:@"20"]) {
-                                
-                                  [self performSegueWithIdentifier:@"sj" sender:nil];
-                            }else if ([usertype isEqualToString:@"40"]) {
-                                
-                                [self performSegueWithIdentifier:@"3yw" sender:nil];
+                            if ([idt2 isEqualToString:@""]&[usertype isEqualToString:@"0"])
+                            {
+                                [self performSegueWithIdentifier:@"wan" sender:nil];
+                                [MBProgressHUD showSuccess:@"请完善账号设置！"];
                             }
-
-                            
-                         
-                        }
+                            else
+                            {
+                              
+                                [MBProgressHUD showSuccess:@"登录成功！"];
+                                if ([usertype isEqualToString:@"10"]) {
+                                
+                                     [self performSegueWithIdentifier:@"login" sender:nil];
+                                }else if ([usertype isEqualToString:@"30"]) {
+                                    
+                                    [self performSegueWithIdentifier:@"login" sender:nil];
+                                }else if ([usertype isEqualToString:@"20"]) {
+                                    
+                                      [self performSegueWithIdentifier:@"sj" sender:nil];
+                                }else if ([usertype isEqualToString:@"40"]) {
+                                    
+                                    [self performSegueWithIdentifier:@"3yw" sender:nil];
+                                }
+                            }
                         }
                                                
                     }else{

@@ -5,9 +5,11 @@
 //  Created by apple on 15/4/27.
 //  Copyright (c) 2015年 Tony. All rights reserved.
 //
-#import "MBProgressHUD+MJ.h"
 #import "orderViewController.h"
-
+#import "MBProgressHUD+MJ.h"
+#import "AFNetworkTool.h"
+#import "UIViewController+Extension.h"
+#import "SBJson.h"
 
 
 @interface orderViewController ()<UITextViewDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate,UITextFieldDelegate>
@@ -65,14 +67,6 @@
     
      self.dz.text=mygh;
     }
-    
-  
-    
- 
-   
-    
-    
-    
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -141,7 +135,10 @@
 
 
 - (IBAction)reg {
-    
+    [self postJSON];
+
+}
+-(NSString*) SetValue {
     NSString *sty=[[NSString alloc]init];
     if ([self.lx.text isEqualToString:@"业务运维"]) {
         sty=@"BusinessOperations";
@@ -152,83 +149,71 @@
     }else if ([self.lx.text isEqualToString:@"服务器设备"]) {
         sty=@"ServerEquipment";
     }
-    
-    [self postJSON:self.biaoti.text:sty:self.gzrw.text:self.dz.text:self.gzsc.text:self.lxr.text:self.lxdh.text:self.khjc.text:self.bz.text:@"orderfile":@"12345.png"];
-    
 
-
+    
+    //NSMutableArray *jsonArray = [[NSMutableArray alloc]init];//创建最外层的数组
+    NSMutableDictionary *dic = [[NSMutableDictionary alloc]init];//创建内层的字典
+    [dic setValue:self.biaoti.text forKey:@"OrderTitle"];
+    [dic setValue:sty forKey:@"OrderType"];
+    [dic setValue:self.gzrw.text forKey:@"OrderTask"];
+    [dic setValue:self.dz.text forKey:@"Task_Address"];
+    
+    NSString *timelen=self.gzsc.text;
+    
+    if ([self isBlankString:timelen] == NO) {
+        [dic setValue:timelen forKey:@"TaskTimeLen"];
+    }
+    //[dic setValue: forKey:@"TaskTimeLen"];
+    [dic setValue:self.lxr.text forKey:@"ContactMan"];
+    
+    [dic setValue:self.lxdh.text forKey:@"ContactMobile"];
+    [dic setValue:self.khjc.text forKey:@"CustomerShort"];
+    [dic setValue:self.bz.text forKey:@"Remark"];
+    
+    SBJsonWriter *jsonWriter = [[SBJsonWriter alloc] init];
+    NSString *jsonString = [jsonWriter stringWithObject:dic];
+    
+    jsonString=[NSString stringWithFormat:@"{\"OrderMain\":%@,\"OrderFile\":[]}",jsonString];
+    
+    return jsonString;
 }
 
-- (void)postJSON:(NSString *)text1:(NSString *)text2:(NSString *)text3:(NSString *)text4:(NSString *)text5:(NSString *)text6:(NSString *)text7:(NSString *)text8:(NSString *)text9:(NSString *)text10:(NSString *)text11{
+- (void)postJSON{
     @try
     {
         NSString *strurl=[NSString stringWithFormat:@"%@/api/YWT_Order.ashx",urlt];
-    NSURL *url = [NSURL URLWithString:strurl];
-    
-    // 2. Request
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:0 timeoutInterval:2.0f];
-    
-    request.HTTPMethod = @"POST";
-    
- 
-    
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *myString = [userDefaultes stringForKey:@"myidt"];
-    
-    
-    NSString *dstr=[NSString stringWithFormat:@"{\"OrderMain\":{\"OrderTitle\":\"%@\",\"OrderType\":\"%@\", \"OrderTask\":\"%@\", \"Task_Address\":\"%@\", \"TaskTimeLen\":\"%@\", \"ContactMan\":\"%@\", \"ContactMobile\":\"%@\", \"CustomerShort\":\"%@\", \"Remark\":\"%@\"},\"OrderFile\":[{\"FileType\":\"%@\",\"FileName\":\"%@\"}]}",text1,text2,text3,text4,text5,text6,text7,text8,text9,text10,text11];
-//,\"OrderFile\":[{\"FileType\":\"%@\", \"FileName\":\"%@\", \"CreateDateTime\":\"%@\"]}
-    // ? 数据体
-    NSString *str = [NSString stringWithFormat:@"action=addinternal&q0=%@&q1=%@",dstr,myString];
-    // 将字符串转换成数据
-    NSLog(@"%@?%@",url,str);
-    request.HTTPBody = [str dataUsingEncoding:NSUTF8StringEncoding];
-    // 把字典转换成二进制数据流, 序列化
-    
-    
-    // 3. Connection
-    [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc]init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-       
-             NSString *result = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        NSLog(@"%@",result);
-        if (!data==nil) {
-            
-            NSDictionary *dict=[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:nil];
-            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                NSString *errstr2=[NSString stringWithFormat:@"%@",dict[@"Status"]];
-                
-                if ([errstr2 isEqualToString:@"0"]){
-                    NSString *str=[NSString stringWithFormat:@"%@",dict[@"ReturnMsg"]];
-                    
-                    [MBProgressHUD showError:str];
-                    
-                    return ;
-                    
-                    
-                }else{
-                    [MBProgressHUD showSuccess:@"下单成功！"];
-                  [self performSegueWithIdentifier:@"order" sender:nil];
-                    
-                    
-                }
-                
-            }];
-
         
-    }else{
-        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            [MBProgressHUD showError:@"网络异常请检查！"];
+        NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
+        NSString *myString = [userDefaultes stringForKey:@"myidt"];
+        NSString *jsonString =[self SetValue];
+        NSString *strparameters = [NSString stringWithFormat:@"action=addinternal&q0=%@&q1=%@",jsonString,myString];
+        
+        NSLog(@"%@",strurl);
+        NSLog(@"%@",strparameters);
+       
+        AFHTTPRequestOperation *op=  [self POSTurlString:strurl parameters:strparameters];
+        [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSMutableDictionary *json=responseObject;
+            
+            NSString *Status=[NSString stringWithFormat:@"%@",json[@"Status"]];
+            if ([Status isEqualToString:@"0"]){
+                NSString *ReturnMsg=[NSString stringWithFormat:@"%@",json[@"ReturnMsg"]];
+                [MBProgressHUD showError:ReturnMsg];
+                NSLog(@"%@",ReturnMsg);
+                return ;
+            }else{
+                [MBProgressHUD showSuccess:@"下单成功！"];
+                [self performSegueWithIdentifier:@"order" sender:nil];
+            }
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            [MBProgressHUD showError:@"网络异常！"];
             return ;
         }];
-    }
-     
-     
-        
-    }];
-        
+        [[NSOperationQueue mainQueue] addOperation:op];
     }@catch (NSException * e) {
         NSLog(@"Exception: %@", e);
     }
+    
 }
 
 
@@ -241,7 +226,6 @@
 
 -(void)tapOnce
 {
-    
     [self.biaoti resignFirstResponder];
     [self.lx resignFirstResponder];
     [self.gzrw resignFirstResponder];

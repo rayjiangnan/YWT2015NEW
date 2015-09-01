@@ -8,11 +8,13 @@
 
 #import "writedate.h"
 #import "MBProgressHUD+MJ.h"
+#import "SBJson.h"
 
 @interface writedate ()
 @property (weak, nonatomic) IBOutlet UITextField *bt;
 @property (weak, nonatomic) IBOutlet UITextView *content;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollview;
+
 @end
 
 @implementation writedate
@@ -56,12 +58,23 @@
     
     NSString *urlstr=[NSString stringWithFormat:@"%@/API/YWT_YWLog.ashx",urlt];
     
+    NSMutableDictionary *dic = [[NSMutableDictionary alloc]init];//创建内层的字典
+    [dic setValue:text1 forKey:@"UserID"];
+    [dic setValue:text2 forKey:@"Title"];
+    [dic setValue:text3 forKey:@"Content"];
+    [dic setValue:text4 forKey:@"LogStatus"];
     
-     NSString *dater=[NSString stringWithFormat:@"{\"UserID\":\"%@\",\"Title\":\"%@\", \"Content\":\"%@\", \"LogStatus\":\"%@\"}",text1,text2,text3,text4];
+    SBJsonWriter *jsonWriter = [[SBJsonWriter alloc] init];
+    NSString *jsonString = [jsonWriter stringWithObject:dic];
     
-    NSString *tu=[NSString stringWithFormat:@"[{\"FileName\":\"%@\"}]",pic];
+    //NSString *tu=[NSString stringWithFormat:@"[{\"FileName\":\"%@\"}]",pic];
+    NSString *str = [NSString stringWithFormat:@"action=addedit&q0=%@&q1=%@",jsonString,@""];
     
-    NSString *str = [NSString stringWithFormat:@"action=addedit&q0=%@&q1=%@",dater,tu];
+//     NSString *dater=[NSString stringWithFormat:@"{\"UserID\":\"%@\",\"Title\":\"%@\", \"Content\":\"%@\", \"LogStatus\":\"%@\"}",text1,text2,text3,text4];
+//    
+//    NSString *tu=[NSString stringWithFormat:@"[{\"FileName\":\"%@\"}]",pic];
+    
+    //NSString *str = [NSString stringWithFormat:@"action=addedit&q0=%@&q1=%@",dater,tu];
     
     NSLog(@"%@?%@",urlstr,str);
     
@@ -70,9 +83,7 @@
     AFHTTPRequestOperation *op=[self POSTurlString:urlstr parameters:str];
     
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        
-        
+
         NSDictionary *dict=responseObject;
         
         NSString *sta=[NSString stringWithFormat:@"%@",dict[@"Status"]];
@@ -82,39 +93,20 @@
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
             
             if ([sta isEqualToString:@"1"]){
-                
                 [MBProgressHUD showSuccess:@"提交成功！"];
-                
                 [[self navigationController] popViewControllerAnimated:YES];
-                
-                
-                
             }else{
                 
                 [MBProgressHUD showError:msg];
-                
                 return ;
-                
             }
-            
-            
-            
         }];
-        
-        
-        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
         [MBProgressHUD showError:@"网络请求出错"];
-        
         return ;
-        
     }];
     
     [[NSOperationQueue mainQueue] addOperation:op];
-    
-    
-    
 }
 
 -(void)tapBackground

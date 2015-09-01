@@ -13,29 +13,31 @@
 
 @interface ritaccViewController ()<UIAlertViewDelegate,MKMapViewDelegate,CLLocationManagerDelegate>
 {
-  NSTimer *_timeer;
+  //NSTimer *_timeer;
 }
 @property (nonatomic, strong) NSArray *tgs;
 @property(nonatomic,assign)int num;
+@property(nonatomic,assign)int IsBackupRune;//是否为后台运行
 @end
 
 #define RUNTIME 24*60*60
 
 @implementation ritaccViewController
-@synthesize _locationManager;
+//@synthesize _locationManager;
 @synthesize _saveLocations;
 @synthesize coordinate,title,subtitle;
+//@synthesize _updateTimer;
 @synthesize _updateTimer2;
 @synthesize _mapview;
 
 
 -(void)viewDidAppear:(BOOL)animated{
     self.tabBarController.tabBar.hidden=NO;
-    if(!_timeer)
-    {
-        _timeer=[NSTimer scheduledTimerWithTimeInterval:15.0 target:self selector:@selector(updateloaction) userInfo:nil repeats:YES];
-        [_timeer fire];
-    }
+//    if(!_timeer)
+//    {
+//        _timeer=[NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(updateloaction) userInfo:nil repeats:YES];
+//        [_timeer fire];
+//    }
     
 }
 
@@ -69,68 +71,49 @@
     
     
     
-    
+    self.IsBackupRune=0;
     self._mapview.userTrackingMode=MKUserTrackingModeFollowWithHeading;
     self._mapview.delegate = self;
     
-    if ([CLLocationManager locationServicesEnabled]) {
-        
-        
-        _locationManager= [[CLLocationManager alloc] init];
-        
-        _locationManager.delegate = self;
-        
-        _locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-        
-        _locationManager.distanceFilter = 100;
-        
-        [_locationManager startUpdatingLocation];
-        
-        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
-            
-            //     [_locationManager requestWhenInUseAuthorization];
-            
-            _locationManager.pausesLocationUpdatesAutomatically = NO;
-    }
+//    if ([CLLocationManager locationServicesEnabled]) {
+//        
+//        
+//        _locationManager= [[CLLocationManager alloc] init];
+//        
+//        _locationManager.delegate = self;
+//        
+//        _locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+//        
+//        _locationManager.distanceFilter = 100;
+//        
+//        [_locationManager startUpdatingLocation];
+//        
+//        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
+//            
+//            //     [_locationManager requestWhenInUseAuthorization];
+//            
+//            _locationManager.pausesLocationUpdatesAutomatically = NO;
+//    }
 
     
-    self._updateTimer2 = [NSTimer scheduledTimerWithTimeInterval:20.0f target:self selector:@selector(copynet) userInfo:nil repeats:YES];
+    [self initData];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
+    
+    self._updateTimer2 = [NSTimer scheduledTimerWithTimeInterval:15.0f target:self selector:@selector(copynet) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:self._updateTimer2 forMode:NSRunLoopCommonModes];
-    
-    NSString *kong=@"";
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults setObject:kong forKey:@"CusShort"];
-    [userDefaults setObject:kong forKey:@"ContactMan"];
-    [userDefaults setObject:kong forKey:@"ContactMobile"];
-    [userDefaults setObject:kong forKey:@"ContactAddress"];
-    [userDefaults setObject:kong forKey:@"detaaddr"];
-    [userDefaults synchronize];
-    
     
 }
 
 -(void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation{
     userLocation.title=@"当前位置";
     //userLocation.subtitle=@"";
-    
     CLLocationCoordinate2D center=userLocation.location.coordinate;
     //  [self postJSON:lati:longti];
-    
-    
 }
-
-
-
-
-
-
 -(NSArray *)netwok:(NSArray *)tgsa
 {
-    
     _tgs=tgsa;
     return _tgs;
-    
-    
 }
 
 -(void)ann{
@@ -143,9 +126,9 @@
         for (int i=0; i<index; i++) {
             NSLog(@"%d,%@",i,[_tgs objectAtIndex:i]);
             hjnANNINOTION *annon=[[hjnANNINOTION alloc]init];
-            float x=[[_tgs objectAtIndex:i][@"latitude"] floatValue]-0.00300;
+            float x=[[_tgs objectAtIndex:i][@"latitude"] floatValue];//-0.00300;
             CLLocationDegrees latitude=x;
-            float y=[[_tgs objectAtIndex:i][@"longitude"] floatValue]+0.00500;
+            float y=[[_tgs objectAtIndex:i][@"longitude"] floatValue];//+0.00500;
             CLLocationDegrees longtitude=y;
             annon.coordinate= CLLocationCoordinate2DMake(latitude, longtitude);
             NSString *zt=[NSString stringWithFormat:@"运维单号：%@",[_tgs objectAtIndex:i][@"OrderNo"]];
@@ -159,11 +142,7 @@
         
     }
     }@catch (NSException * e) {
-        
         NSLog(@"Exception: %@", e);
-        
-        
-        
     }
 }
 
@@ -188,14 +167,17 @@
 
 
 -(void)copynet{
-    
+    if (self.IsBackupRune==1) {
+        NSLog(@"后台运行，不选择。");
+        return;
+    }
     NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
     NSString *myString = [userDefaultes stringForKey:@"myidt"];
     
     NSString *urlStr = [NSString stringWithFormat:@"%@/API/HL.ashx?action=getsubxy&q0=%@",urlt,myString];
     NSURL *url = [NSURL URLWithString:urlStr];
     
-    NSLog(@"%@",urlStr);
+    //NSLog(@"%@",urlStr);
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:2.0f];
     [request setHTTPMethod:@"POST"];
@@ -204,32 +186,17 @@
     [request setHTTPBody:data];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc]init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         if (data != nil) {
-            
-            
-            
             NSDictionary *dict=[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:nil];
             NSArray *dictarr2=[[dict objectForKey:@"ResultObject"] copy];
             [self netwok:dictarr2];
             [self ann];
         }else{
-            
-            
-                
-                
+            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                 return ;
-                
-            
+            }];
         }
-        }];
-
     }];
-    
-    
-    
-    
-    
 }
 
 
@@ -245,8 +212,8 @@
 //}
 
 -(void)initData{
-    //    backgroundUpdateInterval = RUNTIME;
-    //    self._saveLocations = [[NSMutableArray alloc] init];
+        backgroundUpdateInterval = RUNTIME;
+        self._saveLocations = [[NSMutableArray alloc] init];
     //    self._locationManager = [[CLLocationManager alloc] init];
     //    self._locationManager.desiredAccuracy = kCLLocationAccuracyBest;
     //    self._locationManager.delegate = self;
@@ -258,7 +225,7 @@
 
 -(void)updateloaction
 {
-    [self._locationManager startUpdatingLocation];
+    //[self._locationManager startUpdatingLocation];
     //    [self._locationManager stopUpdatingLocation];
     
 }
@@ -281,11 +248,12 @@
     annotation.coordinate = newLocation.coordinate;
     //[self._mapview addAnnotation:annotation];//
     [self._saveLocations addObject:annotation];
-    NSString *lati=[NSString stringWithFormat:@"%f",self._locationManager.location.coordinate.latitude-0.00420];
-    NSString *longti=[NSString stringWithFormat:@"%f",self._locationManager.location.coordinate.longitude+0.00560];
+//    NSString *lati=[NSString stringWithFormat:@"%f",self._locationManager.location.coordinate.latitude-0.00420];
+//    NSString *longti=[NSString stringWithFormat:@"%f",self._locationManager.location.coordinate.longitude+0.00560];
+//    
+//    
+//    [self postJSON:lati:longti];
     
-    
-    [self postJSON:lati:longti];
     //    if (UIApplication.sharedApplication.applicationState == UIApplicationStateActive)
     //    {
     //        if (backgroundTask != UIBackgroundTaskInvalid)
@@ -324,33 +292,38 @@
     
 }
 
-//-(void)applicationDidEnterBackground:(NSNotificationCenter *)notication{
-//    UIApplication* app = [UIApplication sharedApplication];
-//
-//    backgroundTask = [app beginBackgroundTaskWithExpirationHandler:^{
-//        NSLog(@"applicationD in Background");
-//    }];
-//
-//    self._updateTimer = [NSTimer scheduledTimerWithTimeInterval:backgroundUpdateInterval
-//                                                         target:self
-//                                                       selector:@selector(stopUpdate)
-//                                                       userInfo:nil
-//                                                        repeats:YES];
-//    [[NSRunLoop currentRunLoop] addTimer:self._updateTimer forMode:NSRunLoopCommonModes];
-//}
+-(void)applicationDidEnterBackground:(NSNotificationCenter *)notication{
+    self.IsBackupRune=1;
+    UIApplication* app = [UIApplication sharedApplication];
 
-
--(void)stopUpdate{
-    [self._locationManager stopUpdatingLocation];
-    
-    [_timeer invalidate];
-    _timeer = nil;
-    if (backgroundTask != UIBackgroundTaskInvalid)
-    {
-        [[UIApplication sharedApplication] endBackgroundTask:backgroundTask];
-        backgroundTask = UIBackgroundTaskInvalid;
-    }
+    backgroundTask = [app beginBackgroundTaskWithExpirationHandler:^{
+        NSLog(@"applicationD in Background");
+    }];
 }
+
+- (void) viewWillAppear:(BOOL)animated{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillEnterForegroundNotification) name:UIApplicationWillEnterForegroundNotification object:nil];
+}
+
+
+- (void) appWillEnterForegroundNotification{
+    self.IsBackupRune=0;// 回到前台
+}
+-(void) viewDidDisappear:(BOOL)animated{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+//-(void)stopUpdate{
+//    //[self._locationManager stopUpdatingLocation];
+//    
+//    [_updateTimer2 invalidate];
+//    _updateTimer2 = nil;
+//    if (backgroundTask != UIBackgroundTaskInvalid)
+//    {
+//        [[UIApplication sharedApplication] endBackgroundTask:backgroundTask];
+//        backgroundTask = UIBackgroundTaskInvalid;
+//    }
+//}
 
 
 
@@ -372,9 +345,7 @@
         return;
         
     }else if(buttonIndex == 1){
-        
         exit(0);
-        
     }}
 
 - (void)postJSON:(NSString *)text1 :(NSString *)text2
@@ -402,7 +373,7 @@
                 
                 if (!data== nil) {
                     NSString *result = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                    NSLog(@"%@",result);
+                    NSLog(@"ritaccView:%@",result);
                 }else{
                     return ;
                 }

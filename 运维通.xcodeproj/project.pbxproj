@@ -1002,7 +1002,6 @@
 				1872E21E1B54222E008D1422 /* jr */,
 				39998D811B52B68A001D4BCA /* person */,
 				39998D771B52B38C001D4BCA /* order */,
-				39998D761B52B381001D4BCA /* New Group */,
 				396B81861B526E7A0017305D /* main */,
 				396B81841B526E260017305D /* login */,
 				396B81821B526E090017305D /* reg */,
@@ -1079,13 +1078,6 @@
 				396B81941B52801B0017305D /* MBProgressHUD.m */,
 			);
 			path = MBProgressHUD;
-			sourceTree = "<group>";
-		};
-		39998D761B52B381001D4BCA /* New Group */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = "New Group";
 			sourceTree = "<group>";
 		};
 		39998D771B52B38C001D4BCA /* order */ = {
