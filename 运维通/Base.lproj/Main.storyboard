@@ -3323,7 +3323,7 @@
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qQS-5O-8et">
                                 <rect key="frame" x="0.0" y="78" width="320" height="490"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="CA2B359B-B19F-48C4-8391-4FBEA86CC682" translatesAutoresizingMaskIntoConstraints="NO" id="iRM-i0-GOl">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="84A84C12-D748-4042-8A18-BF64D1FEDFD0" translatesAutoresizingMaskIntoConstraints="NO" id="iRM-i0-GOl">
                                         <rect key="frame" x="8" y="8" width="35" height="36"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="35" id="ckV-w1-KQG"/>
@@ -5812,7 +5812,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lna-51-kVw">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Lna-51-kVw">
                                 <rect key="frame" x="-2" y="-1" width="322" height="689"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PM3-of-sXq">
@@ -8789,7 +8789,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="CA2B359B-B19F-48C4-8391-4FBEA86CC682" width="42" height="45">
+        <image name="84A84C12-D748-4042-8A18-BF64D1FEDFD0" width="42" height="45">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGOzxYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBEW
 GxwgISksLzU4VSRudWxs1AkKCwwNDg8QViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBzV05TQ29sb3KA
