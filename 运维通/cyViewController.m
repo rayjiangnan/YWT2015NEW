@@ -64,8 +64,8 @@
             
             NSDictionary *dict=[NSJSONSerialization JSONObjectWithData:received options:NSJSONReadingMutableLeaves error:nil];
             NSDictionary *dictarr2=[dict objectForKey:@"ResultObject"];
-            // NSDictionary *dictarr=[dictarr2 objectForKey:@"OrderMain"];
-            NSLog(@"%@",url);
+            if (![[dict objectForKey:@"ResultObject"] isEqual:[NSNull null]]) {
+                 NSLog(@"%@",url);
             self.cname.text=dictarr2[@"Company"];
             self.realname.text=dictarr2[@"ContactMan"];
             self.addr.text=dictarr2[@"Address"];
@@ -73,6 +73,9 @@
             self.fax.text=dictarr2[@"Fax"];
             self.email.text=dictarr2[@"Email"];
             self.mobile.text=dictarr2[@"Mobile"];
+            }
+            // NSDictionary *dictarr=[dictarr2 objectForKey:@"OrderMain"];
+           
  
             
         }else
