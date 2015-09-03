@@ -9,7 +9,8 @@
 #import "postapply.h"
 #import "MBProgressHUD+MJ.h"
 #import "AFNetworkTool.h"
-
+#import "UIViewController+Extension.h"
+#import "SBJson.h"
 
 @interface postapply ()
 @property (weak, nonatomic) IBOutlet UITextField *lxr;
@@ -29,65 +30,50 @@
 }
 
 - (IBAction)post:(id)sender {
-    [self tijiao2:self.nr.text :self.lxr.text :self.dh.text :@"" :@""];
+    [self tijiao2];
 }
 
-
--(void)tijiao2:(NSString *)t1:(NSString *)t2:(NSString *)t3:(NSString *)t4:(NSString *)t5{
-
+-(NSString*) SetValue {
     
-    NSString *urlStr =[NSString stringWithFormat:@"%@/API/YWT_OrderPlatform.ashx",urlt] ;
-
-    NSURL *url = [NSURL URLWithString:urlStr];
-
-
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:0 timeoutInterval:2.0f];
-
-    request.HTTPMethod = @"POST";
     NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *myString = [userDefaultes stringForKey:@"myidt"];
-     NSString *mystring2=[NSString stringWithFormat:@"%@",strTtile];
-    //    { Order_ID,Apply_UserID,Apply_Content,ContactMan,ContactMobile}
+    NSString *Userid = [userDefaultes stringForKey:@"myidt"];
     
-    NSString *dest=[NSString stringWithFormat:@"{\"Order_ID\":\"%@\",\"Apply_UserID\":\"%@\",\"Apply_Content\":\"%@\",\"ContactMan\":\"%@\",\"ContactMobile\":\"%@\"}",mystring2,myString,t1,t2,t3];
-    NSString *str = [NSString stringWithFormat:@"action=applyyw&q0=%@&q1=%@",dest,myString];
+    NSMutableDictionary *dic = [[NSMutableDictionary alloc]init];//创建内层的字典
+    [dic setValue:strTtile forKey:@"Order_ID"];
+    [dic setValue:Userid forKey:@"Apply_UserID"];
+    [dic setValue:self.nr.text forKey:@"Apply_Content"];
+    [dic setValue:self.lxr.text forKey:@"ContactMan"];
+    [dic setValue:self.dh.text forKey:@"ContactMobile"];
+    
+    SBJsonWriter *jsonWriter = [[SBJsonWriter alloc] init];
+    NSString *jsonString = [jsonWriter stringWithObject:dic];
+    jsonString = [NSString stringWithFormat:@"action=applyyw&q0=%@&q1=%@",jsonString,Userid];
+    return jsonString;
+}
 
-    NSLog(@"%@?%@",urlStr,str);
-    request.HTTPBody = [str dataUsingEncoding:NSUTF8StringEncoding];
-
-
-    [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc]init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-
-        NSString *result = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-
-        NSLog(@"%@",result);
-        if (!data==nil) {
-            NSDictionary *dict=[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:nil];
-        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            NSString *errstr2=[NSString stringWithFormat:@"%@",dict[@"Status"]];
-
-            if ([errstr2 isEqualToString:@"0"]){
-                NSString *str=[NSString stringWithFormat:@"%@",dict[@"ReturnMsg"]];
-
-                [MBProgressHUD showError:str];
-
-
-
-                return ;
-
-
-            }else{
-                [MBProgressHUD showSuccess:@"提交成功"];
-
-
-            }
-
-        }];
-
-        }
+-(void)tijiao2{
+    NSString *urlStr =[NSString stringWithFormat:@"%@/API/YWT_OrderPlatform.ashx",urlt] ;
+    NSString *strparameters=[self SetValue];
+    
+    AFHTTPRequestOperation *op=  [self POSTurlString:urlStr parameters:strparameters];
+    [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSMutableDictionary *json=responseObject;
         
-
+        NSString *Status=[NSString stringWithFormat:@"%@",json[@"Status"]];
+        if ([Status isEqualToString:@"0"]){
+            NSString *ReturnMsg=[NSString stringWithFormat:@"%@",json[@"ReturnMsg"]];
+            [MBProgressHUD showError:ReturnMsg];
+            NSLog(@"%@",ReturnMsg);
+            return;
+        }else{
+            [MBProgressHUD showSuccess:@"申请成功！"];
+            [[self navigationController] popViewControllerAnimated:YES];
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [MBProgressHUD showError:@"网络异常！"];
+        return ;
     }];
+    [[NSOperationQueue mainQueue] addOperation:op];
 }
 
 -(void)tapBackground
@@ -104,8 +90,6 @@
     [self.dh resignFirstResponder];
     [self.time resignFirstResponder];
     [self.nr resignFirstResponder];
-
-    
 }
 
 @end

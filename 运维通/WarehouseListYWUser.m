@@ -14,7 +14,6 @@
 #import "UIViewController+Extension.h"
 #import "WarehouseView.h"
 
-#define urlt @"http://ritacc.net"
 
 @interface WarehouseListYWUser ()<UITableViewDataSource,UITableViewDelegate>
 {

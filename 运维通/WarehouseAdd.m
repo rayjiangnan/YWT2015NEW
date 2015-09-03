@@ -15,7 +15,6 @@
 #import "SBJson.h"
 #import "WarehouseListController.h"
 
-#define urlt @"http://ritacc.net"
 
 @interface WarehouseAdd ()
 

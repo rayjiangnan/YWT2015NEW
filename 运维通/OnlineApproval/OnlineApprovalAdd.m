@@ -13,7 +13,6 @@
 #import "UIViewController+Extension.h"
 #import "SBJson.h"
 
-#define urlt @"http://ritacc.net"
 
 
 @interface OnlineApprovalAdd ()

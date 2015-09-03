@@ -15,9 +15,6 @@
 
 
 
-#define urlt @"http://ritacc.net"
-
-
 @interface WarehouseView ()
 
 

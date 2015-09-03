@@ -14,7 +14,7 @@
 #import "SBJson.h"
 #import "RegistrationComapnyCell.h"
 
-#define urlt @"http://ritacc.net"
+
 
 @interface RegistrationComapnyView ()<UITableViewDataSource,UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableview;

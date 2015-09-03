@@ -15,8 +15,6 @@
 #import "WarehouseAdd.h"
 
 
-#define urlt @"http://ritacc.net"
-
 @interface WarehouseListController ()<UITableViewDataSource,UITableViewDelegate,UIImagePickerControllerDelegate,UITextFieldDelegate>
 {
     int num;

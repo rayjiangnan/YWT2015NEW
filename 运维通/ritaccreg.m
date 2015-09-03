@@ -8,7 +8,9 @@
 
 #import "ritaccreg.h"
 #import "MBProgressHUD+MJ.h"
-
+#import "AFNetworkTool.h"
+#import "UIViewController+Extension.h"
+#import "SBJson.h"
 
 @interface ritaccreg ()
 @property (weak, nonatomic) IBOutlet UITextField *username;
@@ -47,101 +49,76 @@
         [MBProgressHUD showError:@"两次密码不一致请重新输入"];
         return;
     }else{
-        
-        NSUUID *uuid=[UIDevice currentDevice].identifierForVendor;
-        NSString *uuidstr=uuid.UUIDString;
-        NSString *uuids=[NSString stringWithFormat:@"%@0000",uuidstr];
-        NSString* phoneVersion = [[UIDevice currentDevice] systemVersion];
-        NSString *os=[NSString stringWithFormat:@"ios%@",phoneVersion];
-        NSString* phoneModel = [[UIDevice currentDevice] model];
-        NSString* xh=[NSString stringWithFormat:@"%@",phoneModel];
-        
-       
-        [self postJSON:self.username.text :self.pwd.text :@"":self.username.text :@"0" :uuids :os];
-        
-        
+        [self postJSON];
     }
+}
+
+-(NSString*) SetValue {
+    NSUUID *uuid=[UIDevice currentDevice].identifierForVendor;
+    NSString *uuidstr=uuid.UUIDString;
+    NSString *uuids=[NSString stringWithFormat:@"%@0000",uuidstr];
+    NSString* phoneVersion = [[UIDevice currentDevice] systemVersion];
+    NSString *os=[NSString stringWithFormat:@"ios%@",phoneVersion];
+    //NSString* phoneModel = [[UIDevice currentDevice] model];
+    //NSString* xh=[NSString stringWithFormat:@"%@",phoneModel];
+    
+    NSMutableDictionary *dic = [[NSMutableDictionary alloc]init];//创建内层的字典
+    [dic setValue:self.pwd.text forKey:@"PassWord"];
+    [dic setValue:self.username.text forKey:@"Mobile"];
+    [dic setValue:@"" forKey:@"RealName"];
+    [dic setValue:0 forKey:@"UserType"];
+    
+    [dic setValue:uuids forKey:@"IMEI"];
+    [dic setValue:os forKey:@"OS"];
     
     
+    SBJsonWriter *jsonWriter = [[SBJsonWriter alloc] init];
+    NSString *jsonString = [jsonWriter stringWithObject:dic];
     
+    jsonString=[NSString stringWithFormat:@"action=reg&q0=%@",jsonString];
     
+    return jsonString;
 }
 
 
-
-- (void)postJSON:(NSString *)text1 :(NSString *)text2:(NSString *)text3 :(NSString *)text4:(NSString *)text5 :(NSString *)text6:(NSString *)text7
-{
+- (void)postJSON{
     
     NSString *strurl=[NSString stringWithFormat:@"%@/api/YWT_User.ashx",urlt];
-    NSURL *url = [NSURL URLWithString:strurl];
-
-        // 2. Request
-        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:0 timeoutInterval:2.0f];
-        
-        request.HTTPMethod = @"POST";
-
-        NSString *dstr=[NSString stringWithFormat:@"{\"UserName\":\"%@\",\"PassWord\":\"%@\", \"Mobile\":%@, \"RealName\":\"%@\", \"UserType\":\"%@\",\"IMEI\":\"%@\", \"OS\":\"%@\"}",text1,text2,text3,text4,text5,text6,text7];
-        
-        // ? 数据体
-        NSString *str = [NSString stringWithFormat:@"action=reg&q0=%@",dstr];
-        // 将字符串转换成数据
-        NSLog(@"%@?%@",url,str);
-        request.HTTPBody = [str dataUsingEncoding:NSUTF8StringEncoding];
-        // 把字典转换成二进制数据流, 序列化
-        
-        [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc]init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-            if (data==nil) {
-                [[NSOperationQueue mainQueue] addOperationWithBlock:^{                [MBProgressHUD showError:@"网络异常"];
-                
-                return ;
-              }];
-            }else{
-             NSDictionary *dict=[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:nil];
-            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                NSString *errstr2=[NSString stringWithFormat:@"%@",dict[@"Status"]];
-                
-                if ([errstr2 isEqualToString:@"0"]){
-                    NSString *str=[NSString stringWithFormat:@"%@",dict[@"ReturnMsg"]];
-                    
-                    [MBProgressHUD showError:str];
-                    
-                    return ;
-                    
-                }else{
-                    
-                    NSString* result= [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                    NSLog(@"－－－－－－－%@",result);
-                    NSData *data5 = [result dataUsingEncoding:NSUTF8StringEncoding];
-                    NSDictionary *dict5=[NSJSONSerialization JSONObjectWithData:data5 options:NSJSONReadingMutableLeaves error:nil];
-                    
-                    NSDictionary *dict3=[dict5 objectForKey:@"ResultObject"];
-                    NSString *myid=[NSString stringWithFormat:@"%@",dict3[@"ID"]];
-                     NSString *mystyle=[NSString stringWithFormat:@"%@",dict3[@"UserType"]];                    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-                    [userDefaults setObject:self.username.text forKey:@"iphone"];
-                    [userDefaults setObject:myid forKey:@"myid"];
-                       [userDefaults setObject:mystyle forKey:@"mystyle"];                      [userDefaults synchronize];
-                    [MBProgressHUD showSuccess:@"恭喜您注册成功，只剩最后一步了哦！"];
-                    [self performSegueWithIdentifier:@"zc" sender:nil];
-                    
-                }
-                
-            }];
-            
-
-            
-            }
-                       
-            
-        }];
        
+    NSString *strparameters=[self SetValue];
+    
+    AFHTTPRequestOperation *op=  [self POSTurlString:strurl parameters:strparameters];
+    [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSMutableDictionary *json=responseObject;
+        
+        NSString *Status=[NSString stringWithFormat:@"%@",json[@"Status"]];
+        if ([Status isEqualToString:@"0"]){
+            NSString *ReturnMsg=[NSString stringWithFormat:@"%@",json[@"ReturnMsg"]];
+            [MBProgressHUD showError:ReturnMsg];
+            NSLog(@"%@",ReturnMsg);
+            return ;
+        }else{
+            NSDictionary *dict3= json[@"ResultObject"];
+            NSString *myid=[NSString stringWithFormat:@"%@",dict3[@"ID"]];
+            NSString *mystyle=[NSString stringWithFormat:@"%@",dict3[@"UserType"]];
+            
+            NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+            
+            [userDefaults setObject:self.username.text forKey:@"iphone"];
+            [userDefaults setObject:myid forKey:@"myid"];
+            [userDefaults setObject:mystyle forKey:@"mystyle"];
+            [userDefaults synchronize];
+            [MBProgressHUD showSuccess:@"恭喜您注册成功，只剩最后一步了哦！"];
+            [self performSegueWithIdentifier:@"zc" sender:nil];
+
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [MBProgressHUD showError:@"网络异常！"];
+        return ;
+    }];
+    [[NSOperationQueue mainQueue] addOperation:op];
+    
 }
-
-
-
-
-
-
-
 
 -(void)tapBackground
 {

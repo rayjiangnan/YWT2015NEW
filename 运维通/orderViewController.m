@@ -188,9 +188,7 @@
         NSString *jsonString =[self SetValue];
         NSString *strparameters = [NSString stringWithFormat:@"action=addinternal&q0=%@&q1=%@",jsonString,myString];
         
-        NSLog(@"%@",strurl);
-        NSLog(@"%@",strparameters);
-       
+        
         AFHTTPRequestOperation *op=  [self POSTurlString:strurl parameters:strparameters];
         [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSMutableDictionary *json=responseObject;

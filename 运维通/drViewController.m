@@ -52,9 +52,6 @@ _idtt2=[NSString stringWithFormat:@"%@",strTtile];
     NSLog(@"error:%@",error);
 }
 
-
-
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -84,10 +81,7 @@ _idtt2=[NSString stringWithFormat:@"%@",strTtile];
         return ;
         }];
     }
-
-
-
-        return _tgs;
+    return _tgs;
 
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;

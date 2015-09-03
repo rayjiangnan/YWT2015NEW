@@ -124,8 +124,8 @@
 
 
 - (IBAction)post:(id)sender {
-    NSString *lat=[NSString stringWithFormat:@"%f",_locationManager.location.coordinate.latitude];
-    NSString *longti=[NSString stringWithFormat:@"%f",_locationManager.location.coordinate.longitude];
+    //NSString *lat=[NSString stringWithFormat:@"%f",_locationManager.location.coordinate.latitude];
+    //NSString *longti=[NSString stringWithFormat:@"%f",_locationManager.location.coordinate.longitude];
 
     NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
     NSString *myString = [userDefaultes stringForKey:@"myidt"];
@@ -168,39 +168,20 @@
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
             
             if ([sta isEqualToString:@"1"]){
-                
                 [MBProgressHUD showSuccess:@"评价成功！"];
-                
                 [[self navigationController] popViewControllerAnimated:YES];
-                
-                
-                
             }else{
-                
                 [MBProgressHUD showError:sta];
-                
                 return ;
-                
             }
-            
-            
-            
         }];
-        
-        
-        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
         [MBProgressHUD showError:@"网络请求出错"];
-        
         return ;
         
     }];
     
     [[NSOperationQueue mainQueue] addOperation:op];
-    
-    
-    
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{

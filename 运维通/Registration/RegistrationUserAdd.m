@@ -16,8 +16,6 @@
 #import <CoreLocation/CoreLocation.h>
 
 
-#define urlt @"http://ritacc.net"
-
 @interface RegistrationUserAdd ()<UITableViewDataSource,UITableViewDelegate,CLLocationManagerDelegate>
 {
     int num;

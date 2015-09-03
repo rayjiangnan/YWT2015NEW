@@ -8,6 +8,9 @@
 
 #import "qiang.h"
 #import "MBProgressHUD+MJ.h"
+#import "AFNetworkTool.h"
+#import "UIViewController+Extension.h"
+#import "SBJson.h"
 
 @interface qiang ()<UITextViewDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate,UITextFieldDelegate>
 
@@ -129,7 +132,10 @@
 
 
 - (IBAction)reg {
-    
+    [self postJSON];
+}
+
+-(NSString*) SetValue {
     NSString *sty=[[NSString alloc]init];
     if ([self.lx.text isEqualToString:@"业务运维"]) {
         sty=@"BusinessOperations";
@@ -141,74 +147,69 @@
         sty=@"ServerEquipment";
     }
     
-    [self postJSON:self.biaoti.text:sty:self.gzrw.text:self.dz.text:self.gzsc.text:self.lxr.text:self.lxdh.text:self.khjc.text:self.bz.text:self.ywfy.text:self.xqrs.text:self.nlyq.text:@"1":@"orderfile":@"12345.png"];
-
     
+    //NSMutableArray *jsonArray = [[NSMutableArray alloc]init];//创建最外层的数组
+    NSMutableDictionary *dic = [[NSMutableDictionary alloc]init];//创建内层的字典
+    [dic setValue:self.biaoti.text forKey:@"OrderTitle"];
+    [dic setValue:sty forKey:@"OrderType"];
+    [dic setValue:self.gzrw.text forKey:@"OrderTask"];
+    [dic setValue:self.dz.text forKey:@"Task_Address"];
+    
+    NSString *timelen=self.gzsc.text;
+    
+    if ([self isBlankString:timelen] == NO) {
+        [dic setValue:timelen forKey:@"TaskTimeLen"];
+    }
+
+    [dic setValue:self.lxr.text forKey:@"ContactMan"];
+    
+    [dic setValue:self.lxdh.text forKey:@"ContactMobile"];
+    [dic setValue:self.khjc.text forKey:@"CustomerShort"];
+    [dic setValue:self.bz.text forKey:@"Remark"];
+    
+    [dic setValue:self.ywfy.text forKey:@"Freight"];
+    [dic setValue:self.xqrs.text forKey:@"PersonNum"];
+    [dic setValue:self.nlyq.text forKey:@"AbilityRequest"];
+    
+    SBJsonWriter *jsonWriter = [[SBJsonWriter alloc] init];
+    NSString *jsonString = [jsonWriter stringWithObject:dic];
+    
+    jsonString=[NSString stringWithFormat:@"{\"OrderMain\":%@,\"OrderFile\":[]}",jsonString];
+    
+    return jsonString;
 }
 
-- (void)postJSON:(NSString *)text1:(NSString *)text2:(NSString *)text3:(NSString *)text4:(NSString *)text5:(NSString *)text6:(NSString *)text7:(NSString *)text8:(NSString *)text9:(NSString *)text10:(NSString *)text11:(NSString *)text12:(NSString *)text13:(NSString *)text14:(NSString *)text15{
+
+
+- (void)postJSON{
     @try
     {
         NSString *strurl=[NSString stringWithFormat:@"%@/api/YWT_OrderPlatform.ashx",urlt];
-        NSURL *url = [NSURL URLWithString:strurl];
-        
-        // 2. Request
-        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:0 timeoutInterval:2.0f];
-        
-        request.HTTPMethod = @"POST";
-        
-        
-        
         NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-        NSString *myString = [userDefaultes stringForKey:@"myidt"];
+        NSString *Userid = [userDefaultes stringForKey:@"myidt"];
+        NSString *dstr=[self SetValue];
+        NSString *strparameters = [NSString stringWithFormat:@"action=addexternal&q0=%@&q1=%@",dstr,Userid];
         
-        
-        NSString *dstr=[NSString stringWithFormat:@"{\"OrderMain\":{\"OrderTitle\":\"%@\",\"OrderType\":\"%@\", \"OrderTask\":\"%@\", \"Task_Address\":\"%@\", \"TaskTimeLen\":\"%@\", \"ContactMan\":\"%@\", \"ContactMobile\":\"%@\", \"CustomerShort\":\"%@\", \"Remark\":\"%@\", \"Freight\":\"%@\", \"PersonNum\":\"%@\", \"AbilityRequest\":\"%@\", \"Status\":\"%@\"},\"OrderFile\":[{\"FileType\":\"%@\",\"FileName\":\"%@\"}]}",text1,text2,text3,text4,text5,text6,text7,text8,text9,text10,text11,text12,text13,text14,text15];
-        //,\"OrderFile\":[{\"FileType\":\"%@\", \"FileName\":\"%@\", \"CreateDateTime\":\"%@\"]}
-        // ? 数据体
-        NSString *str = [NSString stringWithFormat:@"action=addexternal&q0=%@&q1=%@",dstr,myString];
-        // 将字符串转换成数据
-        NSLog(@"%@?%@",url,str);
-        request.HTTPBody = [str dataUsingEncoding:NSUTF8StringEncoding];
-        // 把字典转换成二进制数据流, 序列化
-        
-        
-        // 3. Connection
-        [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc]init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-            if (!data==Nil) {
-                 NSString *result = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-            NSLog(@"%@",result);
-            NSDictionary *dict=[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:nil];
-            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                NSString *errstr2=[NSString stringWithFormat:@"%@",dict[@"Status"]];
-                
-                if ([errstr2 isEqualToString:@"0"]){
-                    NSString *str=[NSString stringWithFormat:@"%@",dict[@"ReturnMsg"]];
-                    
-                    [MBProgressHUD showError:str];
-                    
-                    return ;
-                    
-                    
-                }else{
-                    [MBProgressHUD showSuccess:@"下单成功！"];
-                    [[self navigationController] popViewControllerAnimated:YES];
-                    
-                    
-                }
-                
-            }];
-
-            }else{
-               [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-             [MBProgressHUD showError:@"网络异常！"];
-                return ;
-                    }];
-            }
-                       
             
+        AFHTTPRequestOperation *op=  [self POSTurlString:strurl parameters:strparameters];
+        [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSMutableDictionary *json=responseObject;
+            
+            NSString *Status=[NSString stringWithFormat:@"%@",json[@"Status"]];
+            if ([Status isEqualToString:@"0"]){
+                NSString *ReturnMsg=[NSString stringWithFormat:@"%@",json[@"ReturnMsg"]];
+                [MBProgressHUD showError:ReturnMsg];
+                NSLog(@"%@",ReturnMsg);
+                return ;
+            }else{
+                [MBProgressHUD showSuccess:@"下单成功！"];
+                [[self navigationController] popViewControllerAnimated:YES];
+            }
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            [MBProgressHUD showError:@"网络异常！"];
+            return ;
         }];
-        
+        [[NSOperationQueue mainQueue] addOperation:op];
     }@catch (NSException * e) {
         NSLog(@"Exception: %@", e);
     }
@@ -236,248 +237,5 @@
     [self.bz resignFirstResponder];
     
 }
-
-- (IBAction)selectImg_Click:(id)sender{
-    UIActionSheet *sheet;
-    // 判断是否支持相机
-    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
-    {
-        sheet=[[UIActionSheet alloc] initWithTitle:@"选择"
-                                          delegate:self
-                                 cancelButtonTitle:nil
-                            destructiveButtonTitle:@"取消"
-                                 otherButtonTitles:@"拍照上传",@"本地上传", nil];
-    }
-    else
-    {
-        sheet = [[UIActionSheet alloc] initWithTitle:@"选择"
-                                            delegate:self
-                                   cancelButtonTitle:nil
-                              destructiveButtonTitle:@"取消"
-                                   otherButtonTitles:@"本地上传", nil];
-        
-    }
-    sheet.tag = 255;
-    [sheet showInView:self.view];
-}
-- (void)btnupload_Click{
-    /*
-     action:(NSString *) straction
-     orderid:(NSString *) strOrderid
-     creatorid:(NSString *) strCreatorid //创建人ID
-     uploadUrl:(NSString *) strUploadUrl //上传路径
-     
-     */
-    
-    
-    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-        
-//        
-//        [self UpdateFileImage:self.imageView.image  action:@"" orderid:@"" creatorid:@"" uploadUrl:urlt];
-//        NSLog(@"完成上传图片。");
-    }];
-    
-    
-}
--(void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (actionSheet.tag == 255) {
-        
-        NSUInteger sourceType = 0;
-        // 判断是否支持相机
-        if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-            
-            switch (buttonIndex) {
-                case 0:
-                    // 取消
-                    return;
-                case 1:
-                    // 相机
-                    sourceType = UIImagePickerControllerSourceTypeCamera;
-                    break;
-                case 2:
-                    // 相册
-                    sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-                    break;
-            }
-        }
-        else {
-            if (buttonIndex == 0) {
-                return;
-            } else {
-                sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
-            }
-        }
-        // 跳转到相机或相册页面
-        UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
-        imagePickerController.delegate=self;
-        imagePickerController.allowsEditing = YES;
-        imagePickerController.sourceType = sourceType;
-        [self presentViewController:imagePickerController animated:YES completion:^{}];
-        //[imagePickerController release];
-    }
-}
-
-#pragma mark - image picker delegte
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
-{
-//    [picker dismissViewControllerAnimated:YES completion:^{}];
-//    UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
-//    [self.imageView setImage:image];
-//    self.imageView.tag = 100;
-//    NSLog(@"setImage:savedImage");
-    
-}
-
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
-{
-    [self dismissViewControllerAnimated:YES completion:^{}];
-}
-
-
-
-- (NSDictionary *) UpdateFileImage:(UIImage *)currentImage
-                            action:(NSString *) straction
-                           orderid:(NSString *) strOrderid
-                         creatorid:(NSString *) strCreatorid //创建人ID
-                         uploadUrl:(NSString *) strUploadUrl //上传路径
-{
-    
-    
-    NSData *data = UIImageJPEGRepresentation(currentImage, 0.5);
-    
-    NSString *hyphens = @"--";
-    NSString *boundary = @"*****";
-    NSString *end = @"\r\n";
-    NSMutableData *myRequestData1=[NSMutableData data];
-    
-    [myRequestData1 appendData:[hyphens dataUsingEncoding:NSUTF8StringEncoding]];
-    [myRequestData1 appendData:[boundary dataUsingEncoding:NSUTF8StringEncoding]];
-    [myRequestData1 appendData:[end dataUsingEncoding:NSUTF8StringEncoding]];
-    
-    NSMutableString *fileTitle=[[NSMutableString alloc]init];
-    
-    [fileTitle appendFormat:@"Content-Disposition:form-data;name=\"%@\";filename=\"%@\"",[NSString stringWithFormat:@"file%d",1],[NSString stringWithFormat:@"image%d.png",1]];
-    
-    [fileTitle appendString:end];
-    
-    [fileTitle appendString:[NSString stringWithFormat:@"Content-Type:application/octet-stream%@",end]];
-    [fileTitle appendString:end];
-    
-    [myRequestData1 appendData:[fileTitle dataUsingEncoding:NSUTF8StringEncoding]];
-    
-    [myRequestData1 appendData:data];
-    
-    [myRequestData1 appendData:[end dataUsingEncoding:NSUTF8StringEncoding]];
-    
-    [myRequestData1 appendData:[hyphens dataUsingEncoding:NSUTF8StringEncoding]];
-    [myRequestData1 appendData:[boundary dataUsingEncoding:NSUTF8StringEncoding]];
-    [myRequestData1 appendData:[hyphens dataUsingEncoding:NSUTF8StringEncoding]];
-    [myRequestData1 appendData:[end dataUsingEncoding:NSUTF8StringEncoding]];
-    
-    NSString *url=[NSString stringWithFormat:@"%@/API/HDL_UPFile.ashx?from=ios&action=%@&q0=%@&q1=%@"
-                   ,strUploadUrl,straction,strOrderid,strCreatorid];
-    //根据url初始化request
-    
-    NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]
-                                                           cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
-                                                       timeoutInterval:3];
-    
-    //设置HTTPHeader中Content-Type的值
-    NSString *content=[[NSString alloc]initWithFormat:@"multipart/form-data; boundary=%@",boundary];
-    //设置HTTPHeader
-    [request setValue:content forHTTPHeaderField:@"Content-Type"];
-    //设置Content-Length
-    [request setValue:[NSString stringWithFormat:@"%ld", (unsigned long)[myRequestData1 length]] forHTTPHeaderField:@"Content-Length"];
-    //设置http body
-    [request setHTTPBody:myRequestData1];
-    //http method
-    [request setHTTPMethod:@"POST"];
-    
-    
-    
-    NSHTTPURLResponse *urlResponese = nil;
-    NSError *error = [[NSError alloc]init];
-    
-    NSData* resultData = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponese error:&error];
-    //  NSDictionary * result= [[NSString alloc] initWithData:resultData encoding:NSUTF8StringEncoding];
-    
-    NSString* result= [[NSString alloc] initWithData:resultData encoding:NSUTF8StringEncoding];
-    
-    NSData *data5 = [result dataUsingEncoding:NSUTF8StringEncoding];
-    NSDictionary *dict=[NSJSONSerialization JSONObjectWithData:data5 options:NSJSONReadingMutableLeaves error:nil];
-    _result=dict;
-    NSString *dfg=[dict objectForKey:@"ReturnMsg"];
-    //  NSString *dfg2=[dict objectForKey:@"ReturnType"];
-    
-    
-    //    if ([_time.text isEqualToString:@""]) {
-    //
-    //        NSDate *newDate =[NSDate date];
-    //        NSString *timeSp = [NSString stringWithFormat:@"%ld", (long)[newDate timeIntervalSince1970]];
-    //        NSLog(@"timeSp:%@",timeSp); //时间戳的值
-    //        NSString *timet1= [NSString stringWithFormat:@"\\/Date(%@)\\/",timeSp];
-    //
-    //        NSString *timet2= [NSString stringWithFormat:@"\\/Date(%@)\\/",_time2];
-    //          [self postJSON:@0:@0:@0:self.addr1.text :self.contact.text :self.tel.text:timet1:self.addr2.text :self.contact2.text :self.tel2.text :timet2:self.Remark.text:@1:dfg];
-    //
-    //    }else if ([_shdate.text isEqualToString:@""]) {
-    //
-    //        NSDate *newDate =[NSDate date];
-    //        NSString *timeSp = [NSString stringWithFormat:@"%ld", (long)[newDate timeIntervalSince1970]];
-    //        NSLog(@"timeSp:%@",timeSp); //时间戳的值
-    //        NSString *timet2= [NSString stringWithFormat:@"\\/Date(%@)\\/",timeSp];
-    //        NSString *timet1= [NSString stringWithFormat:@"\\/Date(%@)\\/",_time1];
-    //          [self postJSON:@0:@0:@0:self.addr1.text :self.contact.text :self.tel.text:timet1:self.addr2.text :self.contact2.text :self.tel2.text :timet2:self.Remark.text:@1:dfg];
-    //
-    //    }else{
-    //
-    //        NSString *timet1= [NSString stringWithFormat:@"\\/Date(%@)\\/",_time1];
-    //        NSString *timet2= [NSString stringWithFormat:@"\\/Date(%@)\\/",_time2];
-    //       [self postJSON:@0:@0:@0:self.addr1.text :self.contact.text :self.tel.text:timet1:self.addr2.text :self.contact2.text :self.tel2.text :timet2:self.Remark.text:@1:dfg];
-    //
-    //
-    //    }
-    //
-    
-    
-    return _result;
-}
-
-
--(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{
-//    //  isFullScreen = !isFullScreen;
-//    
-//    UITouch *touch = [touches anyObject];
-//    
-//    CGPoint touchPoint = [touch locationInView:self.view];
-//    CGPoint imagePoint = self.imageView.frame.origin;
-//    //touchPoint.x ，touchPoint.y 就是触点的坐标
-//    // 触点在imageView内，点击imageView时 放大,再次点击时缩小
-//    
-//    if(imagePoint.x <= touchPoint.x && imagePoint.x +self.imageView.frame.size.width >=touchPoint.x && imagePoint.y <= touchPoint.y && imagePoint.y+self.imageView.frame.size.height >= touchPoint.y)
-//    {
-//        // 设置图片放大动画
-//        [UIView beginAnimations:nil context:nil];
-//        // 动画时间
-//        [UIView setAnimationDuration:1];
-//        /*
-//         if (isFullScreen) {
-//         // 放大尺寸
-//         
-//         self.imageView.frame = CGRectMake(0, 0, 320, 480);
-//         }
-//         else {
-//         // 缩小尺寸
-//         self.imageView.frame = CGRectMake(50, 65, 90, 115);
-//         }
-//         */
-//        // commit动画
-//        [UIView commitAnimations];
-//    }
-    
-}
-
 
 @end
