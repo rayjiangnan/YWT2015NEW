@@ -27,7 +27,7 @@
     self._locationManager.delegate = self;
     self._locationManager.desiredAccuracy = kCLLocationAccuracyBest;
     self._locationManager.distanceFilter = 1000.0f;
-    
+    self.tableview.rowHeight=70;
     [self network];
     _idtt2=[NSString stringWithFormat:@"%@",strTtile];
     NSLog(@"---%@",_idtt2);
@@ -98,6 +98,34 @@
         cell=[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:ID];
     }
     cell.imageView.image=[UIImage imageNamed:@"sjtx"];
+    
+    NSString *img=[NSString stringWithFormat:@"%@",dict2[@"UserImg"]];
+    
+    NSString *img2=[NSString stringWithFormat:@"%@%@",urlt,dict2[@"UserImg"]];
+    if (![img isEqualToString:@"/Images/defaultPhoto.png"]) {
+        NSURL *imgurl=[NSURL URLWithString:img2];
+        UIImage *icon = [[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];                CGSize itemSize = CGSizeMake(40, 40);
+        UIGraphicsBeginImageContextWithOptions(itemSize, NO,0.0);
+        CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
+        [icon drawInRect:imageRect];
+        
+        cell.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        
+        
+    }else{
+        UIImage *icon = [UIImage imageNamed:@"icon_tx"];
+        CGSize itemSize = CGSizeMake(40, 40);
+        UIGraphicsBeginImageContextWithOptions(itemSize, NO,0.0);
+        CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
+        [icon drawInRect:imageRect];
+        
+        cell.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        
+    }
+
+    
     cell.textLabel.text=dict2[@"RealName"];
     cell.detailTextLabel.text=dict2[@"Mobile"];
     

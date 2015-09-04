@@ -25,6 +25,14 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
+    NSString *RealName = [userDefaultes stringForKey:@"RealName"];
+     NSString *iphone = [userDefaultes stringForKey:@"iphone"];
+    self.lxr.text=RealName;
+    self.dh.text=iphone;
+
+    
     [self tapBackground];
     [self tapOnce];
 }

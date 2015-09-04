@@ -26,7 +26,8 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *lx;
 
-@property (weak, nonatomic) IBOutlet UILabel *gzrw;
+@property (weak, nonatomic) IBOutlet UITextView *gzrw;
+
 
 @property (weak, nonatomic) IBOutlet UILabel *yf;
 
@@ -45,6 +46,20 @@
 @property (weak, nonatomic) IBOutlet UILabel *sta;
 @property (nonatomic, strong) NSDictionary *tgs;
 @property (weak, nonatomic) IBOutlet UIButton *postbtn;
+
+
+@property (weak, nonatomic) IBOutlet UIImageView *x1;
+@property (weak, nonatomic) IBOutlet UIImageView *x2;
+@property (weak, nonatomic) IBOutlet UIImageView *x3;
+@property (weak, nonatomic) IBOutlet UIImageView *x4;
+@property (weak, nonatomic) IBOutlet UIImageView *x5;
+
+@property (weak, nonatomic) IBOutlet UIImageView *f1;
+@property (weak, nonatomic) IBOutlet UIImageView *f2;
+@property (weak, nonatomic) IBOutlet UIImageView *f3;
+@property (weak, nonatomic) IBOutlet UIImageView *f4;
+@property (weak, nonatomic) IBOutlet UIImageView *f5;
+
 @end
 
 @implementation plist
@@ -110,6 +125,60 @@
         self.gzsc.text=[NSString stringWithFormat:@"%@",dict[@"TaskTimeLen"]];
         self.bz.text=dict[@"Remark"];
         self.sta.text=dict[@"Status_Name"];
+        
+        NSString *xin=[NSString stringWithFormat:@"%@",dict[@"Stars"]];
+        if ([xin isEqualToString:@"0"]) {
+            
+        }else if([xin isEqualToString:@"1"]) {
+            self.x1.hidden=NO;
+        }else if([xin isEqualToString:@"2"]) {
+            self.x1.hidden=NO;
+            self.x2.hidden=NO;
+        }else if([xin isEqualToString:@"3"]) {
+            self.x1.hidden=NO;
+            self.x2.hidden=NO;
+            self.x3.hidden=NO;
+        }else if([xin isEqualToString:@"4"]) {
+            self.x1.hidden=NO;
+            self.x2.hidden=NO;
+            self.x3.hidden=NO;
+            self.x4.hidden=NO;
+        }else if([xin isEqualToString:@"5"]) {
+            self.x1.hidden=NO;
+            self.x2.hidden=NO;
+            self.x3.hidden=NO;
+            self.x4.hidden=NO;
+            self.x5.hidden=NO;
+        }
+        
+        
+        NSString *fen=[NSString stringWithFormat:@"%@",dict[@"ScoreAvg"]];
+        if ([xin isEqualToString:@"0"]) {
+            
+        }else if([fen isEqualToString:@"1"]) {
+            self.f1.hidden=NO;
+        }else if([fen isEqualToString:@"2"]) {
+            self.f1.hidden=NO;
+            self.f2.hidden=NO;
+        }else if([fen isEqualToString:@"3"]) {
+            self.f1.hidden=NO;
+            self.f2.hidden=NO;
+            self.f3.hidden=NO;
+        }else if([fen isEqualToString:@"4"]) {
+            self.f1.hidden=NO;
+            self.f2.hidden=NO;
+            self.f3.hidden=NO;
+            self.f4.hidden=NO;
+        }else if([fen isEqualToString:@"5"]) {
+            self.f1.hidden=NO;
+            self.f2.hidden=NO;
+            self.f3.hidden=NO;
+            self.f4.hidden=NO;
+            self.f5.hidden=NO;
+        }
+        
+
+        
         
         NSString *status=[NSString stringWithFormat:@"%@",dict[@"Status"]];
         if ([status isEqualToString:@"0"]) {

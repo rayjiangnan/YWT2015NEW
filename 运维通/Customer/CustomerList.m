@@ -29,6 +29,17 @@
     self.tabBarController.tabBar.hidden=YES;
     [self network2];
     [self.tableview reloadData];
+    
+    
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *addr=@"";
+
+    [userDefaults setObject:addr forKey:@"detaaddr"];
+    [userDefaults setObject:addr forKey:@"detaaddr1"];
+    [userDefaults setObject:addr forKey:@"detaaddr2"];
+    [userDefaults synchronize];
+
+    
 }
 
 - (void)viewDidLoad {

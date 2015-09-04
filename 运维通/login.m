@@ -154,6 +154,9 @@
                                       [self performSegueWithIdentifier:@"sj" sender:nil];
                                 }else if ([usertype isEqualToString:@"40"]) {
                                     
+                                    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+                                    [userDefaults setObject: [NSString stringWithFormat:@"%@",dict[@"ResultObject"][@"Stars"]] forKey:@"star"];
+                                   
                                     [self performSegueWithIdentifier:@"3yw" sender:nil];
                                 }
                             }

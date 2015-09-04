@@ -30,7 +30,10 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
+    if (![[userDefaultes stringForKey:@"personname"] isEqualToString:@""]) {
+
     self.txtUserID.text = [userDefaultes stringForKey:@"personname"];
+    }
 }
 
 - (void)viewDidLoad {
@@ -56,6 +59,18 @@
     _tgs=array;
     return _tgs;
 }
+
+- (IBAction)all:(id)sender {
+    
+    self.txtUserID.text=@"全部";
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *kong=@"";
+    [userDefaults setObject:kong forKey:@"personID"];
+    [userDefaults setObject:kong forKey:@"personname"];
+    
+    
+}
+
 
 -(void)LoadDataList{
     int indes=-1;

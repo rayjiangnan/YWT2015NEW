@@ -29,9 +29,26 @@
 @implementation CustomerEidt
 @synthesize strTtile;
 
+
+-(void)viewDidAppear:(BOOL)animated{
+
+    self.tabBarController.tabBar.hidden=YES;
+    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
+    NSString *mygh = [userDefaultes stringForKey:@"detaaddr"];
+
+    
+    if ([mygh isEqualToString:@""]) {
+
+    }else{
+        
+        self.txtContactAddress.text=mygh;
+    }
+    
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    if ([self isBlankString:strTtile] == NO) {
+       if ([self isBlankString:strTtile] == NO) {
         self.tempid=[NSString stringWithFormat:@"%@",strTtile];
         [self LoadItem];
     }

@@ -35,7 +35,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self network];
-    self.scrollView.contentSize=CGSizeMake(320,700);
+    self.scrollView.contentSize=CGSizeMake(320,830);
 
 }
 

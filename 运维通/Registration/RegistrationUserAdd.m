@@ -82,7 +82,12 @@
     NSString *latitude=lati;
     NSString *longitude=longtitu;
     NSString *Position=[NSString stringWithFormat:@"%@",self.addr.text];
-    NSString *IMEI=[NSString stringWithFormat:@"%@",@"12345678" ];
+    
+    NSUUID *uuid=[UIDevice currentDevice].identifierForVendor;
+    NSString *uuidstr=uuid.UUIDString;
+    NSString *uuids=[NSString stringWithFormat:@"%@0000",uuidstr];
+    
+    NSString *IMEI=[NSString stringWithFormat:@"%@",uuids];
     
     [dic setValue:latitude forKey:@"latitude"];
     [dic setValue:longitude forKey:@"longitude"];

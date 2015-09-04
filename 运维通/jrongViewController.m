@@ -48,8 +48,7 @@
     NSString *kong=@"";
     [userDefaults setObject:kong forKey:@"personID"];
     [userDefaults setObject:kong forKey:@"personname"];
-    
-    
+
 }
 
 

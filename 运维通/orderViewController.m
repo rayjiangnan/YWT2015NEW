@@ -68,6 +68,7 @@
      self.dz.text=mygh;
     }
 }
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     for (int component = 0; component < self.foods.count; component++) {

@@ -16,6 +16,16 @@
 @property (weak, nonatomic) IBOutlet UILabel *wdyd;
 @property (weak, nonatomic) IBOutlet UILabel *wcyd;
 @property (weak, nonatomic) IBOutlet UILabel *dwcyd;
+@property (weak, nonatomic) IBOutlet UIImageView *x5;
+@property (weak, nonatomic) IBOutlet UIImageView *x4;
+@property (weak, nonatomic) IBOutlet UIImageView *x3;
+@property (weak, nonatomic) IBOutlet UIImageView *x2;
+@property (weak, nonatomic) IBOutlet UIImageView *x1;
+
+
+
+
+
 
 @end
 
@@ -34,6 +44,7 @@
     [self network];
     NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
     NSString *Certify = [userDefaultes stringForKey:@"Certify"];
+     NSString *star = [userDefaultes stringForKey:@"star"];
      NSString *RealName = [userDefaultes stringForKey:@"RealName"];
      NSString *UserImg = [userDefaultes stringForKey:@"UserImg"];
     self.realname.text=RealName;
@@ -53,7 +64,28 @@
         self.icon.image=imgstr;
 
     }
-
+    if ([star isEqualToString:@"1"]) {
+        self.x1.hidden=NO;
+    }else if ([star isEqualToString:@"2"]){
+    self.x1.hidden=NO;
+    self.x2.hidden=NO;
+    
+    }else if ([star isEqualToString:@"3"]){
+        self.x1.hidden=NO;
+        self.x2.hidden=NO;
+         self.x3.hidden=NO;
+    }else if ([star isEqualToString:@"4"]){
+        self.x1.hidden=NO;
+        self.x2.hidden=NO;
+        self.x3.hidden=NO;
+          self.x4.hidden=NO;
+    }else if ([star isEqualToString:@"5"]){
+        self.x1.hidden=NO;
+        self.x2.hidden=NO;
+        self.x3.hidden=NO;
+        self.x4.hidden=NO;
+        self.x5.hidden=NO;
+    }
 
     
 }
