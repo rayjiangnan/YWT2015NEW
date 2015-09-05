@@ -41,6 +41,9 @@
 		284C22D81B7F8453004B46D0 /* OnlineApprovalView.m in Sources */ = {isa = PBXBuildFile; fileRef = 284C22CF1B7F8453004B46D0 /* OnlineApprovalView.m */; };
 		284E9B821B761B59004200D1 /* guanli.m in Sources */ = {isa = PBXBuildFile; fileRef = 284E9B811B761B59004200D1 /* guanli.m */; };
 		2854B5B11B7F55DA00DCA674 /* ZCNoneiFLYTEK.m in Sources */ = {isa = PBXBuildFile; fileRef = 2854B5B01B7F55DA00DCA674 /* ZCNoneiFLYTEK.m */; };
+		2854D4C41B9B1FD600209D4A /* paylist.m in Sources */ = {isa = PBXBuildFile; fileRef = 2854D4C31B9B1FD600209D4A /* paylist.m */; };
+		2854D4CB1B9B243F00209D4A /* paylistcell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2854D4C91B9B243F00209D4A /* paylistcell.m */; };
+		2854D4CC1B9B243F00209D4A /* paylistcell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2854D4CA1B9B243F00209D4A /* paylistcell.xib */; };
 		285525541B8E148D0091491A /* oilFoot.m in Sources */ = {isa = PBXBuildFile; fileRef = 285525531B8E148D0091491A /* oilFoot.m */; };
 		2855255E1B8E14E50091491A /* PopoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = 285525571B8E14E50091491A /* PopoverView.m */; };
 		2855255F1B8E14E50091491A /* SHLineGraphView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2855255B1B8E14E50091491A /* SHLineGraphView.m */; };
@@ -288,6 +291,11 @@
 		284E9B811B761B59004200D1 /* guanli.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = guanli.m; sourceTree = "<group>"; };
 		2854B5AF1B7F55DA00DCA674 /* ZCNoneiFLYTEK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZCNoneiFLYTEK.h; sourceTree = "<group>"; };
 		2854B5B01B7F55DA00DCA674 /* ZCNoneiFLYTEK.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZCNoneiFLYTEK.m; sourceTree = "<group>"; };
+		2854D4C21B9B1FD600209D4A /* paylist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = paylist.h; sourceTree = "<group>"; };
+		2854D4C31B9B1FD600209D4A /* paylist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = paylist.m; sourceTree = "<group>"; };
+		2854D4C81B9B243F00209D4A /* paylistcell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = paylistcell.h; sourceTree = "<group>"; };
+		2854D4C91B9B243F00209D4A /* paylistcell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = paylistcell.m; sourceTree = "<group>"; };
+		2854D4CA1B9B243F00209D4A /* paylistcell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = paylistcell.xib; sourceTree = "<group>"; };
 		285525521B8E148D0091491A /* oilFoot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = oilFoot.h; sourceTree = "<group>"; };
 		285525531B8E148D0091491A /* oilFoot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = oilFoot.m; sourceTree = "<group>"; };
 		285525561B8E14E50091491A /* PopoverView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopoverView.h; sourceTree = "<group>"; };
@@ -711,6 +719,11 @@
 				285C9F721B7CFBD7008BB8F3 /* diancell.xib */,
 				282CCA451B9ABA300087E3CB /* renzhen.h */,
 				282CCA461B9ABA300087E3CB /* renzhen.m */,
+				2854D4C21B9B1FD600209D4A /* paylist.h */,
+				2854D4C31B9B1FD600209D4A /* paylist.m */,
+				2854D4C81B9B243F00209D4A /* paylistcell.h */,
+				2854D4C91B9B243F00209D4A /* paylistcell.m */,
+				2854D4CA1B9B243F00209D4A /* paylistcell.xib */,
 			);
 			name = ywperson;
 			sourceTree = "<group>";
@@ -1434,6 +1447,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				28DDBB601B667D6400C872EF /* userCell.xib in Resources */,
+				2854D4CC1B9B243F00209D4A /* paylistcell.xib in Resources */,
 				289E4F241B7E3A3800C19D13 /* RegistrationComapnyCell.xib in Resources */,
 				289E4EEA1B7E2A1600C19D13 /* WarehouseCellTableViewCell.xib in Resources */,
 				78B453911B64B083000C70A7 /* plistcell.xib in Resources */,
@@ -1487,6 +1501,7 @@
 				39998D841B52B69D001D4BCA /* personview.m in Sources */,
 				396B81971B52801B0017305D /* MBProgressHUD.m in Sources */,
 				289E4F171B7E2CEC00C19D13 /* SBJsonWriter.m in Sources */,
+				2854D4CB1B9B243F00209D4A /* paylistcell.m in Sources */,
 				28780FC21B8F658D00023040 /* tongjiCell.m in Sources */,
 				39998D7D1B52B3FA001D4BCA /* ritaccpostorder.m in Sources */,
 				785028011B593BF400444333 /* AFURLConnectionOperation.m in Sources */,
@@ -1566,6 +1581,7 @@
 				78B4538B1B64A821000C70A7 /* mycell.m in Sources */,
 				28B9FCCD1B921AF3004D0DFE /* beginpiclist1.m in Sources */,
 				282D754C1B8063A10019D78C /* registperson.m in Sources */,
+				2854D4C41B9B1FD600209D4A /* paylist.m in Sources */,
 				289E4F101B7E2CEC00C19D13 /* SBJsonStreamParserAdapter.m in Sources */,
 				78402A641B5B914A00908FA9 /* ordermodel.m in Sources */,
 				2844F7641B935B4500ADE377 /* ZoomScrollView.m in Sources */,

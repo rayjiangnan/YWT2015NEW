@@ -42,6 +42,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *xqrs;
 
+@property (weak, nonatomic) IBOutlet UIButton *postbtn;
 
 @end
 
@@ -83,6 +84,9 @@
         
         self.xqrs.text=[NSString stringWithFormat:@"%@",dict[@"PersonNum"]];
         
+        if (![[NSString stringWithFormat:@"%@",dict[@"Status "]] isEqualToString:@"0"]) {
+            self.postbtn.hidden=YES;
+        }
         self.dh.text=dict[@"OrderNo"];
         NSString *dt3=dict[@"CreateDateTime"];
         dt3=[dt3 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];

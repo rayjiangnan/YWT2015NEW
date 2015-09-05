@@ -100,6 +100,7 @@
             dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
                 
                 [MBProgressHUD showSuccess:@"提交成功！"];
+            [[self navigationController] popViewControllerAnimated:YES];
             });
 
         }

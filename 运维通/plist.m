@@ -187,6 +187,10 @@
             
             self.postbtn.hidden=NO;
       
+        }else if ([status isEqualToString:@"25"]) {
+            
+            self.postbtn.hidden=NO;
+            
         }else if ([status isEqualToString:@"30"]) {
           
             [self.postbtn setTitle:@"完成维运" forState:UIControlStateNormal];
@@ -243,6 +247,9 @@
     NSString *status=[NSString stringWithFormat:@"%@",dict[@"Status"]];
     
     if ([status isEqualToString:@"21"]) {
+        [self performSegueWithIdentifier:@"begin" sender:nil];
+    }
+    if ([status isEqualToString:@"25"]) {
         [self performSegueWithIdentifier:@"begin" sender:nil];
     }
     if ([status isEqualToString:@"30"]) {
