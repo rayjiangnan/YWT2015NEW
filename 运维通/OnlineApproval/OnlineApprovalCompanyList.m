@@ -93,10 +93,10 @@
     NSInteger colum=sender.selectedSegmentIndex;
    pg=colum-1;
     NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-  NSString *Create_User = [userDefaultes stringForKey:@"myidt"];
-    
+    NSString *Create_User = [userDefaultes stringForKey:@"myidt"];
+   
     //分状态展示 0 未审核 1 已审核 -1 全部
-    NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_OnlineApproval.ashx?action=getcompanylist&q0=%@&q1=0&q2=%d",urlt,Create_User,pg];
+    NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_OnlineApproval.ashx?action=getcompanylist&q0=%@&q1=%d&q2=%d",urlt,Create_User,num,pg];
     NSLog(@"%@",urlStr2);
     
         self.tableview.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
@@ -104,8 +104,8 @@
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *dict2=responseObject;
           NSMutableArray *dictarr=[[dict2 objectForKey:@"ResultObject"] mutableCopy];
-        NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
-        num=[dict3[@"OnlineApproval_ID"] intValue];
+        //NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
+        //num=[dict3[@"OnlineApproval_ID"] intValue];
         [self netwok:dictarr];
         [self.tableview reloadData];
         NSLog(@"加载数据完成。");
@@ -168,12 +168,13 @@
 {
     
     num=num+1;
-    
+    pg=self.segement.selectedSegmentIndex;
     NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
     NSString *myString = [userDefaultes stringForKey:@"myidt"];
     
     //分状态展示 0 未审核 1 已审核 -1 全部
-    NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_OnlineApproval.ashx?action=getcompanylist&q0=%@&q1=0&q2=%d",urlt,myString,pg];
+    NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_OnlineApproval.ashx?action=getcompanylist&q0=%@&q1=%d&q2=%d",urlt,myString,num,pg];
+    NSLog(@"%@",urlStr2);
     AFHTTPRequestOperation *op=[self GETurlString:urlStr2];
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSMutableDictionary *dict=responseObject;
@@ -181,8 +182,8 @@
         if(![dictarr isEqual:[NSNull null]])
         {
             if (dictarr.count>0) {
-                NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
-                num=[dict3[@"OnlineApproval_ID"] intValue];
+                //NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
+                //num=[dict3[@"OnlineApproval_ID"] intValue];
                            [_tgs addObjectsFromArray:dictarr];
                            [self.tableview reloadData];
                            
