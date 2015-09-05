@@ -11,6 +11,7 @@
 		1872E2211B542253008D1422 /* jrongViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1872E2201B542253008D1422 /* jrongViewController.m */; };
 		18B936361B55565600B2214C /* center.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B936351B55565600B2214C /* center.m */; };
 		18B936391B555EC100B2214C /* hjnANNINOTION.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B936381B555EC100B2214C /* hjnANNINOTION.m */; };
+		282CCA471B9ABA300087E3CB /* renzhen.m in Sources */ = {isa = PBXBuildFile; fileRef = 282CCA461B9ABA300087E3CB /* renzhen.m */; };
 		282D754C1B8063A10019D78C /* registperson.m in Sources */ = {isa = PBXBuildFile; fileRef = 282D754B1B8063A10019D78C /* registperson.m */; };
 		282EA31B1B78FE0100A6893D /* VPImageCropperViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 282EA31A1B78FE0100A6893D /* VPImageCropperViewController.m */; };
 		28360A1D1B77B0CA00F293C3 /* sywindex.m in Sources */ = {isa = PBXBuildFile; fileRef = 28360A1C1B77B0CA00F293C3 /* sywindex.m */; };
@@ -230,6 +231,8 @@
 		18B936351B55565600B2214C /* center.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = center.m; sourceTree = "<group>"; };
 		18B936371B555EC100B2214C /* hjnANNINOTION.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hjnANNINOTION.h; sourceTree = "<group>"; };
 		18B936381B555EC100B2214C /* hjnANNINOTION.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = hjnANNINOTION.m; sourceTree = "<group>"; };
+		282CCA451B9ABA300087E3CB /* renzhen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = renzhen.h; sourceTree = "<group>"; };
+		282CCA461B9ABA300087E3CB /* renzhen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = renzhen.m; sourceTree = "<group>"; };
 		282D754A1B8063A10019D78C /* registperson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = registperson.h; sourceTree = "<group>"; };
 		282D754B1B8063A10019D78C /* registperson.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = registperson.m; sourceTree = "<group>"; };
 		282EA3191B78FE0100A6893D /* VPImageCropperViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPImageCropperViewController.h; sourceTree = "<group>"; };
@@ -706,6 +709,8 @@
 				285C9F701B7CFBD7008BB8F3 /* diancell.h */,
 				285C9F711B7CFBD7008BB8F3 /* diancell.m */,
 				285C9F721B7CFBD7008BB8F3 /* diancell.xib */,
+				282CCA451B9ABA300087E3CB /* renzhen.h */,
+				282CCA461B9ABA300087E3CB /* renzhen.m */,
 			);
 			name = ywperson;
 			sourceTree = "<group>";
@@ -1616,6 +1621,7 @@
 				7860A5211B63BE6C0067253C /* listViewController.m in Sources */,
 				28780FB91B8F5EB200023040 /* tongjiywt.m in Sources */,
 				785028101B5959EF00444333 /* ritaccziliao.m in Sources */,
+				282CCA471B9ABA300087E3CB /* renzhen.m in Sources */,
 				2854B5B11B7F55DA00DCA674 /* ZCNoneiFLYTEK.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
