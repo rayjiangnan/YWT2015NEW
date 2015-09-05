@@ -63,7 +63,26 @@
     if (cell == nil) {
         cell=[[[NSBundle mainBundle] loadNibNamed:@"paylistcell" owner:nil options:nil] lastObject];
     }
+    cell.title.text=dict2[@"Remark"];
+    cell.status.text=dict2[@"ItemTypeName"];
+    cell.money.text=[NSString stringWithFormat:@"%@%@",dict2[@"Mark"],dict2[@"Money"]];
+    NSString *dt3=dict2[@"Create_Date"];
+    dt3=[dt3 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
+    dt3=[dt3 stringByReplacingOccurrencesOfString:@")/" withString:@""];
+    // NSLog(@"%@",dt3);
+    NSString * timeStampString3 =dt3;
+    NSTimeInterval _interval3=[timeStampString3 doubleValue] / 1000;
+    NSDate *date3 = [NSDate dateWithTimeIntervalSince1970:_interval3];
+    NSDateFormatter *objDateformat3 = [[NSDateFormatter alloc] init];
+    [objDateformat3 setDateFormat:@"yyyy-MM-dd"];
+    cell.time.text=[objDateformat3 stringFromDate: date3];
     
+    if (![dict2[@"UserImg"] isEqual:[NSNull null]]) {
+        NSString *img=[NSString stringWithFormat:@"%@%@",urlt,dict2[@"UserImg"]];
+        NSURL *imgurl=[NSURL URLWithString:img];
+        cell.img.image=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
+    }
+
     return cell;
 }
 

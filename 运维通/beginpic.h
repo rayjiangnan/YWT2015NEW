@@ -12,8 +12,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *orderno;
 @property (weak, nonatomic) IBOutlet UILabel *time;
 @property (weak, nonatomic) IBOutlet UILabel *title;
-@property (weak, nonatomic) IBOutlet UIButton *btn1;
-@property (weak, nonatomic) IBOutlet UIButton *btn2;
-@property (weak, nonatomic) IBOutlet UIButton *btn3;
-@property (weak, nonatomic) IBOutlet UIButton *btn4;
+@property (weak, nonatomic) IBOutlet UIImageView *x1;
+@property (weak, nonatomic) IBOutlet UIImageView *x2;
+@property (weak, nonatomic) IBOutlet UIImageView *x3;
+@property (weak, nonatomic) IBOutlet UIImageView *x4;
+
 @end

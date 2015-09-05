@@ -89,26 +89,26 @@
         NSString *img=[NSString stringWithFormat:@"%@/%@",urlt,[array objectAtIndex:0]];
         NSURL *imgurl=[NSURL URLWithString:img];
         UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
-        [cell.btn1 setBackgroundImage:imgstr forState:UIControlStateNormal];
+        cell.x1.image=imgstr;
          NSLog(@"%@",img);
     }
     if (array.count>1) {
         NSString *img=[NSString stringWithFormat:@"%@/%@",urlt,[array objectAtIndex:1]];
         NSURL *imgurl=[NSURL URLWithString:img];
         UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
-        [cell.btn2 setBackgroundImage:imgstr forState:UIControlStateNormal];
+        cell.x2.image=imgstr;
     }
     if (array.count>2) {
         NSString *img=[NSString stringWithFormat:@"%@/%@",urlt,[array objectAtIndex:2]];
         NSURL *imgurl=[NSURL URLWithString:img];
         UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
-        [cell.btn3 setBackgroundImage:imgstr forState:UIControlStateNormal];
+       cell.x3.image=imgstr;
     }
     if (array.count>3) {
         NSString *img=[NSString stringWithFormat:@"%@/%@",urlt,[array objectAtIndex:3]];
         NSURL *imgurl=[NSURL URLWithString:img];
         UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
-        [cell.btn4 setBackgroundImage:imgstr forState:UIControlStateNormal];
+      cell.x4.image=imgstr;
     }
     
     return cell;

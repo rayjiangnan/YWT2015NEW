@@ -83,9 +83,12 @@
         NSDictionary *dict=dict2[@"ResultObject"];
         
         self.xqrs.text=[NSString stringWithFormat:@"%@",dict[@"PersonNum"]];
-        
-        if (![[NSString stringWithFormat:@"%@",dict[@"Status "]] isEqualToString:@"0"]) {
-            self.postbtn.hidden=YES;
+        NSString *sta=[NSString stringWithFormat:@"%@",dict[@"Status"]];
+        NSLog(@"%@----",sta);
+        if ([sta isEqualToString:@"0"]) {
+            self.postbtn.hidden=NO;
+        }else{
+        self.postbtn.hidden=YES;
         }
         self.dh.text=dict[@"OrderNo"];
         NSString *dt3=dict[@"CreateDateTime"];
