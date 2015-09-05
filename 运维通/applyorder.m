@@ -53,6 +53,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *f3;
 @property (weak, nonatomic) IBOutlet UIImageView *f4;
 @property (weak, nonatomic) IBOutlet UIImageView *f5;
+@property (weak, nonatomic) IBOutlet UIButton *postbtn;
 
 
 
@@ -64,6 +65,7 @@
 -(void)viewDidAppear:(BOOL)animated{
     self.tabBarController.tabBar.hidden=YES;
     [self requestaaa];
+      [self.view setNeedsDisplay];
 }
 
 
@@ -120,6 +122,19 @@
         self.gzrw.text=dict[@"OrderTask"];
         self.gzsc.text=[NSString stringWithFormat:@"%@",dict[@"TaskTimeLen"]];
         self.bz.text=dict[@"Remark"];
+        
+        
+        
+        NSString *apply=[NSString stringWithFormat:@"%@",dict[@"IsHaveApplay"]];
+        if (![apply isEqualToString:@"1"]) {
+            self.postbtn.hidden=NO;
+        }
+        
+        
+        
+        
+        
+        
         
         NSString *xin=[NSString stringWithFormat:@"%@",dict[@"Stars"]];
         if ([xin isEqualToString:@"0"]) {

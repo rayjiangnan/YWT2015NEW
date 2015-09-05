@@ -31,13 +31,13 @@
         
         self.tabBarController.tabBar.hidden=NO;
     }
-
+    [self network2];
+    [self.tableview reloadData];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self network2];
-    [self.tableview reloadData];
+  
     self.tableview.rowHeight=155;
 }
 
