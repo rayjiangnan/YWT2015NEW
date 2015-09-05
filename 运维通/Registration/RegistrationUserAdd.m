@@ -102,38 +102,44 @@
 }
 
 - (IBAction)BtnSaveClick:(id)sender {
-    NSString *jsonString =[self SetValue];
     
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *Create_User = [userDefaultes stringForKey:@"myidt"];
-    
-    NSString *urlStr = [NSString stringWithFormat:@"%@/API/YWT_Registration.ashx",urlt];
-    NSString *strparameters=[NSString stringWithFormat:@"action=add&q0=%@&q1=%@",jsonString,Create_User];
-    NSLog(@"%@",urlStr);
-    NSLog(@"%@",strparameters);
-    AFHTTPRequestOperation *op=  [self POSTurlString:urlStr parameters:strparameters];
-    [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSMutableDictionary *json=responseObject;
+    if (![self.addr.text isEqualToString:@"(null)"]) {
+        NSString *jsonString =[self SetValue];
         
-        NSString *Status=[NSString stringWithFormat:@"%@",json[@"Status"]];
-        if ([Status isEqualToString:@"0"]){
-            NSString *ReturnMsg=[NSString stringWithFormat:@"%@",json[@"ReturnMsg"]];
-            [MBProgressHUD showError:ReturnMsg];
-            NSLog(@"%@",ReturnMsg);
-            return;
-        }
-        else
-        {
-            [MBProgressHUD showSuccess:@"打卡成功！"];
-            [self LoadDataList];
-            [self.tableview reloadData];
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [MBProgressHUD showError:@"网络异常！"];
-        return ;
-    }];
-    
-    [[NSOperationQueue mainQueue] addOperation:op];
+        NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
+        NSString *Create_User = [userDefaultes stringForKey:@"myidt"];
+        
+        NSString *urlStr = [NSString stringWithFormat:@"%@/API/YWT_Registration.ashx",urlt];
+        NSString *strparameters=[NSString stringWithFormat:@"action=add&q0=%@&q1=%@",jsonString,Create_User];
+        NSLog(@"%@",urlStr);
+        NSLog(@"%@",strparameters);
+        AFHTTPRequestOperation *op=  [self POSTurlString:urlStr parameters:strparameters];
+        [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSMutableDictionary *json=responseObject;
+            
+            NSString *Status=[NSString stringWithFormat:@"%@",json[@"Status"]];
+            if ([Status isEqualToString:@"0"]){
+                NSString *ReturnMsg=[NSString stringWithFormat:@"%@",json[@"ReturnMsg"]];
+                [MBProgressHUD showError:ReturnMsg];
+                NSLog(@"%@",ReturnMsg);
+                return;
+            }
+            else
+            {
+                [MBProgressHUD showSuccess:@"打卡成功！"];
+                [self LoadDataList];
+                [self.tableview reloadData];
+            }
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            [MBProgressHUD showError:@"网络异常！"];
+            return ;
+        }];
+        
+        [[NSOperationQueue mainQueue] addOperation:op];
+    }else{
+    [MBProgressHUD showError:@"地址提交错误！"];
+    }
+   
 }
 
 
@@ -150,13 +156,16 @@
     NSString *Create_User = [userDefaultes stringForKey:@"myidt"];
     
     NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Registration.ashx?action=getlist&q0=%@&q1=%d",urlt,Create_User,indes];
-    NSLog(@"%@",urlStr2);
+    NSLog(@"000000000000-－－%@",urlStr2);
      self.tableview.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
     AFHTTPRequestOperation *op=[self GETurlString:urlStr2];
     
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *dict2=responseObject;
       NSMutableArray *dictarr=[[dict2 objectForKey:@"ResultObject"] mutableCopy];
+        NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
+        num=[dict3[@"Registration_ID"] intValue];
+
         NSLog(@"%@",dictarr);
         [self netwok:dictarr];
         [self.tableview reloadData];
@@ -188,21 +197,27 @@
 -(void)loadMoreData
 {
     
-    num=num+1;
     NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
     NSString *Create_User = [userDefaultes stringForKey:@"myidt"];
     
     NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Registration.ashx?action=getlist&q0=%@&q1=%d",urlt,Create_User,num];
+    
+     NSLog(@"000000000000-－－%@",urlStr2);
+    
     AFHTTPRequestOperation *op=[self GETurlString:urlStr2];
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSMutableDictionary *dict=responseObject;
         NSArray *dictarr=[dict objectForKey:@"ResultObject"];
         if(![dictarr isEqual:[NSNull null]])
         {
-            [_tgs addObjectsFromArray:dictarr];
-            [self.tableview reloadData];
-        }
-        [self.tableview.footer endRefreshing];
+            if (dictarr.count>0) {
+                NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
+                num=[dict3[@"Registration_ID"] intValue];
+                [_tgs addObjectsFromArray:dictarr];
+                [self.tableview reloadData];
+                
+            }
+        }        [self.tableview.footer endRefreshing];
         self.tableview.footer.autoChangeAlpha=YES;
         
         
