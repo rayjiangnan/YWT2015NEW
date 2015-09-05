@@ -196,6 +196,7 @@
 		7878B7101B59F59B004CB296 /* gongs.m in Sources */ = {isa = PBXBuildFile; fileRef = 7878B70F1B59F59B004CB296 /* gongs.m */; };
 		787A8B5F1B5E947900E2DBDB /* drViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 787A8B5E1B5E947900E2DBDB /* drViewController.m */; };
 		7886222F1B5D428F000D3C09 /* orderdetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 7886222E1B5D428F000D3C09 /* orderdetail.m */; };
+		78AC91961B9B317C00675176 /* UpFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AC91951B9B317C00675176 /* UpFile.m */; };
 		78B4536A1B63C848000C70A7 /* robarorderlist.m in Sources */ = {isa = PBXBuildFile; fileRef = 78B453691B63C848000C70A7 /* robarorderlist.m */; };
 		78B453731B647A6D000C70A7 /* mylist.m in Sources */ = {isa = PBXBuildFile; fileRef = 78B453721B647A6D000C70A7 /* mylist.m */; };
 		78B453771B647A97000C70A7 /* plist.m in Sources */ = {isa = PBXBuildFile; fileRef = 78B453761B647A97000C70A7 /* plist.m */; };
@@ -555,6 +556,8 @@
 		787A8B5E1B5E947900E2DBDB /* drViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = drViewController.m; sourceTree = "<group>"; };
 		7886222D1B5D428F000D3C09 /* orderdetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = orderdetail.h; sourceTree = "<group>"; };
 		7886222E1B5D428F000D3C09 /* orderdetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = orderdetail.m; sourceTree = "<group>"; };
+		78AC91941B9B317C00675176 /* UpFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpFile.h; sourceTree = "<group>"; };
+		78AC91951B9B317C00675176 /* UpFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpFile.m; sourceTree = "<group>"; };
 		78B453681B63C848000C70A7 /* robarorderlist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = robarorderlist.h; sourceTree = "<group>"; };
 		78B453691B63C848000C70A7 /* robarorderlist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = robarorderlist.m; sourceTree = "<group>"; };
 		78B453711B647A6D000C70A7 /* mylist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mylist.h; sourceTree = "<group>"; };
@@ -1057,6 +1060,7 @@
 		396B818E1B5280060017305D /* depand */ = {
 			isa = PBXGroup;
 			children = (
+				78AC91931B9B316800675176 /* UpFile */,
 				285525551B8E14E50091491A /* SHLineGraphView */,
 				7860A5271B63BFA60067253C /* MJRefresh */,
 				78402A591B5B90E100908FA9 /* tool */,
@@ -1293,6 +1297,15 @@
 				7860A5491B63BFA60067253C /* MJRefreshStateHeader.m */,
 			);
 			path = Header;
+			sourceTree = "<group>";
+		};
+		78AC91931B9B316800675176 /* UpFile */ = {
+			isa = PBXGroup;
+			children = (
+				78AC91941B9B317C00675176 /* UpFile.h */,
+				78AC91951B9B317C00675176 /* UpFile.m */,
+			);
+			name = UpFile;
 			sourceTree = "<group>";
 		};
 		78B4536B1B647A17000C70A7 /* mylist */ = {
@@ -1579,6 +1592,7 @@
 				7860A5561B63BFA60067253C /* MJRefreshComponent.m in Sources */,
 				2844F70A1B93336500ADE377 /* scus.m in Sources */,
 				39998D8B1B52B781001D4BCA /* pinyin.c in Sources */,
+				78AC91961B9B317C00675176 /* UpFile.m in Sources */,
 				289E4F251B7E3A3800C19D13 /* RegistrationComapnyView.m in Sources */,
 				289E4F151B7E2CEC00C19D13 /* SBJsonTokeniser.m in Sources */,
 				289E4EEB1B7E2A1600C19D13 /* WarehouseListController.m in Sources */,

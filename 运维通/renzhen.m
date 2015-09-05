@@ -7,28 +7,167 @@
 //
 
 #import "renzhen.h"
+#import"AFNetworking.h"
+#import"MBProgressHUD+MJ.h"
+#import "UpFile.h"
 
-@interface renzhen ()
-@property (weak, nonatomic) IBOutlet UITextField *name;
-@property (weak, nonatomic) IBOutlet UITextField *personpasspoart;
-@property (weak, nonatomic) IBOutlet UITextField *carno;
-@property (weak, nonatomic) IBOutlet UITextField *carlenth;
+@interface renzhen ()//<UIScrollViewDelegate>
+{
+    NSString *_accountType;
+    NSString *_name;
+    NSString *FileType;
+}
+@property (weak, nonatomic) IBOutlet UITextField *personName;
+@property (weak, nonatomic) IBOutlet UITextField *identityCard;
 
-@property (weak, nonatomic) IBOutlet UILabel *warningLab;
+- (IBAction)didClickidentityCardAction:(id)sender;
+@property (weak, nonatomic) IBOutlet UIButton *identityCardBut;
+@property (weak, nonatomic) IBOutlet UIImageView *identyCardImageV;
 
-@property (weak, nonatomic) IBOutlet UITextField *carstyle;
-@property (weak, nonatomic) IBOutlet UITextField *carweight;
+- (IBAction)sfzbmClick:(id)sender;
+@property (weak, nonatomic) IBOutlet UIButton *btnSfzbm;
+@property (weak, nonatomic) IBOutlet UIImageView *imgSfzbm;
 
-@property (weak, nonatomic) IBOutlet UIScrollView *scrollview;
+- (IBAction)byzClick:(id)sender;
+@property (weak, nonatomic) IBOutlet UIButton *btnByz;
+@property (weak, nonatomic) IBOutlet UIImageView *imgByz;
+
+@property (weak, nonatomic) IBOutlet UIButton *commitBut;
+- (IBAction)didClickCommitButAction:(id)sender;
+
 
 
 @end
 
 @implementation renzhen
 
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:YES];
+    [self network];
+    [self requestPic];
+    
+}
+-(void)requestPic
+{
+    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
+    NSString *myString = [userDefaultes stringForKey:@"myidt"];
+    NSString *urlStr = [NSString stringWithFormat:@"%@/API/YWT_User.ashx?action=getuserfile&q0=%@",urlt,myString];
+    
+     NSLog(@"%@",urlStr);
+    AFHTTPRequestOperation *op=[self GETurlString:urlStr];
+    [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"%@",responseObject[@"ResultObject"]);
+        
+        NSMutableArray *arrray=responseObject[@"ResultObject"];
+        if (![arrray isEqual:[NSNull null]]) {
+            for (NSDictionary *str in arrray) {
+                
+                NSString *img2=[NSString stringWithFormat:@"%@%@",urlt,str[@"FileName"]];
+                NSURL *imgurl2=[NSURL URLWithString:img2];
+                UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl2]];
+
+                if([str[@"FileType"] isEqualToString:@"p_sfzzm"]){
+                    self.identyCardImageV.image=imgstr;
+                }
+                else if ([FileType isEqualToString:@"p_sfzbm"]) {
+                    self.imgSfzbm.image=imgstr;
+                }
+                else if ([FileType isEqualToString:@"p_byz"]) {
+                    self.imgByz.image=imgstr;
+                }
+            }
+        }else{
+            return ;
+        }
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
+    [[NSOperationQueue mainQueue] addOperation:op];
+    
+    
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
-self.scrollview.contentSize=CGSizeMake(320, 1000);
+    
+    self.view.backgroundColor=[UIColor whiteColor];
+    //self.headYellowV.hidden=YES;
+    // Do any additional setup after loading the view.
+}
+-(void)network{
+    
+    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
+    NSString *myString = [userDefaultes stringForKey:@"myidt"];
+    NSString *urlStr = [NSString stringWithFormat:@"%@/API/YWT_User.ashx?action=getauserbyid&q0=%@",urlt,myString];
+    NSLog(@"%@",urlStr);
+    AFHTTPRequestOperation *op=[self GETurlString:urlStr];
+    
+    [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSMutableDictionary *dict=responseObject;
+        NSDictionary *dictarr2=[dict objectForKey:@"ResultObject"];
+        
+        _name=dictarr2[@"SupplierID_Name"];
+        _accountType=[NSString stringWithFormat:@"%@",dictarr2[@"UserType"]];
+        NSString *confirmState=[NSString   stringWithFormat:@"%@", dictarr2[@"Certify"]];
+        if (![dictarr2[@"RealName"] isEqual:[NSNull null]]) {
+            self.personName.text=[NSString stringWithFormat:@"%@", dictarr2[@"RealName"]];
+        }
+        
+        if (![dictarr2[@"CertifyIDCard"] isEqual:[NSNull null]]) {
+            self.identityCard.text=[NSString   stringWithFormat:@"%@", dictarr2[@"CertifyIDCard"]];
+        }
+        
+
+        
+        
+        if ([confirmState isEqual:[NSNull null]]||[confirmState isEqualToString:@"1"]||[confirmState isEqualToString:@"0"]) {
+            
+            
+        }
+        else if ([confirmState isEqualToString:@"2"])
+        {
+                //  self.backGroundScrollV.frame=CGRectMake(0, 200, self.view.frame.size.width, self.view.frame.size.height);
+                //            self.backGroundScrollV.translatesAutoresizingMaskIntoConstraints = NO;
+                //            
+                //            NSLayoutConstraint* topConstraint = [NSLayoutConstraint constraintWithItem:self.backGroundScrollV attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1.0f constant:100.0f];
+                //            topConstraint.active = YES;
+                //            self.headYellowV.hidden=NO;
+                //            self.secondWarnLab.text=@"审核状态:审核中请耐心等待~";
+            
+
+        }else if ([confirmState isEqualToString:@"10"]){
+            //        self.backGroundScrollV.translatesAutoresizingMaskIntoConstraints = NO;
+
+            //            NSLayoutConstraint* topConstraint = [NSLayoutConstraint constraintWithItem:self.backGroundScrollV attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1.0f constant:100.0f];
+            //            topConstraint.active = YES;
+            //            self.headYellowV.hidden=NO;
+            //            self.secondWarnLab.text=@"认证失败证件照模糊,请重新上传~";
+        }
+        
+        
+        if ([confirmState isEqualToString:@"2"] ||[confirmState isEqualToString:@"99"])
+        {
+            self.identityCardBut.hidden=YES;
+            self.commitBut.hidden=YES;
+            self.btnByz.hidden=YES;
+            self.btnSfzbm.hidden=YES;
+            
+            
+            self.personName.userInteractionEnabled=NO;
+            self.identityCard.userInteractionEnabled=NO;
+        }
+        
+        
+        NSLog(@"公司的名称是 ======%@",_name);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        
+    }];
+    [[NSOperationQueue mainQueue] addOperation:op];
+    
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -36,14 +175,261 @@ self.scrollview.contentSize=CGSizeMake(320, 1000);
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+
+- (IBAction)sfzbmClick:(id)sender {
+    FileType=@"p_sfzbm";
+    [self SendImage];
 }
-*/
+
+- (IBAction)byzClick:(id)sender {
+    FileType=@"p_byz";
+    [self SendImage];
+}
+
+- (IBAction)didClickidentityCardAction:(id)sender {
+    FileType=@"p_sfzzm";
+    [self SendImage];
+}
+-(void) ShowImg:(NSString *) imgpath
+{
+    NSURL *imgurl=[NSURL URLWithString:imgpath];
+    UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
+    if ([FileType isEqualToString:@"p_sfzzm"]) {
+        self.identyCardImageV.image=imgstr;
+    }
+    else  if ([FileType isEqualToString:@"p_sfzbm"]) {
+        self.imgSfzbm.image=imgstr;
+    }
+    else  if ([FileType isEqualToString:@"p_byz"]) {
+        self.imgByz.image=imgstr;
+    }
+}
+
+- (IBAction)didClickCommitButAction:(id)sender {
+    
+    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
+    NSString *myStr = [userDefaultes stringForKey:@"myidt"];
+    
+    NSString *strurl=[NSString stringWithFormat:@"%@/API/YWT_User.ashx",urlt];
+    NSString *str = [NSString stringWithFormat:@"action=userfilecertify&q0=%@&q1=%@&q2=%@&q3=%@&q4=%@",myStr,@"P",self.personName.text, self.identityCard.text,@""];
+    NSLog(@"%@ %@",strurl,str);
+    AFHTTPRequestOperation *op=[self POSTurlString:strurl parameters:str];
+    [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [MBProgressHUD showSuccess:@"提交成功"];
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [MBProgressHUD showError:@"数据请求出错"];
+        
+    }];
+    
+    [[NSOperationQueue mainQueue] addOperation:op];
+}
+
+
+
+
+- (void) SendImage
+{
+    UIActionSheet *sheet;
+    // 判断是否支持相机
+//    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+//    {
+        sheet=[[UIActionSheet alloc] initWithTitle:@"选择"
+                                          delegate:self
+                                 cancelButtonTitle:@"取消"
+                            destructiveButtonTitle:nil
+                                 otherButtonTitles:@"拍照", @"从相册中选取", nil];
+        
+        
+//    }
+//    else
+//    {
+//        sheet = [[UIActionSheet alloc] initWithTitle:@"选择"
+//                                            delegate:self
+//                                   cancelButtonTitle:@"取消"
+//                              destructiveButtonTitle:nil
+//                                   otherButtonTitles:@"从相册选择", nil];
+//        
+//    }
+    sheet.tag = 255;
+    [sheet showInView:self.view];
+}
+
+#pragma mark UIActionSheetDelegate
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 0) {
+        // 拍照
+        if ([self isCameraAvailable] && [self doesCameraSupportTakingPhotos]) {
+            UIImagePickerController *controller = [[UIImagePickerController alloc] init];
+            controller.sourceType = UIImagePickerControllerSourceTypeCamera;
+            if ([self isFrontCameraAvailable]) {
+                controller.cameraDevice = UIImagePickerControllerCameraDeviceFront;
+            }
+            NSMutableArray *mediaTypes = [[NSMutableArray alloc] init];
+            [mediaTypes addObject:(__bridge NSString *)kUTTypeImage];
+            controller.mediaTypes = mediaTypes;
+            controller.delegate = self;
+            [self presentViewController:controller
+                               animated:YES
+                             completion:^(void){
+                                 NSLog(@"Picker View Controller is presented");
+                             }];
+        }
+        
+    } else if (buttonIndex == 1) {
+        // 从相册中选取
+        if ([self isPhotoLibraryAvailable]) {
+            UIImagePickerController *controller = [[UIImagePickerController alloc] init];
+            controller.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+            NSMutableArray *mediaTypes = [[NSMutableArray alloc] init];
+            [mediaTypes addObject:(__bridge NSString *)kUTTypeImage];
+            controller.mediaTypes = mediaTypes;
+            controller.delegate = self;
+            [self presentViewController:controller
+                               animated:YES
+                             completion:^(void){
+                                 NSLog(@"Picker View Controller is presented");
+                             }];
+        }
+    }
+}
+
+#pragma mark camera utility
+- (BOOL) isCameraAvailable{
+    return [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera];
+}
+
+- (BOOL) isRearCameraAvailable{
+    return [UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceRear];
+}
+
+- (BOOL) isFrontCameraAvailable {
+    return [UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceFront];
+}
+
+- (BOOL) doesCameraSupportTakingPhotos {
+    return [self cameraSupportsMedia:(__bridge NSString *)kUTTypeImage sourceType:UIImagePickerControllerSourceTypeCamera];
+}
+
+- (BOOL) isPhotoLibraryAvailable{
+    return [UIImagePickerController isSourceTypeAvailable:
+            UIImagePickerControllerSourceTypePhotoLibrary];
+}
+- (BOOL) canUserPickVideosFromPhotoLibrary{
+    return [self
+            cameraSupportsMedia:(__bridge NSString *)kUTTypeMovie sourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+}
+- (BOOL) canUserPickPhotosFromPhotoLibrary{
+    return [self
+            cameraSupportsMedia:(__bridge NSString *)kUTTypeImage sourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+}
+
+- (BOOL) cameraSupportsMedia:(NSString *)paramMediaType sourceType:(UIImagePickerControllerSourceType)paramSourceType{
+    __block BOOL result = NO;
+    if ([paramMediaType length] == 0) {
+        return NO;
+    }
+    NSArray *availableMediaTypes = [UIImagePickerController availableMediaTypesForSourceType:paramSourceType];
+    [availableMediaTypes enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
+        NSString *mediaType = (NSString *)obj;
+        if ([mediaType isEqualToString:paramMediaType]){
+            result = YES;
+            *stop= YES;
+        }
+    }];
+    return result;
+}
+
+
+#pragma mark - UIImagePickerControllerDelegate
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    [picker dismissViewControllerAnimated:YES completion:^() {
+        UIImage *portraitImg = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+        UpFile *_upfile=[[UpFile alloc]init];
+        portraitImg=[_upfile fixOrientation:portraitImg];
+        //_receiveImage=portraitImg;
+        [self UpdateFileImage:portraitImg];
+    }];
+}
+
+
+- (void) UpdateFileImage:(UIImage *)currentImage
+{
+    NSData *data = UIImageJPEGRepresentation(currentImage, 0.5);
+    
+    NSString *hyphens = @"--";
+    NSString *boundary = @"*****";
+    NSString *end = @"\r\n";
+    NSMutableData *myRequestData1=[NSMutableData data];
+    
+    [myRequestData1 appendData:[hyphens dataUsingEncoding:NSUTF8StringEncoding]];
+    [myRequestData1 appendData:[boundary dataUsingEncoding:NSUTF8StringEncoding]];
+    [myRequestData1 appendData:[end dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    NSMutableString *fileTitle=[[NSMutableString alloc]init];
+    
+    
+    [fileTitle appendFormat:@"Content-Disposition:form-data;name=\"%@\";filename=\"%@\"",[NSString stringWithFormat:@"file%d",1],[NSString stringWithFormat:@"image%d.png",1]];
+    
+    [fileTitle appendString:end];
+    
+    [fileTitle appendString:[NSString stringWithFormat:@"Content-Type:application/octet-stream%@",end]];
+    [fileTitle appendString:end];
+    
+    [myRequestData1 appendData:[fileTitle dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    [myRequestData1 appendData:data];
+    
+    [myRequestData1 appendData:[end dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    [myRequestData1 appendData:[hyphens dataUsingEncoding:NSUTF8StringEncoding]];
+    [myRequestData1 appendData:[boundary dataUsingEncoding:NSUTF8StringEncoding]];
+    [myRequestData1 appendData:[hyphens dataUsingEncoding:NSUTF8StringEncoding]];
+    [myRequestData1 appendData:[end dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
+    NSString *userid = [userDefaultes stringForKey:@"myidt"];
+    //NSString *url=[NSString stringWithFormat:@"%@/API/YWT_OrderFile.ashx?action=90",strUploadUrl];
+    NSString *url=[NSString stringWithFormat:@"%@/API/YWT_UPUserFile.ashx?action=%@&q0=%@&q1=%@&from=ios",urlt,FileType,userid,userid];
+
+    
+    
+    // NSLog(@"%@",url);
+    NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]
+                                                           cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
+                                                       timeoutInterval:5];
+    
+    //设置HTTPHeader中Content-Type的值
+    NSString *content=[[NSString alloc]initWithFormat:@"multipart/form-data; boundary=%@",boundary];
+    //设置HTTPHeader
+    [request setValue:content forHTTPHeaderField:@"Content-Type"];
+
+    //设置http body
+    [request setHTTPBody:myRequestData1];
+    //http method
+    [request setHTTPMethod:@"POST"];
+    
+    NSHTTPURLResponse *urlResponese = nil;
+    NSError *error = [[NSError alloc]init];
+    
+    NSData* resultData = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponese error:&error];
+    
+    
+    NSDictionary *dict=[NSJSONSerialization JSONObjectWithData:resultData options:NSJSONReadingMutableLeaves error:nil];
+    
+    NSString *Status=[NSString stringWithFormat:@"%@",dict[@"Status"]];
+    if ([Status isEqualToString:@"0"]){
+        NSString *ReturnMsg=[NSString stringWithFormat:@"%@",dict[@"ReturnMsg"]];
+        [MBProgressHUD showError:ReturnMsg];
+        NSLog(@"%@",ReturnMsg);
+    }
+    else
+    {
+        NSString *img=[NSString stringWithFormat:@"%@/%@",urlt,dict[@"ReturnMsg"]];
+        [self ShowImg:img];
+    }
+}
+
 
 @end
