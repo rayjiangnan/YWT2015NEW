@@ -42,16 +42,16 @@
 {
     [super viewWillAppear:YES];
     self.navigationController.navigationBarHidden=NO;
-    
+   
 }
 
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.imageArray=[NSMutableArray arrayWithCapacity:1];
+ self.imageArray=[NSMutableArray arrayWithCapacity:1];
     
-       [self network];
-    
+    [self network];
+    [self btn1:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -70,6 +70,9 @@
 
 
 -(NSArray *)network{
+    @try
+    {
+        
     NSString *orderid ;
 
     NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
@@ -173,6 +176,14 @@
     {
         [MBProgressHUD showError:@"网络请求出错"];
         return nil;
+    }
+        
+    }@catch (NSException * e) {
+        
+        NSLog(@"Exception: %@", e);
+        
+        
+        
     }
 }
 
@@ -284,6 +295,7 @@
     self.viewhi.hidden=YES;
     self.navigationController.navigationBar.hidden=NO;
     self.tabBarController.tabBar.hidden=NO;
+ 
 }
 
 

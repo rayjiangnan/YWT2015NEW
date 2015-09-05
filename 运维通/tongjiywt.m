@@ -432,7 +432,7 @@
     
     NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Order.ashx?action=monthviewaadmin&q0=%@&q1=%@",urlt,myString,idts];
     
-    
+    NSLog(@"%@---",urlStr2);
     self.tableView.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         
         NSString *str = @"type=focus-c";

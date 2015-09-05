@@ -17,6 +17,10 @@
 
 
 @interface RegistrationComapnyView ()<UITableViewDataSource,UITableViewDelegate>
+{
+    int num;
+    int sem;
+}
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segDay;
 @property (weak, nonatomic) IBOutlet UITextField *txtUserID;
@@ -41,8 +45,9 @@
     self.tableview.delegate = self;
     self.tableview.dataSource = self;
 
-    
+   
     [self LoadDataList];
+     [self repeatnetwork];
     [self.tableview reloadData];
     self.tableview.rowHeight=75;
 }
@@ -83,28 +88,26 @@
     q2	查询类型： day 当日 7day 7天内 pmonth 上月 cmonth 本月 3month
     q3	最小ID，第一次-1
      */
-    NSInteger indexseg= self.segDay.selectedSegmentIndex;
+    sem= self.segDay.selectedSegmentIndex;
     NSString *searchtype=@"day";
-    if (indexseg==0) {
+    if (sem==0) {
         searchtype=@"day";
     }
-    else if(indexseg==1) {
+    else if(sem==1) {
         searchtype=@"7day";
     }
-    else if(indexseg==2) {
+    else if(sem==2) {
         searchtype=@"cmonth";
     }
-    else if(indexseg==3) {
+    else if(sem==3) {
         searchtype=@"pmonth";
     }
-    else if(indexseg==4) {
+    else if(sem==4) {
         searchtype=@"3month";
     }
     
     NSString *searchUserID=[userDefaultes stringForKey:@"personID"];
 
-
-    NSLog(@"%d",indexseg);
     NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Registration.ashx?action=getcompanylist&q0=%@&q1=%@&q2=%@&q3=%d"
                          ,urlt,Create_User,searchUserID,searchtype,indes];
     
@@ -112,8 +115,10 @@
     AFHTTPRequestOperation *op=[self GETurlString:urlStr2];
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *dict2=responseObject;
-        NSMutableArray *dictarr=dict2[@"ResultObject"];
-        NSLog(@"%@",dictarr);
+         NSMutableArray *dictarr=[[dict2 objectForKey:@"ResultObject"] mutableCopy];
+        NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
+        num=[dict3[@"Registration_ID"] intValue];
+        
         [self netwok:dictarr];
         [self.tableview reloadData];
         NSLog(@"加载数据完成。");
@@ -152,6 +157,83 @@
     }
     return cell;
 }
+
+
+-(NSMutableArray *)repeatnetwork{
+    
+    
+    self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+    
+    return _tgs;
+    
+    
+}
+
+
+-(void)loadMoreData
+{
+    
+    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
+    NSString *Create_User = [userDefaultes stringForKey:@"myidt"];
+    /*
+     YWT_Registration.ashx?action=getcompanylist&q0=&q1=&q2=&q3=	查询员工打卡记录
+     q0	操作人ID
+     q1	指定运维人员ID
+     q2	查询类型： day 当日 7day 7天内 pmonth 上月 cmonth 本月 3month
+     q3	最小ID，第一次-1
+     */
+    sem= self.segDay.selectedSegmentIndex;
+    NSString *searchtype=@"day";
+    if (sem==0) {
+        searchtype=@"day";
+    }
+    else if(sem==1) {
+        searchtype=@"7day";
+    }
+    else if(sem==2) {
+        searchtype=@"cmonth";
+    }
+    else if(sem==3) {
+        searchtype=@"pmonth";
+    }
+    else if(sem==4) {
+        searchtype=@"3month";
+    }
+    
+    NSString *searchUserID=[userDefaultes stringForKey:@"personID"];
+    
+    NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Registration.ashx?action=getcompanylist&q0=%@&q1=%@&q2=%@&q3=%d"
+                         ,urlt,Create_User,searchUserID,searchtype,num];
+    
+    NSLog(@"000000000000-－－%@",urlStr2);
+    
+    AFHTTPRequestOperation *op=[self GETurlString:urlStr2];
+    [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSMutableDictionary *dict=responseObject;
+        NSArray *dictarr=[dict objectForKey:@"ResultObject"];
+        if(![dictarr isEqual:[NSNull null]])
+        {
+            if (dictarr.count>0) {
+                NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
+                num=[dict3[@"Registration_ID"] intValue];
+                [_tgs addObjectsFromArray:dictarr];
+                [self.tableview reloadData];
+                
+            }
+        }        [self.tableview.footer endRefreshing];
+        self.tableview.footer.autoChangeAlpha=YES;
+        
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [MBProgressHUD showError:@"网络请求出错"];
+    }];
+    [[NSOperationQueue mainQueue] addOperation:op];
+    
+    
+}
+
+
+
 - (IBAction)btnSearchClick:(id)sender {
     [self LoadDataList];
     [self.tableview reloadData];

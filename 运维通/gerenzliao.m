@@ -8,8 +8,13 @@
 
 #import "gerenzliao.h"
 #import "MBProgressHUD+MJ.h"
+#import <QuartzCore/QuartzCore.h>
 
-@interface gerenzliao ()
+
+
+@interface gerenzliao ()<UITextFieldDelegate>{
+    int sexnum;
+}
 @property (weak, nonatomic) IBOutlet UILabel *sty;
 @property (weak, nonatomic) IBOutlet UITextField *name;
 @property (weak, nonatomic) IBOutlet UITextField *tel;
@@ -28,6 +33,13 @@
 @property (weak, nonatomic) IBOutlet UITextView *jineng;
 @property (weak, nonatomic) IBOutlet UITextView *zc;
 
+@property (weak, nonatomic) IBOutlet UIImageView *men;
+
+@property (weak, nonatomic) IBOutlet UIImageView *wem;
+
+@property(nonatomic,copy)NSString *time1;
+@property(nonatomic,copy)NSString *time2;
+
 @end
 
 @implementation gerenzliao
@@ -36,9 +48,25 @@
     [super viewDidLoad];
     [self network];
     self.scrollView.contentSize=CGSizeMake(320,830);
+    self.jineng.layer.borderColor = UIColor.grayColor.CGColor;
+     self.jineng.layer.borderWidth = 0.5;
+     self.zc.layer.borderColor = UIColor.grayColor.CGColor;
+    self.zc.layer.borderWidth = 0.5;
+    
 
 }
+- (IBAction)nanbtn:(id)sender {
+    sexnum=1;
+    self.men.image=[UIImage imageNamed:@"ch2"];
+      self.wem.image=[UIImage imageNamed:@"ch1"];
+    
+}
 
+- (IBAction)nvbtn:(id)sender {
+     sexnum=2;
+    self.men.image=[UIImage imageNamed:@"ch1"];
+    self.wem.image=[UIImage imageNamed:@"ch2"];
+}
 
 
 -(void)network{
@@ -74,10 +102,11 @@
             self.sty.text=@"调度";}
         self.tel.text=dictarr[@"UserName"];
         self.name.text=dictarr[@"RealName"];
-         self.email.text=dictarr[@"Email"];
+        
 
         if (![[dictarr2 objectForKey:@"UserInfo"] isEqual:[NSNull null]]) {
             NSDictionary *dictarr3=[dictarr2 objectForKey:@"UserInfo"];
+             self.email.text=dictarr3[@"Email"];
             self.city.text=dictarr3[@"Location_Province"];
             self.city.text=dictarr3[@"Location_City"];
             self.qu.text=dictarr3[@"Location_County"];
@@ -87,9 +116,16 @@
             self.zhuanye.text=dictarr3[@"SpecialtyName"];
             
             self.jineng.text=dictarr3[@"SkillDescription"];
-            self.zhuanye.text=dictarr3[@"Specialty"];
+            self.zc.text=dictarr3[@"Specialty"];
             
-            
+            NSString *sex=dictarr3[@"User_Sex"];
+            if ([sex isEqualToString:@"男"]) {
+                self.men.image=[UIImage imageNamed:@"ch2"];
+                sexnum=1;
+            }else  if ([sex isEqualToString:@"女"]) {
+                self.wem.image=[UIImage imageNamed:@"ch2"];
+                sexnum=2;
+            }
             
             NSString *dt3=dictarr3[@"Birthday"];
             
@@ -172,7 +208,14 @@
         NSString *timet1= [NSString stringWithFormat:@"\\/Date(%@)\\/",timeSp];
         NSString *timet2= [NSString stringWithFormat:@"\\/Date(%@)\\/",timeSp];
         NSString *te=@"10";
-        [self postJSON:self.sex.text:self.sheng.text:self.city.text:self.qu.text:self.detail.text:timet1:self.email.text:self.xueli.text:self.xuexiao.text:self.zhuanye.text:timet2:self.jineng.text:self.zc.text];
+        NSString *sex;
+        if (sexnum==1) {
+            sex=@"男";
+        }else if(sexnum==2){
+        sex=@"女";
+        }
+        
+        [self postJSON:sex:self.sheng.text:self.city.text:self.qu.text:self.detail.text:timet1:self.email.text:self.xueli.text:self.xuexiao.text:self.zhuanye.text:timet2:self.jineng.text:self.zc.text];
         [MBProgressHUD showSuccess:@"修改成功"];
         [[self navigationController] popViewControllerAnimated:YES];
         
@@ -181,7 +224,14 @@
         NSString *timet1= [NSString stringWithFormat:@"\\/Date(%@)\\/",timeSp];
         NSString *timet2= [NSString stringWithFormat:@"\\/Date(%@)\\/",timeSp];
         NSString *te=@"20";
-          [self postJSON:self.sex.text:self.sheng.text:self.city.text:self.qu.text:self.detail.text:timet1:self.email.text:self.xueli.text:self.xuexiao.text:self.zhuanye.text:timet2:self.jineng.text:self.zc.text];
+        NSString *sex;
+        if (sexnum==1) {
+           sex=@"男";
+        }else if(sexnum==2){
+            sex=@"女";
+        }
+        
+          [self postJSON:sex:self.sheng.text:self.city.text:self.qu.text:self.detail.text:timet1:self.email.text:self.xueli.text:self.xuexiao.text:self.zhuanye.text:timet2:self.jineng.text:self.zc.text];
         [MBProgressHUD showSuccess:@"修改成功"];
         [[self navigationController] popViewControllerAnimated:YES];
         
@@ -190,7 +240,14 @@
         NSString *timet1= [NSString stringWithFormat:@"\\/Date(%@)\\/",timeSp];
         NSString *timet2= [NSString stringWithFormat:@"\\/Date(%@)\\/",timeSp];
         NSString *te=@"30";
-            [self postJSON:self.sex.text:self.sheng.text:self.city.text:self.qu.text:self.detail.text:timet1:self.email.text:self.xueli.text:self.xuexiao.text:self.zhuanye.text:timet2:self.jineng.text:self.zc.text];
+        NSString *sex;
+        if (sexnum==1) {
+           sex=@"男";
+        }else if(sexnum==2){
+            sex=@"女";
+        }
+        
+            [self postJSON:sex:self.sheng.text:self.city.text:self.qu.text:self.detail.text:timet1:self.email.text:self.xueli.text:self.xuexiao.text:self.zhuanye.text:timet2:self.jineng.text:self.zc.text];
         [MBProgressHUD showSuccess:@"修改成功"];
         [[self navigationController] popViewControllerAnimated:YES];
         
@@ -199,4 +256,148 @@
 }
 
 
+
+#pragma mark 设置键盘
+- (IBAction)ij:(id)sender {
+    NSDate *newDate =[NSDate date];
+    NSDateFormatter *fmt2 = [[NSDateFormatter alloc] init];
+    fmt2.dateFormat = @"YYYY-MM-dd HH:mm:ss";
+    NSString* timeStr2 =[fmt2 stringFromDate:newDate];
+    NSString *timeSp = [NSString stringWithFormat:@"%ld", (long)[newDate timeIntervalSince1970]];
+    _time1=timeSp;
+    
+    self.time.text=timeStr2;
+    
+}
+- (IBAction)ij2:(id)sender {
+    NSDate *newDate =[NSDate date];
+    NSDateFormatter *fmt2 = [[NSDateFormatter alloc] init];
+    fmt2.dateFormat = @"YYYY-MM-dd HH:mm:sss";
+    NSString* timeStr2 =[fmt2 stringFromDate:newDate];
+    NSString *timeSp = [NSString stringWithFormat:@"%ld", (long)[newDate timeIntervalSince1970]];
+    _time2=timeSp;
+    
+    self.btime.text=timeStr2;
+    
+}
+
+- (void)settingKeyboard
+{
+    // 1.生日
+    UIDatePicker *datePicker4 = [[UIDatePicker alloc] init];
+    datePicker4.datePickerMode = UIDatePickerModeDateAndTime; // 只显示日期5
+    datePicker4.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"Chinese"];
+    
+    [datePicker4 addTarget:self action:@selector(birthdayChange:) forControlEvents:UIControlEventValueChanged];
+    
+    self.time.inputView = datePicker4; // 设置键盘为日期选择控件
+    
+    UIToolbar *tool=[[UIToolbar alloc]init];
+    tool.frame=CGRectMake(0, 0, 320, 44);
+    tool.barTintColor=[UIColor blackColor];
+    
+    
+    UIBarButtonItem *item1=[[UIBarButtonItem alloc]initWithTitle:@"取消" style:UIBarButtonItemStylePlain target:self action:@selector(quxiao)];
+    item1.tintColor=[UIColor whiteColor];
+    UIBarButtonItem *item2=[[UIBarButtonItem alloc]initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(tapOnce)];
+    item2.tintColor=[UIColor whiteColor];
+    tool.items=@[item1,item2];
+    _time.inputAccessoryView=tool;
+    
+    
+    _time.delegate = self;
+    
+}
+-(void)quxiao{
+    
+   self.time.text=nil;
+    [self tapOnce];
+}
+
+-(void)quxiao2{
+    
+  self.btime.text=nil;
+    [self tapOnce];
+}
+
+
+- (NSString *)birthdayChange:(UIDatePicker *)picker
+{
+    
+    
+    
+    
+    NSDateFormatter *fmt = [[NSDateFormatter alloc] init];
+    fmt.dateFormat = @"YYYY-MM-dd HH:mm:sss";
+    NSString* timeStr =[fmt stringFromDate:picker.date];
+    self.btime.text=timeStr;
+    
+    NSString *timeSp = [NSString stringWithFormat:@"%ld", (long)[picker.date timeIntervalSince1970]];
+    _time1=timeSp;
+    
+    return _time1;
+}
+
+- (void)settingKeyboard2
+{
+    // 1.生日
+    
+    UIDatePicker *datePicker5 = [[UIDatePicker alloc] init];
+    datePicker5.datePickerMode = UIDatePickerModeDateAndTime; // 只显示日期5
+    datePicker5.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"Chinese"];
+    [datePicker5 addTarget:self action:@selector(birthdayChange2:) forControlEvents:UIControlEventValueChanged];
+    
+    self.btime.inputView = datePicker5; // 设置键盘为日期选择控件
+    
+    
+    UIToolbar *tool=[[UIToolbar alloc]init];
+    tool.frame=CGRectMake(0, 0, 320, 44);
+    tool.barTintColor=[UIColor blackColor];
+    
+    
+    UIBarButtonItem *item1=[[UIBarButtonItem alloc]initWithTitle:@"取消" style:UIBarButtonItemStylePlain target:self action:@selector(quxiao2)];
+    item1.tintColor=[UIColor whiteColor];
+    UIBarButtonItem *item2=[[UIBarButtonItem alloc]initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(tapOnce)];
+    item2.tintColor=[UIColor whiteColor];
+    tool.items=@[item1,item2];
+   _btime.inputAccessoryView=tool;
+    
+    
+    _btime.delegate = self;
+}
+- (NSString *)birthdayChange2:(UIDatePicker *)picker
+{
+    
+    NSDate *newDate =[NSDate date];
+    NSDateFormatter *fmt2 = [[NSDateFormatter alloc] init];
+    fmt2.dateFormat = @"YYYY-MM-dd HH:mm:sss";
+    NSString* timeStr2 =[fmt2 stringFromDate:newDate];
+    self.btime.text=timeStr2;
+    
+    NSDateFormatter *fmt = [[NSDateFormatter alloc] init];
+    fmt.dateFormat = @"YYYY-MM-dd HH:mm:sss";
+    NSString* timeStr =[fmt stringFromDate:picker.date];
+   self.btime.text=timeStr;
+    
+    NSString *timeSp = [NSString stringWithFormat:@"%ld", (long)[picker.date timeIntervalSince1970]];
+    _time2=timeSp;
+    
+    return _time2;
+}
+
+
+-(void)tapBackground
+{
+    UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnce)];//定义一个手势
+    [tap setNumberOfTouchesRequired:1];//触击次数这里设为1
+    [self.view addGestureRecognizer:tap];//添加手势到View中
+}
+
+
+-(void)tapOnce
+{
+    [self.time resignFirstResponder];
+    [self.btime resignFirstResponder];
+
+}
 @end
