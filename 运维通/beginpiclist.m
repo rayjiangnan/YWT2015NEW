@@ -84,31 +84,34 @@
     
     cell.title.text=[NSString stringWithFormat:@"%@",dict2[@"OrderTitle"]];
     NSMutableArray *array=[dict2 objectForKey:@"Files"];
-   
+    
     if (array.count>0) {
         NSString *img=[NSString stringWithFormat:@"%@/%@",urlt,[array objectAtIndex:0]];
         NSURL *imgurl=[NSURL URLWithString:img];
         UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
         cell.x1.image=imgstr;
-         NSLog(@"%@",img);
+         NSLog(@"第一张：%@",img);
     }
     if (array.count>1) {
         NSString *img=[NSString stringWithFormat:@"%@/%@",urlt,[array objectAtIndex:1]];
         NSURL *imgurl=[NSURL URLWithString:img];
         UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
         cell.x2.image=imgstr;
+          NSLog(@"第2张：%@",img);
     }
     if (array.count>2) {
         NSString *img=[NSString stringWithFormat:@"%@/%@",urlt,[array objectAtIndex:2]];
         NSURL *imgurl=[NSURL URLWithString:img];
         UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
        cell.x3.image=imgstr;
+          NSLog(@"第3张：%@",img);
     }
     if (array.count>3) {
         NSString *img=[NSString stringWithFormat:@"%@/%@",urlt,[array objectAtIndex:3]];
         NSURL *imgurl=[NSURL URLWithString:img];
         UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
       cell.x4.image=imgstr;
+          NSLog(@"第4张：%@",img);
     }
     
     return cell;
