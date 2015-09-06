@@ -96,7 +96,7 @@
                                        kXAxisLabelFontKey : [UIFont fontWithName:@"TrebuchetMS" size:13],
                                        kYAxisLabelColorKey : [UIColor colorWithRed:0.48 green:0.48 blue:0.49 alpha:0],
                                        kYAxisLabelFontKey : [UIFont fontWithName:@"TrebuchetMS" size:10],
-                                       kYAxisLabelSideMarginsKey : @10,
+                                       kYAxisLabelSideMarginsKey : @15,
                                        kPlotBackgroundLineColorKye : [UIColor colorWithRed:1 green:1 blue:1 alpha:0.4],
                                        };
     _lineGraph.themeAttributes = _themeAttributes;
@@ -126,7 +126,7 @@
     
   
     
-    int intString =ceilf([max intValue]+50);
+    int intString =ceilf([max intValue]+[max intValue]*0.1);
  
     self.top.text=[NSString stringWithFormat:@"%d",intString];
      self.mibel.text=[NSString stringWithFormat:@"%d",intString/2];
@@ -231,7 +231,7 @@
                                        kXAxisLabelFontKey : [UIFont fontWithName:@"TrebuchetMS" size:13],
                                        kYAxisLabelColorKey : [UIColor colorWithRed:0.48 green:0.48 blue:0.49 alpha:0],
                                        kYAxisLabelFontKey : [UIFont fontWithName:@"TrebuchetMS" size:10],
-                                       kYAxisLabelSideMarginsKey : @10,
+                                       kYAxisLabelSideMarginsKey : @19,
                                        kPlotBackgroundLineColorKye : [UIColor colorWithRed:1 green:1 blue:1 alpha:0.4],
                                        };
     _lineGraph.themeAttributes = _themeAttributes;
@@ -256,12 +256,12 @@
     
     NSArray *sortArray = [[NSArray alloc] initWithObjects:_mi1,_mi2,_mi3,_mi4,nil];
     
-    NSArray *array = [sortArray sortedArrayUsingComparator:cmptr];
-    NSString *max = [array lastObject];
+    //NSArray *array = [sortArray sortedArrayUsingComparator:cmptr];
+    NSString *max =@"5";//[array lastObject];
     
     
     
-    int intString =ceilf([max intValue]+100);
+    int intString =ceilf([max intValue]);
     
     self.top2.text=[NSString stringWithFormat:@"%d",intString];
     self.mibel2.text=[NSString stringWithFormat:@"%d",intString/2];
@@ -403,7 +403,7 @@
                     
                     NSDictionary *dict1=[month objectAtIndex:0];
                     _monthnum1=[NSString stringWithFormat:@"%@月份",dict1[@"IMonth"]];
-                    _mi1=[NSString stringWithFormat:@"%@",dict1[@"Mileage"]];
+                    _mi1=[NSString stringWithFormat:@"%@",dict1[@"OrderFinishNum"]];
                     _mi1s=[NSString stringWithFormat:@"%@",dict1[@"ScoreAvg"]];
                     
                 }else{
@@ -414,8 +414,8 @@
                 if (month.count>1) {
                     NSDictionary *dict2=[month objectAtIndex:1];
                     _monthnum2=[NSString stringWithFormat:@"%@月份",dict2[@"IMonth"]];
-                    _mi2=[NSString stringWithFormat:@"%@",dict2[@"Mileage"]];
-                     _mi2s=[NSString stringWithFormat:@"%@",dict1[@"ScoreAvg"]];
+                    _mi2=[NSString stringWithFormat:@"%@",dict2[@"OrderFinishNum"]];
+                     _mi2s=[NSString stringWithFormat:@"%@",dict2[@"ScoreAvg"]];
                 }else{
                     _monthnum2=@"";
                     _mi2=@"0";
@@ -424,8 +424,8 @@
                 if (month.count>2) {
                     NSDictionary *dict3=[month objectAtIndex:2];
                     _monthnum3=[NSString stringWithFormat:@"%@月份",dict3[@"IMonth"]];
-                    _mi3=[NSString stringWithFormat:@"%@",dict3[@"Mileage"]];
-                     _mi3s=[NSString stringWithFormat:@"%@",dict1[@"ScoreAvg"]];
+                    _mi3=[NSString stringWithFormat:@"%@",dict3[@"OrderFinishNum"]];
+                     _mi3s=[NSString stringWithFormat:@"%@",dict3[@"ScoreAvg"]];
                 }else{
                     _monthnum3=@"";
                     _mi3=@"0";
@@ -434,8 +434,8 @@
                 if (month.count>3) {
                     NSDictionary *dict4=[month objectAtIndex:3];
                     _monthnum4=[NSString stringWithFormat:@"%@月份",dict4[@"IMonth"]];
-                    _mi4=[NSString stringWithFormat:@"%@",dict4[@"Mileage"]];
-                     _mi4s=[NSString stringWithFormat:@"%@",dict1[@"ScoreAvg"]];
+                    _mi4=[NSString stringWithFormat:@"%@",dict4[@"OrderFinishNum"]];
+                     _mi4s=[NSString stringWithFormat:@"%@",dict4[@"ScoreAvg"]];
                 }else{
                     _monthnum4=@"";
                     _mi4=@"0";
