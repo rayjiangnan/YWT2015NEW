@@ -122,7 +122,7 @@
         UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
         cell.x4.image=imgstr;
     }
-    
+      cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 

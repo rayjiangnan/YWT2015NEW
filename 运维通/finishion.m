@@ -278,50 +278,55 @@
     NSString * result= [[NSString alloc] initWithData:resultData encoding:NSUTF8StringEncoding];
     
     //    NSString* result= [[NSString alloc] initWithData:resultData encoding:NSUTF8StringEncoding];
-    
-    NSData *data5 = [result dataUsingEncoding:NSUTF8StringEncoding];
-    NSDictionary *dict=[NSJSONSerialization JSONObjectWithData:resultData options:NSJSONReadingMutableLeaves error:nil];
-    
-    NSLog(@"结果：%@",dict[@"ReturnMsg"]);
-    NSLog(@"结果：%@",dict[@"ReturnMsg"]);
-    NSLog(@"结果：%@",dict[@"ReturnMsgIcon"]);
-    
-    NSString *Status=[NSString stringWithFormat:@"%@",dict[@"Status"]];
-    if ([Status isEqualToString:@"0"]){
-        NSString *ReturnMsg=[NSString stringWithFormat:@"%@",dict[@"ReturnMsg"]];
-        [MBProgressHUD showError:ReturnMsg];
-        NSLog(@"%@",ReturnMsg);
-    }
-    else
-    {
+    if (!resultData==nil) {
+        NSData *data5 = [result dataUsingEncoding:NSUTF8StringEncoding];
+        NSDictionary *dict=[NSJSONSerialization JSONObjectWithData:resultData options:NSJSONReadingMutableLeaves error:nil];
         
-        NSString *img=[NSString stringWithFormat:@"%@/%@",urlt,dict[@"ReturnMsgIcon"]];
-        NSURL *imgurl=[NSURL URLWithString:img];
+        NSLog(@"结果：%@",dict[@"ReturnMsg"]);
+        NSLog(@"结果：%@",dict[@"ReturnMsg"]);
+        NSLog(@"结果：%@",dict[@"ReturnMsgIcon"]);
         
-        if (btnnum==1) {
-            _img1=dict[@"ReturnMsg"];
-            _img1icon=dict[@"ReturnMsgIcon"];
-            UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
-            [self.xj1 setBackgroundImage:imgstr forState:UIControlStateNormal];
+        NSString *Status=[NSString stringWithFormat:@"%@",dict[@"Status"]];
+        if ([Status isEqualToString:@"0"]){
+            NSString *ReturnMsg=[NSString stringWithFormat:@"%@",dict[@"ReturnMsg"]];
+            [MBProgressHUD showError:ReturnMsg];
+            NSLog(@"%@",ReturnMsg);
         }
-        else if (btnnum==2) {
-            _img2=dict[@"ReturnMsg"];
-            _img2icon=dict[@"ReturnMsgIcon"];
-            UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
-            [self.xj2 setBackgroundImage:imgstr forState:UIControlStateNormal];
+        else
+        {
+            
+            NSString *img=[NSString stringWithFormat:@"%@/%@",urlt,dict[@"ReturnMsgIcon"]];
+            NSURL *imgurl=[NSURL URLWithString:img];
+            
+            if (btnnum==1) {
+                _img1=dict[@"ReturnMsg"];
+                _img1icon=dict[@"ReturnMsgIcon"];
+                UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
+                [self.xj1 setBackgroundImage:imgstr forState:UIControlStateNormal];
+            }
+            else if (btnnum==2) {
+                _img2=dict[@"ReturnMsg"];
+                _img2icon=dict[@"ReturnMsgIcon"];
+                UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
+                [self.xj2 setBackgroundImage:imgstr forState:UIControlStateNormal];
+            }
+            else if (btnnum==3) {
+                _img3=dict[@"ReturnMsg"];
+                _img3icon=dict[@"ReturnMsgIcon"];
+                UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
+                [self.xj3 setBackgroundImage:imgstr forState:UIControlStateNormal];
+            }
+            else if (btnnum==4) {
+                _img4=dict[@"ReturnMsg"];
+                _img4icon=dict[@"ReturnMsgIcon"];
+                UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
+                [self.xj4 setBackgroundImage:imgstr forState:UIControlStateNormal];
+            }
         }
-        else if (btnnum==3) {
-            _img3=dict[@"ReturnMsg"];
-            _img3icon=dict[@"ReturnMsgIcon"];
-            UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
-            [self.xj3 setBackgroundImage:imgstr forState:UIControlStateNormal];
-        }
-        else if (btnnum==4) {
-            _img4=dict[@"ReturnMsg"];
-            _img4icon=dict[@"ReturnMsgIcon"];
-            UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
-            [self.xj4 setBackgroundImage:imgstr forState:UIControlStateNormal];
-        }
+ 
+    }else{
+    [MBProgressHUD showError:@"网络异常请检查！"];
+        return;
     }
     
 }

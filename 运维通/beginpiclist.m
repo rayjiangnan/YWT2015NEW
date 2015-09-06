@@ -113,7 +113,7 @@
       cell.x4.image=imgstr;
           NSLog(@"第4张：%@",img);
     }
-    
+      cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 

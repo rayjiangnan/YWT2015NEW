@@ -286,7 +286,7 @@
     NSString * result= [[NSString alloc] initWithData:resultData encoding:NSUTF8StringEncoding];
     
     //    NSString* result= [[NSString alloc] initWithData:resultData encoding:NSUTF8StringEncoding];
-    
+      if (!resultData==nil) {
     [result dataUsingEncoding:NSUTF8StringEncoding];
     NSDictionary *dict=[NSJSONSerialization JSONObjectWithData:resultData options:NSJSONReadingMutableLeaves error:nil];
     NSLog(@"结果：%@",dict);
@@ -331,7 +331,7 @@
         }
     }
     
-    
+      }
 }
 
 
