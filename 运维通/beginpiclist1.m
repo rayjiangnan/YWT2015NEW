@@ -96,12 +96,18 @@
     
     cell.title.text=[NSString stringWithFormat:@"%@",dict2[@"OrderTitle"]];
     NSMutableArray *array=[dict2 objectForKey:@"Files"];
+    cell.x2.hidden=YES;
+    cell.x1.hidden=YES;
+    cell.x3.hidden=YES;
+    cell.x4.hidden=YES;
     // NSLog(@"--------%@",array[2]);
     if (array.count>0) {
         NSString *img=[NSString stringWithFormat:@"%@/%@",urlt,[array objectAtIndex:0]];
         NSURL *imgurl=[NSURL URLWithString:img];
         UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
         cell.x1.image=imgstr;
+        cell.x1.hidden=NO;
+
         NSLog(@"%@",img);
     }
     if (array.count>1) {
@@ -109,18 +115,24 @@
         NSURL *imgurl=[NSURL URLWithString:img];
         UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
         cell.x2.image=imgstr;
+        cell.x2.hidden=NO;
+
     }
     if (array.count>2) {
         NSString *img=[NSString stringWithFormat:@"%@/%@",urlt,[array objectAtIndex:2]];
         NSURL *imgurl=[NSURL URLWithString:img];
         UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
         cell.x3.image=imgstr;
+        cell.x3.hidden=NO;
+
     }
     if (array.count>3) {
         NSString *img=[NSString stringWithFormat:@"%@/%@",urlt,[array objectAtIndex:3]];
         NSURL *imgurl=[NSURL URLWithString:img];
         UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
         cell.x4.image=imgstr;
+        cell.x4.hidden=NO;
+
     }
       cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
