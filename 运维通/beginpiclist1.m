@@ -96,7 +96,7 @@
     
     cell.title.text=[NSString stringWithFormat:@"%@",dict2[@"OrderTitle"]];
     NSMutableArray *array=[dict2 objectForKey:@"Files"];
-     NSLog(@"--------%@",array[2]);
+    // NSLog(@"--------%@",array[2]);
     if (array.count>0) {
         NSString *img=[NSString stringWithFormat:@"%@/%@",urlt,[array objectAtIndex:0]];
         NSURL *imgurl=[NSURL URLWithString:img];
@@ -185,7 +185,6 @@
     NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Order.ashx?action=imgviewend&q0=%@&q1=%d",urlt,myString,num];
     
     NSLog(@"000000%@",urlStr2);
-    self.tableview.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         
         NSString *str = @"type=focus-c";
         AFHTTPRequestOperation *op=  [self POSTurlString:urlStr2 parameters:str];
@@ -198,7 +197,7 @@
                 [self.tableview reloadData];
             }
             
-            [self.tableview.header endRefreshing];
+           
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             
             [MBProgressHUD showError:@"网络异常！"];
@@ -207,10 +206,7 @@
         }];
         
         [[NSOperationQueue mainQueue] addOperation:op];
-        
-    }];
-    self.tableview.header.autoChangeAlpha = YES;
-    [self.tableview.header beginRefreshing];
+    
     
 }
 

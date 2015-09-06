@@ -188,8 +188,7 @@
     NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Order.ashx?action=imgviewstart&q0=%@&q1=%d",urlt,myString,num];
 
     NSLog(@"%@",urlStr2);
-    self.tableview.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-        
+         
         NSString *str = @"type=focus-c";
         AFHTTPRequestOperation *op=  [self POSTurlString:urlStr2 parameters:str];
         [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -210,10 +209,7 @@
         }];
         
         [[NSOperationQueue mainQueue] addOperation:op];
-        
-    }];
-    self.tableview.header.autoChangeAlpha = YES;
-    [self.tableview.header beginRefreshing];
+    
     
 }
 

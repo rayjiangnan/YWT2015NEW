@@ -51,7 +51,7 @@
  self.imageArray=[NSMutableArray arrayWithCapacity:1];
     
     [self network];
-    [self btn1:nil];
+
 }
 
 - (void)didReceiveMemoryWarning {
