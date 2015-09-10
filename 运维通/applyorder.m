@@ -137,54 +137,66 @@
         
         
         NSString *xin=[NSString stringWithFormat:@"%@",dict[@"Stars"]];
-        if ([xin isEqualToString:@"0"]) {
+        if ([xin isEqualToString:@"5"]) {
             
-        }else if([xin isEqualToString:@"1"]) {
-            self.x1.hidden=NO;
-        }else if([xin isEqualToString:@"2"]) {
-            self.x1.hidden=NO;
-            self.x2.hidden=NO;
-        }else if([xin isEqualToString:@"3"]) {
-            self.x1.hidden=NO;
-            self.x2.hidden=NO;
-            self.x3.hidden=NO;
-        }else if([xin isEqualToString:@"4"]) {
-            self.x1.hidden=NO;
-            self.x2.hidden=NO;
-            self.x3.hidden=NO;
-            self.x4.hidden=NO;
-        }else if([xin isEqualToString:@"5"]) {
-            self.x1.hidden=NO;
-            self.x2.hidden=NO;
-            self.x3.hidden=NO;
-            self.x4.hidden=NO;
-            self.x5.hidden=NO;
+        }
+        if ([xin isEqualToString:@"4"]) {
+           self.x5.image=[UIImage imageNamed:@"hxx"];
+        }
+        if ([xin isEqualToString:@"3"]) {
+            
+            self.x4.image=[UIImage imageNamed:@"hxx"];
+            self.x5.image=[UIImage imageNamed:@"hxx"];
+        }
+        if ([xin isEqualToString:@"2"]) {
+            
+            self.x3.image=[UIImage imageNamed:@"hxx"];
+            self.x4.image=[UIImage imageNamed:@"hxx"];
+            self.x5.image=[UIImage imageNamed:@"hxx"];
+        }
+        if ([xin isEqualToString:@"1"]) {
+            
+            self.x2.image=[UIImage imageNamed:@"hxx"];
+            self.x3.image=[UIImage imageNamed:@"hxx"];
+            self.x4.image=[UIImage imageNamed:@"hxx"];
+           self.x5.image=[UIImage imageNamed:@"hxx"];
+        }
+        if ([xin isEqualToString:@"0"]) {
+            self.x1.image=[UIImage imageNamed:@"hxx"];
+            self.x2.image=[UIImage imageNamed:@"hxx"];
+            self.x3.image=[UIImage imageNamed:@"hxx"];
+           self.x4.image=[UIImage imageNamed:@"hxx"];
+          self.x5.image=[UIImage imageNamed:@"hxx"];
         }
         
         
         NSString *fen=[NSString stringWithFormat:@"%@",dict[@"ScoreAvg"]];
         if ([xin isEqualToString:@"0"]) {
-            
+            self.f1.image=[UIImage imageNamed:@"hxx"];
+            self.f2.image=[UIImage imageNamed:@"hxx"];
+            self.f3.image=[UIImage imageNamed:@"hxx"];
+            self.f4.image=[UIImage imageNamed:@"hxx"];
+            self.f5.image=[UIImage imageNamed:@"hxx"];
         }else if([fen isEqualToString:@"1"]) {
-            self.f1.hidden=NO;
+            self.f2.image=[UIImage imageNamed:@"hxx"];
+            self.f3.image=[UIImage imageNamed:@"hxx"];
+            self.f4.image=[UIImage imageNamed:@"hxx"];
+            self.f5.image=[UIImage imageNamed:@"hxx"];
         }else if([fen isEqualToString:@"2"]) {
-            self.f1.hidden=NO;
-            self.f2.hidden=NO;
+         
+            self.f3.image=[UIImage imageNamed:@"hxx"];
+            self.f4.image=[UIImage imageNamed:@"hxx"];
+            self.f5.image=[UIImage imageNamed:@"hxx"];
         }else if([fen isEqualToString:@"3"]) {
-            self.f1.hidden=NO;
-            self.f2.hidden=NO;
-            self.f3.hidden=NO;
+
+            self.f4.image=[UIImage imageNamed:@"hxx"];
+            self.f5.image=[UIImage imageNamed:@"hxx"];
         }else if([fen isEqualToString:@"4"]) {
-            self.f1.hidden=NO;
-            self.f2.hidden=NO;
-            self.f3.hidden=NO;
-            self.f4.hidden=NO;
+
+            self.f5.image=[UIImage imageNamed:@"hxx"];
+        
         }else if([fen isEqualToString:@"5"]) {
-            self.f1.hidden=NO;
-            self.f2.hidden=NO;
-            self.f3.hidden=NO;
-            self.f4.hidden=NO;
-            self.f5.hidden=NO;
+   
         }
         
 

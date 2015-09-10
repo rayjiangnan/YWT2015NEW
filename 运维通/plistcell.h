@@ -19,6 +19,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *x2;
 @property (weak, nonatomic) IBOutlet UIImageView *x3;
 @property (weak, nonatomic) IBOutlet UIImageView *x4;
+@property (weak, nonatomic) IBOutlet UIImageView *img;
 
 @property (weak, nonatomic) IBOutlet UIImageView *x5;
 @property (weak, nonatomic) IBOutlet UILabel *sq;

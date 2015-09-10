@@ -69,30 +69,43 @@
     cell.zt.text=[NSString stringWithFormat:@"%@",dict2[@"Status_Name"]];
     cell.bt.text=[NSString stringWithFormat:@"%@",dict2[@"OrderTitle"]];
     cell.dz.text=[NSString stringWithFormat:@"%@",dict2[@"Task_Address"]];
+    
+    cell.dz.lineBreakMode = UILineBreakModeWordWrap;
+    cell.dz.numberOfLines = 0;
+    
+    
     cell.sq.text=[NSString stringWithFormat:@"%@人申请",dict2[@"ApplyNum"]];
     NSString *xin=[NSString stringWithFormat:@"%@",dict2[@"Stars"]];
+    if ([xin isEqualToString:@"5"]) {
+        
+    }
+    if ([xin isEqualToString:@"4"]) {
+        cell.x5.image=[UIImage imageNamed:@"hxx"];
+    }
+    if ([xin isEqualToString:@"3"]) {
+        
+        cell.x4.image=[UIImage imageNamed:@"hxx"];
+        cell.x5.image=[UIImage imageNamed:@"hxx"];
+    }
+    if ([xin isEqualToString:@"2"]) {
+        
+        cell.x3.image=[UIImage imageNamed:@"hxx"];
+        cell.x4.image=[UIImage imageNamed:@"hxx"];
+        cell.x5.image=[UIImage imageNamed:@"hxx"];
+    }
+    if ([xin isEqualToString:@"1"]) {
+        
+        cell.x2.image=[UIImage imageNamed:@"hxx"];
+        cell.x3.image=[UIImage imageNamed:@"hxx"];
+        cell.x4.image=[UIImage imageNamed:@"hxx"];
+        cell.x5.image=[UIImage imageNamed:@"hxx"];
+    }
     if ([xin isEqualToString:@"0"]) {
-     
-    }else if([xin isEqualToString:@"1"]) {
-        cell.x1.hidden=NO;
-    }else if([xin isEqualToString:@"2"]) {
-        cell.x1.hidden=NO;
-         cell.x2.hidden=NO;
-    }else if([xin isEqualToString:@"3"]) {
-        cell.x1.hidden=NO;
-        cell.x2.hidden=NO;
-         cell.x3.hidden=NO;
-    }else if([xin isEqualToString:@"4"]) {
-        cell.x1.hidden=NO;
-        cell.x2.hidden=NO;
-        cell.x3.hidden=NO;
-         cell.x4.hidden=NO;
-    }else if([xin isEqualToString:@"5"]) {
-        cell.x1.hidden=NO;
-        cell.x2.hidden=NO;
-        cell.x3.hidden=NO;
-        cell.x4.hidden=NO;
-         cell.x5.hidden=NO;
+        cell.x1.image=[UIImage imageNamed:@"hxx"];
+        cell.x2.image=[UIImage imageNamed:@"hxx"];
+        cell.x3.image=[UIImage imageNamed:@"hxx"];
+        cell.x4.image=[UIImage imageNamed:@"hxx"];
+        cell.x5.image=[UIImage imageNamed:@"hxx"];
     }
     
     
@@ -107,6 +120,14 @@
     NSDateFormatter *objDateformat3 = [[NSDateFormatter alloc] init];
     [objDateformat3 setDateFormat:@"MM-dd"];
     cell.sj.text=[objDateformat3 stringFromDate: date3];
+    
+
+    
+//    NSString *img2=[NSString stringWithFormat:@"%@%@",urlt,dict2[@"UserImg"]];
+//    
+//    NSURL *imgurl=[NSURL URLWithString:img2];
+//    cell.img.image= [[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
+    
     
     return cell;
 }

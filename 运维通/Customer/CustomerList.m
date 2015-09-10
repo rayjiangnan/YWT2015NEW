@@ -84,7 +84,6 @@
     NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
     NSString *Create_User = [userDefaultes stringForKey:@"myidt"];
     NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Customer.ashx?action=getlist&q0=%@&q1=%d",urlt,Create_User,indes];
-    self.tableView.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         
         NSString *str = @"type=focus-c";
         AFHTTPRequestOperation *op=  [self POSTurlString:urlStr2 parameters:str];
@@ -106,10 +105,7 @@
         }];
         
         [[NSOperationQueue mainQueue] addOperation:op];
-        
-    }];
-    self.tableView.header.autoChangeAlpha = YES;
-    [self.tableView.header beginRefreshing];}
+}
 
 -(NSMutableArray *)netwok:(NSMutableArray *)array
 {

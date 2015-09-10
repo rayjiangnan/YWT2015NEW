@@ -71,7 +71,7 @@
 }
 
 -(void)network2{
-      self.tableview.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+
     int indes=-1;
     NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
     NSString *Create_User = [userDefaultes stringForKey:@"myidt"];
@@ -95,9 +95,7 @@
         return ;
     }];
     [[NSOperationQueue mainQueue] addOperation:op];
-          
-            }];
-    [self.tableview.header beginRefreshing];
+
 }
 
 -(NSMutableArray *)netwok:(NSMutableArray *)array

@@ -73,6 +73,12 @@
 
     cell.bt.text=dict2[@"OrderTitle"];
     cell.dz.text=dict2[@"Task_Address"];
+     cell.dz.lineBreakMode = UILineBreakModeWordWrap;
+     cell.dz.numberOfLines = 0;
+    
+    
+    
+    
     NSString *dt3=dict2[@"CreateDateTime"];
     dt3=[dt3 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
     dt3=[dt3 stringByReplacingOccurrencesOfString:@")/" withString:@""];
@@ -85,32 +91,35 @@
     cell.sj.text=[objDateformat3 stringFromDate: date3];
     NSString *xin=[NSString stringWithFormat:@"%@",dict2[@"Stars"]];
     if ([xin isEqualToString:@"5"]) {
-        
+
     }
     if ([xin isEqualToString:@"4"]) {
-        cell.x5.hidden=YES;
+        cell.x5.image=[UIImage imageNamed:@"hxx"];
     }
     if ([xin isEqualToString:@"3"]) {
-        cell.x5.hidden=YES;
-         cell.x4.hidden=YES;
+
+        cell.x4.image=[UIImage imageNamed:@"hxx"];
+        cell.x5.image=[UIImage imageNamed:@"hxx"];
     }
     if ([xin isEqualToString:@"2"]) {
-        cell.x5.hidden=YES;
-        cell.x4.hidden=YES;
-         cell.x3.hidden=YES;
+
+        cell.x3.image=[UIImage imageNamed:@"hxx"];
+        cell.x4.image=[UIImage imageNamed:@"hxx"];
+        cell.x5.image=[UIImage imageNamed:@"hxx"];
     }
     if ([xin isEqualToString:@"1"]) {
-        cell.x5.hidden=YES;
-        cell.x4.hidden=YES;
-        cell.x3.hidden=YES;
-         cell.x2.hidden=YES;
+      
+        cell.x2.image=[UIImage imageNamed:@"hxx"];
+        cell.x3.image=[UIImage imageNamed:@"hxx"];
+        cell.x4.image=[UIImage imageNamed:@"hxx"];
+        cell.x5.image=[UIImage imageNamed:@"hxx"];
     }
     if ([xin isEqualToString:@"0"]) {
-        cell.x5.hidden=YES;
-        cell.x4.hidden=YES;
-        cell.x3.hidden=YES;
-        cell.x2.hidden=YES;
-         cell.x1.hidden=YES;
+        cell.x1.image=[UIImage imageNamed:@"hxx"];
+        cell.x2.image=[UIImage imageNamed:@"hxx"];
+        cell.x3.image=[UIImage imageNamed:@"hxx"];
+        cell.x4.image=[UIImage imageNamed:@"hxx"];
+        cell.x5.image=[UIImage imageNamed:@"hxx"];
     }
     if ([_igt isEqualToString:@"0"]) {
         cell.sq.hidden=NO;
@@ -120,6 +129,11 @@
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
+//    NSString *img2=[NSString stringWithFormat:@"%@%@",urlt,dict2[@"UserImg"]];
+//    
+//    NSURL *imgurl=[NSURL URLWithString:img2];
+//   cell.img.image= [[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
+
     
     return cell;
 }
