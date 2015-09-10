@@ -80,7 +80,8 @@
     
     
     self.IsBackupRune=0;
-    self._mapview.userTrackingMode=MKUserTrackingModeFollowWithHeading;
+    [_mapview setUserTrackingMode:MKUserTrackingModeFollow animated:NO];
+    //self._mapview.userTrackingMode=MKUserTrackingModeFollowWithHeading;
     self._mapview.delegate = self;
     
 //    if ([CLLocationManager locationServicesEnabled]) {
@@ -113,9 +114,9 @@
 }
 
 -(void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation{
-    userLocation.title=@"当前位置";
+    //userLocation.title=@"当前位置";
     //userLocation.subtitle=@"";
-    CLLocationCoordinate2D center=userLocation.location.coordinate;
+    //CLLocationCoordinate2D center=userLocation.location.coordinate;
     //  [self postJSON:lati:longti];
 }
 -(NSArray *)netwok:(NSArray *)tgsa
@@ -225,7 +226,6 @@
     //    self._locationManager = [[CLLocationManager alloc] init];
     //    self._locationManager.desiredAccuracy = kCLLocationAccuracyBest;
     //    self._locationManager.delegate = self;
-    
     //
     
     
