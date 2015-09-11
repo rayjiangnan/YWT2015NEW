@@ -73,6 +73,7 @@
     
     
     NSString *urlStr = [NSString stringWithFormat:@"%@/API/YWT_OrderPlatform.ashx?action=getitem&q0=%@&q1=%@",urlt,mystring2,myString];
+    NSLog(@"plistdetail:%@",urlStr);
     AFHTTPRequestOperation *op=[self GETurlString:urlStr];
  
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {

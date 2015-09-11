@@ -90,7 +90,7 @@
     
     NSString *urlStr = [NSString stringWithFormat:@"%@/API/YWT_OrderPlatform.ashx?action=getitem&q0=%@&q1=%@",urlt,mystring2,myString];
     AFHTTPRequestOperation *op=[self GETurlString:urlStr];
-    NSLog(@"%@",urlStr);
+    NSLog(@"plist%@",urlStr);
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"%@",  urlStr);
         NSLog(@"JSON: %@", responseObject);

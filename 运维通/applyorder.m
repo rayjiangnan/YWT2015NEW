@@ -88,7 +88,7 @@
     
     NSString *urlStr = [NSString stringWithFormat:@"%@/API/YWT_OrderPlatform.ashx?action=getitem&q0=%@&q1=%@",urlt,mystring2,myString];
     AFHTTPRequestOperation *op=[self GETurlString:urlStr];
-    NSLog(@"%@",urlStr);
+    NSLog(@"applyorder:%@",urlStr);
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"%@",  urlStr);
         NSLog(@"JSON: %@", responseObject);
@@ -208,7 +208,6 @@
         return ;
         
     }];
-    
     [[NSOperationQueue mainQueue] addOperation:op];
     
 }
@@ -223,9 +222,7 @@
     id vc=segue.destinationViewController;
     if ([vc isKindOfClass:[postapply class]]) {
         postapply *detai=vc;
-       
         [detai setValue:_idtt forKey:@"strTtile"];
-        
     }
     
 }
