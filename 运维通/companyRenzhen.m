@@ -1,22 +1,25 @@
 //
-//  renzhen.m
+//  companyRenzhen.m
 //  运维通
 //
-//  Created by abc on 15/9/5.
+//  Created by 南江 on 15/9/11.
 //  Copyright (c) 2015年 ritacc. All rights reserved.
 //
 
-#import "renzhen.h"
+#import "companyRenzhen.h"
 #import"AFNetworking.h"
 #import"MBProgressHUD+MJ.h"
 #import "UpFile.h"
 
-@interface renzhen ()//<UIScrollViewDelegate>
+@interface companyRenzhen ()
 {
     NSString *_accountType;
     NSString *_name;
     NSString *FileType;
 }
+
+@property (weak, nonatomic) IBOutlet UITextField *companyName;
+
 @property (weak, nonatomic) IBOutlet UITextField *personName;
 @property (weak, nonatomic) IBOutlet UITextField *identityCard;
 
@@ -34,15 +37,10 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *commitBut;
 - (IBAction)didClickCommitButAction:(id)sender;
-@property (weak, nonatomic) IBOutlet UIImageView *tishitu;
-@property (weak, nonatomic) IBOutlet UIView *yview;
-@property (weak, nonatomic) IBOutlet UILabel *tishi;
-
 
 @end
 
-@implementation renzhen
-
+@implementation companyRenzhen
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:YES];
@@ -56,7 +54,7 @@
     NSString *myString = [userDefaultes stringForKey:@"myidt"];
     NSString *urlStr = [NSString stringWithFormat:@"%@/API/YWT_User.ashx?action=getuserfile&q0=%@",urlt,myString];
     
-     NSLog(@"%@",urlStr);
+    NSLog(@"%@",urlStr);
     AFHTTPRequestOperation *op=[self GETurlString:urlStr];
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"%@",responseObject[@"ResultObject"]);
@@ -68,14 +66,14 @@
                 NSString *img2=[NSString stringWithFormat:@"%@%@",urlt,str[@"FileName"]];
                 NSURL *imgurl2=[NSURL URLWithString:img2];
                 UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl2]];
-
-                if([str[@"FileType"] isEqualToString:@"p_sfzzm"]){
+                
+                if([str[@"FileType"] isEqualToString:@"e_fr_sfzzm"]){
                     self.identyCardImageV.image=imgstr;
                 }
-                else if ([FileType isEqualToString:@"p_sfzbm"]) {
+                else if ([FileType isEqualToString:@"e_fr_sfzfm"]) {
                     self.imgSfzbm.image=imgstr;
                 }
-                else if ([FileType isEqualToString:@"p_byz"]) {
+                else if ([FileType isEqualToString:@"e_ylzz"]) {
                     self.imgByz.image=imgstr;
                 }
             }
@@ -120,38 +118,31 @@
             self.identityCard.text=[NSString   stringWithFormat:@"%@", dictarr2[@"CertifyIDCard"]];
         }
         
-
+        
         
         
         if ([confirmState isEqual:[NSNull null]]||[confirmState isEqualToString:@"1"]||[confirmState isEqualToString:@"0"]) {
-            self.tishitu.image=[UIImage imageNamed:@"jrzx_icon_ tj"];
-            self.tishi.text=@"审核状态:未提交审核请您提交真实有效的资料！";
-            self.yview.hidden=NO;
-            self.commitBut.hidden=NO;
+            
             
         }
         else if ([confirmState isEqualToString:@"2"])
         {
-            
-              self.tishitu.image=[UIImage imageNamed:@"jrzx_icon_ tj"];
-            
-            self.tishi.hidden=NO;
-            self.yview.hidden=NO;
-            
-            self.tishi.text=@"审核状态:正在审核中，请耐心等候！";
-            self.commitBut.hidden=YES;
-            self.btnByz.hidden=YES;
-            self.btnSfzbm.hidden=YES;
-            self.identityCard.hidden=YES;
+            //  self.backGroundScrollV.frame=CGRectMake(0, 200, self.view.frame.size.width, self.view.frame.size.height);
+            //            self.backGroundScrollV.translatesAutoresizingMaskIntoConstraints = NO;
+            //
+            //            NSLayoutConstraint* topConstraint = [NSLayoutConstraint constraintWithItem:self.backGroundScrollV attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1.0f constant:100.0f];
+            //            topConstraint.active = YES;
+            //            self.headYellowV.hidden=NO;
+            //            self.secondWarnLab.text=@"审核状态:审核中请耐心等待~";
             
             
-
         }else if ([confirmState isEqualToString:@"10"]){
-            self.tishi.hidden=NO;
-            self.yview.hidden=NO;
-              self.tishitu.image=[UIImage imageNamed:@"hyrz_jg"];
-            self.tishi.text=@"审核状态:认证失败，请重新提交资料！";            self.commitBut.hidden=NO;
+            //        self.backGroundScrollV.translatesAutoresizingMaskIntoConstraints = NO;
             
+            //            NSLayoutConstraint* topConstraint = [NSLayoutConstraint constraintWithItem:self.backGroundScrollV attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1.0f constant:100.0f];
+            //            topConstraint.active = YES;
+            //            self.headYellowV.hidden=NO;
+            //            self.secondWarnLab.text=@"认证失败证件照模糊,请重新上传~";
         }
         
         
@@ -187,30 +178,31 @@
 
 
 - (IBAction)sfzbmClick:(id)sender {
-    FileType=@"p_sfzbm";
+    FileType=@"e_fr_sfzfm";
     [self SendImage];
 }
 
 - (IBAction)byzClick:(id)sender {
-    FileType=@"p_byz";
+    FileType=@"e_ylzz";
     [self SendImage];
 }
 
 - (IBAction)didClickidentityCardAction:(id)sender {
-    FileType=@"p_sfzzm";
+    FileType=@"e_fr_sfzzm";
     [self SendImage];
 }
+
 -(void) ShowImg:(NSString *) imgpath
 {
     NSURL *imgurl=[NSURL URLWithString:imgpath];
     UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
-    if ([FileType isEqualToString:@"p_sfzzm"]) {
+    if ([FileType isEqualToString:@"e_fr_sfzzm"]) {
         self.identyCardImageV.image=imgstr;
     }
-    else  if ([FileType isEqualToString:@"p_sfzbm"]) {
+    else  if ([FileType isEqualToString:@"e_fr_sfzfm"]) {
         self.imgSfzbm.image=imgstr;
     }
-    else  if ([FileType isEqualToString:@"p_byz"]) {
+    else  if ([FileType isEqualToString:@"e_ylzz"]) {
         self.imgByz.image=imgstr;
     }
 }
@@ -221,7 +213,7 @@
     NSString *myStr = [userDefaultes stringForKey:@"myidt"];
     
     NSString *strurl=[NSString stringWithFormat:@"%@/API/YWT_User.ashx",urlt];
-    NSString *str = [NSString stringWithFormat:@"action=userfilecertify&q0=%@&q1=%@&q2=%@&q3=%@&q4=%@",myStr,@"P",self.personName.text, self.identityCard.text,@""];
+    NSString *str = [NSString stringWithFormat:@"action=userfilecertify&q0=%@&q1=%@&q2=%@&q3=%@&q4=%@",myStr,@"E",self.personName.text, self.identityCard.text,self.companyName.text];
     NSLog(@"%@ %@",strurl,str);
     AFHTTPRequestOperation *op=[self POSTurlString:strurl parameters:str];
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -242,25 +234,25 @@
 {
     UIActionSheet *sheet;
     // 判断是否支持相机
-//    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
-//    {
-        sheet=[[UIActionSheet alloc] initWithTitle:@"选择"
-                                          delegate:self
-                                 cancelButtonTitle:@"取消"
-                            destructiveButtonTitle:nil
-                                 otherButtonTitles:@"拍照", @"从相册中选取", nil];
-        
-        
-//    }
-//    else
-//    {
-//        sheet = [[UIActionSheet alloc] initWithTitle:@"选择"
-//                                            delegate:self
-//                                   cancelButtonTitle:@"取消"
-//                              destructiveButtonTitle:nil
-//                                   otherButtonTitles:@"从相册选择", nil];
-//        
-//    }
+    //    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+    //    {
+    sheet=[[UIActionSheet alloc] initWithTitle:@"选择"
+                                      delegate:self
+                             cancelButtonTitle:@"取消"
+                        destructiveButtonTitle:nil
+                             otherButtonTitles:@"拍照", @"从相册中选取", nil];
+    
+    
+    //    }
+    //    else
+    //    {
+    //        sheet = [[UIActionSheet alloc] initWithTitle:@"选择"
+    //                                            delegate:self
+    //                                   cancelButtonTitle:@"取消"
+    //                              destructiveButtonTitle:nil
+    //                                   otherButtonTitles:@"从相册选择", nil];
+    //
+    //    }
     sheet.tag = 255;
     [sheet showInView:self.view];
 }
@@ -401,7 +393,7 @@
     NSString *userid = [userDefaultes stringForKey:@"myidt"];
     //NSString *url=[NSString stringWithFormat:@"%@/API/YWT_OrderFile.ashx?action=90",strUploadUrl];
     NSString *url=[NSString stringWithFormat:@"%@/API/YWT_UPUserFile.ashx?action=%@&q0=%@&q1=%@&from=ios",urlt,FileType,userid,userid];
-
+    
     
     
     // NSLog(@"%@",url);
@@ -413,7 +405,7 @@
     NSString *content=[[NSString alloc]initWithFormat:@"multipart/form-data; boundary=%@",boundary];
     //设置HTTPHeader
     [request setValue:content forHTTPHeaderField:@"Content-Type"];
-
+    
     //设置http body
     [request setHTTPBody:myRequestData1];
     //http method

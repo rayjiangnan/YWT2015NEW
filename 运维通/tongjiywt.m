@@ -433,8 +433,8 @@
     NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Order.ashx?action=monthviewaadmin&q0=%@&q1=%@",urlt,myString,idts];
     
     NSLog(@"%@---",urlStr2);
-    self.tableView.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-        
+//    self.tableView.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+    
         NSString *str = @"type=focus-c";
         AFHTTPRequestOperation *op=  [self POSTurlString:urlStr2 parameters:str];
         [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -463,8 +463,8 @@
         
         [[NSOperationQueue mainQueue] addOperation:op];
         
-    }];
-    self.tableView.header.autoChangeAlpha = YES;
+//    }];
+//    self.tableView.header.autoChangeAlpha = YES;
     
     
 }

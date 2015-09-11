@@ -73,8 +73,8 @@
     
     NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Warehouse.ashx?action=getlist&q0=%@&q1=%d",urlt,Create_User,indes];
     NSLog(@"%@",urlStr2);
-    self.tableView.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-        
+//    self.tableView.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+    
     AFHTTPRequestOperation *op=[self GETurlString:urlStr2];
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *dict2=responseObject;
@@ -91,9 +91,9 @@
         return ;
     }];
     [[NSOperationQueue mainQueue] addOperation:op];
-    }];
-    self.tableView.header.autoChangeAlpha = YES;
-    [self.tableView.header beginRefreshing];
+//    }];
+//    self.tableView.header.autoChangeAlpha = YES;
+//    [self.tableView.header beginRefreshing];
 }
 
 -(NSMutableArray *)netwok:(NSMutableArray *)array

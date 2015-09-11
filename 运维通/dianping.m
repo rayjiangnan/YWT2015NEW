@@ -110,7 +110,7 @@
     NSString *myString = [userDefaultes stringForKey:@"myidt"];
     
     NSString *urlStr = [NSString stringWithFormat:@"%@/api/YWT_YWLog.ashx?action=getcompanylist&q0=%@&q1=%d",urlt,myString,indes];
-    self.tableview.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+//    self.tableview.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
     NSString *str = @"type=focus-c";
     NSLog(@"%@",urlStr);
     AFHTTPRequestOperation *op=  [self POSTurlString:urlStr parameters:str];
@@ -132,9 +132,9 @@
     
     [[NSOperationQueue mainQueue] addOperation:op];
         
-    }];
-    self.tableview.header.autoChangeAlpha = YES;
-    [self.tableview.header beginRefreshing];
+//    }];
+//    self.tableview.header.autoChangeAlpha = YES;
+//    [self.tableview.header beginRefreshing];
     
     
 }

@@ -100,8 +100,8 @@
     NSString *myString = [userDefaultes stringForKey:@"myidt"];
     
     NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_OrderPlatform.ashx?action=getlistforsupplier&q0=%d&q1=%@",urlt,indes,myString];
-     self.tableview.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-         
+//     self.tableview.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+    
     NSURL *url = [NSURL URLWithString:urlStr2];
     
     NSLog(@"%@",url);
@@ -129,9 +129,9 @@
         [MBProgressHUD showError:@"网络请求出错"];
         return ;
     }
-     }];
-    self.tableview.header.autoChangeAlpha = YES;
-    [self.tableview.header beginRefreshing];
+//     }];
+//    self.tableview.header.autoChangeAlpha = YES;
+//    [self.tableview.header beginRefreshing];
 
 }
 

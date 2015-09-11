@@ -118,8 +118,8 @@
     }
     
     // 设置回调（一旦进入刷新状态就会调用这个refreshingBlock）
-    self.tableview.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-        
+//    self.tableview.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+    
         NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
         NSString *myString = [userDefaultes stringForKey:@"myidt"];
         NSString *urlStr = [NSString stringWithFormat:@"%@/API/HDL_SNRUserQuota.ashx?action=getlist&q0=0&q1=%@&q2=%d",urlt,myString,indes];
@@ -141,10 +141,10 @@
         
         [[NSOperationQueue mainQueue] addOperation:op];
         
-    }];
-    self.tableview.header.autoChangeAlpha = YES;
-    
-    [self.tableview.header beginRefreshing];
+//    }];
+//    self.tableview.header.autoChangeAlpha = YES;
+//    
+//    [self.tableview.header beginRefreshing];
     
 }
 

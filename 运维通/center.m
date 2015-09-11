@@ -28,6 +28,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *img;
 @property (weak, nonatomic) IBOutlet UIButton *gerenbtn;
 @property (weak, nonatomic) IBOutlet UIButton *combtn;
+@property (weak, nonatomic) IBOutlet UIButton *renz;
 
 
 @end
@@ -43,8 +44,22 @@
     NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
     NSString *usertype= [userDefaultes stringForKey:@"usertype"];
     if ([usertype isEqualToString:@"10"]) {
-        self.gerenbtn.hidden=YES;
+        self.gerenbtn.hidden=NO;
     }
+
+    NSString *Certify = [userDefaultes stringForKey:@"Certify"];
+
+    if ([Certify isEqualToString:@"0"]) {
+        [self.renz setTitle:@"未认证" forState:UIControlStateNormal];
+    }else if ([Certify isEqualToString:@"1"]) {
+        [self.renz setTitle:@"已认证" forState:UIControlStateNormal];
+    }else if ([Certify isEqualToString:@"2"]) {
+        [self.renz setTitle:@"审核中" forState:UIControlStateNormal];
+    }else if ([Certify isEqualToString:@"10"]) {
+        [self.renz setTitle:@"认证失败" forState:UIControlStateNormal];
+    }
+
+    
 }
 
 - (void)viewDidLoad {

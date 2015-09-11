@@ -12,7 +12,8 @@
 
 
 
-@interface gerenzliao ()<UITextFieldDelegate>{
+@interface gerenzliao ()<UITextViewDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate,UITextFieldDelegate,NSURLConnectionDelegate,UITextFieldDelegate>
+{
     int sexnum;
 }
 @property (weak, nonatomic) IBOutlet UILabel *sty;
@@ -52,7 +53,8 @@
      self.jineng.layer.borderWidth = 0.5;
      self.zc.layer.borderColor = UIColor.grayColor.CGColor;
     self.zc.layer.borderWidth = 0.5;
-    
+    [self settingKeyboard];
+    [self settingKeyboard2];
 
 }
 - (IBAction)nanbtn:(id)sender {
@@ -127,30 +129,52 @@
                 sexnum=2;
             }
             
-            NSString *dt3=dictarr3[@"Birthday"];
+         
+            NSString *dt1=dictarr3[@"Birthday"];
+            dt1=[dt1 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
+            dt1=[dt1 stringByReplacingOccurrencesOfString:@")/" withString:@""];
+            //NSLog(@"%@",dt1);
+            NSString * timeStampString =dt1;
+            NSTimeInterval _interval=[timeStampString doubleValue] / 1000;
+            NSDate *date = [NSDate dateWithTimeIntervalSince1970:_interval];
+            NSDateFormatter *objDateformat = [[NSDateFormatter alloc] init];
+            [objDateformat setDateFormat:@"yyyy-MM-dd HH:mm"];
             
-            dt3=[dt3 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
-            dt3=[dt3 stringByReplacingOccurrencesOfString:@")/" withString:@""];
-            NSLog(@"%@",dt3);
-            NSString * timeStampString3 =dt3;
-            NSTimeInterval _interval3=[timeStampString3 doubleValue] / 1000;
-            NSDate *date3 = [NSDate dateWithTimeIntervalSince1970:_interval3];
-            NSDateFormatter *objDateformat3 = [[NSDateFormatter alloc] init];
-            [objDateformat3 setDateFormat:@"yyyy-MM-dd HH:mm"];
-            self.time.text=[objDateformat3 stringFromDate: date3];
+            // NSLog(@"%@",dt1);
+            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+            [formatter setDateStyle:NSDateFormatterMediumStyle];
+            [formatter setTimeStyle:NSDateFormatterShortStyle];
+            [formatter setDateFormat:@"YYYY-MM-dd HH:mm:ss"];
+            
+            NSTimeZone* timeZone = [NSTimeZone timeZoneWithName:@"Asia/Beijing"];
+            [formatter setTimeZone:timeZone];
+            
+            NSDate *datenow = [NSDate date];//现在时间,你可以输出来看下是什么格式
+            
+            NSString *nowtimeStr = [formatter stringFromDate:datenow];//----------将nsdate按formatter格式转成nsstring
+            //时间转时间戳的方法:
+            NSString *timeSp = [NSString stringWithFormat:@"%ld", (long)[datenow timeIntervalSince1970]];
+            //  NSLog(@"timeSp:%@",timeSp); //时间戳的值
+            //时间戳转时间的方法
+            double d = [dt1 doubleValue];
+            NSDate *confromTimesp = [NSDate dateWithTimeIntervalSince1970:d];
+            //  NSLog(@"%f  = %@",d,confromTimesp);
+            NSString *confromTimespStr = [formatter stringFromDate:confromTimesp];
+            // NSLog(@"confromTimespStr =  %@",confromTimespStr);
+            self.time.text=confromTimespStr;
             
             
             
             NSString *dt4=dictarr3[@"GraduationData"];
-            
             dt4=[dt4 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
             dt4=[dt4 stringByReplacingOccurrencesOfString:@")/" withString:@""];
-            NSLog(@"%@",dt4);
+           NSLog(@"+++++++++%@",dt4);
             NSString * timeStampString4 =dt4;
             NSTimeInterval _interval4=[timeStampString4 doubleValue] / 1000;
             NSDate *date4 = [NSDate dateWithTimeIntervalSince1970:_interval4];
             NSDateFormatter *objDateformat4 = [[NSDateFormatter alloc] init];
-            [objDateformat4 setDateFormat:@"yyyy-MM-dd HH:mm"];
+            [objDateformat4 setDateFormat:@"yyyy-MM-dd"];
+            
             self.btime.text=[objDateformat4 stringFromDate: date4];
         }
  
@@ -205,8 +229,8 @@
 - (IBAction)tijiao:(id)sender {
     if ([self.sty.text isEqualToString:@"维运商"]) {
        NSString *timeSp=@"1331121231000";
-        NSString *timet1= [NSString stringWithFormat:@"\\/Date(%@)\\/",timeSp];
-        NSString *timet2= [NSString stringWithFormat:@"\\/Date(%@)\\/",timeSp];
+        NSString *timet1= [NSString stringWithFormat:@"\\/Date(%@)\\/",_time1];
+        NSString *timet2= [NSString stringWithFormat:@"\\/Date(%@)\\/",_time2];
         NSString *te=@"10";
         NSString *sex;
         if (sexnum==1) {
@@ -221,8 +245,8 @@
         
     }else if ([self.sty.text isEqualToString:@"维运人员"]) {
        NSString *timeSp=@"1331121231000";
-        NSString *timet1= [NSString stringWithFormat:@"\\/Date(%@)\\/",timeSp];
-        NSString *timet2= [NSString stringWithFormat:@"\\/Date(%@)\\/",timeSp];
+        NSString *timet1= [NSString stringWithFormat:@"\\/Date(%@)\\/",_time1];
+        NSString *timet2= [NSString stringWithFormat:@"\\/Date(%@)\\/",_time2];
         NSString *te=@"20";
         NSString *sex;
         if (sexnum==1) {
@@ -237,8 +261,8 @@
         
     }else{
         NSString *timeSp=@"1331121231000";
-        NSString *timet1= [NSString stringWithFormat:@"\\/Date(%@)\\/",timeSp];
-        NSString *timet2= [NSString stringWithFormat:@"\\/Date(%@)\\/",timeSp];
+        NSString *timet1= [NSString stringWithFormat:@"\\/Date(%@)\\/",_time1];
+        NSString *timet2= [NSString stringWithFormat:@"\\/Date(%@)\\/",_time2];
         NSString *te=@"30";
         NSString *sex;
         if (sexnum==1) {
@@ -257,40 +281,34 @@
 
 
 
+
+
+
 #pragma mark 设置键盘
 - (IBAction)ij:(id)sender {
-    NSDate *newDate =[NSDate date];
-    NSDateFormatter *fmt2 = [[NSDateFormatter alloc] init];
-    fmt2.dateFormat = @"YYYY-MM-dd HH:mm:ss";
-    NSString* timeStr2 =[fmt2 stringFromDate:newDate];
-    NSString *timeSp = [NSString stringWithFormat:@"%ld", (long)[newDate timeIntervalSince1970]];
-    _time1=timeSp;
-    
-    self.time.text=timeStr2;
-    
-}
-- (IBAction)ij2:(id)sender {
-    NSDate *newDate =[NSDate date];
-    NSDateFormatter *fmt2 = [[NSDateFormatter alloc] init];
-    fmt2.dateFormat = @"YYYY-MM-dd HH:mm:sss";
-    NSString* timeStr2 =[fmt2 stringFromDate:newDate];
-    NSString *timeSp = [NSString stringWithFormat:@"%ld", (long)[newDate timeIntervalSince1970]];
-    _time2=timeSp;
-    
-    self.btime.text=timeStr2;
+
     
 }
 
+
+- (IBAction)ij2:(id)sender {
+
+    
+}
+
+
+
+
 - (void)settingKeyboard
 {
-    // 1.生日
+
     UIDatePicker *datePicker4 = [[UIDatePicker alloc] init];
-    datePicker4.datePickerMode = UIDatePickerModeDateAndTime; // 只显示日期5
+    datePicker4.datePickerMode = UIDatePickerModeDate; // 只显示日期5
     datePicker4.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"Chinese"];
     
     [datePicker4 addTarget:self action:@selector(birthdayChange:) forControlEvents:UIControlEventValueChanged];
     
-    self.time.inputView = datePicker4; // 设置键盘为日期选择控件
+    _time.inputView = datePicker4; // 设置键盘为日期选择控件
     
     UIToolbar *tool=[[UIToolbar alloc]init];
     tool.frame=CGRectMake(0, 0, 320, 44);
@@ -324,31 +342,32 @@
 - (NSString *)birthdayChange:(UIDatePicker *)picker
 {
     
-    
-    
-    
     NSDateFormatter *fmt = [[NSDateFormatter alloc] init];
     fmt.dateFormat = @"YYYY-MM-dd HH:mm:sss";
     NSString* timeStr =[fmt stringFromDate:picker.date];
-    self.btime.text=timeStr;
+    _time.text=timeStr;
+    
     
     NSString *timeSp = [NSString stringWithFormat:@"%ld", (long)[picker.date timeIntervalSince1970]];
+     NSLog(@"时间戳----%@",timeSp);
     _time1=timeSp;
     
     return _time1;
 }
 
+
+
+
 - (void)settingKeyboard2
 {
     // 1.生日
-    
     UIDatePicker *datePicker5 = [[UIDatePicker alloc] init];
-    datePicker5.datePickerMode = UIDatePickerModeDateAndTime; // 只显示日期5
+    datePicker5.datePickerMode = UIDatePickerModeDate; // 只显示日期5
     datePicker5.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"Chinese"];
+    
     [datePicker5 addTarget:self action:@selector(birthdayChange2:) forControlEvents:UIControlEventValueChanged];
     
-    self.btime.inputView = datePicker5; // 设置键盘为日期选择控件
-    
+    _btime.inputView = datePicker5; // 设置键盘为日期选择控件
     
     UIToolbar *tool=[[UIToolbar alloc]init];
     tool.frame=CGRectMake(0, 0, 320, 44);
@@ -360,7 +379,8 @@
     UIBarButtonItem *item2=[[UIBarButtonItem alloc]initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(tapOnce)];
     item2.tintColor=[UIColor whiteColor];
     tool.items=@[item1,item2];
-   _btime.inputAccessoryView=tool;
+    
+    _btime.inputAccessoryView=tool;
     
     
     _btime.delegate = self;
@@ -368,18 +388,14 @@
 - (NSString *)birthdayChange2:(UIDatePicker *)picker
 {
     
-    NSDate *newDate =[NSDate date];
-    NSDateFormatter *fmt2 = [[NSDateFormatter alloc] init];
-    fmt2.dateFormat = @"YYYY-MM-dd HH:mm:sss";
-    NSString* timeStr2 =[fmt2 stringFromDate:newDate];
-    self.btime.text=timeStr2;
     
     NSDateFormatter *fmt = [[NSDateFormatter alloc] init];
     fmt.dateFormat = @"YYYY-MM-dd HH:mm:sss";
     NSString* timeStr =[fmt stringFromDate:picker.date];
-   self.btime.text=timeStr;
+    _btime.text=timeStr;
     
     NSString *timeSp = [NSString stringWithFormat:@"%ld", (long)[picker.date timeIntervalSince1970]];
+    NSLog(@"时间戳----%@",timeSp);
     _time2=timeSp;
     
     return _time2;

@@ -114,8 +114,8 @@ self.tabBarController.tabBar.hidden=YES;
     NSString *myString = [userDefaultes stringForKey:@"myidt"];
     
     NSString *urlStr = [NSString stringWithFormat:@"%@/api/YWT_YWLog.ashx?action=getlist&q0=%@&q1=%d",urlt,myString,indes];
-    self.tableview.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-        
+//    self.tableview.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+    
         NSString *str = @"type=focus-c";
   
     AFHTTPRequestOperation *op=[self POSTurlString:urlStr parameters:str];
@@ -138,9 +138,9 @@ self.tabBarController.tabBar.hidden=YES;
     [[NSOperationQueue mainQueue] addOperation:op];
     
         
-    }];
-    self.tableview.header.autoChangeAlpha = YES;
-    [self.tableview.header beginRefreshing];
+//    }];
+//    self.tableview.header.autoChangeAlpha = YES;
+//    [self.tableview.header beginRefreshing];
 
   
     

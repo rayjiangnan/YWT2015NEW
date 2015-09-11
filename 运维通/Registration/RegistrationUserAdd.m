@@ -157,7 +157,7 @@
     
     NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Registration.ashx?action=getlist&q0=%@&q1=%d",urlt,Create_User,indes];
     NSLog(@"000000000000-－－%@",urlStr2);
-     self.tableview.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+//     self.tableview.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
     AFHTTPRequestOperation *op=[self GETurlString:urlStr2];
     
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -177,9 +177,9 @@
         return ;
     }];
     [[NSOperationQueue mainQueue] addOperation:op];
-     }];
-    self.tableview.header.autoChangeAlpha = YES;
-    [self.tableview.header beginRefreshing];
+//     }];
+//    self.tableview.header.autoChangeAlpha = YES;
+//    [self.tableview.header beginRefreshing];
 }
 
 

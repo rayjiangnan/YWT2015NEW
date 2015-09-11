@@ -126,6 +126,7 @@
 		39998D8B1B52B781001D4BCA /* pinyin.c in Sources */ = {isa = PBXBuildFile; fileRef = 39998D891B52B781001D4BCA /* pinyin.c */; };
 		39998D8E1B52B7CE001D4BCA /* editview.m in Sources */ = {isa = PBXBuildFile; fileRef = 39998D8D1B52B7CE001D4BCA /* editview.m */; };
 		39998D911B52B7DF001D4BCA /* addperson.m in Sources */ = {isa = PBXBuildFile; fileRef = 39998D901B52B7DF001D4BCA /* addperson.m */; };
+		4E7FA0E81BA27D52001769AE /* companyRenzhen.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E7FA0E71BA27D52001769AE /* companyRenzhen.m */; };
 		4EC9671B1B5C971D00A59F0B /* AMap.bundle in Frameworks */ = {isa = PBXBuildFile; fileRef = 78402A6D1B5BA73800908FA9 /* AMap.bundle */; };
 		4EC9671D1B5C979A00A59F0B /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4EC9671C1B5C979A00A59F0B /* OpenGLES.framework */; };
 		4EC9671F1B5C97A600A59F0B /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4EC9671E1B5C97A600A59F0B /* CoreTelephony.framework */; };
@@ -440,6 +441,8 @@
 		39998D8D1B52B7CE001D4BCA /* editview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = editview.m; sourceTree = "<group>"; };
 		39998D8F1B52B7DF001D4BCA /* addperson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = addperson.h; sourceTree = "<group>"; };
 		39998D901B52B7DF001D4BCA /* addperson.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = addperson.m; sourceTree = "<group>"; };
+		4E7FA0E61BA27D52001769AE /* companyRenzhen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = companyRenzhen.h; sourceTree = "<group>"; };
+		4E7FA0E71BA27D52001769AE /* companyRenzhen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = companyRenzhen.m; sourceTree = "<group>"; };
 		4EC9671C1B5C979A00A59F0B /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		4EC9671E1B5C97A600A59F0B /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		4EC967201B5C97C700A59F0B /* libstdc++.6.0.9.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.6.0.9.dylib"; path = "usr/lib/libstdc++.6.0.9.dylib"; sourceTree = SDKROOT; };
@@ -670,6 +673,8 @@
 				7878B70F1B59F59B004CB296 /* gongs.m */,
 				284A5F591B7ECF0E000DF654 /* genxin.h */,
 				284A5F5A1B7ECF0E000DF654 /* genxin.m */,
+				4E7FA0E61BA27D52001769AE /* companyRenzhen.h */,
+				4E7FA0E71BA27D52001769AE /* companyRenzhen.m */,
 			);
 			name = geren;
 			sourceTree = "<group>";
@@ -1624,6 +1629,7 @@
 				39998D8E1B52B7CE001D4BCA /* editview.m in Sources */,
 				7860A55B1B63BFA60067253C /* MJRefreshAutoStateFooter.m in Sources */,
 				289E4EED1B7E2A1600C19D13 /* WarehouseView.m in Sources */,
+				4E7FA0E81BA27D52001769AE /* companyRenzhen.m in Sources */,
 				78590C1C1B5FF27A00AF38DD /* beginorder.m in Sources */,
 				283A8D2F1B6E2664001DF53A /* dayCell.m in Sources */,
 				28780FCC1B8F6C9700023040 /* beginpiclist.m in Sources */,
