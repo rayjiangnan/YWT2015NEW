@@ -8,7 +8,10 @@
 
 #import "pinjia.h"
 #import "MBProgressHUD+MJ.h"
-
+#import "AFNetworkTool.h"
+#import "MJRefresh.h"
+#import "UIViewController+Extension.h"
+#import "SBJson.h"
 
 @interface pinjia ()
 @property (weak, nonatomic) IBOutlet UILabel *danhao;
@@ -124,57 +127,53 @@
 
 
 - (IBAction)post:(id)sender {
-    //NSString *lat=[NSString stringWithFormat:@"%f",_locationManager.location.coordinate.latitude];
-    //NSString *longti=[NSString stringWithFormat:@"%f",_locationManager.location.coordinate.longitude];
-
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *myString = [userDefaultes stringForKey:@"myidt"];
-    
-    [self postJSON:@"0" :_idtt :@"完成" :_xin :self.py.text :myString];
-    
+    [self postJSON];
 }
 
 -(NSString *)idt:(NSString *)id1{
     _idtt=id1;
     return _idtt ;
 }
-
-- (void)postJSON:(NSString *)Assess_Type:(NSString *)Order_ID:(NSString *)YW_Result:(NSString *)Score:(NSString *)AssessContent:(NSString *)Create_User
+-(NSString*) SetValue {
+    
+    
+    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
+    NSString *Create_User = [userDefaultes stringForKey:@"myidt"];
+    
+    //NSMutableArray *jsonArray = [[NSMutableArray alloc]init];//创建最外层的数组
+    NSMutableDictionary *dic = [[NSMutableDictionary alloc]init];//创建内层的字典
+    [dic setValue:@"0" forKey:@"Assess_Type"];
+    [dic setValue:_idtt forKey:@"Order_ID"];
+    [dic setValue:@"完成" forKey:@"YW_Result"];
+    [dic setValue:_xin forKey:@"Score"];
+    [dic setValue:self.py.text forKey:@"AssessContent"];
+    [dic setValue:Create_User forKey:@"Creator"];
+    
+    SBJsonWriter *jsonWriter = [[SBJsonWriter alloc] init];
+    NSString *jsonString = [jsonWriter stringWithObject:dic];
+    return jsonString;
+   
+}
+- (void)postJSON
 {
-    //YWT_Order.ashx?action=orderassess&q0=
-    
     NSString *urlstr=[NSString stringWithFormat:@"%@/API/YWT_Order.ashx",urlt];
-
-    NSString *dest=[NSString stringWithFormat:@"{\"Assess_Type\":\"%@\",\"Order_ID\":\"%@\",\"YW_Result\":\"%@\",\"Score\":\"%@\",\"AssessContent\":\"%@\",\"Creator\":\"%@\"}",Assess_Type,Order_ID,YW_Result,Score,AssessContent,Create_User];
+    NSString *strparameters = [NSString stringWithFormat:@"action=orderassess&q0=%@",[self SetValue]];
     
-    NSString *str = [NSString stringWithFormat:@"action=orderassess&q0=%@",dest];
-    
-    
-    NSLog(@"%@?%@",urlstr,str);
-
-    
-    AFHTTPRequestOperation *op=[self POSTurlString:urlstr parameters:str];
+    NSLog(@"%@?%@",urlstr,strparameters);
+    AFHTTPRequestOperation *op=[self POSTurlString:urlstr parameters:strparameters];
     
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        
-        
-        NSDictionary *dict=responseObject;
-        
-        NSString *sta=[NSString stringWithFormat:@"%@",dict[@"Status"]];
-        
-        
-        
-        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            
-            if ([sta isEqualToString:@"1"]){
-                [MBProgressHUD showSuccess:@"评价成功！"];
-                [[self navigationController] popViewControllerAnimated:YES];
-            }else{
-                [MBProgressHUD showError:sta];
-                return ;
-            }
-        }];
+        NSMutableDictionary *json=responseObject;
+        NSString *Status=[NSString stringWithFormat:@"%@",json[@"Status"]];
+        if ([Status isEqualToString:@"0"]){
+            NSString *ReturnMsg=[NSString stringWithFormat:@"%@",json[@"ReturnMsg"]];
+            [MBProgressHUD showError:ReturnMsg];
+            NSLog(@"%@",ReturnMsg);
+        }else{
+            [MBProgressHUD showSuccess:@"评价成功！"];
+            [[self navigationController] popViewControllerAnimated:YES];
+            return ;
+        }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [MBProgressHUD showError:@"网络请求出错"];
         return ;
@@ -186,13 +185,7 @@
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     [self requestaaa];
-//    id vc=segue.destinationViewController;
-//    if ([vc isKindOfClass:[finishion class]]) {
-//        finishion *detai=vc;
-//        NSString *mystring2=[NSString stringWithFormat:@"%@",_idtt];
-//        [detai setValue:mystring2 forKey:@"strTtile"];
-//        
-//    }
+
 }
 
 -(void)tapBackground

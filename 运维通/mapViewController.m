@@ -71,7 +71,8 @@
         
         _locationManager.pausesLocationUpdatesAutomatically = NO;
     }
-    self.mapView.userTrackingMode=MKUserTrackingModeFollowWithHeading;
+    //self.mapView.userTrackingMode=MKUserTrackingModeFollowWithHeading;
+    [self.mapView setUserTrackingMode:MKUserTrackingModeFollow animated:NO];
     self.mapView.delegate = self;
     _geocoder=[[CLGeocoder alloc]init];
         _search = [[AMapSearchAPI alloc] initWithSearchKey:@"84b236dd100187d3b2f86f878bbf1b33" Delegate:self];

@@ -60,7 +60,8 @@
     
     
     
-    self._mapview.userTrackingMode=MKUserTrackingModeFollowWithHeading;
+    //self._mapview.userTrackingMode=MKUserTrackingModeFollowWithHeading;
+    [self._mapview setUserTrackingMode:MKUserTrackingModeFollow animated:NO];
     self._mapview.delegate = self;
     
     if ([CLLocationManager locationServicesEnabled]) {
@@ -95,7 +96,7 @@
     userLocation.title=@"当前位置";
     //userLocation.subtitle=@"";
     
-    CLLocationCoordinate2D center=userLocation.location.coordinate;
+    //CLLocationCoordinate2D center=userLocation.location.coordinate;
     //  [self postJSON:lati:longti];
     
     
@@ -115,7 +116,7 @@
 }
 
 -(void)ann{
-    if (_tgs.count==nil) {
+    if (_tgs.count==0) {
         return;
     }else{
         int index=_tgs.count;
@@ -150,7 +151,7 @@
 
 -(void)annew{
     [_mapview removeAnnotations:self._mapview.annotations];
-    if (_tgs.count==nil) {
+    if (_tgs.count==0) {
         return;
     }else{
         int index=_tgs.count;
@@ -241,22 +242,10 @@
             [self netwok:dictarr2];
             [self ann];
         }else{
-            
-           
-                
-                
-                return ;
-                
-          
-            
+            return ;
         }
-                }];
+        }];
     }];
-    
-    
-    
-    
-    
 }
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation
