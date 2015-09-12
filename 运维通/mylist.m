@@ -10,9 +10,12 @@
 #import "MBProgressHUD+MJ.h"
 #import "mycell.h"
 #import "applyorder.h"
+#import "MJRefresh.h"
 
 @interface mylist ()<UITableViewDataSource,UITableViewDelegate,UIWebViewDelegate>
-
+{
+   int pagnum;
+}
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
 @property (nonatomic, strong) NSMutableArray *tgs;
 
@@ -31,13 +34,14 @@
         
         self.tabBarController.tabBar.hidden=NO;
     }
+    pagnum=0;
     [self network2];
     [self.tableview reloadData];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-  
+    [self repeatnetwork];
     self.tableview.rowHeight=155;
 }
 
@@ -175,12 +179,51 @@
         [MBProgressHUD showError:@"网络请求出错"];
         return ;
     }
+
+    
+}
+
+-(void )repeatnetwork{
     
     
-    
+    self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
     
     
 }
+
+-(void)loadMoreData
+{
+    
+    pagnum=pagnum+1;
+    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
+    NSString *myString = [userDefaultes stringForKey:@"myidt"];
+    
+    NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_OrderPlatform.ashx?action=getlistforall&q0=%d",urlt,pagnum];
+
+    
+    AFHTTPRequestOperation *op=[self GETurlString:urlStr2];
+    [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSMutableDictionary *dict=responseObject;
+          NSMutableArray *dictarr=[[dict objectForKey:@"ResultObject"] mutableCopy];
+        if(![dictarr isEqual:[NSNull null]])
+        {
+            [_tgs addObjectsFromArray:dictarr];
+            [self.tableview reloadData];
+        }
+        [self.tableview.footer endRefreshing];
+        self.tableview.footer.autoChangeAlpha=YES;
+        
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [MBProgressHUD showError:@"网络请求出错"];
+    }];
+    [[NSOperationQueue mainQueue] addOperation:op];
+    
+    
+}
+
+
+
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     id vc=segue.destinationViewController;
     if ([vc isKindOfClass:[applyorder class]]) {

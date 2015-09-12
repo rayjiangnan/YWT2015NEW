@@ -14,9 +14,13 @@
 #import "plistcell.h"
 #import "plist.h"
 
+
 @interface robarorderlist ()<UITableViewDataSource,UITableViewDelegate>
 {
     int parameterNumber;
+    int selectnum;
+    int pagenum1;
+    int pagenum2;
     UIButton *_selectBut;
     UILabel *_scrollLabel;
 }
@@ -37,6 +41,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self netWorkRequest:0];
+    
+     selectnum=1;
+    pagenum1=0;
+    pagenum2=0;
+    
+    [self repeatnetwork];
     self.tableview.rowHeight=155;
     self.tableview.separatorStyle = UITableViewCellSeparatorStyleNone;
     
@@ -207,11 +217,62 @@
 
 
 
+-(void )repeatnetwork{
+    
+    
+    self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+    
+    
+}
+
+-(void)loadMoreData
+{
+    NSString *urlStr2;
+    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
+    NSString *myString = [userDefaultes stringForKey:@"myidt"];
+    
+    if (selectnum==1) {
+        pagenum1=pagenum1+1;
+        NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
+        NSString *myString = [userDefaultes stringForKey:@"myidt"];
+        
+         urlStr2= [NSString stringWithFormat:@"%@/api/YWT_OrderPlatform.ashx?action=ywusergetlist&q0=%d&q1=%@",urlt,pagenum1,myString];
+    }else  if (selectnum==2) {
+        pagenum2=pagenum2+1;
+        NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
+        NSString *myString = [userDefaultes stringForKey:@"myidt"];
+        
+        urlStr2= [NSString stringWithFormat:@"%@/api/YWT_OrderPlatform.ashx?action=applyrecord&q0=%d&q1=%@",urlt,pagenum2,myString];
+    }
+    NSLog(@"999999999----%@",urlStr2);
+    AFHTTPRequestOperation *op=[self GETurlString:urlStr2];
+    [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSMutableDictionary *dict=responseObject;
+        NSMutableArray *dictarr=[[dict objectForKey:@"ResultObject"] mutableCopy];
+        if(![dictarr isEqual:[NSNull null]])
+        {
+            [_tgs addObjectsFromArray:dictarr];
+            [self.tableview reloadData];
+        }
+        [self.tableview.footer endRefreshing];
+        self.tableview.footer.autoChangeAlpha=YES;
+        
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [MBProgressHUD showError:@"网络请求出错"];
+    }];
+    [[NSOperationQueue mainQueue] addOperation:op];
+    
+    
+}
+
+
 
 - (IBAction)didClickAllAction:(UIButton *)sender {
     
     [self publicMethod:sender];
     parameterNumber=0;
+    selectnum=1;
     [UIView animateWithDuration:0.5 animations:^{
      
         _scrollLabel.frame=CGRectMake(0, 117, self.view.frame.size.width/2.0, 2);
@@ -225,7 +286,7 @@
     [self publicMethod:sender];
     
     parameterNumber=0;
- 
+    selectnum=2;
     [UIView animateWithDuration:0.5 animations:^{
         
         _scrollLabel.frame=CGRectMake(self.view.frame.size.width/2.0, 117,self.view.frame.size.width/2.0, 2);
