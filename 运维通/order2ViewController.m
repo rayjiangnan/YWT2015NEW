@@ -10,15 +10,17 @@
 #import "hjnTG.h"
 #import "orderModel.h"
 #import "orderdetail.h"
-//#import "ordermapViewController.h"
 #import "MBProgressHUD+MJ.h"
 #import "AFNetworkTool.h"
+#import "MJRefresh.h"
 
 //#import"CbscsController.h"
 
 @interface order2ViewController () <UITableViewDataSource,UITableViewDelegate,UIWebViewDelegate>
 {
     NSInteger rowNumber;
+    int pagenum;
+    int num;
 }
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentControl;
 
@@ -56,6 +58,7 @@
     [self indexchang:self.segmentControl];
     [self.tableView reloadData];
 [AFNetworkTool netWorkStatus];
+    num=0;
     
 }
 
@@ -104,15 +107,7 @@
     self.tableView.rowHeight=155;
     [self indexchang:self.segmentControl];
     self.tableView.delegate=self;
-    
-    if (_refreshHeaderView == nil) {
-        
-        EGORefreshTableHeaderView *view = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.tableView.bounds.size.height, self.view.frame.size.width, self.tableView.bounds.size.height)];
-        view.delegate = self;
-        [self.tableView addSubview:view];
-        _refreshHeaderView = view;
-        
-    }
+
 
     NSString *usertype= [userDefaultes stringForKey:@"usertype"];
     if ([usertype isEqualToString:@"20"]) {
@@ -120,7 +115,7 @@
     }else if([usertype isEqualToString:@"40"]){
      self.addbtn1.hidden=YES;
     }
-    
+    [self repeatnetwork];
     indexa=0;
 }
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -310,29 +305,7 @@
         [detai setValue:orderq forKey:@"strTtile"];
       
     }
-//    if ([vc isKindOfClass:[ordermapViewController class]]) {
-//        ordermapViewController *detai2=vc;
-//        
-//        NSDictionary *rowdata=[self.tgs objectAtIndex:_idtt3];
-//        // NSLog(@"+++++%@",rowdata);
-//        NSString *orderq=rowdata[@"ID"];
-//        //  NSLog(@"+++%@",orderq);
-//        [detai2 setValue:orderq forKey:@"strTtile"];
-//    }
-//    
-//    if ([vc isKindOfClass:[CbscsController class]]) {
-//        
-//        
-//        NSDictionary *rowdata=[self.tgs objectAtIndex:rowNumber];
-//        NSString *orderq=rowdata[@"ID"];
-//        NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-//        NSString *myString = [userDefaultes stringForKey:@"myidt"];
-//        CbscsController *cbscsVC=vc;
-//        cbscsVC.receiveOrderq=orderq;
-//        cbscsVC.receiveMyString=myString;
-//        NSString *aa=rowdata[@"wlsend_SysCode"];
-//        cbscsVC.receiveCbscs=aa;
-//    }
+
 }
 
 -(NSInteger *)num{
@@ -359,13 +332,11 @@
 
         
         NSInteger colum=sender.selectedSegmentIndex;
-        NSInteger indes=colum-1;
+        pagenum=colum-1;
         NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
         NSString *myString = [userDefaultes stringForKey:@"myidt"];
-        
-        // NSString *tr=@"B6D13BE7-990C-4DA6-A757-088ED994D9EA";
-        // NSLog(@"%@",myString);
-        NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Order.ashx?action=getlist&q0=0&q1=%@&q2=%ld",urlt,myString,(long)indes];
+
+        NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Order.ashx?action=getlist&q0=0&q1=%@&q2=%d",urlt,myString,pagenum];
         NSURL *url = [NSURL URLWithString:urlStr2];
 
     NSLog(@"%@",url);
@@ -435,128 +406,55 @@
 }
 
 
-#pragma mark -
-#pragma mark Data Source Loading / Reloading Methods
 
-- (void)reloadTableViewDataSource{
-    
-    //  should be calling your tableviews data source model to reload
-    //  put here just for demo
-    _reloading = YES;
-    
-}
-
-- (void)doneLoadingTableViewData{
-    
-    //  model should call this when its done loading
-    _reloading = NO;
-    [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
-    
-}
-
-
-#pragma mark -
-#pragma mark UIScrollViewDelegate Methods
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    
-    [_refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
-    
-    
-}
-
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
-    
-    [_refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
-    
-    
-}
-
-
-#pragma mark -
-#pragma mark EGORefreshTableHeaderDelegate Methods
-
-- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view{
-    
-    [self reloadTableViewDataSource];
-    
-    [self performSelector:@selector(doneLoadingTableViewData) withObject:nil afterDelay:3.0];
-    
-    
-}
-
-- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view{
-    
-    return _reloading; // should return if data source model is reloading
-    
-}
-
-- (NSDate*)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView*)view{
-    [self ren];
-    [self repeatnetwork];
-    [self.tableView reloadData];
-    return [NSDate date]; // should return date data source was last changed
-}
 
 -(NSMutableArray *)repeatnetwork{
+    
+    
+    self.tableView.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+    
+    return _tgs;
+    
+    
+}
 
+
+-(void)loadMoreData
+{
+    num=num+1;
+    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
+    NSString *myString = [userDefaultes stringForKey:@"myidt"];
+    
+   NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Order.ashx?action=getlist&q0=%d&q1=%@&q2=%d",urlt,num,myString,pagenum];
+    
+    NSLog(@"000000000000-－－%@",urlStr2);
+    
+    AFHTTPRequestOperation *op=[self GETurlString:urlStr2];
+    [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSMutableDictionary *dict=responseObject;
+           NSMutableArray *dictarr=[[dict objectForKey:@"ResultObject"] mutableCopy];
+        if(![dictarr isEqual:[NSNull null]])
+        {
+            if (dictarr.count>0) {
+
+                [_tgs addObjectsFromArray:dictarr];
+                [self.tableView reloadData];
+                
+            }
+        }        [self.tableView.footer endRefreshing];
+        self.tableView.footer.autoChangeAlpha=YES;
         
-        NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-        NSString *myString = [userDefaultes stringForKey:@"myidt"];
         
-        // NSString *tr=@"B6D13BE7-990C-4DA6-A757-088ED994D9EA";
-    
-        NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Order.ashx?action=getlist&q0=%d&q1=%@&q2=-1",urlt,indexa,myString];
-        NSURL *url = [NSURL URLWithString:urlStr2];
-        
-        [AFNetworkTool JSONDataWithUrl:[NSString stringWithFormat:@"%@",url] success:^(id json) {
-            NSMutableDictionary *dict=json;
-            
-            NSArray *dictarr=[dict objectForKey:@"ResultObject"];
-            
-            [_tgs addObjectsFromArray:dictarr];
-            
-         
-         
-            // 提示:NSURLConnection异步方法回调,是在子线程
-            // 得到回调之后,通常更新UI,是在主线程
-            //        NSLog(@"%@", [NSThread currentThread]);
-        } fail:^{
-            [MBProgressHUD showError:@"网络请求出错"];
-
-            NSLog(@"请求失败");
-            return ;
-        }];
-        return _tgs;
-        [self.tableView reloadData];
-        
-
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [MBProgressHUD showError:@"网络请求出错"];
+    }];
+    [[NSOperationQueue mainQueue] addOperation:op];
     
     
 }
 
 
--(int)ren{
-    indexa=indexa+1;
-    return indexa;
-}
 
-#pragma mark -
-#pragma mark Memory Management
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-}
-
-- (void)viewDidUnload {
-    _refreshHeaderView=nil;
-}
-
-- (void)dealloc {
-    
-    _refreshHeaderView = nil;
-    
-}
 
 
 @end

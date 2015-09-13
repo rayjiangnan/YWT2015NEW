@@ -10,8 +10,14 @@
 #import "MBProgressHUD+MJ.h"
 #import "AFNetworkTool.h"
 #import "userapplylist.h"
+#import "finishion.h"
+#import "pinjia.h"
 
 @interface plistdetail ()
+{
+    int num;
+
+}
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollview;
 
 
@@ -88,9 +94,20 @@
         NSLog(@"%@----",sta);
         if ([sta isEqualToString:@"0"]) {
             self.postbtn.hidden=NO;
+            num=1;
+        }else if([sta isEqualToString:@"30"]&[[NSString stringWithFormat:@"%@",dict[@"FlowRight"]] isEqualToString:@"1"]){
+            [self.postbtn setTitle:@"完成运维" forState:UIControlStateNormal];
+        self.postbtn.hidden=NO;
+            num=2;
+        }else if([sta isEqualToString:@"90"]&[[NSString stringWithFormat:@"%@",dict[@"FlowRight"]] isEqualToString:@"1"]){
+            [self.postbtn setTitle:@"评价运维" forState:UIControlStateNormal];
+            self.postbtn.hidden=NO;
+            num=3;
         }else{
-        self.postbtn.hidden=YES;
+         self.postbtn.hidden=YES;
         }
+        
+        
         self.dh.text=dict[@"OrderNo"];
         NSString *dt3=dict[@"CreateDateTime"];
         dt3=[dt3 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
@@ -105,8 +122,7 @@
         [self idt:dict[@"Order_ID"]];
         //        [self idt:dict[@"Order_ID"]];
         self.yf.text=[NSString stringWithFormat:@"%@",dict[@"Freight"]];
-        self.lxr.text=dict[@"ContactMan"];
-        self.dh.text=dict[@"ContactMobile"];
+        self.lxr.text=[NSString stringWithFormat:@"%@  %@",dict[@"ContactMan"],dict[@"ContactMobile"]];
         self.ywdz.text=dict[@"Task_Address"];
         self.bt.text=dict[@"OrderTitle"];
         NSString *st=dict[@"OrderType_Name"];
@@ -116,6 +132,8 @@
         self.gzrw.text=dict[@"OrderTask"];
         self.gzsc.text=[NSString stringWithFormat:@"%@",dict[@"TaskTimeLen"]];
         self.bz.text=dict[@"Remark"];
+        
+        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
         [MBProgressHUD showError:@"网络异常！"];
@@ -141,12 +159,32 @@
         [detai setValue:_idtt forKey:@"strTtile"];
         
     }
-    
+    if ([vc isKindOfClass:[finishion class]]) {
+        finishion *detai=vc;
+        NSString *mystring2=[NSString stringWithFormat:@"%@",_idtt];
+        [detai setValue:mystring2 forKey:@"strTtile"];
+        
+    }
+    if ([vc isKindOfClass:[pinjia class]]) {
+        pinjia *detai=vc;
+        NSString *mystring2=[NSString stringWithFormat:@"%@",_idtt];
+        [detai setValue:mystring2 forKey:@"strTtile"];
+        
+    }
 }
 
 
 - (IBAction)postapply:(id)sender {
-    [self performSegueWithIdentifier:@"sq" sender:nil];
+    if (num==1) {
+       [self performSegueWithIdentifier:@"sq" sender:nil];
+    }else if(num==2){
+    
+      [self performSegueWithIdentifier:@"wc" sender:nil];
+    }else if(num==3){
+        
+        [self performSegueWithIdentifier:@"pj" sender:nil];
+    }
+   
 }
 
 

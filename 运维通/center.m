@@ -484,6 +484,8 @@
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         NSString *g2=@"";
         [userDefaults setObject:g2 forKey:@"passkey"];
+        [userDefaults setObject:g2 forKey:@"autopass"];
+        [userDefaults setObject:g2 forKey:@"myidt"];
         [self performSegueWithIdentifier:@"fanhui" sender:nil];
         
     }}

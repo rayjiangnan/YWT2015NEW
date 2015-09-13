@@ -75,7 +75,7 @@
         NSString *img=[NSString stringWithFormat:@"%@%@",urlt,dict2[@"UserImg"]];
         NSURL *imgurl=[NSURL URLWithString:img];
         //cell.img.image=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
-        [cell.imageView setImageWithURL:imgurl placeholderImage:[UIImage imageNamed:img]];
+        [cell.img setImageWithURL:imgurl placeholderImage:[UIImage imageNamed:img]];
     }
     cell.name.text=dict2[@"RealName"];
     NSString *dt3=dict2[@"Create_Date"];

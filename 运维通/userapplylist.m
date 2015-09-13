@@ -25,7 +25,7 @@
     [super viewDidLoad];
     [self requestaaa];
     [self.tableview reloadData];
-    self.tableview.rowHeight=200;
+    self.tableview.rowHeight=255;
 }
 
 -(NSMutableArray *)netwok:(NSMutableArray *)array
@@ -68,8 +68,71 @@
     
     NSString *lr=[NSString stringWithFormat:@"%@  %@",dict2[@"ContactMan"],dict2[@"ContactMobile"]];
     cell.lxr.text=lr;
-    cell.xin.text=[NSString stringWithFormat:@"%@",dict2[@"Stars"]];
-    cell.pf.text=[NSString stringWithFormat:@"%@",dict2[@"ScoreAvg"]];
+    NSString *xin=[NSString stringWithFormat:@"%@",dict2[@"Stars"]];
+    if ([xin isEqualToString:@"5"]) {
+        
+    }
+    if ([xin isEqualToString:@"4"]) {
+        cell.x5.image=[UIImage imageNamed:@"hxx"];
+    }
+    if ([xin isEqualToString:@"3"]) {
+        
+        cell.x4.image=[UIImage imageNamed:@"hxx"];
+        cell.x5.image=[UIImage imageNamed:@"hxx"];
+    }
+    if ([xin isEqualToString:@"2"]) {
+        
+        cell.x3.image=[UIImage imageNamed:@"hxx"];
+        cell.x4.image=[UIImage imageNamed:@"hxx"];
+        cell.x5.image=[UIImage imageNamed:@"hxx"];
+    }
+    if ([xin isEqualToString:@"1"]) {
+        
+        cell.x2.image=[UIImage imageNamed:@"hxx"];
+        cell.x3.image=[UIImage imageNamed:@"hxx"];
+        cell.x4.image=[UIImage imageNamed:@"hxx"];
+        cell.x5.image=[UIImage imageNamed:@"hxx"];
+    }
+    if ([xin isEqualToString:@"0"]) {
+        cell.x1.image=[UIImage imageNamed:@"hxx"];
+        cell.x2.image=[UIImage imageNamed:@"hxx"];
+        cell.x3.image=[UIImage imageNamed:@"hxx"];
+        cell.x4.image=[UIImage imageNamed:@"hxx"];
+        cell.x5.image=[UIImage imageNamed:@"hxx"];
+    }
+    
+    NSString *fen=[NSString stringWithFormat:@"%@",dict2[@"ScoreAvg"]];
+    if ([fen isEqualToString:@"5"]) {
+        
+    }
+    if ([fen isEqualToString:@"4"]) {
+        cell.f5.image=[UIImage imageNamed:@"hxx"];
+    }
+    if ([fen isEqualToString:@"3"]) {
+        
+        cell.f4.image=[UIImage imageNamed:@"hxx"];
+        cell.f5.image=[UIImage imageNamed:@"hxx"];
+    }
+    if ([fen isEqualToString:@"2"]) {
+        
+        cell.f3.image=[UIImage imageNamed:@"hxx"];
+        cell.f4.image=[UIImage imageNamed:@"hxx"];
+        cell.f5.image=[UIImage imageNamed:@"hxx"];
+    }
+    if ([fen isEqualToString:@"1"]) {
+        
+        cell.f2.image=[UIImage imageNamed:@"hxx"];
+        cell.f3.image=[UIImage imageNamed:@"hxx"];
+        cell.f4.image=[UIImage imageNamed:@"hxx"];
+        cell.f5.image=[UIImage imageNamed:@"hxx"];
+    }
+    if ([fen isEqualToString:@"0"]) {
+        cell.f1.image=[UIImage imageNamed:@"hxx"];
+        cell.f2.image=[UIImage imageNamed:@"hxx"];
+        cell.f3.image=[UIImage imageNamed:@"hxx"];
+        cell.f4.image=[UIImage imageNamed:@"hxx"];
+        cell.f5.image=[UIImage imageNamed:@"hxx"];
+    }
     cell.wcds.text=[NSString stringWithFormat:@"%@",dict2[@"OrderFinishNum"]];
     cell.text.text=dict2[@"Apply_Content"];
     [cell.btn addTarget:self action:@selector(genz2:) forControlEvents:UIControlEventTouchUpInside];

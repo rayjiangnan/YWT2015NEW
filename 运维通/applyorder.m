@@ -112,8 +112,7 @@
         self.wcds.text=[NSString stringWithFormat:@"%@",dict[@"OrderFinishNum"]];
 //        [self idt:dict[@"Order_ID"]];
         self.yf.text=[NSString stringWithFormat:@"%@",dict[@"Freight"]];
-        self.lxr.text=dict[@"ContactMan"];
-        self.dh.text=dict[@"ContactMobile"];
+           self.lxr.text=[NSString stringWithFormat:@"%@  %@",dict[@"ContactMan"],dict[@"ContactMobile"]];
         self.ywdz.text=dict[@"Task_Address"];
         self.bt.text=dict[@"OrderTitle"];
         NSString *st=dict[@"OrderType_Name"];

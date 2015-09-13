@@ -114,8 +114,7 @@
         self.wcds.text=[NSString stringWithFormat:@"%@",dict[@"OrderFinishNum"]];
         //        [self idt:dict[@"Order_ID"]];
         self.yf.text=[NSString stringWithFormat:@"%@",dict[@"Freight"]];
-        self.lxr.text=dict[@"ContactMan"];
-        self.dh.text=dict[@"ContactMobile"];
+           self.lxr.text=[NSString stringWithFormat:@"%@  %@",dict[@"ContactMan"],dict[@"ContactMobile"]];
         self.ywdz.text=dict[@"Task_Address"];
         self.bt.text=dict[@"OrderTitle"];
         NSString *st=dict[@"OrderType_Name"];
@@ -202,15 +201,17 @@
             
             self.postbtn.hidden=NO;
             
-        }else if ([status isEqualToString:@"30"]) {
+        }else if ([status isEqualToString:@"30"]&[[NSString stringWithFormat:@"%@",dict[@"FlowRight"]] isEqualToString:@"1"]) {
           
             [self.postbtn setTitle:@"完成维运" forState:UIControlStateNormal];
-        }else if ([status isEqualToString:@"90"]) {
+        }else if ([status isEqualToString:@"90"]&[[NSString stringWithFormat:@"%@",dict[@"FlowRight"]] isEqualToString:@"1"]) {
      
             [self.postbtn setTitle:@"维运评价" forState:UIControlStateNormal];
         }else if ([status isEqualToString:@"99"]) {
          
             self.postbtn.hidden=YES;
+        }else{
+          self.postbtn.hidden=YES;
         }
         _tgs=dict;
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -263,10 +264,10 @@
     if ([status isEqualToString:@"25"]) {
         [self performSegueWithIdentifier:@"begin" sender:nil];
     }
-    if ([status isEqualToString:@"30"]) {
+    if ([status isEqualToString:@"30"]&[[NSString stringWithFormat:@"%@",dict[@"FlowRight"]] isEqualToString:@"1"]) {
         [self performSegueWithIdentifier:@"fi" sender:nil];
     }
-    if ([status isEqualToString:@"90"]) {
+    if ([status isEqualToString:@"90"]&[[NSString stringWithFormat:@"%@",dict[@"FlowRight"]] isEqualToString:@"1"]) {
         [self performSegueWithIdentifier:@"pj" sender:nil];
     }
 }

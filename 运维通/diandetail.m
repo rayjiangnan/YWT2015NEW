@@ -217,7 +217,7 @@
         NSURL *imgurl=[NSURL URLWithString:img];
         
         //cell.img.image=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
-        [cell.imageView setImageWithURL:imgurl placeholderImage:[UIImage imageNamed:img]];
+        [cell.img setImageWithURL:imgurl placeholderImage:[UIImage imageNamed:img]];
     }
     
     NSLog(@"%@",dict2);

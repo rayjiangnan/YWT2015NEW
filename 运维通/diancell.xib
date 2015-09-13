@@ -44,13 +44,6 @@
                         <rect key="frame" x="-7" y="58" width="339" height="5"/>
                         <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.90196078430000004" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="sLc-kr-EzP">
-                        <rect key="frame" x="6" y="8" width="40" height="40"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="40" id="Hd6-vQ-hTh"/>
-                            <constraint firstAttribute="width" constant="40" id="eTy-lx-4pd"/>
-                        </constraints>
-                    </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="写于" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZpL-hb-0et">
                         <rect key="frame" x="52" y="26" width="24" height="25"/>
                         <constraints>
@@ -86,6 +79,13 @@
                         <color key="textColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="sLc-kr-EzP">
+                        <rect key="frame" x="6" y="8" width="40" height="40"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="40" id="Hd6-vQ-hTh"/>
+                            <constraint firstAttribute="width" constant="40" id="eTy-lx-4pd"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
                 <constraints>
                     <constraint firstItem="UeH-SG-WJv" firstAttribute="top" secondItem="93L-2s-U7q" secondAttribute="topMargin" constant="18" id="0sZ-iu-MRK"/>

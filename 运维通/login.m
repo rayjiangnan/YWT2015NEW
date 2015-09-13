@@ -13,11 +13,37 @@
 
 @interface login ()<UIApplicationDelegate,CLLocationManagerDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *useName;
+@property (weak, nonatomic) IBOutlet UISwitch *rememberbtn;
 @property (weak, nonatomic) IBOutlet UITextField *pwd;
 @property (nonatomic, strong) CLLocationManager *_locationManager;
 @end
 
 @implementation login
+
+-(void)viewDidAppear:(BOOL)animated{
+    
+    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
+    NSString *autopass = [userDefaultes stringForKey:@"autopass"];
+    NSString *usertype = [userDefaultes stringForKey:@"usertype"];
+    if ([autopass isEqualToString:@"go"]) {
+        if ([usertype isEqualToString:@"10"]) {
+        
+        [self performSegueWithIdentifier:@"login" sender:nil];
+    }else if ([usertype isEqualToString:@"30"]) {
+        
+        [self performSegueWithIdentifier:@"login" sender:nil];
+    }else if ([usertype isEqualToString:@"20"]) {
+        
+        [self performSegueWithIdentifier:@"sj" sender:nil];
+    }else if ([usertype isEqualToString:@"40"]) {
+        
+        [self performSegueWithIdentifier:@"3yw" sender:nil];
+    }
+
+    }
+    
+    
+}
 
 - (void)viewDidLoad
 {
@@ -160,6 +186,13 @@
                                    
                                     [self performSegueWithIdentifier:@"3yw" sender:nil];
                                 }
+                                if (self.rememberbtn.on) {
+                                    NSString *passkey=@"pass";
+                                    [userDefaults setObject:passkey forKey:@"passkey"];
+                                     [userDefaults setObject:self.pwd.text forKey:@"password"];
+                                }
+
+                                
                             }
                         }
                                                

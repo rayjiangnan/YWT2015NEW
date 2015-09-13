@@ -14,11 +14,13 @@
 #import "MBProgressHUD+MJ.h"
 #import "AFNetworkTool.h"
 #import <CoreLocation/CoreLocation.h>
+#import "MJRefresh.h"
 
 @interface yworderlist ()<UITableViewDataSource,UITableViewDelegate,UIWebViewDelegate,CLLocationManagerDelegate>
 {
     NSInteger rowNumber;
-
+    int pagenum;
+    int num;
 }
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentControl;
 
@@ -56,7 +58,7 @@
     [self.tableView reloadData];
     [AFNetworkTool netWorkStatus];
 
-    
+      num=0;
 
     
 }
@@ -106,17 +108,9 @@
     self.tableView.rowHeight=155;
     [self indexchang:self.segmentControl];
     self.tableView.delegate=self;
-    
-    if (_refreshHeaderView == nil) {
-        
-        EGORefreshTableHeaderView *view = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.tableView.bounds.size.height, self.view.frame.size.width, self.tableView.bounds.size.height)];
-        view.delegate = self;
-        [self.tableView addSubview:view];
-        _refreshHeaderView = view;
-        
-    }
+
     indexa=0;
-    
+    [self repeatnetwork];
 
     
 }
@@ -186,69 +180,69 @@
 
 -(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (editingStyle == UITableViewCellEditingStyleDelete)
-    {
-        
-        NSDictionary *rowdata=[self.tgs objectAtIndex:indexPath.row];
-        //  NSLog(@"%@",rowdata);
-        NSString *orderq=rowdata[@"ID"];
-        
-        NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-        NSString *myString = [userDefaultes stringForKey:@"myidt"];
-        // NSString *tr=@"B6D13BE7-990C-4DA6-A757-088ED994D9EA";
-        
-        
-        
-        
-        NSString *urlStr = [NSString stringWithFormat:@"%@/API/HDL_Order.ashx?action=getaorderall&q0=%@&q1=%@",urlt,orderq,myString];
-        
-        NSURL *url = [NSURL URLWithString:urlStr];
-        
-        NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:2.0f];
-        [request setHTTPMethod:@"POST"];//设置请求方式为POST，默认为GET
-        NSString *str = @"type=focus-c";//设置参数
-        NSData *data = [str dataUsingEncoding:NSUTF8StringEncoding];
-        [request setHTTPBody:data];
-        
-        
-        NSData *received = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
-        if(received!=nil){
-            NSDictionary *dict=[NSJSONSerialization JSONObjectWithData:received options:NSJSONReadingMutableLeaves error:nil];
-            
-            NSDictionary *dictarr2=[dict objectForKey:@"ResultObject"];
-            NSDictionary *dictarr=[dictarr2 objectForKey:@"OrderMain"];
-            NSString *text1=dictarr[@"ID"];
-            //  NSLog(@"%@",text1);
-            NSString *text2=dictarr[@"Creator"];
-            NSString *text3=@"114";
-            NSString *text4=@"24";
-            NSString *text5=@"车公庙";
-            NSString *sta=[NSString stringWithFormat:@"%@",dictarr[@"Status"]];
-            
-            
-            if ([sta isEqualToString:@"99"]) {
-                [MBProgressHUD showError:@"已经签收不能删除！"];
-                
-                return;
-            }else{
-                [_tgs removeObjectAtIndex:indexPath.row];  //删除数组里的数据
-                
-                [self.tableView deleteRowsAtIndexPaths:[NSMutableArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-                
-                [self tijiao2:text1 :text2 :text3 :text4 :text5];
-                [self.tableView reloadData];
-                [MBProgressHUD showSuccess:@"您删除的订单已存入回收站！"];
-            }
-            
-        }else
-        {
-            [MBProgressHUD showError:@"网络请求出错"];
-            return ;
-        }
-        
-        
-        
-    }
+//    if (editingStyle == UITableViewCellEditingStyleDelete)
+//    {
+//        
+//        NSDictionary *rowdata=[self.tgs objectAtIndex:indexPath.row];
+//        //  NSLog(@"%@",rowdata);
+//        NSString *orderq=rowdata[@"ID"];
+//        
+//        NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
+//        NSString *myString = [userDefaultes stringForKey:@"myidt"];
+//        // NSString *tr=@"B6D13BE7-990C-4DA6-A757-088ED994D9EA";
+//        
+//        
+//        
+//        
+//        NSString *urlStr = [NSString stringWithFormat:@"%@/API/HDL_Order.ashx?action=getaorderall&q0=%@&q1=%@",urlt,orderq,myString];
+//        
+//        NSURL *url = [NSURL URLWithString:urlStr];
+//        
+//        NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:2.0f];
+//        [request setHTTPMethod:@"POST"];//设置请求方式为POST，默认为GET
+//        NSString *str = @"type=focus-c";//设置参数
+//        NSData *data = [str dataUsingEncoding:NSUTF8StringEncoding];
+//        [request setHTTPBody:data];
+//        
+//        
+//        NSData *received = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+//        if(received!=nil){
+//            NSDictionary *dict=[NSJSONSerialization JSONObjectWithData:received options:NSJSONReadingMutableLeaves error:nil];
+//            
+//            NSDictionary *dictarr2=[dict objectForKey:@"ResultObject"];
+//            NSDictionary *dictarr=[dictarr2 objectForKey:@"OrderMain"];
+//            NSString *text1=dictarr[@"ID"];
+//            //  NSLog(@"%@",text1);
+//            NSString *text2=dictarr[@"Creator"];
+//            NSString *text3=@"114";
+//            NSString *text4=@"24";
+//            NSString *text5=@"车公庙";
+//            NSString *sta=[NSString stringWithFormat:@"%@",dictarr[@"Status"]];
+//            
+//            
+//            if ([sta isEqualToString:@"99"]) {
+//                [MBProgressHUD showError:@"已经签收不能删除！"];
+//                
+//                return;
+//            }else{
+//                [_tgs removeObjectAtIndex:indexPath.row];  //删除数组里的数据
+//                
+//                [self.tableView deleteRowsAtIndexPaths:[NSMutableArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+//                
+//                [self tijiao2:text1 :text2 :text3 :text4 :text5];
+//                [self.tableView reloadData];
+//                [MBProgressHUD showSuccess:@"您删除的订单已存入回收站！"];
+//            }
+//            
+//        }else
+//        {
+//            [MBProgressHUD showError:@"网络请求出错"];
+//            return ;
+//        }
+//        
+//        
+//        
+//    }
 }
 
 
@@ -307,30 +301,7 @@
         [detai setValue:orderq forKey:@"strTtile"];
         
     }
-    //    if ([vc isKindOfClass:[ordermapViewController class]]) {
-    //        ordermapViewController *detai2=vc;
-    //
-    //        NSDictionary *rowdata=[self.tgs objectAtIndex:_idtt3];
-    //        // NSLog(@"+++++%@",rowdata);
-    //        NSString *orderq=rowdata[@"ID"];
-    //        //  NSLog(@"+++%@",orderq);
-    //        [detai2 setValue:orderq forKey:@"strTtile"];
-    //    }
-    //
-    //    if ([vc isKindOfClass:[CbscsController class]]) {
-    //
-    //
-    //        NSDictionary *rowdata=[self.tgs objectAtIndex:rowNumber];
-    //        NSString *orderq=rowdata[@"ID"];
-    //        NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    //        NSString *myString = [userDefaultes stringForKey:@"myidt"];
-    //        CbscsController *cbscsVC=vc;
-    //        cbscsVC.receiveOrderq=orderq;
-    //        cbscsVC.receiveMyString=myString;
-    //        NSString *aa=rowdata[@"wlsend_SysCode"];
-    //        cbscsVC.receiveCbscs=aa;
-    //    }
-}
+   }
 
 -(NSInteger *)num{
     
@@ -356,13 +327,13 @@
     
     
     NSInteger colum=sender.selectedSegmentIndex;
-    NSInteger indes=colum-1;
+    pagenum=colum-1;
     NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
     NSString *myString = [userDefaultes stringForKey:@"myidt"];
     
     // NSString *tr=@"B6D13BE7-990C-4DA6-A757-088ED994D9EA";
     // NSLog(@"%@",myString);
-    NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Order.ashx?action=getlist&q0=0&q1=%@&q2=%ld",urlt,myString,(long)indes];
+    NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Order.ashx?action=getlist&q0=0&q1=%@&q2=%d",urlt,myString,pagenum];
     NSURL *url = [NSURL URLWithString:urlStr2];
     
     NSLog(@"%@",url);
@@ -383,13 +354,15 @@
     if(received!=nil){
         
         NSMutableDictionary *dict=[NSJSONSerialization JSONObjectWithData:received options:NSJSONReadingMutableLeaves error:nil];
-        
-        NSMutableArray *dictarr=[[dict objectForKey:@"ResultObject"] mutableCopy];
+        if (![[dict objectForKey:@"ResultObject"] isEqual:[NSNull null]]) {
+             NSMutableArray *dictarr=[[dict objectForKey:@"ResultObject"] mutableCopy];
         
         
         [self netwok:dictarr];
         [self.tableView reloadData];
-        
+
+        }
+               
     }else
     {
         [MBProgressHUD showError:@"网络请求出错"];
@@ -432,128 +405,54 @@
 }
 
 
-#pragma mark -
-#pragma mark Data Source Loading / Reloading Methods
-
-- (void)reloadTableViewDataSource{
-    
-    //  should be calling your tableviews data source model to reload
-    //  put here just for demo
-    _reloading = YES;
-    
-}
-
-- (void)doneLoadingTableViewData{
-    
-    //  model should call this when its done loading
-    _reloading = NO;
-    [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
-    
-}
-
-
-#pragma mark -
-#pragma mark UIScrollViewDelegate Methods
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    
-    [_refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
-    
-    
-}
-
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
-    
-    [_refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
-    
-    
-}
-
-
-#pragma mark -
-#pragma mark EGORefreshTableHeaderDelegate Methods
-
-- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view{
-    
-    [self reloadTableViewDataSource];
-    
-    [self performSelector:@selector(doneLoadingTableViewData) withObject:nil afterDelay:3.0];
-    
-    
-}
-
-- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view{
-    
-    return _reloading; // should return if data source model is reloading
-    
-}
-
-- (NSDate*)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView*)view{
-    [self ren];
-    [self repeatnetwork];
-    [self.tableView reloadData];
-    return [NSDate date]; // should return date data source was last changed
-}
 
 -(NSMutableArray *)repeatnetwork{
     
     
+    self.tableView.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+    
+    return _tgs;
+    
+    
+}
+
+
+-(void)loadMoreData
+{
+    num=num+1;
     NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
     NSString *myString = [userDefaultes stringForKey:@"myidt"];
     
-    // NSString *tr=@"B6D13BE7-990C-4DA6-A757-088ED994D9EA";
+    NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Order.ashx?action=getlist&q0=%d&q1=%@&q2=%d",urlt,num,myString,pagenum];
     
-    NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Order.ashx?action=getlist&q0=%d&q1=%@&q2=-1",urlt,indexa,myString];
-    NSURL *url = [NSURL URLWithString:urlStr2];
+    NSLog(@"000000000000-－－%@",urlStr2);
     
-    [AFNetworkTool JSONDataWithUrl:[NSString stringWithFormat:@"%@",url] success:^(id json) {
-        NSMutableDictionary *dict=json;
+    AFHTTPRequestOperation *op=[self GETurlString:urlStr2];
+    [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSMutableDictionary *dict=responseObject;
+        NSMutableArray *dictarr=[[dict objectForKey:@"ResultObject"] mutableCopy];
+        if(![dictarr isEqual:[NSNull null]])
+        {
+            if (dictarr.count>0) {
+                
+                [_tgs addObjectsFromArray:dictarr];
+                [self.tableView reloadData];
+                
+            }
+        }        [self.tableView.footer endRefreshing];
+        self.tableView.footer.autoChangeAlpha=YES;
         
-        NSArray *dictarr=[dict objectForKey:@"ResultObject"];
         
-        [_tgs addObjectsFromArray:dictarr];
-        
-        
-        
-        // 提示:NSURLConnection异步方法回调,是在子线程
-        // 得到回调之后,通常更新UI,是在主线程
-        //        NSLog(@"%@", [NSThread currentThread]);
-    } fail:^{
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [MBProgressHUD showError:@"网络请求出错"];
-        
-        NSLog(@"请求失败");
-        return ;
     }];
-    return _tgs;
-    [self.tableView reloadData];
-    
-    
+    [[NSOperationQueue mainQueue] addOperation:op];
     
     
 }
 
 
--(int)ren{
-    indexa=indexa+1;
-    return indexa;
-}
 
-#pragma mark -
-#pragma mark Memory Management
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-}
-
-- (void)viewDidUnload {
-    _refreshHeaderView=nil;
-}
-
-- (void)dealloc {
-    
-    _refreshHeaderView = nil;
-    
-}
 
 
 

@@ -39,6 +39,10 @@
 @property (weak, nonatomic) IBOutlet UIButton *commitBut;
 - (IBAction)didClickCommitButAction:(id)sender;
 
+
+@property (weak, nonatomic) IBOutlet UIView *yview;
+@property (weak, nonatomic) IBOutlet UILabel *tishi;
+
 @end
 
 @implementation companyRenzhen
@@ -122,27 +126,34 @@
         }
         
         if ([confirmState isEqual:[NSNull null]]||[confirmState isEqualToString:@"1"]||[confirmState isEqualToString:@"0"]) {
-            
+ 
+            self.tishi.text=@"审核状态:未提交审核请您提交真实有效的资料！";
+            self.yview.hidden=NO;
+            self.commitBut.hidden=NO;
             
         }
         else if ([confirmState isEqualToString:@"2"])
         {
-            //  self.backGroundScrollV.frame=CGRectMake(0, 200, self.view.frame.size.width, self.view.frame.size.height);
-            //            self.backGroundScrollV.translatesAutoresizingMaskIntoConstraints = NO;
-            //
-            //            NSLayoutConstraint* topConstraint = [NSLayoutConstraint constraintWithItem:self.backGroundScrollV attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1.0f constant:100.0f];
-            //            topConstraint.active = YES;
-            //            self.headYellowV.hidden=NO;
-            //            self.secondWarnLab.text=@"审核状态:审核中请耐心等待~";
+            
+ 
+            
+            self.tishi.hidden=NO;
+            self.yview.hidden=NO;
+            
+            self.tishi.text=@"审核状态:正在审核中，请耐心等候！";
+            self.commitBut.hidden=YES;
+            self.btnByz.hidden=YES;
+            self.btnSfzbm.hidden=YES;
+            self.identityCard.hidden=YES;
+            
             
             
         }else if ([confirmState isEqualToString:@"10"]){
-            //        self.backGroundScrollV.translatesAutoresizingMaskIntoConstraints = NO;
+            self.tishi.hidden=NO;
+            self.yview.hidden=NO;
+          
+            self.tishi.text=@"审核状态:认证失败，请重新提交资料！";            self.commitBut.hidden=NO;
             
-            //            NSLayoutConstraint* topConstraint = [NSLayoutConstraint constraintWithItem:self.backGroundScrollV attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1.0f constant:100.0f];
-            //            topConstraint.active = YES;
-            //            self.headYellowV.hidden=NO;
-            //            self.secondWarnLab.text=@"认证失败证件照模糊,请重新上传~";
         }
         
         
@@ -158,6 +169,9 @@
             self.identityCard.userInteractionEnabled=NO;
         }
         
+
+        
+             
         
         NSLog(@"公司的名称是 ======%@",_name);
         

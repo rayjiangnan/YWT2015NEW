@@ -19,6 +19,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *mobile;
 @property (weak, nonatomic) IBOutlet UIButton *regbtn;
 
+
 @end
 
 @implementation cyViewController

@@ -170,20 +170,7 @@
 }
 
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSDictionary *rowdata=[self.tgs objectAtIndex:[indexPath row]];
-    NSString *aa=rowdata[@"wlsend_SysCode"];
-    
-    if ([aa isEqualToString:@"CBSCS"]) {
-        rowNumber=indexPath.row;
-        [self performSegueWithIdentifier:@"cbscs" sender:nil];
-        
-    }else{
-        [self performSegueWithIdentifier:@"xiangxi" sender:nil];
-        
-    }
-    
-}
+
 
 
 -(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
