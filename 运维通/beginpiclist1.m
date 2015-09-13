@@ -65,7 +65,7 @@
     NSDictionary *rowdata=[self.tgs objectAtIndex:[indexPath row]];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults setObject:rowdata[@"Order_ID"] forKey:@"orderidt"];
-    
+    [userDefaults setObject:@"imgviewstartitem" forKey:@"action"];
     [userDefaults synchronize];
     
     [self performSegueWithIdentifier:@"xiangxi" sender:nil];
@@ -113,7 +113,7 @@
     if (array.count>1) {
         NSString *img=[NSString stringWithFormat:@"%@/%@",urlt,[array objectAtIndex:1]];
         NSURL *imgurl=[NSURL URLWithString:img];
-        [cell.x3 setImageWithURL:imgurl placeholderImage:[UIImage imageNamed:img]];
+        [cell.x2 setImageWithURL:imgurl placeholderImage:[UIImage imageNamed:img]];
         cell.x2.hidden=NO;
 
     }

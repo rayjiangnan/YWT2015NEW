@@ -12,16 +12,20 @@
 #import"ShowViewController.h"
 
 @interface imgdetal ()<UIScrollViewDelegate>
-
+{
+    int imgNum;
+}
 @property (weak, nonatomic) IBOutlet UILabel *gt;
 @property (nonatomic,strong)NSArray *tgs;
 @property (nonatomic,strong)NSString *idtt;
 @property (nonatomic,strong)NSString *idtt2;
 
+
 @property (weak, nonatomic) IBOutlet UIImageView *img1;
 @property (weak, nonatomic) IBOutlet UIImageView *img2;
 @property (weak, nonatomic) IBOutlet UIImageView *img3;
 @property (weak, nonatomic) IBOutlet UIImageView *img4;
+
 @property (weak, nonatomic) IBOutlet UIImageView *img5;
 @property (weak, nonatomic) IBOutlet UIImageView *img6;
 @property (weak, nonatomic) IBOutlet UIImageView *img7;
@@ -48,7 +52,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
- self.imageArray=[NSMutableArray arrayWithCapacity:1];
+    self.imageArray=[NSMutableArray arrayWithCapacity:1];
     
     [self network];
 
@@ -77,9 +81,11 @@
 
     NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
     orderid = [userDefaultes stringForKey:@"orderidt"];
+    NSString *action=[userDefaultes stringForKey:@"action"];
+        
     NSString *myString = [userDefaultes stringForKey:@"myidt"];
     
-    NSString *urlStr = [NSString stringWithFormat:@"%@/API/YWT_Order.ashx?action=imgviewenditem&q0=%@&q1=%@",urlt,orderid,myString];
+    NSString *urlStr = [NSString stringWithFormat:@"%@/API/YWT_Order.ashx?action=%@&q0=%@&q1=%@",urlt,action,orderid,myString];
     NSURL *url = [NSURL URLWithString:urlStr];
     
     NSLog(@"%@",urlStr);
@@ -98,6 +104,7 @@
         
         NSMutableArray *dictarr2=[dict2 objectForKey:@"Files"];
  
+        imgNum=dictarr2.count;
         
         if (dictarr2.count>0) {
             _tgs=dictarr2;
@@ -130,41 +137,41 @@
                 [_imageArray addObject:self.img4.image];
                 
             }
-            if (dictarr2.count>4) {
-               NSString *img5=[NSString stringWithFormat:@"%@/%@",urlt,[dictarr2 objectAtIndex:4]];
-                NSURL *imgurl5=[NSURL URLWithString:img5];
-                self.img5.image=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl5]];
-                [_imageArray addObject:self.img5.image];
-                
-            }
-            if (dictarr2.count>5) {
-           NSString *img6=[NSString stringWithFormat:@"%@/%@",urlt,[dictarr2 objectAtIndex:5]];
-                NSURL *imgurl6=[NSURL URLWithString:img6];
-                self.img6.image=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl6]];
-                [_imageArray addObject:self.img6.image];
-                
-            }
-            if (dictarr2.count>6) {
-                NSString *img7=[NSString stringWithFormat:@"%@/%@",urlt,[dictarr2 objectAtIndex:6]];
-                NSURL *imgurl7=[NSURL URLWithString:img7];
-                self.img7.image=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl7]];
-                [_imageArray addObject:self.img7.image];
-                
-            }
-            if (dictarr2.count>7) {
-               NSString *img8=[NSString stringWithFormat:@"%@/%@",urlt,[dictarr2 objectAtIndex:7]];
-                NSURL *imgurl8=[NSURL URLWithString:img8];
-                self.img8.image=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl8]];
-                [_imageArray addObject:self.img8.image];
-                
-            }
-            if (dictarr2.count>8) {
-      NSString *img9=[NSString stringWithFormat:@"%@/%@",urlt,[dictarr2 objectAtIndex:8]];
-                NSURL *imgurl9=[NSURL URLWithString:img9];
-                self.img9.image=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl9]];
-                [_imageArray addObject:self.img9.image];
-                
-            }
+//            if (dictarr2.count>4) {
+//               NSString *img5=[NSString stringWithFormat:@"%@/%@",urlt,[dictarr2 objectAtIndex:4]];
+//                NSURL *imgurl5=[NSURL URLWithString:img5];
+//                self.img5.image=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl5]];
+//                [_imageArray addObject:self.img5.image];
+//                
+//            }
+//            if (dictarr2.count>5) {
+//           NSString *img6=[NSString stringWithFormat:@"%@/%@",urlt,[dictarr2 objectAtIndex:5]];
+//                NSURL *imgurl6=[NSURL URLWithString:img6];
+//                self.img6.image=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl6]];
+//                [_imageArray addObject:self.img6.image];
+//                
+//            }
+//            if (dictarr2.count>6) {
+//                NSString *img7=[NSString stringWithFormat:@"%@/%@",urlt,[dictarr2 objectAtIndex:6]];
+//                NSURL *imgurl7=[NSURL URLWithString:img7];
+//                self.img7.image=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl7]];
+//                [_imageArray addObject:self.img7.image];
+//                
+//            }
+//            if (dictarr2.count>7) {
+//               NSString *img8=[NSString stringWithFormat:@"%@/%@",urlt,[dictarr2 objectAtIndex:7]];
+//                NSURL *imgurl8=[NSURL URLWithString:img8];
+//                self.img8.image=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl8]];
+//                [_imageArray addObject:self.img8.image];
+//                
+//            }
+//            if (dictarr2.count>8) {
+//      NSString *img9=[NSString stringWithFormat:@"%@/%@",urlt,[dictarr2 objectAtIndex:8]];
+//                NSURL *imgurl9=[NSURL URLWithString:img9];
+//                self.img9.image=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl9]];
+//                [_imageArray addObject:self.img9.image];
+//                
+//            }
             
             return _tgs;
         }
@@ -190,6 +197,9 @@
 
 - (IBAction)btn1:(UIButton *)sender {
     
+    if (imgNum <1) {
+        return;
+    }
     sender.tag=100;
     
     ShowViewController * showVC = [[ShowViewController alloc] init];
@@ -201,7 +211,9 @@
 }
 
 - (IBAction)btn2:(UIButton *)sender {
-    
+    if (imgNum <2) {
+        return;
+    }
     sender.tag=101;
     
     ShowViewController * showVC = [[ShowViewController alloc] init];
@@ -213,8 +225,10 @@
 }
 
 - (IBAction)btn3:(UIButton *)sender {
+    if (imgNum <3) {
+        return;
+    }
     sender.tag=102;
-    
     ShowViewController * showVC = [[ShowViewController alloc] init];
     showVC.idex = sender.tag;
     
@@ -222,7 +236,9 @@
     [self.navigationController pushViewController:showVC animated:YES];
 }
 - (IBAction)btn4:(UIButton *)sender {
-    
+    if (imgNum <4) {
+        return;
+    }
     sender.tag=103;
     
     ShowViewController * showVC = [[ShowViewController alloc] init];
@@ -233,51 +249,20 @@
 }
 
 - (IBAction)btn5:(UIButton *)sender {
-    sender.tag=104;
-    
-    ShowViewController * showVC = [[ShowViewController alloc] init];
-    showVC.idex = sender.tag;
-    
-    showVC.receiveimageArray=self.imageArray;
-    [self.navigationController pushViewController:showVC animated:YES];
+    return;
 }
 
 - (IBAction)btn6:(UIButton *)sender {
-    sender.tag=105;
-    
-    ShowViewController * showVC = [[ShowViewController alloc] init];
-    showVC.idex = sender.tag;
-    
-    showVC.receiveimageArray=self.imageArray;
-    [self.navigationController pushViewController:showVC animated:YES];}
+    return;
+}
 - (IBAction)btn7:(UIButton *)sender {
-    sender.tag=106;
-    
-    ShowViewController * showVC = [[ShowViewController alloc] init];
-    showVC.idex = sender.tag;
-    
-    showVC.receiveimageArray=self.imageArray;
-    [self.navigationController pushViewController:showVC animated:YES];
+    return;
 }
 - (IBAction)btn8:(UIButton *)sender {
-    
-    sender.tag=107;
-    
-    ShowViewController * showVC = [[ShowViewController alloc] init];
-    showVC.idex = sender.tag;
-    
-    showVC.receiveimageArray=self.imageArray;
-    [self.navigationController pushViewController:showVC animated:YES];
+    return;
 }
 - (IBAction)btn9:(UIButton *)sender {
-    
-    sender.tag=108;
-    
-    ShowViewController * showVC = [[ShowViewController alloc] init];
-    showVC.idex = sender.tag;
-    
-    showVC.receiveimageArray=self.imageArray;
-    [self.navigationController pushViewController:showVC animated:YES];
+return;
 }
 
 
