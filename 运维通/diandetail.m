@@ -9,6 +9,7 @@
 #import "diandetail.h"
 #import "MBProgressHUD+MJ.h"
 #import "pinglunCell.h"
+#import "UIImageView+WebCache.h"
 
 @interface diandetail ()<UITableViewDataSource,UITableViewDelegate,UIWebViewDelegate>
 {
@@ -140,15 +141,8 @@
                 [MBProgressHUD showError:sta];
                 
                 return ;
-                
             }
-            
-            
-            
         }];
-        
-        
-        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
         [MBProgressHUD showError:@"网络请求出错"];
@@ -158,8 +152,6 @@
     }];
     
     [[NSOperationQueue mainQueue] addOperation:op];
-    
-    
     
 }
 
@@ -223,7 +215,9 @@
     if (![dict2[@"UserImg"] isEqual:[NSNull null]]) {
         NSString *img=[NSString stringWithFormat:@"%@%@",urlt,dict2[@"UserImg"]];
         NSURL *imgurl=[NSURL URLWithString:img];
-        cell.img.image=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
+        
+        //cell.img.image=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
+        [cell.imageView setImageWithURL:imgurl placeholderImage:[UIImage imageNamed:img]];
     }
     
     NSLog(@"%@",dict2);

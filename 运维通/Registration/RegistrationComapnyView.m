@@ -13,7 +13,7 @@
 #import "UIViewController+Extension.h"
 #import "SBJson.h"
 #import "RegistrationComapnyCell.h"
-
+#import "UIImageView+WebCache.h"
 
 
 @interface RegistrationComapnyView ()<UITableViewDataSource,UITableViewDelegate>
@@ -154,9 +154,9 @@
     }else{
         NSString *img=[NSString stringWithFormat:@"%@%@",urlt,dict2[@"UserImg"]];
         NSURL *imgurl=[NSURL URLWithString:img];
-        UIImage *imgUserimg=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
-        [cell.UserImg setImage:imgUserimg];
-        
+        //UIImage *imgUserimg=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
+        //[cell.UserImg setImage:imgUserimg];
+        [cell.UserImg setImageWithURL:imgurl placeholderImage:[UIImage imageNamed:img]];
     }
     return cell;
 }

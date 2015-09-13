@@ -10,6 +10,7 @@
 #import "beginpic.h"
 #import "MJRefresh.h"
 #import "MBProgressHUD+MJ.h"
+#import "UIImageView+WebCache.h"
 
 @interface beginpiclist1 ()<UITableViewDataSource,UITableViewDelegate>
 {
@@ -104,8 +105,7 @@
     if (array.count>0) {
         NSString *img=[NSString stringWithFormat:@"%@/%@",urlt,[array objectAtIndex:0]];
         NSURL *imgurl=[NSURL URLWithString:img];
-        UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
-        cell.x1.image=imgstr;
+        [cell.x1 setImageWithURL:imgurl placeholderImage:[UIImage imageNamed:img]];
         cell.x1.hidden=NO;
 
         NSLog(@"%@",img);
@@ -113,28 +113,25 @@
     if (array.count>1) {
         NSString *img=[NSString stringWithFormat:@"%@/%@",urlt,[array objectAtIndex:1]];
         NSURL *imgurl=[NSURL URLWithString:img];
-        UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
-        cell.x2.image=imgstr;
+        [cell.x3 setImageWithURL:imgurl placeholderImage:[UIImage imageNamed:img]];
         cell.x2.hidden=NO;
 
     }
     if (array.count>2) {
         NSString *img=[NSString stringWithFormat:@"%@/%@",urlt,[array objectAtIndex:2]];
         NSURL *imgurl=[NSURL URLWithString:img];
-        UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
-        cell.x3.image=imgstr;
+        [cell.x3 setImageWithURL:imgurl placeholderImage:[UIImage imageNamed:img]];
         cell.x3.hidden=NO;
 
     }
     if (array.count>3) {
         NSString *img=[NSString stringWithFormat:@"%@/%@",urlt,[array objectAtIndex:3]];
         NSURL *imgurl=[NSURL URLWithString:img];
-        UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
-        cell.x4.image=imgstr;
+        [cell.x4 setImageWithURL:imgurl placeholderImage:[UIImage imageNamed:img]];
         cell.x4.hidden=NO;
 
     }
-      cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 
@@ -143,8 +140,6 @@
 #pragma mark  下拉加载
 
 -(NSMutableArray *)repeatnetwork{
-    
-    
     self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
     
     return _tgs;
@@ -167,15 +162,9 @@
         {
             NSMutableArray *dictarr=[[dict objectForKey:@"ResultObject"] mutableCopy];
             [_tgs addObjectsFromArray:dictarr];
-            [self.tableview reloadData];
-            
-        }
-        
-        
+            [self.tableview reloadData];        }
         [self.tableview.footer endRefreshing];
-        self.tableview.footer.autoChangeAlpha=YES;
-        
-        
+         self.tableview.footer.autoChangeAlpha=YES;
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [MBProgressHUD showError:@"网络请求出错"];
     }];
@@ -208,8 +197,6 @@
                 [self netwok:dictarr];
                 [self.tableview reloadData];
             }
-            
-           
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             
             [MBProgressHUD showError:@"网络异常！"];
@@ -218,8 +205,6 @@
         }];
         
         [[NSOperationQueue mainQueue] addOperation:op];
-    
-    
 }
 
 

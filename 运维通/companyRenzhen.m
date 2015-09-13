@@ -10,6 +10,7 @@
 #import"AFNetworking.h"
 #import"MBProgressHUD+MJ.h"
 #import "UpFile.h"
+#import "UIImageView+WebCache.h"
 
 @interface companyRenzhen ()
 {
@@ -63,19 +64,21 @@
         if (![arrray isEqual:[NSNull null]]) {
             for (NSDictionary *str in arrray) {
                 
-                NSString *img2=[NSString stringWithFormat:@"%@%@",urlt,str[@"FileName"]];
-                NSURL *imgurl2=[NSURL URLWithString:img2];
-                UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl2]];
-                
-                if([str[@"FileType"] isEqualToString:@"e_fr_sfzzm"]){
-                    self.identyCardImageV.image=imgstr;
-                }
-                else if ([FileType isEqualToString:@"e_fr_sfzfm"]) {
-                    self.imgSfzbm.image=imgstr;
-                }
-                else if ([FileType isEqualToString:@"e_ylzz"]) {
-                    self.imgByz.image=imgstr;
-                }
+                NSString *imgpath=[NSString stringWithFormat:@"%@%@",urlt,str[@"FileName"]];
+//                NSURL *imgurl2=[NSURL URLWithString:img2];
+//                UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl2]];
+//                FileType=str[@"FileType"];
+//                if([FileType isEqualToString:@"e_fr_sfzzm"]){
+//                    [self ShowImg:imgpath showType:str[@"FileType"] ];
+//                }
+//                else if ([FileType isEqualToString:@"e_fr_sfzfm"]) {
+//                    [self ShowImg:imgpath showType:str[@"FileType"] ];
+//                }
+//                else if ([FileType isEqualToString:@"e_ylzz"]) {
+//                    [self ShowImg:imgpath showType:str[@"FileType"] ];
+//                }
+                FileType=str[@"FileType"];
+                [self ShowImg:imgpath showType:str[@"FileType"]];
             }
         }else{
             return ;
@@ -117,9 +120,6 @@
         if (![dictarr2[@"CertifyIDCard"] isEqual:[NSNull null]]) {
             self.identityCard.text=[NSString   stringWithFormat:@"%@", dictarr2[@"CertifyIDCard"]];
         }
-        
-        
-        
         
         if ([confirmState isEqual:[NSNull null]]||[confirmState isEqualToString:@"1"]||[confirmState isEqualToString:@"0"]) {
             
@@ -192,18 +192,21 @@
     [self SendImage];
 }
 
--(void) ShowImg:(NSString *) imgpath
+-(void) ShowImg:(NSString *) imgpath showType:(NSString *) mType
 {
     NSURL *imgurl=[NSURL URLWithString:imgpath];
-    UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
-    if ([FileType isEqualToString:@"e_fr_sfzzm"]) {
-        self.identyCardImageV.image=imgstr;
+    //UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
+    if ([mType isEqualToString:@"e_fr_sfzzm"]) {
+        //self.identyCardImageV.image=imgstr;
+        [self.identyCardImageV setImageWithURL:imgurl placeholderImage:[UIImage imageNamed:imgpath]];
     }
-    else  if ([FileType isEqualToString:@"e_fr_sfzfm"]) {
-        self.imgSfzbm.image=imgstr;
+    else  if ([mType isEqualToString:@"e_fr_sfzfm"]) {
+        //self.imgSfzbm.image=imgstr;
+        [self.imgSfzbm setImageWithURL:imgurl placeholderImage:[UIImage imageNamed:imgpath]];
     }
-    else  if ([FileType isEqualToString:@"e_ylzz"]) {
-        self.imgByz.image=imgstr;
+    else  if ([mType isEqualToString:@"e_ylzz"]) {
+        //self.imgByz.image=imgstr;
+        [self.imgByz setImageWithURL:imgurl placeholderImage:[UIImage imageNamed:imgpath]];
     }
 }
 
@@ -227,32 +230,15 @@
     [[NSOperationQueue mainQueue] addOperation:op];
 }
 
-
-
-
 - (void) SendImage
 {
     UIActionSheet *sheet;
     // 判断是否支持相机
-    //    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
-    //    {
     sheet=[[UIActionSheet alloc] initWithTitle:@"选择"
                                       delegate:self
                              cancelButtonTitle:@"取消"
                         destructiveButtonTitle:nil
                              otherButtonTitles:@"拍照", @"从相册中选取", nil];
-    
-    
-    //    }
-    //    else
-    //    {
-    //        sheet = [[UIActionSheet alloc] initWithTitle:@"选择"
-    //                                            delegate:self
-    //                                   cancelButtonTitle:@"取消"
-    //                              destructiveButtonTitle:nil
-    //                                   otherButtonTitles:@"从相册选择", nil];
-    //
-    //    }
     sheet.tag = 255;
     [sheet showInView:self.view];
 }
@@ -428,7 +414,7 @@
     else
     {
         NSString *img=[NSString stringWithFormat:@"%@/%@",urlt,dict[@"ReturnMsg"]];
-        [self ShowImg:img];
+        [self ShowImg:img showType:FileType];
     }
 }
 

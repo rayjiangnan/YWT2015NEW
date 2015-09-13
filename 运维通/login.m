@@ -131,6 +131,7 @@
                             [userDefaults setObject:usertype forKey:@"usertype"];
                             [userDefaults setObject:UserImg forKey:@"UserImg"];
                             [userDefaults setObject:Certify forKey:@"Certify"];
+                            [userDefaults setObject:Mobile forKey:@"Mobile"];
                             
                             [userDefaults synchronize];
                        

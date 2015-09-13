@@ -8,6 +8,7 @@
 
 #import "sywindex.h"
 #import"MBProgressHUD+MJ.h"
+#import "UIImageView+WebCache.h"
 
 @interface sywindex ()
 @property (weak, nonatomic) IBOutlet UIImageView *icon;
@@ -75,6 +76,7 @@
      NSString *star = [userDefaultes stringForKey:@"star"];
      NSString *RealName = [userDefaultes stringForKey:@"RealName"];
      NSString *UserImg = [userDefaultes stringForKey:@"UserImg"];
+    
     self.realname.text=RealName;
     if ([Certify isEqualToString:@"0"]) {
         [self.renz setTitle:@"未认证" forState:UIControlStateNormal];
@@ -93,9 +95,9 @@
         NSString *img=[NSString stringWithFormat:@"%@%@",urlt,UserImg];
         NSLog(@"%@",img);
         NSURL *imgurl=[NSURL URLWithString:img];
-        UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
-        self.icon.image=imgstr;
-
+//        UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
+//        self.icon.image=imgstr;
+        [self.icon setImageWithURL:imgurl placeholderImage:[UIImage imageNamed:img]];
     }
     if ([star isEqualToString:@"1"]) {
         self.x1.hidden=NO;

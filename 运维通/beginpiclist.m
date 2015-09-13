@@ -10,7 +10,7 @@
 #import "beginpic.h"
 #import "MJRefresh.h"
 #import "MBProgressHUD+MJ.h"
-
+#import "UIImageView+WebCache.h"
 @interface beginpiclist ()<UITableViewDataSource,UITableViewDelegate>
 {
     int num;
@@ -92,36 +92,28 @@
     if (array.count>0) {
         NSString *img=[NSString stringWithFormat:@"%@/%@",urlt,[array objectAtIndex:0]];
         NSURL *imgurl=[NSURL URLWithString:img];
-        UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
-        cell.x1.image=imgstr;
+        [cell.x1 setImageWithURL:imgurl placeholderImage:[UIImage imageNamed:img]];
         cell.x1.hidden=NO;
-         NSLog(@"第一张：%@",img);
+        
+        NSLog(@"%@",img);
     }
     if (array.count>1) {
         NSString *img=[NSString stringWithFormat:@"%@/%@",urlt,[array objectAtIndex:1]];
         NSURL *imgurl=[NSURL URLWithString:img];
-        UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
-        cell.x2.image=imgstr;
+        [cell.x3 setImageWithURL:imgurl placeholderImage:[UIImage imageNamed:img]];
         cell.x2.hidden=NO;
-        
-          NSLog(@"第2张：%@",img);
     }
     if (array.count>2) {
         NSString *img=[NSString stringWithFormat:@"%@/%@",urlt,[array objectAtIndex:2]];
         NSURL *imgurl=[NSURL URLWithString:img];
-        UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
-       cell.x3.image=imgstr;
+        [cell.x3 setImageWithURL:imgurl placeholderImage:[UIImage imageNamed:img]];
         cell.x3.hidden=NO;
-          NSLog(@"第3张：%@",img);
     }
     if (array.count>3) {
         NSString *img=[NSString stringWithFormat:@"%@/%@",urlt,[array objectAtIndex:3]];
         NSURL *imgurl=[NSURL URLWithString:img];
-        UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
-      cell.x4.image=imgstr;
+        [cell.x4 setImageWithURL:imgurl placeholderImage:[UIImage imageNamed:img]];
         cell.x4.hidden=NO;
-
-          NSLog(@"第4张：%@",img);
     }
       cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;

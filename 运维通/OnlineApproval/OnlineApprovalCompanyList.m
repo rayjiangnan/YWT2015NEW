@@ -14,6 +14,7 @@
 #import "UIViewController+Extension.h"
 #import "ApplyApproval.h"
 #import "OnlineApprovalView.h"
+#import "UIImageView+WebCache.h"
 
 @interface OnlineApprovalCompanyList ()<UITableViewDataSource,UITableViewDelegate>
 {
@@ -79,8 +80,9 @@
     if ([[NSString stringWithFormat:@"%@",dict2[@"UserImg"]] isEqualToString:@"/Images/defaultPhoto.png"]==NO) {
         NSString *img=[NSString stringWithFormat:@"%@%@",urlt,dict2[@"UserImg"]];
         NSURL *imgurl=[NSURL URLWithString:img];
-        UIImage *imgUserimg=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
-        [cell.UserImg setImage:imgUserimg];
+        //UIImage *imgUserimg=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
+        //[cell.UserImg setImage:imgUserimg];
+        [cell.UserImg setImageWithURL:imgurl placeholderImage:[UIImage imageNamed:img]];
     }
 
     return cell;

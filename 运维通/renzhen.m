@@ -10,6 +10,7 @@
 #import"AFNetworking.h"
 #import"MBProgressHUD+MJ.h"
 #import "UpFile.h"
+#import "UIImageView+WebCache.h"
 
 @interface renzhen ()//<UIScrollViewDelegate>
 {
@@ -65,19 +66,22 @@
         if (![arrray isEqual:[NSNull null]]) {
             for (NSDictionary *str in arrray) {
                 
-                NSString *img2=[NSString stringWithFormat:@"%@%@",urlt,str[@"FileName"]];
-                NSURL *imgurl2=[NSURL URLWithString:img2];
-                UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl2]];
+                NSString *imgpath=[NSString stringWithFormat:@"%@%@",urlt,str[@"FileName"]];
+                //NSURL *imgurl2=[NSURL URLWithString:img2];
+                //UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl2]];
 
-                if([str[@"FileType"] isEqualToString:@"p_sfzzm"]){
-                    self.identyCardImageV.image=imgstr;
-                }
-                else if ([FileType isEqualToString:@"p_sfzbm"]) {
-                    self.imgSfzbm.image=imgstr;
-                }
-                else if ([FileType isEqualToString:@"p_byz"]) {
-                    self.imgByz.image=imgstr;
-                }
+//                if([str[@"FileType"] isEqualToString:@"p_sfzzm"]){
+//                    self.identyCardImageV.image=imgstr;
+//                }
+//                else if ([FileType isEqualToString:@"p_sfzbm"]) {
+//                    self.imgSfzbm.image=imgstr;
+//                }
+//                else if ([FileType isEqualToString:@"p_byz"]) {
+//                    self.imgByz.image=imgstr;
+//                }
+                FileType=str[@"FileType"];
+                [self ShowImg:imgpath showType:str[@"FileType"] ];
+
             }
         }else{
             return ;
@@ -200,18 +204,21 @@
     FileType=@"p_sfzzm";
     [self SendImage];
 }
--(void) ShowImg:(NSString *) imgpath
+-(void) ShowImg:(NSString *) imgpath showType:(NSString *) mType
 {
     NSURL *imgurl=[NSURL URLWithString:imgpath];
-    UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
+    //UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
     if ([FileType isEqualToString:@"p_sfzzm"]) {
-        self.identyCardImageV.image=imgstr;
+        //self.identyCardImageV.image=imgstr;
+        [self.identyCardImageV setImageWithURL:imgurl placeholderImage:[UIImage imageNamed:imgpath]];
     }
     else  if ([FileType isEqualToString:@"p_sfzbm"]) {
-        self.imgSfzbm.image=imgstr;
+        //self.imgSfzbm.image=imgstr;
+        [self.imgSfzbm setImageWithURL:imgurl placeholderImage:[UIImage imageNamed:imgpath]];
     }
     else  if ([FileType isEqualToString:@"p_byz"]) {
-        self.imgByz.image=imgstr;
+        //self.imgByz.image=imgstr;
+        [self.imgByz setImageWithURL:imgurl placeholderImage:[UIImage imageNamed:imgpath]];
     }
 }
 
@@ -241,26 +248,13 @@
 - (void) SendImage
 {
     UIActionSheet *sheet;
-    // 判断是否支持相机
-//    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
-//    {
-        sheet=[[UIActionSheet alloc] initWithTitle:@"选择"
-                                          delegate:self
-                                 cancelButtonTitle:@"取消"
-                            destructiveButtonTitle:nil
-                                 otherButtonTitles:@"拍照", @"从相册中选取", nil];
-        
-        
-//    }
-//    else
-//    {
-//        sheet = [[UIActionSheet alloc] initWithTitle:@"选择"
-//                                            delegate:self
-//                                   cancelButtonTitle:@"取消"
-//                              destructiveButtonTitle:nil
-//                                   otherButtonTitles:@"从相册选择", nil];
-//        
-//    }
+
+    sheet=[[UIActionSheet alloc] initWithTitle:@"选择"
+                                      delegate:self
+                             cancelButtonTitle:@"取消"
+                        destructiveButtonTitle:nil
+                             otherButtonTitles:@"拍照", @"从相册中选取", nil];
+
     sheet.tag = 255;
     [sheet showInView:self.view];
 }
@@ -402,8 +396,6 @@
     //NSString *url=[NSString stringWithFormat:@"%@/API/YWT_OrderFile.ashx?action=90",strUploadUrl];
     NSString *url=[NSString stringWithFormat:@"%@/API/YWT_UPUserFile.ashx?action=%@&q0=%@&q1=%@&from=ios",urlt,FileType,userid,userid];
 
-    
-    
     // NSLog(@"%@",url);
     NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]
                                                            cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
@@ -436,7 +428,7 @@
     else
     {
         NSString *img=[NSString stringWithFormat:@"%@/%@",urlt,dict[@"ReturnMsg"]];
-        [self ShowImg:img];
+        [self ShowImg:img showType:FileType];
     }
 }
 

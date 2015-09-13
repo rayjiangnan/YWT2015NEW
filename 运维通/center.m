@@ -12,8 +12,10 @@
 #import "VPImageCropperViewController.h"
 #define ORIGINAL_MAX_WIDTH 640.0f
 #import"MBProgressHUD.h"
+#import "SDWebImageManager.h"
 
-@interface center ()<UIWebViewDelegate,UITableViewDataSource, UITableViewDelegate,UIImagePickerControllerDelegate, UIActionSheetDelegate, VPImageCropperDelegate>
+@interface center ()<UIWebViewDelegate,UITableViewDataSource, UITableViewDelegate,UIImagePickerControllerDelegate, UIActionSheetDelegate
+,UIImagePickerControllerDelegate,UINavigationControllerDelegate, VPImageCropperDelegate>
 {
 
     NSString *_accountType;
@@ -80,16 +82,14 @@
     
     
     self.navigationController.navigationBar.barTintColor=myColorRGB;
-    
+
     [self.navigationController.navigationBar setTitleTextAttributes:
-     
-     @{NSFontAttributeName:[UIFont systemFontOfSize:17],
-       
-       NSForegroundColorAttributeName:[UIColor whiteColor]}];
-    
+
+    @{NSFontAttributeName:[UIFont systemFontOfSize:17],
+
+    NSForegroundColorAttributeName:[UIColor whiteColor]}];
+
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    
-    
     self.img.userInteractionEnabled=YES;
     UITapGestureRecognizer *tap=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(didClickIconImageV)];
     
@@ -287,33 +287,19 @@
     NSLog(@"++++++++++++++++++++++%@",reSizeImage);
     
     _receiveImage=reSizeImage;
-    //self.icon.image = reSizeImage;
-    
     [self btnupload_Click:nil];
-    
-    [cropperViewController dismissViewControllerAnimated:YES completion:^{
-        
-        
-        
-        
-    }];
+    [cropperViewController dismissViewControllerAnimated:YES completion:^{    }];
     
 }
 
 
 - (void)btnupload_Click:(id)sender {
-    /*
-     action:(NSString *) straction
-     orderid:(NSString *) strOrderid
-     creatorid:(NSString *) strCreatorid //创建人ID
-     uploadUrl:(NSString *) strUploadUrl //上传路径
-     "
-     */
+
     NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
     NSString *myString = [userDefaultes stringForKey:@"myidt"];
-    NSString *orderid = [userDefaultes stringForKey:@"orderid"];
+
     
-    [self UpdateFileImage:_receiveImage action:@"userimg" orderid:myString creatorid:myString uploadUrl:urlt];
+    [self UpdateFileImage:_receiveImage action:@"userimg" userid:myString creatorid:myString uploadUrl:urlt];
     
     NSLog(@"完成上传图片。");
 }
@@ -321,7 +307,7 @@
 
 - (void) UpdateFileImage:(UIImage *)currentImage
                   action:(NSString *) straction
-                 orderid:(NSString *) strOrderid
+                 userid:(NSString *) struserid
                creatorid:(NSString *) strCreatorid //创建人ID
                uploadUrl:(NSString *) strUploadUrl //上传路径
 {
@@ -356,7 +342,7 @@
     [myRequestData1 appendData:[hyphens dataUsingEncoding:NSUTF8StringEncoding]];
     [myRequestData1 appendData:[end dataUsingEncoding:NSUTF8StringEncoding]];
     
-    NSString *url=[NSString stringWithFormat:@"%@/API/YWT_UPUserFile.ashx?from=ios&action=%@&q0=%@&q1=%@",strUploadUrl,straction,strOrderid,strCreatorid];
+    NSString *url=[NSString stringWithFormat:@"%@/API/YWT_UPUserFile.ashx?from=ios&action=%@&q0=%@&q1=%@",strUploadUrl,straction,struserid,strCreatorid];
     //根据url初始化request
     
     // NSLog(@"%@",url);
@@ -369,84 +355,110 @@
     //设置HTTPHeader
     [request setValue:content forHTTPHeaderField:@"Content-Type"];
     //设置Content-Length
-    [request setValue:[NSString stringWithFormat:@"%ld", [myRequestData1 length]] forHTTPHeaderField:@"Content-Length"];
+    [request setValue:[NSString stringWithFormat:@"%d", [myRequestData1 length]] forHTTPHeaderField:@"Content-Length"];
     //设置http body
     [request setHTTPBody:myRequestData1];
     //http method
     [request setHTTPMethod:@"POST"];
-    
-    
-    
+
     NSHTTPURLResponse *urlResponese = nil;
     NSError *error = [[NSError alloc]init];
-    
     NSData* resultData = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponese error:&error];
-    //  NSDictionary * result= [[NSString alloc] initWithData:resultData encoding:NSUTF8StringEncoding];
-    
-    NSString* result= [[NSString alloc] initWithData:resultData encoding:NSUTF8StringEncoding];
-    
-    NSData *data5 = [result dataUsingEncoding:NSUTF8StringEncoding];
-    NSDictionary *dict=[NSJSONSerialization JSONObjectWithData:data5 options:NSJSONReadingMutableLeaves error:nil];
     
     
+    NSDictionary *dict=[NSJSONSerialization JSONObjectWithData:resultData options:NSJSONReadingMutableLeaves error:nil];
+    
+    NSString *Status=[NSString stringWithFormat:@"%@",dict[@"Status"]];
+    if ([Status isEqualToString:@"0"]){
+        NSString *ReturnMsg=[NSString stringWithFormat:@"%@",dict[@"ReturnMsg"]];
+        [MBProgressHUD showError:ReturnMsg];
+        NSLog(@"%@",ReturnMsg);
+    }
+    else
+    {
+        //NSString *img=[NSString stringWithFormat:@"%@/%@",urlt,dict[@"ReturnMsg"]];
+    }
+
     
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
 -(void)network{
- 
-        
         NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-        NSString *myString = [userDefaultes stringForKey:@"myidt"];
-        NSString *urlStr = [NSString stringWithFormat:@"%@/API/YWT_User.ashx?action=getasupuser&q0=%@&q1=%@",urlt,myString,myString];
+        //NSString *myString = [userDefaultes stringForKey:@"myidt"];
     
-    
-    [AFNetworkTool JSONDataWithUrl:[NSString stringWithFormat:@"%@",urlStr] success:^(id json) {
-        NSDictionary *dict=json;
-        NSDictionary *dictarr2=[dict objectForKey:@"ResultObject"];
-
-    NSLog(@"%@",dict);
- NSDictionary *dictarr=[dictarr2 objectForKey:@"User"];
-NSString *sty=[NSString stringWithFormat:@"%@",dictarr[@"UserType"]];
+        NSString *sty=[userDefaultes stringForKey:@"usertype"];
         if ([sty isEqualToString:@"10"]) {
-             self.style.text=@"维运商";
+            self.style.text=@"维运商";
         }else if([sty isEqualToString:@"20"]){
-        self.style.text=@"维运人员";
+            self.style.text=@"维运人员";
         }else if([sty isEqualToString:@"30"]){
             self.style.text=@"调度";}
         else if([sty isEqualToString:@"40"]){
-        self.style.text=@"第三方运维人员";}
-
- self.tel.text=dictarr[@"UserName"];
-self.username.text=dictarr[@"RealName"];
-      
-        if ([[NSString stringWithFormat:@"%@",dictarr[@"UserImg"]] isEqualToString:@"/Images/defaultPhoto.png"]) {
+            self.style.text=@"第三方运维人员";
+        }
+        
+        self.tel.text=[userDefaultes stringForKey:@"Mobile"];
+        self.username.text=[userDefaultes stringForKey:@"RealName"];
+        NSString *strUserimg=[userDefaultes stringForKey:@"UserImg"];
+        if ([[NSString stringWithFormat:@"%@",strUserimg] isEqualToString:@"/Images/defaultPhoto.png"]) {
             return;
         }else{
-       NSString *img=[NSString stringWithFormat:@"%@%@",urlt,dictarr[@"UserImg"]];
-     NSURL *imgurl=[NSURL URLWithString:img];
-     
-      UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
-     [self.img setBackgroundImage:imgstr forState:UIControlStateNormal];
+            NSString *img=[NSString stringWithFormat:@"%@%@",urlt,strUserimg];
+            NSURL *imgurl=[NSURL URLWithString:img];
+            
+            SDWebImageManager *manager = [SDWebImageManager sharedManager];
+            UIImage *cachedImage = [manager imageWithURL:imgurl];
+            if (cachedImage)
+            {
+                [self.img setBackgroundImage:cachedImage forState:UIControlStateNormal];
+            }
+            else
+            {
+                [manager downloadWithURL:imgurl delegate:nil];
+                UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
+                [self.img setBackgroundImage:imgstr forState:UIControlStateNormal];
+            }
         }
-        NSString *cyi=[NSString stringWithFormat:@"%@",dictarr2[@"UserType"]];
 
-    } fail:^{
-        [MBProgressHUD showError:@"网络请求出错"];
-        
-        return ;
-    }];
+    
+//        NSString *urlStr = [NSString stringWithFormat:@"%@/API/YWT_User.ashx?action=getasupuser&q0=%@&q1=%@",urlt,myString,myString];
+//    
+//    
+//    [AFNetworkTool JSONDataWithUrl:[NSString stringWithFormat:@"%@",urlStr] success:^(id json) {
+//        NSDictionary *dict=json;
+//        NSDictionary *dictarr2=[dict objectForKey:@"ResultObject"];
+//
+//    NSLog(@"%@",dict);
+//    NSDictionary *dictarr=[dictarr2 objectForKey:@"User"];
+//    NSString *sty=[NSString stringWithFormat:@"%@",dictarr[@"UserType"]];
+//    if ([sty isEqualToString:@"10"]) {
+//        self.style.text=@"维运商";
+//    }else if([sty isEqualToString:@"20"]){
+//        self.style.text=@"维运人员";
+//    }else if([sty isEqualToString:@"30"]){
+//        self.style.text=@"调度";}
+//    else if([sty isEqualToString:@"40"]){
+//        self.style.text=@"第三方运维人员";
+//    }
+//
+//    self.tel.text=dictarr[@"UserName"];
+//    self.username.text=dictarr[@"RealName"];
+//        if ([[NSString stringWithFormat:@"%@",dictarr[@"UserImg"]] isEqualToString:@"/Images/defaultPhoto.png"]) {
+//            return;
+//        }else{
+//            NSString *img=[NSString stringWithFormat:@"%@%@",urlt,dictarr[@"UserImg"]];
+//            NSURL *imgurl=[NSURL URLWithString:img];
+//
+//            UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
+//            [self.img setBackgroundImage:imgstr forState:UIControlStateNormal];
+//        }
+//        //NSString *cyi=[NSString stringWithFormat:@"%@",dictarr2[@"UserType"]];
+//
+//    } fail:^{
+//        [MBProgressHUD showError:@"网络请求出错"];
+//        
+//        return ;
+//    }];
 
 }
 

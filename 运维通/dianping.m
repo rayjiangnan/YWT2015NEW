@@ -12,6 +12,7 @@
 #import "MJRefresh.h"
 #import "diancell.h"
 #import "diandetail.h"
+#import "UIImageView+WebCache.h"
 
 @interface dianping ()<UITableViewDataSource,UITableViewDelegate,UIWebViewDelegate>
 {
@@ -73,7 +74,8 @@
     if (![dict2[@"UserImg"] isEqual:[NSNull null]]) {
         NSString *img=[NSString stringWithFormat:@"%@%@",urlt,dict2[@"UserImg"]];
         NSURL *imgurl=[NSURL URLWithString:img];
-        cell.img.image=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
+        //cell.img.image=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
+        [cell.imageView setImageWithURL:imgurl placeholderImage:[UIImage imageNamed:img]];
     }
     cell.name.text=dict2[@"RealName"];
     NSString *dt3=dict2[@"Create_Date"];
@@ -142,13 +144,9 @@
 
 
 -(NSMutableArray *)repeatnetwork{
-    
-    
     self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
     
     return _tgs;
-    
-    
 }
 
 
