@@ -41,6 +41,11 @@
 {
     
     _tgs=array;
+    
+    if (_tgs.count < 10) {
+        self.tableview.footer = nil;
+    }
+    
     return _tgs;
     
     
@@ -149,6 +154,7 @@
 -(void)loadMoreData
 {
    num=num+1;
+   
     NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
     NSString *myString = [userDefaultes stringForKey:@"myidt"];
     
@@ -161,6 +167,9 @@
         if(![[dict objectForKey:@"ResultObject"] isEqual:[NSNull null]])
         {
             NSMutableArray *dictarr=[[dict objectForKey:@"ResultObject"] mutableCopy];
+            if (dictarr.count < 10) {
+                self.tableview.footer = nil;
+            }
             [_tgs addObjectsFromArray:dictarr];
             [self.tableview reloadData];
   

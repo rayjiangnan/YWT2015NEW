@@ -83,6 +83,10 @@
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *dict2=responseObject;
       NSMutableArray *dictarr=[[dict2 objectForKey:@"ResultObject"] mutableCopy];
+        if (dictarr.count < 10) {
+            self.tableview.footer = nil;
+        }
+        
         NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
         num=[dict3[@"Warehouse_ID"] intValue];
         [self netwok:dictarr];
@@ -130,6 +134,9 @@
         NSArray *dictarr=[dict objectForKey:@"ResultObject"];
         if(![dictarr isEqual:[NSNull null]])
         {
+            if (dictarr.count < 10) {
+                self.tableview.footer = nil;
+            }
             if (dictarr.count>0) {
                 NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
                 num=[dict3[@"Warehouse_ID"] intValue];

@@ -92,6 +92,9 @@
             if(![[dict objectForKey:@"ResultObject"] isEqual:[NSNull null]])
             {
                 NSMutableArray *dictarr=[[dict objectForKey:@"ResultObject"] mutableCopy];
+                if (dictarr.count < 10) {
+                    self.tableview.footer = nil;
+                }
                 [self netwok:dictarr];
                 [self.tableView reloadData];
             }
@@ -139,6 +142,9 @@
         NSArray *dictarr=[dict objectForKey:@"ResultObject"];
         if(![dictarr isEqual:[NSNull null]])
         {
+            if (dictarr.count < 10) {
+                self.tableview.footer = nil;
+            }
             [_tgs addObjectsFromArray:dictarr];
             [self.tableview reloadData];
         }

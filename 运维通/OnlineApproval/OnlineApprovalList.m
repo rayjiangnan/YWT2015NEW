@@ -90,9 +90,11 @@
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *dict2=responseObject;
         NSMutableArray *dictarr=[[dict2 objectForKey:@"ResultObject"] mutableCopy];
+        if (dictarr.count < 10) {
+            self.tableview.footer = nil;
+        }
         [self netwok:dictarr];
        
-        
         [self.tableview reloadData];
         NSLog(@"加载数据完成。");
         [self.tableview.header endRefreshing];
@@ -134,8 +136,11 @@
          NSLog(@"-----%@",dictarr);
         if(![dictarr isEqual:[NSNull null]])
         {
-     [_tgs addObjectsFromArray:dictarr];
-    [self.tableView reloadData];
+            if (dictarr.count < 10) {
+                self.tableview.footer = nil;
+            }
+            [_tgs addObjectsFromArray:dictarr];
+            [self.tableView reloadData];
         }
         [self.tableView.footer endRefreshing];
         self.tableView.footer.autoChangeAlpha=YES;

@@ -79,6 +79,9 @@
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *dict2=responseObject;
         NSMutableArray *dictarr=[[dict2 objectForKey:@"ResultObject"] mutableCopy];
+        if (dictarr.count < 10) {
+            self.tableview.footer = nil;
+        }
         NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
         num=[dict3[@"Warehouse_ID"] intValue];
         [self netwok:dictarr];
@@ -106,10 +109,7 @@
     
     
     self.tableView.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
-    
     return _tgs;
-    
-    
 }
 
 
@@ -127,14 +127,15 @@
         NSArray *dictarr=[dict objectForKey:@"ResultObject"];
         if(![dictarr isEqual:[NSNull null]])
         {
+            if (dictarr.count < 10) {
+                self.tableview.footer = nil;
+            }
             if (dictarr.count>0) {
                 NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
                 num=[dict3[@"Warehouse_ID"] intValue];
                 [_tgs addObjectsFromArray:dictarr];
                 [self.tableview reloadData];
-                
             }
-
         }
         [self.tableView.footer endRefreshing];
         self.tableView.footer.autoChangeAlpha=YES;
@@ -146,11 +147,7 @@
     [[NSOperationQueue mainQueue] addOperation:op];
     
     
-}
-
-
-
-
+} 
 
 /***数据跳转****/
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{

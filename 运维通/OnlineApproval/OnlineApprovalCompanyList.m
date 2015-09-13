@@ -104,24 +104,21 @@
     AFHTTPRequestOperation *op=[self GETurlString:urlStr2];
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *dict2=responseObject;
-          NSMutableArray *dictarr=[[dict2 objectForKey:@"ResultObject"] mutableCopy];
-        //NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
-        //num=[dict3[@"OnlineApproval_ID"] intValue];
+        NSMutableArray *dictarr=[[dict2 objectForKey:@"ResultObject"] mutableCopy];
+
+        if (dictarr.count < 10) {
+            self.tableview.footer = nil;
+        }
         [self netwok:dictarr];
         [self.tableview reloadData];
         NSLog(@"加载数据完成。");
-       [self.tableview.header endRefreshing];
+        [self.tableview.header endRefreshing];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
         [MBProgressHUD showError:@"网络异常！"];
         return ;
     }];
     [[NSOperationQueue mainQueue] addOperation:op];
-
-    
-    
-    
-    
 }
 
 
@@ -179,13 +176,13 @@
         NSArray *dictarr=[dict objectForKey:@"ResultObject"];
         if(![dictarr isEqual:[NSNull null]])
         {
+            if (dictarr.count < 10) {
+                self.tableview.footer = nil;
+            }
             if (dictarr.count>0) {
-                //NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
-                //num=[dict3[@"OnlineApproval_ID"] intValue];
-                           [_tgs addObjectsFromArray:dictarr];
-                           [self.tableview reloadData];
-                           
-                           }
+                [_tgs addObjectsFromArray:dictarr];
+                [self.tableview reloadData];
+            }
         }
         [self.tableview.footer endRefreshing];
         self.tableview.footer.autoChangeAlpha=YES;
