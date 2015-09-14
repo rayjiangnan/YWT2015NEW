@@ -126,6 +126,7 @@
 		39998D8B1B52B781001D4BCA /* pinyin.c in Sources */ = {isa = PBXBuildFile; fileRef = 39998D891B52B781001D4BCA /* pinyin.c */; };
 		39998D8E1B52B7CE001D4BCA /* editview.m in Sources */ = {isa = PBXBuildFile; fileRef = 39998D8D1B52B7CE001D4BCA /* editview.m */; };
 		39998D911B52B7DF001D4BCA /* addperson.m in Sources */ = {isa = PBXBuildFile; fileRef = 39998D901B52B7DF001D4BCA /* addperson.m */; };
+		4E71A57A1BA6784500CD97FA /* applyperson.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E71A5791BA6784500CD97FA /* applyperson.m */; };
 		4E7FA0E81BA27D52001769AE /* companyRenzhen.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E7FA0E71BA27D52001769AE /* companyRenzhen.m */; };
 		4EC9671B1B5C971D00A59F0B /* AMap.bundle in Frameworks */ = {isa = PBXBuildFile; fileRef = 78402A6D1B5BA73800908FA9 /* AMap.bundle */; };
 		4EC9671D1B5C979A00A59F0B /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4EC9671C1B5C979A00A59F0B /* OpenGLES.framework */; };
@@ -451,6 +452,8 @@
 		39998D8D1B52B7CE001D4BCA /* editview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = editview.m; sourceTree = "<group>"; };
 		39998D8F1B52B7DF001D4BCA /* addperson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = addperson.h; sourceTree = "<group>"; };
 		39998D901B52B7DF001D4BCA /* addperson.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = addperson.m; sourceTree = "<group>"; };
+		4E71A5781BA6784500CD97FA /* applyperson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = applyperson.h; sourceTree = "<group>"; };
+		4E71A5791BA6784500CD97FA /* applyperson.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = applyperson.m; sourceTree = "<group>"; };
 		4E7FA0E61BA27D52001769AE /* companyRenzhen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = companyRenzhen.h; sourceTree = "<group>"; };
 		4E7FA0E71BA27D52001769AE /* companyRenzhen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = companyRenzhen.m; sourceTree = "<group>"; };
 		4EC9671C1B5C979A00A59F0B /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -1433,6 +1436,8 @@
 				28DDBB5C1B667D6400C872EF /* userCell.h */,
 				28DDBB5D1B667D6400C872EF /* userCell.m */,
 				28DDBB5E1B667D6400C872EF /* userCell.xib */,
+				4E71A5781BA6784500CD97FA /* applyperson.h */,
+				4E71A5791BA6784500CD97FA /* applyperson.m */,
 			);
 			name = postorderlist;
 			sourceTree = "<group>";
@@ -1577,6 +1582,7 @@
 				7850F4C71BA502B3001116D6 /* SDWebImageManager.m in Sources */,
 				28360A1D1B77B0CA00F293C3 /* sywindex.m in Sources */,
 				2844F75E1B93515E00ADE377 /* imgdetal.m in Sources */,
+				4E71A57A1BA6784500CD97FA /* applyperson.m in Sources */,
 				396B815D1B526D5B0017305D /* ritaccAppDelegate.m in Sources */,
 				289E4F121B7E2CEC00C19D13 /* SBJsonStreamWriter.m in Sources */,
 				284132131B764DB2005B5872 /* xietong.m in Sources */,

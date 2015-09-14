@@ -145,9 +145,20 @@
         
         NSDictionary *dict=responseObject;
         NSDictionary *dict1=dict[@"ResultObject"];
-        self.wdyd.text=[NSString stringWithFormat:@"%@",dict1[@"AllNum"]];
-        self.wcyd.text=[NSString stringWithFormat:@"%@",dict1[@"FinishNum"]];
-        self.dwcyd.text=[NSString stringWithFormat:@"%@",dict1[@"NOFinishNum"]];
+        if (![dict[@"ResultObject"] isEqual:[NSNull null]]) {
+             if (![dict1[@"AllNum"] isEqual:[NSNull null]]) {
+              self.wdyd.text=[NSString stringWithFormat:@"%@",dict1[@"AllNum"]];
+             }
+            if (![dict1[@"FinishNum"] isEqual:[NSNull null]]) {
+               self.wcyd.text=[NSString stringWithFormat:@"%@",dict1[@"FinishNum"]];
+            }
+            if (![dict1[@"NOFinishNum"] isEqual:[NSNull null]]) {
+                 self.dwcyd.text=[NSString stringWithFormat:@"%@",dict1[@"NOFinishNum"]];
+            }
+      
+     
+        }
+      
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         

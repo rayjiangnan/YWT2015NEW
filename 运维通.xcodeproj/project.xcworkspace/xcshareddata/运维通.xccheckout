@@ -7,14 +7,14 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>5B872748-1819-44CA-B661-EA5EF28A908A</string>
 	<key>IDESourceControlProjectName</key>
-	<string>project</string>
+	<string>运维通</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>E88C703EE35BF5910B9864F1697FFBC2BE437EC0</key>
 		<string>https://github.com/rayjiangnan/YWT2015NEW.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>运维通.xcodeproj/project.xcworkspace</string>
+	<string>运维通.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>E88C703EE35BF5910B9864F1697FFBC2BE437EC0</key>
@@ -34,7 +34,7 @@
 			<key>IDESourceControlWCCIdentifierKey</key>
 			<string>E88C703EE35BF5910B9864F1697FFBC2BE437EC0</string>
 			<key>IDESourceControlWCCName</key>
-			<string>YWT</string>
+			<string>YWT2015NEW</string>
 		</dict>
 	</array>
 </dict>

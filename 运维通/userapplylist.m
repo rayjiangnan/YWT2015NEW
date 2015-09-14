@@ -9,6 +9,7 @@
 #import "userapplylist.h"
 #import "MBProgressHUD+MJ.h"
 #import "userCell.h"
+#import "applyperson.h"
 
 @interface userapplylist ()<UITableViewDataSource,UITableViewDelegate,UIWebViewDelegate>
 
@@ -187,13 +188,13 @@
     
 }
 
-//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-//    NSDictionary *rowdata=[self.tgs objectAtIndex:[indexPath row]];
-//    
-////    [self performSegueWithIdentifier:@"xiangxi" sender:nil];
-//    
-//    
-//}
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    NSDictionary *rowdata=[self.tgs objectAtIndex:[indexPath row]];
+    
+  [self performSegueWithIdentifier:@"person" sender:nil];
+    
+    
+}
 
 
 
@@ -236,15 +237,15 @@
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     id vc=segue.destinationViewController;
-//    if ([vc isKindOfClass:[plistdetail class]]) {
-//        plistdetail *detai=vc;
-//        NSIndexPath *path=[self.tableview indexPathForSelectedRow];
-//        NSDictionary *rowdata=[self.tgs objectAtIndex:path.row];
-//        
-//        NSString *orderq=rowdata[@"Order_ID"];
-//        [detai setValue:orderq forKey:@"strTtile"];}
+    if ([vc isKindOfClass:[applyperson class]]) {
+        applyperson *detai=vc;
+        NSIndexPath *path=[self.tableview indexPathForSelectedRow];
+        NSDictionary *rowdata=[self.tgs objectAtIndex:path.row];
+        
+        NSString *orderq=rowdata[@"Apply_UserID"];
+        [detai setValue:orderq forKey:@"strTtile"];}
     
-//  
+  
     
 }
 
