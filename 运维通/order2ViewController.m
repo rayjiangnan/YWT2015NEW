@@ -182,72 +182,7 @@
 }
 
 
--(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete)
-    {
 
-            NSDictionary *rowdata=[self.tgs objectAtIndex:indexPath.row];
-            //  NSLog(@"%@",rowdata);
-            NSString *orderq=rowdata[@"ID"];
-            
-            NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-            NSString *myString = [userDefaultes stringForKey:@"myidt"];
-            // NSString *tr=@"B6D13BE7-990C-4DA6-A757-088ED994D9EA";
-            
-            
-            
-            
-            NSString *urlStr = [NSString stringWithFormat:@"%@/API/HDL_Order.ashx?action=getaorderall&q0=%@&q1=%@",urlt,orderq,myString];
-            
-            NSURL *url = [NSURL URLWithString:urlStr];
-            
-            NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:2.0f];
-            [request setHTTPMethod:@"POST"];//设置请求方式为POST，默认为GET
-            NSString *str = @"type=focus-c";//设置参数
-            NSData *data = [str dataUsingEncoding:NSUTF8StringEncoding];
-            [request setHTTPBody:data];
-            
-            
-            NSData *received = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
-        if(received!=nil){
-            NSDictionary *dict=[NSJSONSerialization JSONObjectWithData:received options:NSJSONReadingMutableLeaves error:nil];
-            
-            NSDictionary *dictarr2=[dict objectForKey:@"ResultObject"];
-            NSDictionary *dictarr=[dictarr2 objectForKey:@"OrderMain"];
-            NSString *text1=dictarr[@"ID"];
-            //  NSLog(@"%@",text1);
-            NSString *text2=dictarr[@"Creator"];
-            NSString *text3=@"114";
-            NSString *text4=@"24";
-            NSString *text5=@"车公庙";
-            NSString *sta=[NSString stringWithFormat:@"%@",dictarr[@"Status"]];
-            
-            
-            if ([sta isEqualToString:@"99"]) {
-                [MBProgressHUD showError:@"已经签收不能删除！"];
-                
-                return;
-            }else{
-                [_tgs removeObjectAtIndex:indexPath.row];  //删除数组里的数据
-                
-                [self.tableView deleteRowsAtIndexPaths:[NSMutableArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-                
-                [self tijiao2:text1 :text2 :text3 :text4 :text5];
-                [self.tableView reloadData];
-                [MBProgressHUD showSuccess:@"您删除的订单已存入回收站！"];
-            }
-            
-        }else
-        {
-            [MBProgressHUD showError:@"网络请求出错"];
-            return ;
-        }
-
-   
-
-    }
-}
 
 
 
