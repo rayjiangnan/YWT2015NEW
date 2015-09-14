@@ -39,7 +39,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self repeatnetwork];
-    self.tableview.rowHeight=70;
+    self.tableview.rowHeight=60;
 }
 
 -(NSMutableArray *)netwok:(NSMutableArray *)array
