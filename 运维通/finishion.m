@@ -207,7 +207,7 @@
     NSString *myString = [userDefaultes stringForKey:@"myidt"];
     NSString *orderid = [userDefaultes stringForKey:@"orderid"];
     
-    [self UpdateFileImage:_receiveImage action:@"userimg" orderid:myString creatorid:myString uploadUrl:urlt];
+    [self UpdateFileImage:_receiveImage action:@"" orderid:myString creatorid:myString uploadUrl:urlt];
     
     NSLog(@"完成上传图片。");
 }

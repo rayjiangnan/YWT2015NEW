@@ -211,7 +211,7 @@
     NSString *myString = [userDefaultes stringForKey:@"myidt"];
     NSString *orderid = [userDefaultes stringForKey:@"orderid"];
     
-    [self UpdateFileImage:_receiveImage action:@"userimg" orderid:myString creatorid:myString uploadUrl:urlt];
+    [self UpdateFileImage:_receiveImage action:@"" orderid:myString creatorid:myString uploadUrl:urlt];
     
     NSLog(@"完成上传图片。");
 }
@@ -271,7 +271,7 @@
     //设置HTTPHeader
     [request setValue:content forHTTPHeaderField:@"Content-Type"];
     //设置Content-Length
-    [request setValue:[NSString stringWithFormat:@"%ld", [myRequestData1 length]] forHTTPHeaderField:@"Content-Length"];
+    [request setValue:[NSString stringWithFormat:@"%d", [myRequestData1 length]] forHTTPHeaderField:@"Content-Length"];
     //设置http body
     [request setHTTPBody:myRequestData1];
     //http method

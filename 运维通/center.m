@@ -284,23 +284,25 @@
     [editedImage drawInRect:CGRectMake(0, 0, 300, 300)];
     UIImage *reSizeImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    NSLog(@"++++++++++++++++++++++%@",reSizeImage);
+    //NSLog(@"++++++++++++++++++++++%@",reSizeImage);
     
     _receiveImage=reSizeImage;
     [self btnupload_Click:nil];
-    [cropperViewController dismissViewControllerAnimated:YES completion:^{    }];
+    [cropperViewController dismissViewControllerAnimated:YES completion:^{
     
+    }];
 }
-
+- (void)imageCropperDidCancel:(VPImageCropperViewController *)cropperViewController
+{
+    UIGraphicsEndImageContext();
+}
 
 - (void)btnupload_Click:(id)sender {
 
     NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
     NSString *myString = [userDefaultes stringForKey:@"myidt"];
 
-    
     [self UpdateFileImage:_receiveImage action:@"userimg" userid:myString creatorid:myString uploadUrl:urlt];
-    
     NSLog(@"完成上传图片。");
 }
 
@@ -376,7 +378,15 @@
     }
     else
     {
-        //NSString *img=[NSString stringWithFormat:@"%@/%@",urlt,dict[@"ReturnMsg"]];
+        NSString *img=[NSString stringWithFormat:@"%@/%@",urlt,dict[@"ReturnMsg"]];
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        [userDefaults setObject:dict[@"ReturnMsg"] forKey:@"UserImg"];
+
+        NSURL *imgurl=[NSURL URLWithString:img];
+        SDWebImageManager *manager = [SDWebImageManager sharedManager];
+        [manager downloadWithURL:imgurl delegate:nil];
+        UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
+        [self.img setBackgroundImage:imgstr forState:UIControlStateNormal];
     }
 
     
