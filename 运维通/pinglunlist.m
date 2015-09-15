@@ -30,7 +30,6 @@
     
 }
 
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self network];
@@ -99,7 +98,6 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
 {
-    NSLog(@"===========%d",pagnum);
     return pagnum;
     
 }
@@ -119,7 +117,6 @@
     NSString *dt3=dict2[@"Create_Date"];
     dt3=[dt3 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
     dt3=[dt3 stringByReplacingOccurrencesOfString:@")/" withString:@""];
-    // NSLog(@"%@",dt3);
     NSString * timeStampString3 =dt3;
     NSTimeInterval _interval3=[timeStampString3 doubleValue] / 1000;
     NSDate *date3 = [NSDate dateWithTimeIntervalSince1970:_interval3];
