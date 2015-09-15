@@ -127,6 +127,7 @@
 		39998D8E1B52B7CE001D4BCA /* editview.m in Sources */ = {isa = PBXBuildFile; fileRef = 39998D8D1B52B7CE001D4BCA /* editview.m */; };
 		39998D911B52B7DF001D4BCA /* addperson.m in Sources */ = {isa = PBXBuildFile; fileRef = 39998D901B52B7DF001D4BCA /* addperson.m */; };
 		4E71A57A1BA6784500CD97FA /* applyperson.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E71A5791BA6784500CD97FA /* applyperson.m */; };
+		4E72A9EE1BA7FCEF001FDC7A /* pinglunlist.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E72A9ED1BA7FCEF001FDC7A /* pinglunlist.m */; };
 		4E7FA0E81BA27D52001769AE /* companyRenzhen.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E7FA0E71BA27D52001769AE /* companyRenzhen.m */; };
 		4EC9671B1B5C971D00A59F0B /* AMap.bundle in Frameworks */ = {isa = PBXBuildFile; fileRef = 78402A6D1B5BA73800908FA9 /* AMap.bundle */; };
 		4EC9671D1B5C979A00A59F0B /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4EC9671C1B5C979A00A59F0B /* OpenGLES.framework */; };
@@ -454,6 +455,8 @@
 		39998D901B52B7DF001D4BCA /* addperson.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = addperson.m; sourceTree = "<group>"; };
 		4E71A5781BA6784500CD97FA /* applyperson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = applyperson.h; sourceTree = "<group>"; };
 		4E71A5791BA6784500CD97FA /* applyperson.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = applyperson.m; sourceTree = "<group>"; };
+		4E72A9EC1BA7FCEF001FDC7A /* pinglunlist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pinglunlist.h; sourceTree = "<group>"; };
+		4E72A9ED1BA7FCEF001FDC7A /* pinglunlist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = pinglunlist.m; sourceTree = "<group>"; };
 		4E7FA0E61BA27D52001769AE /* companyRenzhen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = companyRenzhen.h; sourceTree = "<group>"; };
 		4E7FA0E71BA27D52001769AE /* companyRenzhen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = companyRenzhen.m; sourceTree = "<group>"; };
 		4EC9671C1B5C979A00A59F0B /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -767,6 +770,8 @@
 				2854D4C81B9B243F00209D4A /* paylistcell.h */,
 				2854D4C91B9B243F00209D4A /* paylistcell.m */,
 				2854D4CA1B9B243F00209D4A /* paylistcell.xib */,
+				4E72A9EC1BA7FCEF001FDC7A /* pinglunlist.h */,
+				4E72A9ED1BA7FCEF001FDC7A /* pinglunlist.m */,
 			);
 			name = ywperson;
 			sourceTree = "<group>";
@@ -1696,6 +1701,7 @@
 				283A8D2B1B6E2541001DF53A /* daywrite.m in Sources */,
 				289E4F231B7E3A3800C19D13 /* RegistrationComapnyCell.m in Sources */,
 				785028071B5942EA00444333 /* UIViewController+Extension.m in Sources */,
+				4E72A9EE1BA7FCEF001FDC7A /* pinglunlist.m in Sources */,
 				7860A55D1B63BFA60067253C /* MJRefreshBackNormalFooter.m in Sources */,
 				78402A601B5B910100908FA9 /* hjnTG.m in Sources */,
 				284C22D11B7F8453004B46D0 /* OnlineApprovalAdd.m in Sources */,

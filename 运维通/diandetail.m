@@ -10,10 +10,13 @@
 #import "MBProgressHUD+MJ.h"
 #import "pinglunCell.h"
 #import "UIImageView+WebCache.h"
+#import "pinglunlist.h"
 
 @interface diandetail ()<UITableViewDataSource,UITableViewDelegate,UIWebViewDelegate>
 {
     int pagnum;
+    NSString *nid;
+    int num;
 }
 @property (weak, nonatomic) IBOutlet UILabel *bt;
 @property (weak, nonatomic) IBOutlet UITextView *nr;
@@ -22,6 +25,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
 @property (nonatomic, strong) NSMutableArray *tgs;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollview;
+@property (weak, nonatomic) IBOutlet UIView *bview;
 
 @end
 
@@ -41,8 +45,10 @@
     [self network];
     [self tapBackground];
     [self tapOnce];
+    num=0;
     self.tableview.rowHeight=70;
-       self.scrollview.contentSize=CGSizeMake(320, 980);
+     self.tableview.scrollEnabled=NO;
+       self.scrollview.contentSize=CGSizeMake(320, 750);
 }
 
 -(void)network{
@@ -54,6 +60,8 @@
     NSString *myString = [userDefaultes stringForKey:@"myidt"];
     
     NSString *mystring2=[NSString stringWithFormat:@"%@",strTtile];
+    
+    nid=mystring2;
     
     NSString *urlStr = [NSString stringWithFormat:@"%@/API/YWT_YWLog.ashx?action=getitem&q0=%@&q1=%@",urlt,myString,mystring2];
     
@@ -136,6 +144,9 @@
                 [self.tableview reloadData];
                 self.pltext.text=@"";
                   [self.view setNeedsDisplay];
+                
+   
+                [self tapOnce];
             }else{
                 
                 [MBProgressHUD showError:sta];
@@ -167,10 +178,23 @@
 
 -(void)tapOnce
 {
+    if (num==1) {
+           [UIView beginAnimations:nil context:nil];
+    self.bview.transform=CGAffineTransformMakeTranslation(0,0);
+    
+    
+    [UIView setAnimationDuration:1.0];
+    [UIView commitAnimations];
+        num=0;
+    }
+
     [self.pltext resignFirstResponder];
 
 }
 
+- (IBAction)more:(id)sender {
+    [self performSegueWithIdentifier:@"pl" sender:nil];
+}
 
 
 -(NSMutableArray *)netwok:(NSMutableArray *)array
@@ -184,8 +208,8 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
 {
-    NSLog(@"===========%d",pagnum);
-    return pagnum;
+
+    return _tgs.count;
     
 }
 
@@ -218,6 +242,10 @@
         
         //cell.img.image=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
         [cell.img setImageWithURL:imgurl placeholderImage:[UIImage imageNamed:img]];
+        
+        cell.img.layer.cornerRadius = cell.img.frame.size.width / 2;
+        cell.img.clipsToBounds = YES;
+        
     }
     
     NSLog(@"%@",dict2);
@@ -227,6 +255,29 @@
     
     
     return cell;
+}
+
+- (IBAction)kais:(id)sender {
+    [UIView beginAnimations:nil context:nil];
+    self.bview.transform=CGAffineTransformMakeTranslation(0,-260);
+
+
+    [UIView setAnimationDuration:1.0];
+    [UIView commitAnimations];
+    num=1;
+}
+
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    id vc=segue.destinationViewController;
+    if ([vc isKindOfClass:[pinglunlist class]]) {
+        pinglunlist *detai=vc;
+
+        [detai setValue:nid forKey:@"strTtile"];
+        
+    }
+    
+    
 }
 
 

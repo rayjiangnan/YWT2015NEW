@@ -1,31 +1,26 @@
 //
-//  detaildaywrite.m
+//  pinglunlist.m
 //  运维通
 //
-//  Created by abc on 15/8/5.
+//  Created by 南江 on 15/9/15.
 //  Copyright (c) 2015年 ritacc. All rights reserved.
 //
 
-#import "detaildaywrite.h"
+#import "pinglunlist.h"
 #import "MBProgressHUD+MJ.h"
 #import "pinglunCell.h"
-#import "pinglunlist.h"
 
-@interface detaildaywrite ()<UITableViewDataSource,UITableViewDelegate,UIWebViewDelegate>
+@interface pinglunlist ()<UITableViewDataSource,UITableViewDelegate,UIWebViewDelegate>
 {
     int pagnum;
-     NSString *nid;
 }
-@property (weak, nonatomic) IBOutlet UILabel *bt;
-@property (weak, nonatomic) IBOutlet UITextView *nr;
-@property (weak, nonatomic) IBOutlet UILabel *pl;
 @property (nonatomic, strong) NSMutableArray *tgs;
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
-@property (weak, nonatomic) IBOutlet UIScrollView *scrollview;
 
 @end
 
-@implementation detaildaywrite
+
+@implementation pinglunlist
 @synthesize strTtile;
 
 
@@ -39,8 +34,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self network];
-    self.tableview.scrollEnabled=NO;
-    self.scrollview.contentSize=CGSizeMake(320, 830);
     self.tableview.rowHeight=70;
 }
 
@@ -53,7 +46,7 @@
     NSString *myString = [userDefaultes stringForKey:@"myidt"];
     
     NSString *mystring2=[NSString stringWithFormat:@"%@",strTtile];
-    nid=mystring2;
+    
     NSString *urlStr = [NSString stringWithFormat:@"%@/API/YWT_YWLog.ashx?action=getitem&q0=%@&q1=%@",urlt,myString,mystring2];
     
     NSString *str = @"type=focus-c";
@@ -64,17 +57,15 @@
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         NSDictionary *dict=responseObject;
-        
-        NSDictionary *dict1=dict[@"ResultObject"];
+        if (![dict[@"ResultObject"] isEqual:[NSNull null]]) {
+             NSDictionary *dict1=[dict[@"ResultObject"] mutableCopy];
         NSMutableArray *pliun=[dict1 objectForKey:@"Replys"];
         pagnum=pliun.count;
         [self netwok:pliun];
-        [self.tableview reloadData];
-        
-        
-        self.bt.text=dict1[@"Title"];
-        self.nr.text=dict1[@"Content"];
-        self.pl.text=[NSString stringWithFormat:@"已有%@评论",dict1[@"ReplyNumber"]];
+        [self.tableview reloadData]; 
+        }
+
+
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
         
@@ -93,6 +84,10 @@
     
 }
 
+
+
+
+
 -(NSMutableArray *)netwok:(NSMutableArray *)array
 {
     
@@ -105,7 +100,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
 {
     NSLog(@"===========%d",pagnum);
-    return _tgs.count;
+    return pagnum;
     
 }
 
@@ -146,22 +141,6 @@
     
     
     return cell;
-}
-
-- (IBAction)more:(id)sender {
-    [self performSegueWithIdentifier:@"pl" sender:nil];
-}
-
--(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
-    id vc=segue.destinationViewController;
-    if ([vc isKindOfClass:[pinglunlist class]]) {
-        pinglunlist *detai=vc;
-        
-        [detai setValue:nid forKey:@"strTtile"];
-        
-    }
-    
-    
 }
 
 

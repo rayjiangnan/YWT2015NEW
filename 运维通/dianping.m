@@ -119,11 +119,13 @@
     AFHTTPRequestOperation *op=  [self POSTurlString:urlStr parameters:str];
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSMutableDictionary *dict=responseObject;
-         NSMutableArray *dictarr=[[dict objectForKey:@"ResultObject"] mutableCopy];
-        NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
-        num=[dict3[@"AutoID"] intValue];
-        [self netwok:dictarr];
-        [self.tableview reloadData];
+        if (![[dict objectForKey:@"ResultObject"] isEqual:[NSNull null]]) {
+            NSMutableArray *dictarr=[[dict objectForKey:@"ResultObject"] mutableCopy];
+            NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
+            num=[dict3[@"AutoID"] intValue];
+            [self netwok:dictarr];
+            [self.tableview reloadData];
+        }
         
         [self.tableview.header endRefreshing];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
