@@ -294,8 +294,11 @@
 }
 - (void)imageCropperDidCancel:(VPImageCropperViewController *)cropperViewController
 {
-    UIGraphicsEndImageContext();
+    [cropperViewController dismissViewControllerAnimated:YES completion:^{
+        
+    }];
 }
+ 
 
 - (void)btnupload_Click:(id)sender {
 

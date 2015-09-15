@@ -278,24 +278,15 @@
     
     [self btnupload_Click:nil];
     
-    [cropperViewController dismissViewControllerAnimated:YES completion:^{
-        
-        
-        
-        
-    }];
+    [cropperViewController dismissViewControllerAnimated:YES completion:^{}];
     
 }
 
-
+- (void)imageCropperDidCancel:(VPImageCropperViewController *)cropperViewController
+{
+    [cropperViewController dismissViewControllerAnimated:YES completion:^{}];
+}
 - (void)btnupload_Click:(id)sender {
-    /*
-     action:(NSString *) straction
-     orderid:(NSString *) strOrderid
-     creatorid:(NSString *) strCreatorid //创建人ID
-     uploadUrl:(NSString *) strUploadUrl //上传路径
-     "
-     */
     NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
     NSString *myString = [userDefaultes stringForKey:@"myidt"];
     //NSString *orderid = [userDefaultes stringForKey:@"orderid"];
@@ -390,16 +381,6 @@
     }
     
 }
-
-
-
-
-- (void)imageCropperDidCancel:(VPImageCropperViewController *)cropperViewController
-{
-    UIGraphicsEndImageContext();
-}
-
-
 
 -(void)network{
     NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];

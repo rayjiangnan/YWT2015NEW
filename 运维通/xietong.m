@@ -22,6 +22,8 @@
 @synthesize _updateTimer2;
 @synthesize _mapview;
 @synthesize _locationManager;
+@synthesize subtitle;
+@synthesize coordinate;
 
 
 

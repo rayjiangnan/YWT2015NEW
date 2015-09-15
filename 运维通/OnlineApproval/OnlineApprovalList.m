@@ -28,11 +28,7 @@
 
 
 -(void)viewDidAppear:(BOOL)animated{
-
-        
-        self.tabBarController.tabBar.hidden=YES;
-        
- 
+    self.tabBarController.tabBar.hidden=YES;
     [self network2];
     [self.tableview reloadData];
 }
@@ -42,7 +38,6 @@
     [self repeatnetwork];
     self.tableview.rowHeight=120;
     NSLog(@"加载数据。。。。");
-    
 }
 
 
@@ -111,14 +106,8 @@
 
 
 -(NSMutableArray *)repeatnetwork{
-
-    
     self.tableView.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
-    
-
     return _tgs;
-    
-    
 }
 -(NSMutableArray *)loadMoreData
 {

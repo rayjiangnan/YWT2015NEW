@@ -16,5 +16,5 @@
 
 -(NSString*) DateFormartString:(NSString*) sourcedate;
 -(NSString*) DateFormartMDHM:(NSString*) sourcedate;
-
+-(NSString*) DateFormartYMD:(NSString*) sourcedate;
 @end

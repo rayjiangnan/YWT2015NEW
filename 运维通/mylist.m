@@ -138,17 +138,15 @@
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSDictionary *rowdata=[self.tgs objectAtIndex:[indexPath row]];
+    //NSDictionary *rowdata=[self.tgs objectAtIndex:[indexPath row]];
     
      [self performSegueWithIdentifier:@"xiangxi" sender:nil];
-    
-    
 }
 
 -(void)network2{
     int indes=0;
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *myString = [userDefaultes stringForKey:@"myidt"];
+//    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
+//    NSString *myString = [userDefaultes stringForKey:@"myidt"];
     
     NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_OrderPlatform.ashx?action=getlistforall&q0=%d",urlt,indes];
     
@@ -169,8 +167,6 @@
         NSMutableDictionary *dict=[NSJSONSerialization JSONObjectWithData:received options:NSJSONReadingMutableLeaves error:nil];
         
         NSMutableArray *dictarr=[[dict objectForKey:@"ResultObject"] mutableCopy];
-        
-        
         [self netwok:dictarr];
         [self.tableview reloadData];
         

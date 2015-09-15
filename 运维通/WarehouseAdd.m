@@ -146,10 +146,6 @@
             self.txtNum.text= [NSString stringWithFormat:@"%@",dict2[@"Number"]];
             self.txtUnit.text= [NSString stringWithFormat:@"%@",dict2[@"Unit"]];
         }
-
-        
-        
-        
         NSLog(@"加载数据完成。");
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);

@@ -71,5 +71,18 @@
     return [objDateformat3 stringFromDate: date3];
 }
 
+-(NSString*) DateFormartYMD:(NSString*) sourcedate
+{
+    NSString *dt3=sourcedate;
+    dt3=[dt3 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
+    dt3=[dt3 stringByReplacingOccurrencesOfString:@")/" withString:@""];
+    
+    NSString * timeStampString3 =dt3;
+    NSTimeInterval _interval3=[timeStampString3 doubleValue] / 1000;
+    NSDate *date3 = [NSDate dateWithTimeIntervalSince1970:_interval3];
+    NSDateFormatter *objDateformat3 = [[NSDateFormatter alloc] init];
+    [objDateformat3 setDateFormat:@"yyyy-MM-dd"];
+    return [objDateformat3 stringFromDate: date3];
+}
 
 @end

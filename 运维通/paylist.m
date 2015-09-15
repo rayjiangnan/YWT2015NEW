@@ -11,6 +11,7 @@
 #import "AFNetworkTool.h"
 #import "MJRefresh.h"
 #import "paylistcell.h"
+#import "UIImageView+WebCache.h"
 
 @interface paylist ()<UITableViewDataSource,UITableViewDelegate,UIWebViewDelegate>
 {
@@ -80,7 +81,8 @@
     if (![dict2[@"UserImg"] isEqual:[NSNull null]]) {
         NSString *img=[NSString stringWithFormat:@"%@%@",urlt,dict2[@"UserImg"]];
         NSURL *imgurl=[NSURL URLWithString:img];
-        cell.img.image=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
+        //cell.img.image=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
+        [cell.img setImageWithURL:imgurl placeholderImage:[UIImage imageNamed:img]];
     }
 
     return cell;
@@ -106,13 +108,17 @@
             self.money.text=[NSString stringWithFormat:@"%@",dictmoney[@"Wallet_Lave"]];
             NSMutableArray *dictarr=[[dict2 objectForKey:@"Records"] mutableCopy];
             if (dictarr.count>0) {
-                 NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
-            num=[dict3[@"Registration_ID"] intValue];
-            
-            NSLog(@"%@",dictarr);
-            [self netwok:dictarr];
-            [self.tableview reloadData];
-            NSLog(@"加载数据完成。");
+                if (dictarr.count < 10) {
+                    self.tableview.footer = nil;
+                }
+
+                NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
+                num=[dict3[@"Registration_ID"] intValue];
+
+                NSLog(@"%@",dictarr);
+                [self netwok:dictarr];
+                [self.tableview reloadData];
+                NSLog(@"加载数据完成。");
             }
            
      }

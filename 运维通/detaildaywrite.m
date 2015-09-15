@@ -10,6 +10,7 @@
 #import "MBProgressHUD+MJ.h"
 #import "pinglunCell.h"
 #import "pinglunlist.h"
+#import "UIImageView+WebCache.h"
 
 @interface detaildaywrite ()<UITableViewDataSource,UITableViewDelegate,UIWebViewDelegate>
 {
@@ -135,7 +136,8 @@
     if (![dict2[@"UserImg"] isEqual:[NSNull null]]) {
         NSString *img=[NSString stringWithFormat:@"%@%@",urlt,dict2[@"UserImg"]];
         NSURL *imgurl=[NSURL URLWithString:img];
-        cell.img.image=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
+        //cell.img.image=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
+        [cell.img setImageWithURL:imgurl placeholderImage:[UIImage imageNamed:img]];
         cell.img.layer.cornerRadius = cell.img.frame.size.width / 2;
         cell.img.clipsToBounds = YES;
     }

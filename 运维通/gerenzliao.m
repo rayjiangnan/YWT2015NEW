@@ -9,8 +9,11 @@
 #import "gerenzliao.h"
 #import "MBProgressHUD+MJ.h"
 #import <QuartzCore/QuartzCore.h>
-
-
+#import "UIViewController+Extension.h"
+#import "MBProgressHUD+MJ.h"
+#import "AFNetworkTool.h"
+#import "MJRefresh.h"
+#import "SBJson.h"
 
 @interface gerenzliao ()<UITextViewDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate,UITextFieldDelegate,NSURLConnectionDelegate,UITextFieldDelegate>
 {
@@ -130,152 +133,168 @@
             }
             
          
-            NSString *dt1=dictarr3[@"Birthday"];
-            dt1=[dt1 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
-            dt1=[dt1 stringByReplacingOccurrencesOfString:@")/" withString:@""];
-            //NSLog(@"%@",dt1);
-            NSString * timeStampString =dt1;
-            NSTimeInterval _interval=[timeStampString doubleValue] / 1000;
-            NSDate *date = [NSDate dateWithTimeIntervalSince1970:_interval];
-            NSDateFormatter *objDateformat = [[NSDateFormatter alloc] init];
-            [objDateformat setDateFormat:@"yyyy-MM-dd HH:mm"];
+//            NSString *dt1=dictarr3[@"Birthday"];
+//            dt1=[dt1 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
+//            dt1=[dt1 stringByReplacingOccurrencesOfString:@")/" withString:@""];
+//            //NSLog(@"%@",dt1);
+//            NSString * timeStampString =dt1;
+//            NSTimeInterval _interval=[timeStampString doubleValue] / 1000;
+//            NSDate *date = [NSDate dateWithTimeIntervalSince1970:_interval];
+//            NSDateFormatter *objDateformat = [[NSDateFormatter alloc] init];
+//            [objDateformat setDateFormat:@"yyyy-MM-dd HH:mm"];
+//            
+//            // NSLog(@"%@",dt1);
+//            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+//            [formatter setDateStyle:NSDateFormatterMediumStyle];
+//            [formatter setTimeStyle:NSDateFormatterShortStyle];
+//            [formatter setDateFormat:@"YYYY-MM-dd HH:mm:ss"];
+//            
+//            NSTimeZone* timeZone = [NSTimeZone timeZoneWithName:@"Asia/Beijing"];
+//            [formatter setTimeZone:timeZone];
+//            
+//            NSDate *datenow = [NSDate date];//现在时间,你可以输出来看下是什么格式
+//            
+//            NSString *nowtimeStr = [formatter stringFromDate:datenow];//----------将nsdate按formatter格式转成nsstring
+//            //时间转时间戳的方法:
+//            NSString *timeSp = [NSString stringWithFormat:@"%ld", (long)[datenow timeIntervalSince1970]];
+//            //  NSLog(@"timeSp:%@",timeSp); //时间戳的值
+//            //时间戳转时间的方法
+//            double d = [dt1 doubleValue];
+//            NSDate *confromTimesp = [NSDate dateWithTimeIntervalSince1970:d];
+//            //  NSLog(@"%f  = %@",d,confromTimesp);
+//            NSString *confromTimespStr = [formatter stringFromDate:confromTimesp];
+//            // NSLog(@"confromTimespStr =  %@",confromTimespStr);
+//            self.time.text=confromTimespStr;
             
-            // NSLog(@"%@",dt1);
-            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-            [formatter setDateStyle:NSDateFormatterMediumStyle];
-            [formatter setTimeStyle:NSDateFormatterShortStyle];
-            [formatter setDateFormat:@"YYYY-MM-dd HH:mm:ss"];
+            self.time.text=[self DateFormartYMD:dictarr3[@"Birthday"]];
+            self.btime.text=[self DateFormartYMD:dictarr3[@"GraduationData"]];
             
-            NSTimeZone* timeZone = [NSTimeZone timeZoneWithName:@"Asia/Beijing"];
-            [formatter setTimeZone:timeZone];
-            
-            NSDate *datenow = [NSDate date];//现在时间,你可以输出来看下是什么格式
-            
-            NSString *nowtimeStr = [formatter stringFromDate:datenow];//----------将nsdate按formatter格式转成nsstring
-            //时间转时间戳的方法:
-            NSString *timeSp = [NSString stringWithFormat:@"%ld", (long)[datenow timeIntervalSince1970]];
-            //  NSLog(@"timeSp:%@",timeSp); //时间戳的值
-            //时间戳转时间的方法
-            double d = [dt1 doubleValue];
-            NSDate *confromTimesp = [NSDate dateWithTimeIntervalSince1970:d];
-            //  NSLog(@"%f  = %@",d,confromTimesp);
-            NSString *confromTimespStr = [formatter stringFromDate:confromTimesp];
-            // NSLog(@"confromTimespStr =  %@",confromTimespStr);
-            self.time.text=confromTimespStr;
-            
-            
-            
-            NSString *dt4=dictarr3[@"GraduationData"];
-            dt4=[dt4 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
-            dt4=[dt4 stringByReplacingOccurrencesOfString:@")/" withString:@""];
-           NSLog(@"+++++++++%@",dt4);
-            NSString * timeStampString4 =dt4;
-            NSTimeInterval _interval4=[timeStampString4 doubleValue] / 1000;
-            NSDate *date4 = [NSDate dateWithTimeIntervalSince1970:_interval4];
-            NSDateFormatter *objDateformat4 = [[NSDateFormatter alloc] init];
-            [objDateformat4 setDateFormat:@"yyyy-MM-dd"];
-            
-            self.btime.text=[objDateformat4 stringFromDate: date4];
+//            NSString *dt4=dictarr3[@"GraduationData"];
+//            dt4=[dt4 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
+//            dt4=[dt4 stringByReplacingOccurrencesOfString:@")/" withString:@""];
+//           NSLog(@"+++++++++%@",dt4);
+//            NSString * timeStampString4 =dt4;
+//            NSTimeInterval _interval4=[timeStampString4 doubleValue] / 1000;
+//            NSDate *date4 = [NSDate dateWithTimeIntervalSince1970:_interval4];
+//            NSDateFormatter *objDateformat4 = [[NSDateFormatter alloc] init];
+//            [objDateformat4 setDateFormat:@"yyyy-MM-dd"];
+//            
+//            self.btime.text=[objDateformat4 stringFromDate: date4];
         }
  
     }
 }
+-(NSString*) SetValue {
+    
+    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
+    NSString *Create_User = [userDefaultes stringForKey:@"myidt"];
+    NSLog(@"%@",Create_User);
+    
+    NSString *sex=@"男";
+    if(sexnum==2){
+        sex=@"女";
+    }
+    NSString *timet1= [NSString stringWithFormat:@"\\/Date(%@)\\/",_time1];
+    NSString *timet2= [NSString stringWithFormat:@"\\/Date(%@)\\/",_time2];
+   
+    NSMutableDictionary *dic = [[NSMutableDictionary alloc]init];//创建内层的字典
+    [dic setValue:Create_User forKey:@"YWTUser_ID"];
+    [dic setValue:Create_User forKey:@"Create_User"];
+    [dic setValue:sex forKey:@"User_Sex"];
+    
+    [dic setValue:@"" forKey:@"Location_Province"];
+    [dic setValue:@"" forKey:@"Location_City"];
+    [dic setValue:@"" forKey:@"Location_County"];
+    [dic setValue:self.detail.text forKey:@"User_Address"];
+    [dic setValue:self.xueli.text forKey:@"HighestEducation"];
+    
 
-- (void)postJSON:(NSString *)text1 :(NSString *)text2:(NSString *)text3:(NSString *)text4:(NSString *)text5:(NSString *)text6 :(NSString *)text7:(NSString *)text8:(NSString *)text9:(NSString *)text10:(NSString *)text11 :(NSString *)text12:(NSString *)text13{
+    [dic setValue:timet1 forKey:@"Birthday"];
+    [dic setValue:self.email.text forKey:@"Email"];
     
-    NSString *strurl=[NSString stringWithFormat:@"%@/API/YWT_User.ashx",urlt];
-    NSURL *url = [NSURL URLWithString:strurl];
-        // 2. Request
-        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:0 timeoutInterval:2.0f];
-        
-        request.HTTPMethod = @"POST";
-        
-        
-        NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-        NSString *myString = [userDefaultes stringForKey:@"myidt"];
-        
-        NSString *dstr=[NSString stringWithFormat:@"{\"YWTUser_ID\":\"%@\",\"Create_User\":\"%@\",\"User_Sex\":\"%@\",\"Location_Province\":\"%@\",\"Location_City\":\"%@\",\"Location_County\":\"%@\", \"User_Address\":\"%@\", \"Birthday\":\"%@\", \"Email\":\"%@\", \"HighestEducation\":\"%@\", \"Finish_School\":\"%@\", \"SpecialtyName\":\"%@\", \"GraduationData\":\"%@\", \"SkillDescription\":\"%@\", \"Specialty\":\"%@\"}",myString,myString,text1,text2,text3,text4,text5,text6,text7,text8,text9,text10,text11,text12,text13];
-        
-        // ? 数据体
-        NSString *str = [NSString stringWithFormat:@"action=editselfinfo&q0=%@",dstr];
-        // 将字符串转换成数据
+     [dic setValue:self.xuexiao.text forKey:@"Finish_School"];
+     [dic setValue:self.zhuanye.text forKey:@"SpecialtyName"];
+     [dic setValue:timet2 forKey:@"GraduationData"];
     
-        request.HTTPBody = [str dataUsingEncoding:NSUTF8StringEncoding];
-        // 把字典转换成二进制数据流, 序列化
-          NSLog(@"%@?%@",strurl,str);
-        
-        // 3. Connection
-        [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc]init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-         
-            if (!data==nil) {
-           
-            NSString *result = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    [dic setValue:self.jineng.text forKey:@"SkillDescription"];
+    [dic setValue:self.zc.text forKey:@"Specialty"];
+    
+    
+    
+    SBJsonWriter *jsonWriter = [[SBJsonWriter alloc] init];
+    NSString *jsonString = [jsonWriter stringWithObject:dic];
+    return jsonString;
+}
+
+- (void)postJSON{
+    
+        NSString *strurl=[NSString stringWithFormat:@"%@/API/YWT_User.ashx",urlt];
+        NSString *dstr=[self SetValue];
+        NSString *strparameters = [NSString stringWithFormat:@"action=editselfinfo&q0=%@",dstr];
+    
+        NSLog(@"%@",dstr);
+    
+        AFHTTPRequestOperation *op=  [self POSTurlString:strurl parameters:strparameters];
+        [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSMutableDictionary *json=responseObject;
             
-            
-        }else{
-            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                [MBProgressHUD showError:@"网络异常请检查！"];
+            NSString *Status=[NSString stringWithFormat:@"%@",json[@"Status"]];
+            if ([Status isEqualToString:@"0"]){
+                NSString *ReturnMsg=[NSString stringWithFormat:@"%@",json[@"ReturnMsg"]];
+                [MBProgressHUD showError:ReturnMsg];
+                NSLog(@"%@",ReturnMsg);
                 return ;
-            }];
-        }
-            
-            
-            
+            }else{
+                [MBProgressHUD showSuccess:@"保存成功！"];
+                [[self navigationController] popViewControllerAnimated:YES];
+            }
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            [MBProgressHUD showError:@"网络异常！"];
+            return ;
         }];
-  
-    
+        [[NSOperationQueue mainQueue] addOperation:op];
 }
 
 - (IBAction)tijiao:(id)sender {
-    if ([self.sty.text isEqualToString:@"维运商"]) {
-       NSString *timeSp=@"1331121231000";
-        NSString *timet1= [NSString stringWithFormat:@"\\/Date(%@)\\/",_time1];
-        NSString *timet2= [NSString stringWithFormat:@"\\/Date(%@)\\/",_time2];
-        NSString *te=@"10";
-        NSString *sex;
-        if (sexnum==1) {
-            sex=@"男";
-        }else if(sexnum==2){
-        sex=@"女";
-        }
-        
-        [self postJSON:sex:self.sheng.text:self.city.text:self.qu.text:self.detail.text:timet1:self.email.text:self.xueli.text:self.xuexiao.text:self.zhuanye.text:timet2:self.jineng.text:self.zc.text];
-        [MBProgressHUD showSuccess:@"修改成功"];
-        [[self navigationController] popViewControllerAnimated:YES];
-        
-    }else if ([self.sty.text isEqualToString:@"维运人员"]) {
-       NSString *timeSp=@"1331121231000";
-        NSString *timet1= [NSString stringWithFormat:@"\\/Date(%@)\\/",_time1];
-        NSString *timet2= [NSString stringWithFormat:@"\\/Date(%@)\\/",_time2];
-        NSString *te=@"20";
-        NSString *sex;
-        if (sexnum==1) {
-           sex=@"男";
-        }else if(sexnum==2){
-            sex=@"女";
-        }
-        
-          [self postJSON:sex:self.sheng.text:self.city.text:self.qu.text:self.detail.text:timet1:self.email.text:self.xueli.text:self.xuexiao.text:self.zhuanye.text:timet2:self.jineng.text:self.zc.text];
-        [MBProgressHUD showSuccess:@"修改成功"];
-        [[self navigationController] popViewControllerAnimated:YES];
-        
-    }else{
-        NSString *timeSp=@"1331121231000";
-        NSString *timet1= [NSString stringWithFormat:@"\\/Date(%@)\\/",_time1];
-        NSString *timet2= [NSString stringWithFormat:@"\\/Date(%@)\\/",_time2];
-        NSString *te=@"30";
-        NSString *sex;
-        if (sexnum==1) {
-           sex=@"男";
-        }else if(sexnum==2){
-            sex=@"女";
-        }
-        
-            [self postJSON:sex:self.sheng.text:self.city.text:self.qu.text:self.detail.text:timet1:self.email.text:self.xueli.text:self.xuexiao.text:self.zhuanye.text:timet2:self.jineng.text:self.zc.text];
-        [MBProgressHUD showSuccess:@"修改成功"];
-        [[self navigationController] popViewControllerAnimated:YES];
-        
-    }
+    [self postJSON];
+//    if ([self.sty.text isEqualToString:@"维运商"]) {
+//        
+//        
+//        
+//        
+//        
+//    }else if ([self.sty.text isEqualToString:@"维运人员"]) {
+//       NSString *timeSp=@"1331121231000";
+//        NSString *timet1= [NSString stringWithFormat:@"\\/Date(%@)\\/",_time1];
+//        NSString *timet2= [NSString stringWithFormat:@"\\/Date(%@)\\/",_time2];
+//        NSString *te=@"20";
+//        NSString *sex;
+//        if (sexnum==1) {
+//           sex=@"男";
+//        }else if(sexnum==2){
+//            sex=@"女";
+//        }
+//        
+//          [self postJSON:sex:self.sheng.text:self.city.text:self.qu.text:self.detail.text:timet1:self.email.text:self.xueli.text:self.xuexiao.text:self.zhuanye.text:timet2:self.jineng.text:self.zc.text];
+//        [MBProgressHUD showSuccess:@"修改成功"];
+//        [[self navigationController] popViewControllerAnimated:YES];
+//        
+//    }else{
+//        NSString *timeSp=@"1331121231000";
+//        NSString *timet1= [NSString stringWithFormat:@"\\/Date(%@)\\/",_time1];
+//        NSString *timet2= [NSString stringWithFormat:@"\\/Date(%@)\\/",_time2];
+//        NSString *te=@"30";
+//        NSString *sex;
+//        if (sexnum==1) {
+//           sex=@"男";
+//        }else if(sexnum==2){
+//            sex=@"女";
+//        }
+//        
+//            [self postJSON:sex:self.sheng.text:self.city.text:self.qu.text:self.detail.text:timet1:self.email.text:self.xueli.text:self.xuexiao.text:self.zhuanye.text:timet2:self.jineng.text:self.zc.text];
+// 
+//        
+//    }
     
 }
 
@@ -343,7 +362,7 @@
 {
     
     NSDateFormatter *fmt = [[NSDateFormatter alloc] init];
-    fmt.dateFormat = @"YYYY-MM-dd HH:mm:sss";
+    fmt.dateFormat = @"YYYY-MM-dd";
     NSString* timeStr =[fmt stringFromDate:picker.date];
     _time.text=timeStr;
     
@@ -387,10 +406,8 @@
 }
 - (NSString *)birthdayChange2:(UIDatePicker *)picker
 {
-    
-    
     NSDateFormatter *fmt = [[NSDateFormatter alloc] init];
-    fmt.dateFormat = @"YYYY-MM-dd HH:mm:sss";
+    fmt.dateFormat = @"YYYY-MM-dd";
     NSString* timeStr =[fmt stringFromDate:picker.date];
     _btime.text=timeStr;
     
