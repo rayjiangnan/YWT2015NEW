@@ -29,13 +29,13 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     self.tabBarController.tabBar.hidden=YES;
-    [self network2];
-    [self.tableview reloadData];
+   
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self repeatnetwork];
+    [self network2];
     self.tableview.rowHeight=60;
     NSLog(@"加载数据。。。。");
     
