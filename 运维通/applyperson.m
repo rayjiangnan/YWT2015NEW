@@ -72,39 +72,7 @@
             
             if (![dict[@"GraduationData"] isEqual:[NSNull null]]) {
                 
-                NSString *dt1=dict[@"GraduationData"];
-                dt1=[dt1 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
-                dt1=[dt1 stringByReplacingOccurrencesOfString:@")/" withString:@""];
-                //NSLog(@"%@",dt1);
-                NSString * timeStampString =dt1;
-                NSTimeInterval _interval=[timeStampString doubleValue] / 1000;
-                NSDate *date = [NSDate dateWithTimeIntervalSince1970:_interval];
-                NSDateFormatter *objDateformat = [[NSDateFormatter alloc] init];
-                [objDateformat setDateFormat:@"yyyy-MM-dd HH:mm"];
-                
-                // NSLog(@"%@",dt1);
-                NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-                [formatter setDateStyle:NSDateFormatterMediumStyle];
-                [formatter setTimeStyle:NSDateFormatterShortStyle];
-                [formatter setDateFormat:@"YYYY-MM-dd"];
-                
-                NSTimeZone* timeZone = [NSTimeZone timeZoneWithName:@"Asia/Beijing"];
-                [formatter setTimeZone:timeZone];
-                
-                NSDate *datenow = [NSDate date];//现在时间,你可以输出来看下是什么格式
-                
-                NSString *nowtimeStr = [formatter stringFromDate:datenow];//----------将nsdate按formatter格式转成nsstring
-                //时间转时间戳的方法:
-                NSString *timeSp = [NSString stringWithFormat:@"%ld", (long)[datenow timeIntervalSince1970]];
-                //  NSLog(@"timeSp:%@",timeSp); //时间戳的值
-                //时间戳转时间的方法
-                double d = [dt1 doubleValue];
-                NSDate *confromTimesp = [NSDate dateWithTimeIntervalSince1970:d];
-                //  NSLog(@"%f  = %@",d,confromTimesp);
-                NSString *confromTimespStr = [formatter stringFromDate:confromTimesp];
-                // NSLog(@"confromTimespStr =  %@",confromTimespStr);
-                self.bysj.text=confromTimespStr;
-
+               self.bysj.text=[self DateFormartYMD:dict[@"GraduationData"]];
             }
             self.zc.text=[NSString stringWithFormat:@"%@",dict[@"Specialty"]];
             self.zyms.text=[NSString stringWithFormat:@"%@",dict[@"SkillDescription"]];
