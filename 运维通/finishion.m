@@ -19,6 +19,7 @@
     NSString *_accountType;
     UIImage *_receiveImage;
     MBProgressHUD *HUD;
+      MBProgressHUD *loading;
     int btnnum;
 }
 
@@ -195,6 +196,12 @@
         UIImage *portraitImg = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
         portraitImg=[self fixOrientation:portraitImg];
         _receiveImage=portraitImg;
+        loading= [[MBProgressHUD alloc] initWithView:self.view];
+        
+        [self.view addSubview:loading];
+        
+        [loading show:YES];
+        
         [self btnupload_Click:nil];
     }];
 }
@@ -281,13 +288,11 @@
     if (!resultData==nil) {
         NSData *data5 = [result dataUsingEncoding:NSUTF8StringEncoding];
         NSDictionary *dict=[NSJSONSerialization JSONObjectWithData:resultData options:NSJSONReadingMutableLeaves error:nil];
-        
-        NSLog(@"结果：%@",dict[@"ReturnMsg"]);
-        NSLog(@"结果：%@",dict[@"ReturnMsg"]);
-        NSLog(@"结果：%@",dict[@"ReturnMsgIcon"]);
+
         
         NSString *Status=[NSString stringWithFormat:@"%@",dict[@"Status"]];
         if ([Status isEqualToString:@"0"]){
+              [loading hide:YES];
             NSString *ReturnMsg=[NSString stringWithFormat:@"%@",dict[@"ReturnMsg"]];
             [MBProgressHUD showError:ReturnMsg];
             NSLog(@"%@",ReturnMsg);
@@ -322,10 +327,12 @@
                 UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
                 [self.xj4 setBackgroundImage:imgstr forState:UIControlStateNormal];
             }
+              [loading hide:YES];
         }
  
     }else{
-    [MBProgressHUD showError:@"网络异常请检查！"];
+        [loading hide:YES];
+        [MBProgressHUD showError:@"网络异常！"];
         return;
     }
     

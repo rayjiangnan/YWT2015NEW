@@ -20,6 +20,7 @@
     NSString *_accountType;
     UIImage *_receiveImage;
     MBProgressHUD *HUD;
+    MBProgressHUD *loading;
     int btnnum;
 }
 
@@ -202,11 +203,18 @@
         UIImage *portraitImg = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
         portraitImg=[self fixOrientation:portraitImg];
         _receiveImage=portraitImg;
+        loading= [[MBProgressHUD alloc] initWithView:self.view];
+        
+        [self.view addSubview:loading];
+        
+        [loading show:YES];
         [self btnupload_Click:nil];
     }];
 }
 
 - (void)btnupload_Click:(id)sender {
+  
+    
     NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
     NSString *myString = [userDefaultes stringForKey:@"myidt"];
     NSString *orderid = [userDefaultes stringForKey:@"orderid"];
@@ -295,6 +303,7 @@
     
     NSString *Status=[NSString stringWithFormat:@"%@",dict[@"Status"]];
     if ([Status isEqualToString:@"0"]){
+        [loading hide:YES];
         NSString *ReturnMsg=[NSString stringWithFormat:@"%@",dict[@"ReturnMsg"]];
         [MBProgressHUD showError:ReturnMsg];
         NSLog(@"%@",ReturnMsg);
@@ -329,9 +338,15 @@
             UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
             [self.xj4 setBackgroundImage:imgstr forState:UIControlStateNormal];
         }
+        [loading hide:YES];
     }
     
+      }else{
+      [loading hide:YES];
+       [MBProgressHUD showError:@"网络异常！"];
+          return;
       }
+    
 }
 
 

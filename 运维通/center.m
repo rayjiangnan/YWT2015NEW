@@ -21,7 +21,7 @@
     NSString *_accountType;
     UIImage *_receiveImage;
     MBProgressHUD *HUD;
-    
+    MBProgressHUD *loading;
 }
 
 @property (weak, nonatomic) IBOutlet UILabel *username;
@@ -316,6 +316,13 @@
                creatorid:(NSString *) strCreatorid //创建人ID
                uploadUrl:(NSString *) strUploadUrl //上传路径
 {
+    
+    loading = [[MBProgressHUD alloc] initWithView:self.view];
+    
+    [self.view addSubview:loading];
+    
+    [loading show:YES];
+    
     NSData *data = UIImageJPEGRepresentation(currentImage, 0.5);
     
     NSString *hyphens = @"--";
@@ -375,6 +382,7 @@
     
     NSString *Status=[NSString stringWithFormat:@"%@",dict[@"Status"]];
     if ([Status isEqualToString:@"0"]){
+        [loading hide:YES];
         NSString *ReturnMsg=[NSString stringWithFormat:@"%@",dict[@"ReturnMsg"]];
         [MBProgressHUD showError:ReturnMsg];
         NSLog(@"%@",ReturnMsg);
@@ -389,6 +397,7 @@
         SDWebImageManager *manager = [SDWebImageManager sharedManager];
         [manager downloadWithURL:imgurl delegate:nil];
         UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
+         [loading hide:YES];
         [self.img setBackgroundImage:imgstr forState:UIControlStateNormal];
     }
 

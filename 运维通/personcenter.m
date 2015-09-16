@@ -19,6 +19,7 @@
     NSString *_accountType;
     UIImage *_receiveImage;
     MBProgressHUD *HUD;
+      MBProgressHUD *loading;
     
 }
 @property (weak, nonatomic) IBOutlet UILabel *username;
@@ -287,6 +288,13 @@
     [cropperViewController dismissViewControllerAnimated:YES completion:^{}];
 }
 - (void)btnupload_Click:(id)sender {
+    
+    loading = [[MBProgressHUD alloc] initWithView:self.view];
+    
+    [self.view addSubview:loading];
+    
+    [loading show:YES];
+    
     NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
     NSString *myString = [userDefaultes stringForKey:@"myidt"];
     //NSString *orderid = [userDefaultes stringForKey:@"orderid"];
@@ -363,12 +371,14 @@
     
     NSString *Status=[NSString stringWithFormat:@"%@",dict[@"Status"]];
     if ([Status isEqualToString:@"0"]){
+        [loading hide:YES];
         NSString *ReturnMsg=[NSString stringWithFormat:@"%@",dict[@"ReturnMsg"]];
         [MBProgressHUD showError:ReturnMsg];
         NSLog(@"%@",ReturnMsg);
     }
     else
     {
+        
         NSString *img=[NSString stringWithFormat:@"%@/%@",urlt,dict[@"ReturnMsg"]];
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         [userDefaults setObject:dict[@"ReturnMsg"] forKey:@"UserImg"];
@@ -377,6 +387,7 @@
         SDWebImageManager *manager = [SDWebImageManager sharedManager];
         [manager downloadWithURL:imgurl delegate:nil];
         UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
+        [loading hide:YES];
         [self.img setBackgroundImage:imgstr forState:UIControlStateNormal];
     }
     
