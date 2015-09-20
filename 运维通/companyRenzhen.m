@@ -11,6 +11,7 @@
 #import"MBProgressHUD+MJ.h"
 #import "UpFile.h"
 #import "UIImageView+WebCache.h"
+#import "UIViewController+Extension.h"
 
 @interface companyRenzhen ()
 {

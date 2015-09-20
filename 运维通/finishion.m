@@ -11,7 +11,7 @@
 #import "VPImageCropperViewController.h"
 #define ORIGINAL_MAX_WIDTH 640.0f
 #import"MBProgressHUD.h"
-
+#import "UIViewController+Extension.h"
 
 @interface finishion ()<CLLocationManagerDelegate,UIWebViewDelegate,UITableViewDataSource, UITableViewDelegate,UIImagePickerControllerDelegate, UIActionSheetDelegate, VPImageCropperDelegate>
 {
@@ -212,7 +212,7 @@
 - (void)btnupload_Click:(id)sender {
     NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
     NSString *myString = [userDefaultes stringForKey:@"myidt"];
-    NSString *orderid = [userDefaultes stringForKey:@"orderid"];
+    //NSString *orderid = [userDefaultes stringForKey:@"orderid"];
     
     [self UpdateFileImage:_receiveImage action:@"" orderid:myString creatorid:myString uploadUrl:urlt];
     
@@ -277,16 +277,15 @@
     [request setHTTPMethod:@"POST"];
     
     
-    
     NSHTTPURLResponse *urlResponese = nil;
     NSError *error = [[NSError alloc]init];
     
     NSData* resultData = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponese error:&error];
-    NSString * result= [[NSString alloc] initWithData:resultData encoding:NSUTF8StringEncoding];
+    //NSString * result= [[NSString alloc] initWithData:resultData encoding:NSUTF8StringEncoding];
     
     //    NSString* result= [[NSString alloc] initWithData:resultData encoding:NSUTF8StringEncoding];
-    if (!resultData==nil) {
-        NSData *data5 = [result dataUsingEncoding:NSUTF8StringEncoding];
+    if (resultData!=nil) {
+        //NSData *data5 = [result dataUsingEncoding:NSUTF8StringEncoding];
         NSDictionary *dict=[NSJSONSerialization JSONObjectWithData:resultData options:NSJSONReadingMutableLeaves error:nil];
 
         
@@ -439,6 +438,7 @@
                     [MBProgressHUD showError:str];
                     return ;
                 }else{
+                    [self ChangeRecord:_idtt key:@"Order"]; //处理刷新问题
                     [MBProgressHUD showSuccess:@"提交成功"];
                     [[self navigationController] popViewControllerAnimated:YES];
                 }
@@ -474,12 +474,6 @@
     [self didClickIconImageV];
     
 }
-
-
-
-
-
-
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     [self requestaaa];
@@ -555,7 +549,6 @@
             // Grr...
             CGContextDrawImage(ctx, CGRectMake(0,0,aImage.size.height,aImage.size.width), aImage.CGImage);
             break;
-            
         default:
             CGContextDrawImage(ctx, CGRectMake(0,0,aImage.size.width,aImage.size.height), aImage.CGImage);
             break;

@@ -12,7 +12,7 @@
 #import "VPImageCropperViewController.h"
 #define ORIGINAL_MAX_WIDTH 640.0f
 #import"MBProgressHUD.h"
-
+#import "UIViewController+Extension.h"
 
 @interface beginorder ()<CLLocationManagerDelegate,UIWebViewDelegate,UITableViewDataSource, UITableViewDelegate,UIImagePickerControllerDelegate, UIActionSheetDelegate, VPImageCropperDelegate>
 {
@@ -294,7 +294,7 @@
     NSString * result= [[NSString alloc] initWithData:resultData encoding:NSUTF8StringEncoding];
     
     //    NSString* result= [[NSString alloc] initWithData:resultData encoding:NSUTF8StringEncoding];
-      if (!resultData==nil) {
+      if (resultData!=nil) {
     [result dataUsingEncoding:NSUTF8StringEncoding];
     NSDictionary *dict=[NSJSONSerialization JSONObjectWithData:resultData options:NSJSONReadingMutableLeaves error:nil];
     NSLog(@"结果：%@",dict);
@@ -450,7 +450,7 @@
         
         NSString *result = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
         NSLog(@"%@",result);
-        if (!data==nil) {
+        if (data!=nil) {
             NSDictionary *dict=[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:nil];
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                 NSString *errstr2=[NSString stringWithFormat:@"%@",dict[@"Status"]];
@@ -459,17 +459,11 @@
                     NSString *str=[NSString stringWithFormat:@"%@",dict[@"ReturnMsg"]];
                     
                     [MBProgressHUD showError:str];
-                    
-                    
-                    
                     return ;
-                    
-                    
                 }else{
+                    [self ChangeRecord:_idtt key:@"Order"]; //处理刷新问题
                     [MBProgressHUD showSuccess:@"提交成功"];
                     [[self navigationController] popViewControllerAnimated:YES];
-                    
-                    
                 }
                 
             }];

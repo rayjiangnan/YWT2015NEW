@@ -37,12 +37,21 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    self.tableview.delegate = self;
-    self.tableview.dataSource = self;
-    
-    num=0;
-    [self repeatnetwork];
+    int chageStatus=[self ChangePageInit:@"OnlineApproval"];
+    if (chageStatus==1 || chageStatus==4) {
+        self.tableview.delegate = self;
+        self.tableview.dataSource = self;
+        
+        num=0;
+        [self repeatnetwork];
+    }
+    else if (chageStatus==2) {
+        
+    }
+    else if (chageStatus==3) {
+        
+    }
+
   
     self.tableview.rowHeight=120;
     NSLog(@"加载数据。。。。");
@@ -105,9 +114,12 @@
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *dict2=responseObject;
         NSMutableArray *dictarr=[[dict2 objectForKey:@"ResultObject"] mutableCopy];
-
         if (dictarr.count < 10) {
             self.tableview.footer = nil;
+        }
+        else if (dictarr.count>=10)
+        {
+            self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
         }
         [self netwok:dictarr];
         [self.tableview reloadData];
@@ -149,13 +161,8 @@
 
 
 -(NSMutableArray *)repeatnetwork{
-    
-    
     self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
-    
     return _tgs;
-    
-    
 }
 
 
@@ -178,6 +185,10 @@
         {
             if (dictarr.count < 10) {
                 self.tableview.footer = nil;
+            }
+            else if (dictarr.count>=10)
+            {
+                self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
             }
             if (dictarr.count>0) {
                 [_tgs addObjectsFromArray:dictarr];

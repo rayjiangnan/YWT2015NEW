@@ -26,7 +26,7 @@
 
 
 -(void)viewDidAppear:(BOOL)animated{
-    
+    [self ChangeItemInit:@"OnlineApproval"];
     self.tabBarController.tabBar.hidden=YES;
     
 }
@@ -88,6 +88,7 @@
             NSLog(@"%@",ReturnMsg);
             return ;
         }else{
+            [self ChangeRecordAdd:@"OnlineApproval"];
             [MBProgressHUD showSuccess:@"保存成功！"];
             [[self navigationController] popViewControllerAnimated:YES];
         }

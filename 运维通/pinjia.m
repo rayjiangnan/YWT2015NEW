@@ -12,6 +12,7 @@
 #import "MJRefresh.h"
 #import "UIViewController+Extension.h"
 #import "SBJson.h"
+#import "UIViewController+Extension.h"
 
 @interface pinjia ()
 @property (weak, nonatomic) IBOutlet UILabel *danhao;
@@ -170,6 +171,8 @@
             [MBProgressHUD showError:ReturnMsg];
             NSLog(@"%@",ReturnMsg);
         }else{
+             [self ChangeRecord:_idtt key:@"Order"]; //处理刷新问题
+            [self ChangeRecord:_idtt key:@"Order"]; //处理刷新问题
             [MBProgressHUD showSuccess:@"评价成功！"];
             [[self navigationController] popViewControllerAnimated:YES];
             return ;

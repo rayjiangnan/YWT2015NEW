@@ -54,16 +54,7 @@
 {
     [super viewDidLoad];
     
-    CGFloat R  = (CGFloat) 0/255.0;
-    CGFloat G = (CGFloat) 146/255.0;
-    CGFloat B = (CGFloat) 234/255.0;
-    CGFloat alpha = (CGFloat) 1.0;
-    
-    UIColor *myColorRGB = [ UIColor colorWithRed: R
-                                           green: G
-                                            blue: B
-                                           alpha: alpha
-                           ];
+    UIColor *myColorRGB =[self GetUIColor];
     
     
     
@@ -133,7 +124,7 @@
     if (_tgs.count>0) {
         int index=_tgs.count;
         for (int i=0; i<index; i++) {
-            NSLog(@"%d,%@",i,[_tgs objectAtIndex:i]);
+            //NSLog(@"%d,%@",i,[_tgs objectAtIndex:i]);
             hjnANNINOTION *annon=[[hjnANNINOTION alloc]init];
             float x=[[_tgs objectAtIndex:i][@"latitude"] floatValue];//-0.00300;
             CLLocationDegrees latitude=x;

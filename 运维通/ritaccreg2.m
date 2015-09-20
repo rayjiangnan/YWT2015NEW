@@ -80,19 +80,13 @@
 
                     return ;
                     
-                    
                 }else{
                     [MBProgressHUD showSuccess:@"恭喜您，注册成功！"];
                     [self performSegueWithIdentifier:@"fanhui1" sender:nil];
                     
                 }
-                
             }];
-        
-            
             }
-                       
-            
         }];
         
 }
@@ -182,7 +176,7 @@
         
         [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc]init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
             
-            if (!data==nil) {
+            if (data!=nil) {
                    NSString *result = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
             NSLog(@"%@",result);
             
@@ -194,16 +188,10 @@
                     NSString *str=[NSString stringWithFormat:@"%@",dict[@"ReturnMsg"]];
                     
                     [MBProgressHUD showError:str];
-                    
-                    
-                    
                     return ;
-                    
-                    
                 }else{
                     [MBProgressHUD showSuccess:@"恭喜您，注册成功！"];
                     [self performSegueWithIdentifier:@"fanhui1" sender:nil];
-                    
                 }
                 
             }];
@@ -212,9 +200,6 @@
              [MBProgressHUD showError:@"网络请求出错！"];
                 return ;
             }
-                     
-            
-            
         }];
     }@catch (NSException * e) {
         NSLog(@"Exception: %@", e);
@@ -254,13 +239,11 @@
             [MBProgressHUD showError:@"请输入姓名"];
             return;
         }else{
-        [self postJSON2:self.realname.text];
+            [self postJSON2:self.realname.text];
         }
 
            }
-  
-          
-    
+
 }
 
 -(void)tapBackground

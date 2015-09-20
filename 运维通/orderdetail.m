@@ -58,7 +58,7 @@
     self.scrollview.contentSize=CGSizeMake(320, 800);
     [self requestaaa];
     [self.view setNeedsDisplay];
-    
+    [self ChangeItemInit:@"Order"];
 }
 
 
@@ -78,13 +78,13 @@
     
 
 
-    NSString *urlStr = [NSString stringWithFormat:@"%@/API/YWT_Order.ashx?action=getitem&q0=%@&q1=%@",urlt,mystring2,myString];
-    AFHTTPRequestOperation *op=[self GETurlString:urlStr];
-    NSLog(@"%@",urlStr);
-    [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-   NSLog(@"%@",  urlStr);
-NSLog(@"JSON: %@", responseObject);
-        
+        NSString *urlStr = [NSString stringWithFormat:@"%@/API/YWT_Order.ashx?action=getitem&q0=%@&q1=%@",urlt,mystring2,myString];
+        AFHTTPRequestOperation *op=[self GETurlString:urlStr];
+        NSLog(@"%@",urlStr);
+        [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"%@",  urlStr);
+        NSLog(@"JSON: %@", responseObject);
+    
         NSDictionary *dict2=responseObject;
         NSDictionary *dict=dict2[@"ResultObject"];
         [self array:dict];
@@ -232,16 +232,16 @@ self.style.text=dict[@"Status_Name"];
     if ([status isEqualToString:@"21"]) {
        [self performSegueWithIdentifier:@"begin" sender:nil];
     }
-    if ([status isEqualToString:@"20"]) {
+    else if ([status isEqualToString:@"20"]) {
         [self performSegueWithIdentifier:@"begin" sender:nil];
     }
-    if ([status isEqualToString:@"29"]) {
+    else if ([status isEqualToString:@"29"]) {
         [self performSegueWithIdentifier:@"begin" sender:nil];
     }
-    if ([status isEqualToString:@"30"]) {
+    else if ([status isEqualToString:@"30"]) {
         [self performSegueWithIdentifier:@"fi" sender:nil];
     }
- if ([status isEqualToString:@"90"]) {
+    else if ([status isEqualToString:@"90"]) {
       [self performSegueWithIdentifier:@"pj" sender:nil];
     }
 }

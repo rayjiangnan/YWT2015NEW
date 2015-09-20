@@ -11,6 +11,7 @@
 #import "pinglunCell.h"
 #import "UIImageView+WebCache.h"
 #import "pinglunlist.h"
+#import "UIViewController+Extension.h"
 
 @interface diandetail ()<UITableViewDataSource,UITableViewDelegate,UIWebViewDelegate>
 {

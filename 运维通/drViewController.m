@@ -9,6 +9,7 @@
 #import "drViewController.h"
 #import "orderdetail.h"
 #import "MBProgressHUD+MJ.h"
+#import "UIViewController+Extension.h"
 
 @interface drViewController ()<UITableViewDataSource,UITableViewDelegate>
 @property (nonatomic,strong)NSArray *tgs;
@@ -123,8 +124,8 @@ _idtt2=[NSString stringWithFormat:@"%@",strTtile];
         return;
         
     }else if(buttonIndex == 1){
-        NSString *lati=[NSString stringWithFormat:@"%f",self._locationManager.location.coordinate.latitude];
-        NSString *longtitu=[NSString stringWithFormat:@"%f",self._locationManager.location.coordinate.longitude];
+//        NSString *lati=[NSString stringWithFormat:@"%f",self._locationManager.location.coordinate.latitude];
+//        NSString *longtitu=[NSString stringWithFormat:@"%f",self._locationManager.location.coordinate.longitude];
         
         [self postJSON];
         
@@ -172,7 +173,7 @@ _idtt2=[NSString stringWithFormat:@"%@",strTtile];
             if(data!=nil)
             {
                 
-                NSString *result = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                //NSString *result = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
                 NSDictionary *dict=[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:nil];
                 [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                     NSString *errstr2=[NSString stringWithFormat:@"%@",dict[@"Status"]];
@@ -181,20 +182,12 @@ _idtt2=[NSString stringWithFormat:@"%@",strTtile];
                         NSString *str=[NSString stringWithFormat:@"%@",dict[@"ReturnMsg"]];
                         
                         [MBProgressHUD showError:str];
-                        
-                        
-                        
                         return ;
-                        
-                        
+
                     }else{
-                        if([self.receiveCbscs isEqualToString:@"CBSCS"]){
-                            [MBProgressHUD showSuccess:@"选择司机成功！"];
-                            
-                        }else{
-                            [MBProgressHUD showSuccess:@"选择司机成功！"];
-                            
-                        }
+                        [self ChangeRecord:_idtt2 key:@"Order"]; //处理刷新问题
+
+                        [MBProgressHUD showSuccess:@"选择司机成功！"];
                         [[self navigationController] popViewControllerAnimated:YES];
                         
                     }

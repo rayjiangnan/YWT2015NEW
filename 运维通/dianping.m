@@ -13,6 +13,7 @@
 #import "diancell.h"
 #import "diandetail.h"
 #import "UIImageView+WebCache.h"
+#import "UIViewController+Extension.h"
 
 @interface dianping ()<UITableViewDataSource,UITableViewDelegate,UIWebViewDelegate>
 {
@@ -44,11 +45,8 @@
 
 -(NSMutableArray *)netwok:(NSMutableArray *)array
 {
-    
     _tgs=array;
     return _tgs;
-    
-    
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;

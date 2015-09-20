@@ -12,6 +12,7 @@
 #import "MJRefresh.h"
 #import "paylistcell.h"
 #import "UIImageView+WebCache.h"
+#import "UIViewController+Extension.h"
 
 @interface paylist ()<UITableViewDataSource,UITableViewDelegate,UIWebViewDelegate>
 {
@@ -110,6 +111,10 @@
             if (dictarr.count>0) {
                 if (dictarr.count < 10) {
                     self.tableview.footer = nil;
+                }
+                else if (dictarr.count>=10)
+                {
+                    self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
                 }
 
                 NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];

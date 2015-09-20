@@ -11,6 +11,7 @@
 #import "MBProgressHUD+MJ.h"
 #import "AFNetworkTool.h"
 #import "MJRefresh.h"
+#import "UIViewController+Extension.h"
 
 
 @interface listViewController () <UITableViewDataSource,UITableViewDelegate>
@@ -91,14 +92,7 @@
 
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
-    id vc=segue.destinationViewController;
-//    if ([vc isKindOfClass:[detalcw class]]) {
-//        detalcw *detai=vc;
-//        NSIndexPath *path=[self.tableview indexPathForSelectedRow];
-//        NSDictionary *rowdata=[self.tgs objectAtIndex:path.row];
-//        NSString *orderq=rowdata[@"ID"];
-//        [detai setValue:orderq forKey:@"strTtile"];
-//    }
+
 }
 
 -(void)netWorkRequest:(int)parameter
@@ -140,12 +134,6 @@
         }];
         
         [[NSOperationQueue mainQueue] addOperation:op];
-        
-//    }];
-//    self.tableview.header.autoChangeAlpha = YES;
-//    
-//    [self.tableview.header beginRefreshing];
-    
 }
 
 

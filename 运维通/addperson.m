@@ -8,7 +8,7 @@
 
 #import "addperson.h"
 #import "MBProgressHUD+MJ.h"
-
+#import "UIViewController+Extension.h"
 
 @interface addperson () <UIPickerViewDataSource, UIPickerViewDelegate>
 @property (weak, nonatomic) IBOutlet UIPickerView *pickerView;
@@ -124,7 +124,7 @@ if ([self.sty.text isEqualToString:@"运维人员"]) {
             
             NSString *result = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
             NSLog(@"%@",result);
-            if (!data==nil) {
+            if (data!=nil) {
                  NSDictionary *dict=[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:nil];
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
             NSString *errstr2=[NSString stringWithFormat:@"%@",dict[@"Status"]];

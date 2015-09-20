@@ -13,6 +13,7 @@
 #define ORIGINAL_MAX_WIDTH 640.0f
 #import"MBProgressHUD.h"
 #import "SDWebImageManager.h"
+#import "UIViewController+Extension.h"
 
 @interface center ()<UIWebViewDelegate,UITableViewDataSource, UITableViewDelegate,UIImagePickerControllerDelegate, UIActionSheetDelegate
 ,UIImagePickerControllerDelegate,UINavigationControllerDelegate, VPImageCropperDelegate>
@@ -66,20 +67,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-[AFNetworkTool netWorkStatus];
+    [AFNetworkTool netWorkStatus];
 
-    CGFloat R  = (CGFloat) 0/255.0;
-    CGFloat G = (CGFloat) 146/255.0;
-    CGFloat B = (CGFloat) 234/255.0;
-    CGFloat alpha = (CGFloat) 1.0;
+
     
-    UIColor *myColorRGB = [ UIColor colorWithRed: R
-                                           green: G
-                                            blue: B
-                                           alpha: alpha
-                           ];
-    
-    
+    UIColor *myColorRGB =[self GetUIColor];
     
     self.navigationController.navigationBar.barTintColor=myColorRGB;
 
@@ -91,8 +83,8 @@
 
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     self.img.userInteractionEnabled=YES;
-    UITapGestureRecognizer *tap=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(didClickIconImageV)];
     
+    UITapGestureRecognizer *tap=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(didClickIconImageV)];
     [self.img addGestureRecognizer:tap];
 }
 

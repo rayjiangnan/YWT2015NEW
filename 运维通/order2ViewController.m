@@ -13,6 +13,7 @@
 #import "MBProgressHUD+MJ.h"
 #import "AFNetworkTool.h"
 #import "MJRefresh.h"
+#import "UIViewController+Extension.h"
 
 //#import"CbscsController.h"
 
@@ -52,45 +53,41 @@
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidLoad];
     
-    self.navigationController.navigationBar.hidden=NO;
-    
-    self.tabBarController.tabBar.hidden=NO;
-    [self indexchang:self.segmentControl];
-    [self.tableView reloadData];
-[AFNetworkTool netWorkStatus];
-    num=0;
-    
+    int chageStatus=[self ChangePageInit:@"Order"];
+    if (chageStatus==1 || chageStatus==4) {
+        self.navigationController.navigationBar.hidden=NO;
+        
+        self.tabBarController.tabBar.hidden=NO;
+        [self indexchang:self.segmentControl];
+        //[self.tableView reloadData];
+        [AFNetworkTool netWorkStatus];
+        num=0;
+    }
+    else if (chageStatus==2) {
+        
+    }
+    else if (chageStatus==3) {
+        [self ChangeLoad];
+    }
 }
 
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    CGFloat R  = (CGFloat) 0/255.0;
-    CGFloat G = (CGFloat) 146/255.0;
-    CGFloat B = (CGFloat) 234/255.0;
-    CGFloat alpha = (CGFloat) 1.0;
-    
-    UIColor *myColorRGB = [ UIColor colorWithRed: R
-                                           green: G
-                                            blue: B
-                                           alpha: alpha
-                           ];
-    
-    
+    UIColor *myColorRGB =[self GetUIColor];
     
     self.navigationController.navigationBar.barTintColor=myColorRGB;
-    
+
     [self.navigationController.navigationBar setTitleTextAttributes:
-     
-     @{NSFontAttributeName:[UIFont systemFontOfSize:17],
-       
-       NSForegroundColorAttributeName:[UIColor whiteColor]}];
-    
+
+    @{NSFontAttributeName:[UIFont systemFontOfSize:17],
+
+    NSForegroundColorAttributeName:[UIColor whiteColor]}];
+
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    
-    
+
+
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
@@ -124,18 +121,13 @@
 
 -(NSMutableArray *)netwok:(NSMutableArray *)array
 {
-    
     _tgs=array;
     return _tgs;
-    
-    
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
 {
-    
     return _tgs.count;
-    
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -147,38 +139,38 @@
         cell=[[[NSBundle mainBundle] loadNibNamed:@"hjnTG" owner:nil options:nil] lastObject];
     }
     cell.danhao.text=dict2[@"OrderNo"];
-   cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.biaoti.text=dict2[@"OrderTitle"];
-     cell.lxr.text=dict2[@"ContactMan"];
+    cell.lxr.text=dict2[@"ContactMan"];
     cell.tel.text=dict2[@"ContactMobile"];
     cell.status.text=dict2[@"Status_Name"];
+
+//    NSString *dt3=dict2[@"CreateDateTime"];;
+//    dt3=[dt3 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
+//    dt3=[dt3 stringByReplacingOccurrencesOfString:@")/" withString:@""];
+//    // NSLog(@"%@",dt3);
+//    NSString * timeStampString3 =dt3;
+//    NSTimeInterval _interval3=[timeStampString3 doubleValue] / 1000;
+//    NSDate *date3 = [NSDate dateWithTimeIntervalSince1970:_interval3];
+//    NSDateFormatter *objDateformat3 = [[NSDateFormatter alloc] init];
+//    [objDateformat3 setDateFormat:@"MM-dd"];
+//    cell.time.text=[objDateformat3 stringFromDate: date3];
+    cell.time.text=[self DateFormartMD:dict2[@"CreateDateTime"]];
     
-    NSString *dt3=dict2[@"CreateDateTime"];;
-    dt3=[dt3 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
-    dt3=[dt3 stringByReplacingOccurrencesOfString:@")/" withString:@""];
-    // NSLog(@"%@",dt3);
-    NSString * timeStampString3 =dt3;
-    NSTimeInterval _interval3=[timeStampString3 doubleValue] / 1000;
-    NSDate *date3 = [NSDate dateWithTimeIntervalSince1970:_interval3];
-    NSDateFormatter *objDateformat3 = [[NSDateFormatter alloc] init];
-    [objDateformat3 setDateFormat:@"MM-dd"];
-     cell.time.text=[objDateformat3 stringFromDate: date3];
     cell.addr.text=dict2[@"Task_Address"];
-    
-    [cell.btn addTarget:self action:@selector(genz2:) forControlEvents:UIControlEventTouchUpInside];
-    cell.btn.tag =indexPath.row;
-    [cell.contentView addSubview:cell.btn];
-    
+
+//    [cell.btn addTarget:self action:@selector(genz2:) forControlEvents:UIControlEventTouchUpInside];
+//    cell.btn.tag =indexPath.row;
+//    [cell.contentView addSubview:cell.btn];
+
     return cell;
 }
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSDictionary *rowdata=[self.tgs objectAtIndex:[indexPath row]];
+    //NSDictionary *rowdata=[self.tgs objectAtIndex:[indexPath row]];
 
-        [self performSegueWithIdentifier:@"xiangxi" sender:nil];
-
-    
+    [self performSegueWithIdentifier:@"xiangxi" sender:nil];
 }
 
 
@@ -186,46 +178,46 @@
 
 
 
-- (void)tijiao2:(NSString *)t1:(NSString *)t2:(NSString *)t3:(NSString *)t4:(NSString *)t5{
-    
-        NSString *urlStr =[NSString stringWithFormat:@"%@/API/HDL_Order.ashx",urlt] ;
-        
-        NSURL *url = [NSURL URLWithString:urlStr];
-        
-        
-        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:0 timeoutInterval:2.0f];
-        
-        request.HTTPMethod = @"POST";
-        
-        
-        NSString *str = [NSString stringWithFormat:@"action=saveorderflow&q0=%@&q1=100&q2=%@&q3=%@&q4=%@&q5=%@",t1,t2,t3,t4,t5];
-        
-        
-        request.HTTPBody = [str dataUsingEncoding:NSUTF8StringEncoding];
-        
-        
-        [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc]init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-            
-            if(data!=nil)
-            {
-                NSString *result = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+//- (void)tijiao2:(NSString *)t1:(NSString *)t2:(NSString *)t3:(NSString *)t4:(NSString *)t5{
+//    
+//        NSString *urlStr =[NSString stringWithFormat:@"%@/API/HDL_Order.ashx",urlt] ;
+//        
+//        NSURL *url = [NSURL URLWithString:urlStr];
+//        
+//        
+//        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:0 timeoutInterval:2.0f];
+//        
+//        request.HTTPMethod = @"POST";
+//        
+//        
+//        NSString *str = [NSString stringWithFormat:@"action=saveorderflow&q0=%@&q1=100&q2=%@&q3=%@&q4=%@&q5=%@",t1,t2,t3,t4,t5];
+//        
+//        
+//        request.HTTPBody = [str dataUsingEncoding:NSUTF8StringEncoding];
+//        
+//        
+//        [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc]init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+//            
+//            if(data!=nil)
+//            {
+//                NSString *result = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+//
+//            }else{
+//                [MBProgressHUD showError:@"网络请求出错"];
+//                return ;
+//            }
+//            
+//        }];
+//
+//    
+//}
 
-            }else{
-                [MBProgressHUD showError:@"网络请求出错"];
-                return ;
-            }
-            
-        }];
-
-    
-}
 
 
-
--(void)genz2:(UIButton *)sender{
-    [self idt3:sender.tag];
-    [self performSegueWithIdentifier:@"gz" sender:nil];
-}
+//-(void)genz2:(UIButton *)sender{
+//    [self idt3:sender.tag];
+//    [self performSegueWithIdentifier:@"gz" sender:nil];
+//}
 
 
 
@@ -265,16 +257,17 @@
 
 - (IBAction)indexchang:(UISegmentedControl *)sender {
 
-        
-        NSInteger colum=sender.selectedSegmentIndex;
-        pagenum=colum-1;
+    NSInteger colum=sender.selectedSegmentIndex;
+    pagenum=colum-1;
+//    num=-1;
+//    [self loadMoreData];
         NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
         NSString *myString = [userDefaultes stringForKey:@"myidt"];
 
         NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Order.ashx?action=getlist&q0=0&q1=%@&q2=%d",urlt,myString,pagenum];
         NSURL *url = [NSURL URLWithString:urlStr2];
 
-    NSLog(@"%@",url);
+    NSLog(@"======%@",url);
         
         NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:2.0f];
         WebView = [[UIWebView alloc] init];
@@ -295,7 +288,13 @@
         
         NSMutableArray *dictarr=[[dict objectForKey:@"ResultObject"] mutableCopy];
         
-        
+        if (dictarr !=nil && dictarr.count < 10) {
+            self.tableView.footer = nil;
+        }
+        else if(dictarr.count >=10 && self.tableView.footer == nil)
+        {
+            self.tableView.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+        }
         [self netwok:dictarr];
         [self.tableView reloadData];
 
@@ -304,10 +303,6 @@
         [MBProgressHUD showError:@"网络请求出错"];
         return ;
     }
-
-    
- 
-    
 }
 
 //开始加载数据
@@ -344,23 +339,31 @@
 
 
 -(NSMutableArray *)repeatnetwork{
-    
-    
     self.tableView.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
-    
     return _tgs;
-    
-    
 }
-
-
 -(void)loadMoreData
 {
-    num=num+1;
+     num=num+1;
+    [self loadMoreData : num IsChangeAdd:true];
+}
+-(void) ChangeLoad
+{
+    
+    NSString *strid=[self ChangeGetChageID:@"Order"];
+    int _pagenum=  [self ChangeNnm:_tgs  ItemIDKey:@"Order_ID"  ID:strid];
+    if (_pagenum >=0) {
+        [self  loadMoreData: _pagenum IsChangeAdd:FALSE];
+    }
+    //    -(BOOL) ChangeData:(NSMutableArray *) CRecord NewLoadRecords: (NSMutableArray *) _NewLoadRecords   ItemIDKey:(NSString *) _idkey ID:(NSString *) _id;
+    
+}
+-(void)loadMoreData :(int) ChageNum IsChangeAdd:(BOOL) _IsChange
+{
     NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
     NSString *myString = [userDefaultes stringForKey:@"myidt"];
     
-   NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Order.ashx?action=getlist&q0=%d&q1=%@&q2=%d",urlt,num,myString,pagenum];
+   NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Order.ashx?action=getlist&q0=%d&q1=%@&q2=%d",urlt,ChageNum,myString,pagenum];
     
     NSLog(@"000000000000-－－%@",urlStr2);
     
@@ -370,26 +373,32 @@
            NSMutableArray *dictarr=[[dict objectForKey:@"ResultObject"] mutableCopy];
         if(![dictarr isEqual:[NSNull null]])
         {
-            if (dictarr.count>0) {
-
-                [_tgs addObjectsFromArray:dictarr];
-                [self.tableView reloadData];
-                
+            if (dictarr.count < 10) {
+                self.tableView.footer = nil;
             }
-        }        [self.tableView.footer endRefreshing];
+            else if(dictarr.count >=10 &&  self.tableView.footer == nil)
+            {
+                self.tableView.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+            }
+            if (dictarr.count>0) {
+                if (_IsChange) {
+                    [_tgs addObjectsFromArray:dictarr];
+                }
+                else
+                {
+                    NSString *strid=[self ChangeGetChageID:@"Order"];
+                    if (![self ChangeData:_tgs NewLoadRecords:dictarr ItemIDKey:@"Order_ID"  ID:strid]) {
+                        //NSLog("加载数据出错。%@",);
+                    }
+                }
+                [self.tableView reloadData];
+            }
+        }
+        [self.tableView.footer endRefreshing];
         self.tableView.footer.autoChangeAlpha=YES;
-        
-        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [MBProgressHUD showError:@"网络请求出错"];
     }];
     [[NSOperationQueue mainQueue] addOperation:op];
-    
-    
 }
-
-
-
-
-
 @end

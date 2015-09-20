@@ -40,6 +40,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self LoadItem];
+    [self ChangeItemInit:@"OnlineApproval"];
 }
 
 - (void)didReceiveMemoryWarning {

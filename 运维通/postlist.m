@@ -12,6 +12,7 @@
 #import "plistdetail.h"
 #import "AFNetworkTool.h"
 #import "MJRefresh.h"
+#import "UIViewController+Extension.h"
 
 @interface postlist ()<UITableViewDataSource,UITableViewDelegate,UIWebViewDelegate>{
     int num;

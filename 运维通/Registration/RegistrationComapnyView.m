@@ -117,15 +117,15 @@
         NSDictionary *dict2=responseObject;
          NSMutableArray *dictarr=[[dict2 objectForKey:@"ResultObject"] mutableCopy];
         if (dictarr.count>0) {
-              NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
-        num=[dict3[@"Registration_ID"] intValue];
-        
-        [self netwok:dictarr];
-        [self.tableview reloadData];
-        NSLog(@"加载数据完成。");
+            NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
+            num=[dict3[@"Registration_ID"] intValue];
+
+            [self netwok:dictarr];
+            [self.tableview reloadData];
+            NSLog(@"加载数据完成。");
 
         }
-          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
         [MBProgressHUD showError:@"网络异常！"];
         return ;

@@ -11,6 +11,7 @@
 #import "pinglunCell.h"
 #import "pinglunlist.h"
 #import "UIImageView+WebCache.h"
+#import "UIViewController+Extension.h"
 
 @interface detaildaywrite ()<UITableViewDataSource,UITableViewDelegate,UIWebViewDelegate>
 {

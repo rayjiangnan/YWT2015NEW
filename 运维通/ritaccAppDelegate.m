@@ -310,7 +310,7 @@
                     [self scheduleNotification:Title:Content];
                     ZCNoneiFLYTEK*manager=[ZCNoneiFLYTEK shareManager];
                     [manager playVoice:strword];
-                    NSString *result = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                    //NSString *result = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
                 }
             }
         

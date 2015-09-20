@@ -16,7 +16,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *danhao;
 @property (weak, nonatomic) IBOutlet UILabel *time;
 @property (weak, nonatomic) IBOutlet UILabel *xiadan;
-@property (weak, nonatomic) IBOutlet UIButton *btn;
+//@property (weak, nonatomic) IBOutlet UIButton *btn;
 @property (weak, nonatomic) IBOutlet UILabel *biaoti;
 @property (weak, nonatomic) IBOutlet UILabel *lxr;
 

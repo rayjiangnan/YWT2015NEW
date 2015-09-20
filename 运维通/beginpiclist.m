@@ -11,6 +11,8 @@
 #import "MJRefresh.h"
 #import "MBProgressHUD+MJ.h"
 #import "UIImageView+WebCache.h"
+#import "UIViewController+Extension.h"
+
 @interface beginpiclist ()<UITableViewDataSource,UITableViewDelegate>
 {
     int num;
@@ -170,6 +172,10 @@
             if (dictarr.count < 10) {
                 self.tableview.footer = nil;
             }
+            else if (dictarr.count>=10)
+            {
+                self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+            }
             [_tgs addObjectsFromArray:dictarr];
             [self.tableview reloadData];
   
@@ -222,8 +228,6 @@
         }];
         
         [[NSOperationQueue mainQueue] addOperation:op];
-    
-    
 }
 
 

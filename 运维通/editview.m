@@ -8,6 +8,7 @@
 
 #import "editview.h"
 #import "MBProgressHUD+MJ.h"
+#import "UIViewController+Extension.h"
 
 @interface editview ()<UIPickerViewDataSource, UIPickerViewDelegate>
 @property (weak, nonatomic) IBOutlet UIPickerView *pickerView;
@@ -205,11 +206,11 @@ if ([stye isEqualToString:@"20"]) {
 -(NSString *)act{
 
     if ([self.swith isOn]) {
-        NSString *kc=@1;
+        NSString *kc=@"1";
         _ac=kc;
     }else{
         
-        NSString *kc=@0;
+        NSString *kc=@"0";
         _ac=kc;
     }
     

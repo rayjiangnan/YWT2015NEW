@@ -39,6 +39,8 @@
     self.tempid=strTtile;
     [self tapBackground];
     [self tapOnce];
+    
+    [self ChangeItemInit:@"OnlineApproval"];
 }
 
 -(void)viewDidAppear:(BOOL)animated{
@@ -115,6 +117,7 @@
             NSLog(@"%@",ReturnMsg);
             return ;
         }else{
+            [self ChangeRecord: self.tempid key:@"OnlineApproval"];
             [MBProgressHUD showSuccess:@"保存成功！"];
             [[self navigationController] popViewControllerAnimated:YES];
         }

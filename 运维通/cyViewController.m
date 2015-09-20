@@ -8,6 +8,7 @@
 
 #import "cyViewController.h"
 #import "MBProgressHUD+MJ.h"
+#import "UIViewController+Extension.h"
 
 @interface cyViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *cname;

@@ -210,6 +210,13 @@
         NSArray *dictarr=[dict objectForKey:@"ResultObject"];
         if(![dictarr isEqual:[NSNull null]])
         {
+            if (dictarr.count < 10) {
+                self.tableview.footer = nil;
+            }
+            else if (dictarr.count>=10)
+            {
+                self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+            }
             if (dictarr.count>0) {
                 NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
                 num=[dict3[@"Registration_ID"] intValue];

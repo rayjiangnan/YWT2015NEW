@@ -41,8 +41,8 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *wem;
 
-@property(nonatomic,copy)NSString *time1;
-@property(nonatomic,copy)NSString *time2;
+@property(nonatomic,copy)NSString *dtBirthday;
+@property(nonatomic,copy)NSString *dtGradu;
 
 @end
 
@@ -95,7 +95,7 @@
         
         NSDictionary *dict=[NSJSONSerialization JSONObjectWithData:received options:NSJSONReadingMutableLeaves error:nil];
         NSDictionary *dictarr2=[dict objectForKey:@"ResultObject"];
-        NSLog(@"---%@",dict);
+        //NSLog(@"---%@",dict);
         NSDictionary *dictarr=[dictarr2 objectForKey:@"User"];
 
         NSString *sty=[NSString stringWithFormat:@"%@",dictarr[@"UserType"]];
@@ -131,55 +131,8 @@
                 self.wem.image=[UIImage imageNamed:@"ch2"];
                 sexnum=2;
             }
-            
-         
-//            NSString *dt1=dictarr3[@"Birthday"];
-//            dt1=[dt1 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
-//            dt1=[dt1 stringByReplacingOccurrencesOfString:@")/" withString:@""];
-//            //NSLog(@"%@",dt1);
-//            NSString * timeStampString =dt1;
-//            NSTimeInterval _interval=[timeStampString doubleValue] / 1000;
-//            NSDate *date = [NSDate dateWithTimeIntervalSince1970:_interval];
-//            NSDateFormatter *objDateformat = [[NSDateFormatter alloc] init];
-//            [objDateformat setDateFormat:@"yyyy-MM-dd HH:mm"];
-//            
-//            // NSLog(@"%@",dt1);
-//            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-//            [formatter setDateStyle:NSDateFormatterMediumStyle];
-//            [formatter setTimeStyle:NSDateFormatterShortStyle];
-//            [formatter setDateFormat:@"YYYY-MM-dd HH:mm:ss"];
-//            
-//            NSTimeZone* timeZone = [NSTimeZone timeZoneWithName:@"Asia/Beijing"];
-//            [formatter setTimeZone:timeZone];
-//            
-//            NSDate *datenow = [NSDate date];//现在时间,你可以输出来看下是什么格式
-//            
-//            NSString *nowtimeStr = [formatter stringFromDate:datenow];//----------将nsdate按formatter格式转成nsstring
-//            //时间转时间戳的方法:
-//            NSString *timeSp = [NSString stringWithFormat:@"%ld", (long)[datenow timeIntervalSince1970]];
-//            //  NSLog(@"timeSp:%@",timeSp); //时间戳的值
-//            //时间戳转时间的方法
-//            double d = [dt1 doubleValue];
-//            NSDate *confromTimesp = [NSDate dateWithTimeIntervalSince1970:d];
-//            //  NSLog(@"%f  = %@",d,confromTimesp);
-//            NSString *confromTimespStr = [formatter stringFromDate:confromTimesp];
-//            // NSLog(@"confromTimespStr =  %@",confromTimespStr);
-//            self.time.text=confromTimespStr;
-            
-            self.time.text=[self DateFormartYMD:dictarr3[@"Birthday"]];
-            self.btime.text=[self DateFormartYMD:dictarr3[@"GraduationData"]];
-            
-//            NSString *dt4=dictarr3[@"GraduationData"];
-//            dt4=[dt4 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
-//            dt4=[dt4 stringByReplacingOccurrencesOfString:@")/" withString:@""];
-//           NSLog(@"+++++++++%@",dt4);
-//            NSString * timeStampString4 =dt4;
-//            NSTimeInterval _interval4=[timeStampString4 doubleValue] / 1000;
-//            NSDate *date4 = [NSDate dateWithTimeIntervalSince1970:_interval4];
-//            NSDateFormatter *objDateformat4 = [[NSDateFormatter alloc] init];
-//            [objDateformat4 setDateFormat:@"yyyy-MM-dd"];
-//            
-//            self.btime.text=[objDateformat4 stringFromDate: date4];
+             self.dtBirthday=self.time.text=  dictarr3[@"BirthdayShow"];
+             self.dtGradu=self.btime.text=dictarr3[@"GraduationDataShow"];
         }
  
     }
@@ -194,9 +147,7 @@
     if(sexnum==2){
         sex=@"女";
     }
-    NSString *timet1= [NSString stringWithFormat:@"\\/Date(%@)\\/",_time1];
-    NSString *timet2= [NSString stringWithFormat:@"\\/Date(%@)\\/",_time2];
-   
+    
     NSMutableDictionary *dic = [[NSMutableDictionary alloc]init];//创建内层的字典
     [dic setValue:Create_User forKey:@"YWTUser_ID"];
     [dic setValue:Create_User forKey:@"Create_User"];
@@ -208,14 +159,15 @@
     [dic setValue:self.detail.text forKey:@"User_Address"];
     [dic setValue:self.xueli.text forKey:@"HighestEducation"];
     
+        //[NSString stringWithFormat:@"%ld", (long)[self.DTTime1 timeIntervalSince1970]];
 
-    [dic setValue:timet1 forKey:@"Birthday"];
+    [dic setValue:self.time.text forKey:@"BirthdayShow"];
     [dic setValue:self.email.text forKey:@"Email"];
-    
-     [dic setValue:self.xuexiao.text forKey:@"Finish_School"];
-     [dic setValue:self.zhuanye.text forKey:@"SpecialtyName"];
-     [dic setValue:timet2 forKey:@"GraduationData"];
-    
+
+    [dic setValue:self.xuexiao.text forKey:@"Finish_School"];
+    [dic setValue:self.zhuanye.text forKey:@"SpecialtyName"];
+    [dic setValue:self.btime.text forKey:@"GraduationDataShow"];
+
     [dic setValue:self.jineng.text forKey:@"SkillDescription"];
     [dic setValue:self.zc.text forKey:@"Specialty"];
     
@@ -227,12 +179,12 @@
 }
 
 - (void)postJSON{
-    
         NSString *strurl=[NSString stringWithFormat:@"%@/API/YWT_User.ashx",urlt];
         NSString *dstr=[self SetValue];
+        NSLog(@"%@",dstr);
         NSString *strparameters = [NSString stringWithFormat:@"action=editselfinfo&q0=%@",dstr];
     
-        NSLog(@"%@",dstr);
+        NSLog(@"%@?%@",strurl,strparameters);
     
         AFHTTPRequestOperation *op=  [self POSTurlString:strurl parameters:strparameters];
         [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -257,70 +209,18 @@
 
 - (IBAction)tijiao:(id)sender {
     [self postJSON];
-//    if ([self.sty.text isEqualToString:@"维运商"]) {
-//        
-//        
-//        
-//        
-//        
-//    }else if ([self.sty.text isEqualToString:@"维运人员"]) {
-//       NSString *timeSp=@"1331121231000";
-//        NSString *timet1= [NSString stringWithFormat:@"\\/Date(%@)\\/",_time1];
-//        NSString *timet2= [NSString stringWithFormat:@"\\/Date(%@)\\/",_time2];
-//        NSString *te=@"20";
-//        NSString *sex;
-//        if (sexnum==1) {
-//           sex=@"男";
-//        }else if(sexnum==2){
-//            sex=@"女";
-//        }
-//        
-//          [self postJSON:sex:self.sheng.text:self.city.text:self.qu.text:self.detail.text:timet1:self.email.text:self.xueli.text:self.xuexiao.text:self.zhuanye.text:timet2:self.jineng.text:self.zc.text];
-//        [MBProgressHUD showSuccess:@"修改成功"];
-//        [[self navigationController] popViewControllerAnimated:YES];
-//        
-//    }else{
-//        NSString *timeSp=@"1331121231000";
-//        NSString *timet1= [NSString stringWithFormat:@"\\/Date(%@)\\/",_time1];
-//        NSString *timet2= [NSString stringWithFormat:@"\\/Date(%@)\\/",_time2];
-//        NSString *te=@"30";
-//        NSString *sex;
-//        if (sexnum==1) {
-//           sex=@"男";
-//        }else if(sexnum==2){
-//            sex=@"女";
-//        }
-//        
-//            [self postJSON:sex:self.sheng.text:self.city.text:self.qu.text:self.detail.text:timet1:self.email.text:self.xueli.text:self.xuexiao.text:self.zhuanye.text:timet2:self.jineng.text:self.zc.text];
-// 
-//        
-//    }
-    
 }
-
-
-
-
-
 
 #pragma mark 设置键盘
 - (IBAction)ij:(id)sender {
-
-    
 }
 
 
 - (IBAction)ij2:(id)sender {
-
-    
 }
-
-
-
 
 - (void)settingKeyboard
 {
-
     UIDatePicker *datePicker4 = [[UIDatePicker alloc] init];
     datePicker4.datePickerMode = UIDatePickerModeDate; // 只显示日期5
     datePicker4.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"Chinese"];
@@ -334,28 +234,25 @@
     tool.barTintColor=[UIColor blackColor];
     
     
-    UIBarButtonItem *item1=[[UIBarButtonItem alloc]initWithTitle:@"取消" style:UIBarButtonItemStylePlain target:self action:@selector(quxiao)];
+    UIBarButtonItem *item1=[[UIBarButtonItem alloc]initWithTitle:@"取消" style:UIBarButtonItemStylePlain target:self action:@selector(Canncel)];
     item1.tintColor=[UIColor whiteColor];
     UIBarButtonItem *item2=[[UIBarButtonItem alloc]initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(tapOnce)];
     item2.tintColor=[UIColor whiteColor];
+    
     tool.items=@[item1,item2];
     _time.inputAccessoryView=tool;
-    
-    
     _time.delegate = self;
     
 }
--(void)quxiao{
-    
-   self.time.text=nil;
+-(void)Canncel{
     [self tapOnce];
 }
 
--(void)quxiao2{
-    
-  self.btime.text=nil;
-    [self tapOnce];
-}
+//-(void)quxiao2{
+//    
+//  self.btime.text=nil;
+//    [self tapOnce];
+//}
 
 
 - (NSString *)birthdayChange:(UIDatePicker *)picker
@@ -365,13 +262,7 @@
     fmt.dateFormat = @"YYYY-MM-dd";
     NSString* timeStr =[fmt stringFromDate:picker.date];
     _time.text=timeStr;
-    
-    
-    NSString *timeSp = [NSString stringWithFormat:@"%ld", (long)[picker.date timeIntervalSince1970]];
-     NSLog(@"时间戳----%@",timeSp);
-    _time1=timeSp;
-    
-    return _time1;
+    return  @"";
 }
 
 
@@ -393,7 +284,7 @@
     tool.barTintColor=[UIColor blackColor];
     
     
-    UIBarButtonItem *item1=[[UIBarButtonItem alloc]initWithTitle:@"取消" style:UIBarButtonItemStylePlain target:self action:@selector(quxiao2)];
+    UIBarButtonItem *item1=[[UIBarButtonItem alloc]initWithTitle:@"取消" style:UIBarButtonItemStylePlain target:self action:@selector(Canncel)];
     item1.tintColor=[UIColor whiteColor];
     UIBarButtonItem *item2=[[UIBarButtonItem alloc]initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(tapOnce)];
     item2.tintColor=[UIColor whiteColor];
@@ -411,11 +302,7 @@
     NSString* timeStr =[fmt stringFromDate:picker.date];
     _btime.text=timeStr;
     
-    NSString *timeSp = [NSString stringWithFormat:@"%ld", (long)[picker.date timeIntervalSince1970]];
-    NSLog(@"时间戳----%@",timeSp);
-    _time2=timeSp;
-    
-    return _time2;
+    return timeStr;
 }
 
 

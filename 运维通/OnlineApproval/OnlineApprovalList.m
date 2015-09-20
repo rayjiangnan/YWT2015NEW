@@ -29,14 +29,24 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     self.tabBarController.tabBar.hidden=YES;
-    [self network2];
-    [self.tableview reloadData];
+    int chageStatus=[self ChangePageInit:@"OnlineApproval"];
+    if (chageStatus==1 || chageStatus==4) {
+        [self network2];
+        [self.tableview reloadData];
+    }
+    else if (chageStatus==2) {
+        
+    }
+    else if (chageStatus==3) {
+        
+    }
+    self.tableview.rowHeight=120;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self repeatnetwork];
-    self.tableview.rowHeight=120;
+    
     NSLog(@"加载数据。。。。");
 }
 
@@ -88,6 +98,10 @@
         if (dictarr.count < 10) {
             self.tableview.footer = nil;
         }
+        else if (dictarr.count>=10)
+        {
+            self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+        }
         [self netwok:dictarr];
        
         [self.tableview reloadData];
@@ -127,6 +141,10 @@
         {
             if (dictarr.count < 10) {
                 self.tableview.footer = nil;
+            }
+            else if (dictarr.count>=10)
+            {
+                self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
             }
             [_tgs addObjectsFromArray:dictarr];
             [self.tableView reloadData];

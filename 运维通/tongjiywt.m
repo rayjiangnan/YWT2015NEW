@@ -82,18 +82,8 @@
     _scrollLabel.backgroundColor=ZJColor(18, 138, 255);
     
     [self.view addSubview:_scrollLabel];
-    CGFloat R  = (CGFloat) 0/255.0;
-    CGFloat G = (CGFloat) 146/255.0;
-    CGFloat B = (CGFloat) 234/255.0;
-    CGFloat alpha = (CGFloat) 1.0;
-    
-    UIColor *myColorRGB = [ UIColor colorWithRed: R
-                                           green: G
-                                            blue: B
-                                           alpha: alpha
-                           ];
-    
-    
+
+    UIColor *myColorRGB =[self GetUIColor];
     
     self.navigationController.navigationBar.barTintColor=myColorRGB;
     
