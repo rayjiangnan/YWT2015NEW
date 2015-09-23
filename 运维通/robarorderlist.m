@@ -40,13 +40,7 @@
 @implementation robarorderlist
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self netWorkRequest:0];
-    
-     selectnum=1;
-    pagenum1=0;
-    pagenum2=0;
-    
-    [self repeatnetwork];
+   
     self.tableview.rowHeight=155;
     self.tableview.separatorStyle = UITableViewCellSeparatorStyleNone;
     
@@ -54,8 +48,25 @@
     _scrollLabel.backgroundColor=ZJColor(18, 138, 255) ;
     [self.view addSubview:_scrollLabel];
     
-    indexa=0;
 
+    
+    int chageStatus=[self ChangePageInit:@"Order"];
+    if (chageStatus==1 || chageStatus==4) {
+        [self netWorkRequest:0];
+        selectnum=1;
+        pagenum1=0;
+        pagenum2=0;
+
+        [self repeatnetwork];
+
+        indexa=0;
+    }
+    else if (chageStatus==2) {
+        
+    }
+    else if (chageStatus==3) {
+        //[self ChangeLoad];
+    }
 }
 
 
@@ -89,16 +100,16 @@
     
     
     
-    NSString *dt3=dict2[@"CreateDateTime"];
-    dt3=[dt3 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
-    dt3=[dt3 stringByReplacingOccurrencesOfString:@")/" withString:@""];
-    // NSLog(@"%@",dt3);
-    NSString * timeStampString3 =dt3;
-    NSTimeInterval _interval3=[timeStampString3 doubleValue] / 1000;
-    NSDate *date3 = [NSDate dateWithTimeIntervalSince1970:_interval3];
-    NSDateFormatter *objDateformat3 = [[NSDateFormatter alloc] init];
-    [objDateformat3 setDateFormat:@"MM-dd"];
-    cell.sj.text=[objDateformat3 stringFromDate: date3];
+//    NSString *dt3=dict2[@"CreateDateTime"];
+//    dt3=[dt3 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
+//    dt3=[dt3 stringByReplacingOccurrencesOfString:@")/" withString:@""];
+//    // NSLog(@"%@",dt3);
+//    NSString * timeStampString3 =dt3;
+//    NSTimeInterval _interval3=[timeStampString3 doubleValue] / 1000;
+//    NSDate *date3 = [NSDate dateWithTimeIntervalSince1970:_interval3];
+//    NSDateFormatter *objDateformat3 = [[NSDateFormatter alloc] init];
+//    [objDateformat3 setDateFormat:@"MM-dd"];
+    cell.sj.text=[self DateFormartMD:dict2[@"CreateDateTime"]];//[objDateformat3 stringFromDate: date3];
     NSString *xin=[NSString stringWithFormat:@"%@",dict2[@"Stars"]];
     if ([xin isEqualToString:@"5"]) {
 
@@ -170,7 +181,13 @@
         [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSMutableDictionary *dict=responseObject;
             NSMutableArray *dictarr=[dict objectForKey:@"ResultObject"] ;
-            
+            if (dictarr !=nil && dictarr.count < 10) {
+                self.tableview.footer = nil;
+            }
+            else if(dictarr.count >=10 && self.tableview.footer == nil)
+            {
+                self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+            }
             _tgs=dictarr;
             [self.tableview reloadData];
             [self.tableview.header endRefreshing];
@@ -199,7 +216,13 @@
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSMutableDictionary *dict=responseObject;
         NSMutableArray *dictarr=[dict objectForKey:@"ResultObject"] ;
-        
+        if (dictarr !=nil && dictarr.count < 10) {
+            self.tableview.footer = nil;
+        }
+        else if(dictarr.count >=10 && self.tableview.footer == nil)
+        {
+            self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+        }
         _tgs=dictarr;
         [self.tableview reloadData];
         [self.tableview.header endRefreshing];
@@ -233,31 +256,40 @@
     
     if (selectnum==1) {
         pagenum1=pagenum1+1;
-        NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-        NSString *myString = [userDefaultes stringForKey:@"myidt"];
+//        NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
+//        NSString *myString = [userDefaultes stringForKey:@"myidt"];
         
          urlStr2= [NSString stringWithFormat:@"%@/api/YWT_OrderPlatform.ashx?action=ywusergetlist&q0=%d&q1=%@",urlt,pagenum1,myString];
     }else  if (selectnum==2) {
         pagenum2=pagenum2+1;
-        NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-        NSString *myString = [userDefaultes stringForKey:@"myidt"];
+//        NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
+//        NSString *myString = [userDefaultes stringForKey:@"myidt"];
         
         urlStr2= [NSString stringWithFormat:@"%@/api/YWT_OrderPlatform.ashx?action=applyrecord&q0=%d&q1=%@",urlt,pagenum2,myString];
     }
-    NSLog(@"999999999----%@",urlStr2);
+//    NSLog(@"999999999----%@",urlStr2);
     AFHTTPRequestOperation *op=[self GETurlString:urlStr2];
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSMutableDictionary *dict=responseObject;
-        NSMutableArray *dictarr=[[dict objectForKey:@"ResultObject"] mutableCopy];
-        if(![dictarr isEqual:[NSNull null]])
-        {
+        NSMutableDictionary *json=responseObject;
+        NSString *Status=[NSString stringWithFormat:@"%@",json[@"Status"]];
+        if ([Status isEqualToString:@"0"]){
+            NSString *ReturnMsg=[NSString stringWithFormat:@"%@",json[@"ReturnMsg"]];
+            [MBProgressHUD showError:ReturnMsg];
+            return ;
+        }else{
+            NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
+            if (dictarr !=nil && dictarr.count < 10) {
+                self.tableview.footer = nil;
+            }
+            else if(dictarr.count >=10 && self.tableview.footer == nil)
+            {
+                self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+            }
             [_tgs addObjectsFromArray:dictarr];
             [self.tableview reloadData];
         }
-        [self.tableview.footer endRefreshing];
-        self.tableview.footer.autoChangeAlpha=YES;
-        
-        
+//        [self.tableview.footer endRefreshing];
+//        self.tableview.footer.autoChangeAlpha=YES;
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [MBProgressHUD showError:@"网络请求出错"];
     }];

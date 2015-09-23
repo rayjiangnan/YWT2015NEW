@@ -304,15 +304,18 @@
     NSString *myString = [userDefaultes stringForKey:@"myidt"];
     
     NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Order.ashx?action=monthviewaadmin&q0=%@&q1=%@",urlt,myString,idts];
-    NSString *str = @"type=focus-c";
-    NSLog(@"%@",urlStr2);
     
-    AFHTTPRequestOperation *op=  [self POSTurlString:urlStr2 parameters:str];
+    AFHTTPRequestOperation *op=[self GETurlString:urlStr2];
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSMutableDictionary *dict=responseObject;
-        if(![[dict objectForKey:@"ResultObject"] isEqual:[NSNull null]])
-        {
-            NSMutableDictionary *dictarr=[[dict objectForKey:@"ResultObject"] mutableCopy];
+        
+        NSMutableDictionary *json=responseObject;
+        NSString *Status=[NSString stringWithFormat:@"%@",json[@"Status"]];
+        if ([Status isEqualToString:@"0"]){
+            NSString *ReturnMsg=[NSString stringWithFormat:@"%@",json[@"ReturnMsg"]];
+            [MBProgressHUD showError:ReturnMsg];
+            return ;
+        }else{
+            NSMutableDictionary *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
             NSMutableDictionary *dict3=[dictarr objectForKey:@"Item"];
             
             self.fnum.text=[NSString stringWithFormat:@"%@",dict3[@"OrderFinishNum"]];
@@ -343,41 +346,36 @@
     
     NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Order.ashx?action=monthviewaadmin&q0=%@&q1=%@",urlt,myString,idts];
     
-    NSLog(@"%@---",urlStr2);
-//    self.tableView.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-    
-        NSString *str = @"type=focus-c";
-        AFHTTPRequestOperation *op=  [self POSTurlString:urlStr2 parameters:str];
-        [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSMutableDictionary *dict=responseObject;
-            if(![[dict objectForKey:@"ResultObject"] isEqual:[NSNull null]])
-            {
-                NSMutableDictionary *dictarr=[[dict objectForKey:@"ResultObject"] mutableCopy];
-                NSMutableDictionary *dict3=[dictarr objectForKey:@"Item"];
-                
-                self.fnum.text=[NSString stringWithFormat:@"%@",dict3[@"OrderFinishNum"]];
-                self.pfen.text=[NSString stringWithFormat:@"%@", dict3[@"ScoreAvg"]];
-                
-                NSMutableArray *array=[dictarr objectForKey:@"Items"];
-                self.tgs=array;
-                [self.tableView reloadData];
-            }
-
-            
-            [self.tableView.header endRefreshing];
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            
-            [MBProgressHUD showError:@"网络异常！"];
-            
+    AFHTTPRequestOperation *op=[self GETurlString:urlStr2];
+    [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSMutableDictionary *json=responseObject;
+        NSString *Status=[NSString stringWithFormat:@"%@",json[@"Status"]];
+        if ([Status isEqualToString:@"0"]){
+            NSString *ReturnMsg=[NSString stringWithFormat:@"%@",json[@"ReturnMsg"]];
+            [MBProgressHUD showError:ReturnMsg];
             return ;
-        }];
+        }else{
+            //NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
+            NSMutableDictionary *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
+            NSMutableDictionary *dict3=[dictarr objectForKey:@"Item"];
+            
+            self.fnum.text=[NSString stringWithFormat:@"%@",dict3[@"OrderFinishNum"]];
+            self.pfen.text=[NSString stringWithFormat:@"%@", dict3[@"ScoreAvg"]];
+            
+            NSMutableArray *array=[dictarr objectForKey:@"Items"];
+            self.tgs=array;
+            [self.tableView reloadData];
+        }
+        [self.tableView.header endRefreshing];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
-        [[NSOperationQueue mainQueue] addOperation:op];
+        [MBProgressHUD showError:@"网络异常！"];
         
-//    }];
-//    self.tableView.header.autoChangeAlpha = YES;
-    
-    
+        return ;
+    }];
+        
+    [[NSOperationQueue mainQueue] addOperation:op];
+        
 }
 
 

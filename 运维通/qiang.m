@@ -64,6 +64,9 @@
     NSString *iphone=[userDefaultes stringForKey:@"iphone"];
     self.lxdh.text=iphone;
     self.dz.text=mygh;
+    
+    [self ChangeItemInit:@"Order"];
+    
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -202,6 +205,7 @@
                 NSLog(@"%@",ReturnMsg);
                 return ;
             }else{
+                [self ChangeRecordAdd:@"Order"];
                 [MBProgressHUD showSuccess:@"下单成功！"];
                 [[self navigationController] popViewControllerAnimated:YES];
             }

@@ -35,6 +35,8 @@
     
     [self tapBackground];
     [self tapOnce];
+    
+    [self ChangeItemInit:@"Order"];
 }
 
 - (IBAction)post:(id)sender {
@@ -74,6 +76,7 @@
             NSLog(@"%@",ReturnMsg);
             return;
         }else{
+            [self ChangeRecord:strTtile key:@"Order"];
             [MBProgressHUD showSuccess:@"申请成功！"];
             [[self navigationController] popViewControllerAnimated:YES];
         }

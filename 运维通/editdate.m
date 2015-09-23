@@ -25,9 +25,8 @@
 
 
 -(void)viewDidAppear:(BOOL)animated{
-    
+    [self ChangeItemInit:@"log"];
     self.tabBarController.tabBar.hidden=YES;
-    
 }
 
 

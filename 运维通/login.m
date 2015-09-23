@@ -28,21 +28,18 @@
     if ([autopass isEqualToString:@"go"]) {
         if ([usertype isEqualToString:@"10"]) {
         
-        [self performSegueWithIdentifier:@"login" sender:nil];
-    }else if ([usertype isEqualToString:@"30"]) {
-        
-        [self performSegueWithIdentifier:@"login" sender:nil];
-    }else if ([usertype isEqualToString:@"20"]) {
-        
-        [self performSegueWithIdentifier:@"sj" sender:nil];
-    }else if ([usertype isEqualToString:@"40"]) {
-        
-        [self performSegueWithIdentifier:@"3yw" sender:nil];
+            [self performSegueWithIdentifier:@"login" sender:nil];
+        }else if ([usertype isEqualToString:@"30"]) {
+            
+            [self performSegueWithIdentifier:@"login" sender:nil];
+        }else if ([usertype isEqualToString:@"20"]) {
+            
+            [self performSegueWithIdentifier:@"sj" sender:nil];
+        }else if ([usertype isEqualToString:@"40"]) {
+            
+            [self performSegueWithIdentifier:@"3yw" sender:nil];
+        }
     }
-
-    }
-    
-    
 }
 
 - (void)viewDidLoad
@@ -109,13 +106,9 @@
         xh=[NSString stringWithFormat:@"%@",phoneModel];
         
         if([xh isEqualToString:@"iPhone Simulator"])
-            
         {
-            
             xh=@"iPhone";
-            
         }
-
         
         NSString *urlStr = [NSString stringWithFormat:@"%@/api/YWT_User.ashx?action=login&q0=%@&q1=%@&q2=%@&q3=%@&q4=%@",urlt,self.useName.text, self.pwd.text,uuids,os,xh];
         

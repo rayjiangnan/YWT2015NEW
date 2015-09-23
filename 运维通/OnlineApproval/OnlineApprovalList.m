@@ -38,7 +38,7 @@
         
     }
     else if (chageStatus==3) {
-        
+        [self ChangeLoad];
     }
     self.tableview.rowHeight=120;
 }
@@ -93,20 +93,27 @@
     NSLog(@"%@",urlStr2);
     AFHTTPRequestOperation *op=[self GETurlString:urlStr2];
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSDictionary *dict2=responseObject;
-        NSMutableArray *dictarr=[[dict2 objectForKey:@"ResultObject"] mutableCopy];
-        if (dictarr.count < 10) {
-            self.tableview.footer = nil;
+        NSMutableDictionary *json=responseObject;
+        NSString *Status=[NSString stringWithFormat:@"%@",json[@"Status"]];
+        if ([Status isEqualToString:@"0"]){
+            NSString *ReturnMsg=[NSString stringWithFormat:@"%@",json[@"ReturnMsg"]];
+            [MBProgressHUD showError:ReturnMsg];
+            return ;
+        }else{
+            NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
+            if (dictarr.count < 10) {
+                self.tableview.footer = nil;
+            }
+            else if(dictarr.count >= 10 && self.tableview.footer == nil)
+            {
+                self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+            }
+            [self netwok:dictarr];
+           
+            [self.tableview reloadData];
+            NSLog(@"加载数据完成。");
         }
-        else if (dictarr.count>=10)
-        {
-            self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
-        }
-        [self netwok:dictarr];
-       
-        [self.tableview reloadData];
-        NSLog(@"加载数据完成。");
-        [self.tableview.header endRefreshing];
+//        [self.tableview.header endRefreshing];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
         [MBProgressHUD showError:@"网络异常！"];
@@ -123,28 +130,56 @@
     self.tableView.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
     return _tgs;
 }
--(NSMutableArray *)loadMoreData
+-(void) ChangeLoad
 {
-    int index=num;
-    num=index+1;
+    NSString *strid=[self ChangeGetChageID:@"OnlineApproval"];
+    int _pagenum=  [self ChangeNnm:_tgs  ItemIDKey:@"CustomerID"  ID:strid];
+    if (_pagenum >=0) {
+        [self  loadMoreData: _pagenum IsChangeAdd:FALSE];
+    }
+}
+
+-(void)loadMoreData
+{
+    num=num+1;
+    [self loadMoreData : num IsChangeAdd:true];
+}
+
+-(void)loadMoreData :(int) ChageNum IsChangeAdd:(BOOL) _IsChange
+{
+//    int index=num;
+//    num=index+1;
     NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
     NSString *Create_User = [userDefaultes stringForKey:@"myidt"];
     
-    NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_OnlineApproval.ashx?action=getlist&q0=%@&q1=%d",urlt,Create_User,num];
-    NSLog(@"%@",urlStr2);
+    NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_OnlineApproval.ashx?action=getlist&q0=%@&q1=%d",urlt,Create_User,ChageNum];
+    //NSLog(@"%@",urlStr2);
     AFHTTPRequestOperation *op=[self GETurlString:urlStr2];
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *dict2=responseObject;
-        NSArray *dictarr=[[dict2 objectForKey:@"ResultObject"]mutableCopy];
+         NSMutableArray *dictarr=[[dict2 objectForKey:@"ResultObject"]mutableCopy];
          NSLog(@"-----%@",dictarr);
         if(![dictarr isEqual:[NSNull null]])
         {
             if (dictarr.count < 10) {
                 self.tableview.footer = nil;
             }
-            else if (dictarr.count>=10)
+            else if(dictarr.count >= 10 && self.tableview.footer == nil)
             {
                 self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+            }
+            if (dictarr.count>0) {
+                if (_IsChange) {
+                    [_tgs addObjectsFromArray:dictarr];
+                }
+                else
+                {
+                    NSString *strid=[self ChangeGetChageID:@"OnlineApproval"];
+                    if (![self ChangeData:_tgs NewLoadRecords:dictarr ItemIDKey:@"OnlineApproval_ID"  ID:strid]) {
+                        NSLog(@"加载数据出错。");
+                    }
+                }
+                [self.tableView reloadData];
             }
             [_tgs addObjectsFromArray:dictarr];
             [self.tableView reloadData];
@@ -157,8 +192,6 @@
         [MBProgressHUD showError:@"网络请求出错"];
     }];
     [[NSOperationQueue mainQueue] addOperation:op];
-    
-    return _tgs;
 }
 
 

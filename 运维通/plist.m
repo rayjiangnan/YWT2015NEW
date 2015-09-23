@@ -69,6 +69,8 @@
 -(void)viewDidAppear:(BOOL)animated{
     self.tabBarController.tabBar.hidden=YES;
     [self requestaaa];
+    
+    [self ChangeItemInit:@"Order"];
 }
 
 
@@ -100,16 +102,16 @@
         NSDictionary *dict=dict2[@"ResultObject"];
         
         self.dh.text=dict[@"OrderNo"];
-        NSString *dt3=dict[@"CreateDateTime"];
-        dt3=[dt3 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
-        dt3=[dt3 stringByReplacingOccurrencesOfString:@")/" withString:@""];
-        // NSLog(@"%@",dt3);
-        NSString * timeStampString3 =dt3;
-        NSTimeInterval _interval3=[timeStampString3 doubleValue] / 1000;
-        NSDate *date3 = [NSDate dateWithTimeIntervalSince1970:_interval3];
-        NSDateFormatter *objDateformat3 = [[NSDateFormatter alloc] init];
-        [objDateformat3 setDateFormat:@"yyyy-MM-dd"];
-        self.sj.text=[objDateformat3 stringFromDate: date3];
+//        NSString *dt3=dict[@"CreateDateTime"];
+//        dt3=[dt3 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
+//        dt3=[dt3 stringByReplacingOccurrencesOfString:@")/" withString:@""];
+//        // NSLog(@"%@",dt3);
+//        NSString * timeStampString3 =dt3;
+//        NSTimeInterval _interval3=[timeStampString3 doubleValue] / 1000;
+//        NSDate *date3 = [NSDate dateWithTimeIntervalSince1970:_interval3];
+//        NSDateFormatter *objDateformat3 = [[NSDateFormatter alloc] init];
+//        [objDateformat3 setDateFormat:@"yyyy-MM-dd"];
+        self.sj.text=[self DateFormartYMD:dict[@"CreateDateTime"]];//[objDateformat3 stringFromDate: date3];
         [self idt:dict[@"Order_ID"]];
         self.fdr.text=dict[@"Company"];
         self.wcds.text=[NSString stringWithFormat:@"%@",dict[@"OrderFinishNum"]];

@@ -10,10 +10,8 @@
 #import "hjnTG.h"
 #import "orderModel.h"
 #import "orderdetail.h"
-//#import "ordermapViewController.h"
 #import "MBProgressHUD+MJ.h"
 #import "AFNetworkTool.h"
-#import <CoreLocation/CoreLocation.h>
 #import "MJRefresh.h"
 #import "UIViewController+Extension.h"
 
@@ -26,7 +24,9 @@
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentControl;
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+
 @property (nonatomic, strong) NSMutableArray *tgs;
+
 @property (nonatomic,copy)NSString *title;
 @property (nonatomic,strong)NSString *idtt;
 @property (nonatomic,assign)NSInteger *idtt2;
@@ -53,15 +53,23 @@
     [super viewDidLoad];
     
     self.navigationController.navigationBar.hidden=NO;
-    
     self.tabBarController.tabBar.hidden=NO;
-    [self indexchang:self.segmentControl];
-    [self.tableView reloadData];
-    [AFNetworkTool netWorkStatus];
-
-      num=0;
-
     
+    int chageStatus=[self ChangePageInit:@"Order"];
+    if (chageStatus==1 || chageStatus==4) {
+        
+        [self indexchang:self.segmentControl];
+        
+        [AFNetworkTool netWorkStatus];
+        num=0;
+    }
+    else if (chageStatus==2) {
+        
+    }
+    else if (chageStatus==3) {
+        [self ChangeLoad];
+    }
+
 }
 
 
@@ -73,18 +81,18 @@
     
     
     self.navigationController.navigationBar.barTintColor=myColorRGB;
-    
+
     [self.navigationController.navigationBar setTitleTextAttributes:
-     
-     @{NSFontAttributeName:[UIFont systemFontOfSize:17],
-       
-       NSForegroundColorAttributeName:[UIColor whiteColor]}];
-    
+
+    @{NSFontAttributeName:[UIFont systemFontOfSize:17],
+
+    NSForegroundColorAttributeName:[UIColor whiteColor]}];
+
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    
-    
+
+
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    
+
     NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
     NSString *pass= [userDefaultes stringForKey:@"passkey"];
     if ([pass isEqualToString:@"pass"]) {
@@ -102,8 +110,6 @@
 
     indexa=0;
     [self repeatnetwork];
-
-    
 }
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     return YES;
@@ -111,11 +117,8 @@
 
 -(NSMutableArray *)netwok:(NSMutableArray *)array
 {
-    
     _tgs=array;
     return _tgs;
-    
-    
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
@@ -170,55 +173,6 @@
 }
 
 
-//-(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//
-//}
-
-
-
-//- (void)tijiao2:(NSString *)t1:(NSString *)t2:(NSString *)t3:(NSString *)t4:(NSString *)t5{
-//    
-//    NSString *urlStr =[NSString stringWithFormat:@"%@/API/HDL_Order.ashx",urlt] ;
-//    
-//    NSURL *url = [NSURL URLWithString:urlStr];
-//    
-//    
-//    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:0 timeoutInterval:2.0f];
-//    
-//    request.HTTPMethod = @"POST";
-//    
-//    
-//    NSString *str = [NSString stringWithFormat:@"action=saveorderflow&q0=%@&q1=100&q2=%@&q3=%@&q4=%@&q5=%@",t1,t2,t3,t4,t5];
-//    
-//    
-//    request.HTTPBody = [str dataUsingEncoding:NSUTF8StringEncoding];
-//    
-//    
-//    [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc]init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-//        
-//        if(data!=nil)
-//        {
-//            NSString *result = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-//            
-//        }else{
-//            [MBProgressHUD showError:@"网络请求出错"];
-//            return ;
-//        }
-//        
-//    }];
-//    
-//    
-//}
-
-
-
-//-(void)genz2:(UIButton *)sender{
-//    [self idt3:sender.tag];
-//    [self performSegueWithIdentifier:@"gz" sender:nil];
-//}
-
-
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     id vc=segue.destinationViewController;
@@ -231,11 +185,9 @@
         [detai setValue:orderq forKey:@"strTtile"];
         
     }
-   }
+}
 
 -(NSInteger *)num{
-    
-    
     return _idenxx;
 }
 
@@ -254,54 +206,41 @@
 
 
 - (IBAction)indexchang:(UISegmentedControl *)sender {
-    
-    
     NSInteger colum=sender.selectedSegmentIndex;
     pagenum=colum-1;
     NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
     NSString *myString = [userDefaultes stringForKey:@"myidt"];
-    
-    // NSString *tr=@"B6D13BE7-990C-4DA6-A757-088ED994D9EA";
-    // NSLog(@"%@",myString);
-    NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Order.ashx?action=getlist&q0=0&q1=%@&q2=%d",urlt,myString,pagenum];
-    NSURL *url = [NSURL URLWithString:urlStr2];
-    
-    NSLog(@"%@",url);
-    
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:2.0f];
-    WebView = [[UIWebView alloc] init];
-    [WebView setUserInteractionEnabled:NO];
-    [WebView setBackgroundColor:[UIColor clearColor]];
-    [WebView setDelegate:self];
-    [WebView setOpaque:NO];//使网页透明
-    [WebView loadRequest:request];
-    [request setHTTPMethod:@"POST"];//设置请求方式为POST，默认为GET
-    NSString *str = @"type=focus-c";//设置参数
-    NSData *data = [str dataUsingEncoding:NSUTF8StringEncoding];
-    [request setHTTPBody:data];
-    
-    NSData *received = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
-    if(received!=nil){
-        
-        NSMutableDictionary *dict=[NSJSONSerialization JSONObjectWithData:received options:NSJSONReadingMutableLeaves error:nil];
-        if (![[dict objectForKey:@"ResultObject"] isEqual:[NSNull null]]) {
-             NSMutableArray *dictarr=[[dict objectForKey:@"ResultObject"] mutableCopy];
-        
-        
-        [self netwok:dictarr];
-        [self.tableView reloadData];
-
-        }
-               
-    }else
-    {
-        [MBProgressHUD showError:@"网络请求出错"];
-        return ;
+    if (myString == nil) {
+        return;
     }
-    
-    
-    
-    
+    num=0;
+    NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Order.ashx?action=getlist&q0=0&q1=%@&q2=%d",urlt,myString,pagenum];
+    AFHTTPRequestOperation *op=[self GETurlString:urlStr2];
+    [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSMutableDictionary *json=responseObject;
+        NSString *Status=[NSString stringWithFormat:@"%@",json[@"Status"]];
+        if ([Status isEqualToString:@"0"]){
+            NSString *ReturnMsg=[NSString stringWithFormat:@"%@",json[@"ReturnMsg"]];
+            [MBProgressHUD showError:ReturnMsg];
+            return ;
+        }else{
+            NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
+            if (dictarr !=nil && dictarr.count < 10) {
+                self.tableView.footer = nil;
+            }
+            else if(dictarr.count >=10 && self.tableView.footer == nil)
+            {
+                self.tableView.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+            }
+            [self netwok:dictarr];
+            [self.tableView reloadData];
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+        [MBProgressHUD showError:@"网络异常！"];
+        return ;
+    }];
+    [[NSOperationQueue mainQueue] addOperation:op];
 }
 
 //开始加载数据
@@ -337,52 +276,69 @@
 
 
 -(NSMutableArray *)repeatnetwork{
-    
-    
     self.tableView.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
-    
     return _tgs;
-    
-    
 }
-
-
+-(void) ChangeLoad
+{
+    
+    NSString *strid=[self ChangeGetChageID:@"Order"];
+    int _pagenum=  [self ChangeNnm:_tgs  ItemIDKey:@"Order_ID"  ID:strid];
+    if (_pagenum >=0) {
+        [self  loadMoreData: _pagenum IsChangeAdd:FALSE];
+    }
+}
 -(void)loadMoreData
 {
     num=num+1;
+    [self loadMoreData : num IsChangeAdd:true];
+}
+-(void)loadMoreData:(int) ChageNum IsChangeAdd:(BOOL) _IsChange
+{
+   
     NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
     NSString *myString = [userDefaultes stringForKey:@"myidt"];
     
-    NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Order.ashx?action=getlist&q0=%d&q1=%@&q2=%d",urlt,num,myString,pagenum];
-    
-    NSLog(@"000000000000-－－%@",urlStr2);
+    NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Order.ashx?action=getlist&q0=%d&q1=%@&q2=%d",urlt,ChageNum,myString,pagenum];
     
     AFHTTPRequestOperation *op=[self GETurlString:urlStr2];
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSMutableDictionary *dict=responseObject;
-        NSMutableArray *dictarr=[[dict objectForKey:@"ResultObject"] mutableCopy];
-        if(![dictarr isEqual:[NSNull null]])
-        {
+        NSMutableDictionary *json=responseObject;
+        NSString *Status=[NSString stringWithFormat:@"%@",json[@"Status"]];
+        if ([Status isEqualToString:@"0"]){
+            NSString *ReturnMsg=[NSString stringWithFormat:@"%@",json[@"ReturnMsg"]];
+            [MBProgressHUD showError:ReturnMsg];
+            return ;
+        }else{
+            NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
             if (dictarr.count < 10) {
                 self.tableView.footer = nil;
             }
-            else if (dictarr.count>=10)
+            else if(dictarr.count >=10 &&  self.tableView.footer == nil)
             {
                 self.tableView.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
             }
             if (dictarr.count>0) {
-                [_tgs addObjectsFromArray:dictarr];
+                if (_IsChange) {
+                    [_tgs addObjectsFromArray:dictarr];
+                    //[_tgs addObjectsFromArray:dictarr];
+                }
+                else
+                {
+                    NSString *strid=[self ChangeGetChageID:@"Order"];
+                    if (![self ChangeData:_tgs NewLoadRecords:dictarr ItemIDKey:@"Order_ID"  ID:strid]) {
+                        //NSLog("加载数据出错。%@",);
+                    }
+                }
                 [self.tableView reloadData];
             }
-        }        [self.tableView.footer endRefreshing];
+        }
+        [self.tableView.footer endRefreshing];
         self.tableView.footer.autoChangeAlpha=YES;
-        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [MBProgressHUD showError:@"网络请求出错"];
     }];
     [[NSOperationQueue mainQueue] addOperation:op];
-    
-    
 }
 
 

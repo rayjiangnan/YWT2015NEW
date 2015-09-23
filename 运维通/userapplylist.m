@@ -27,6 +27,8 @@
     [self requestaaa];
     [self.tableview reloadData];
     self.tableview.rowHeight=255;
+    
+    [self ChangeItemInit:@"Order"];
 }
 
 -(NSMutableArray *)netwok:(NSMutableArray *)array
@@ -189,11 +191,8 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSDictionary *rowdata=[self.tgs objectAtIndex:[indexPath row]];
-    
+    //NSDictionary *rowdata=[self.tgs objectAtIndex:[indexPath row]];
   [self performSegueWithIdentifier:@"person" sender:nil];
-    
-    
 }
 
 
@@ -206,28 +205,29 @@
     
     NSString *urlStr = [NSString stringWithFormat:@"%@/API/YWT_OrderPlatform.ashx?action=getlistapplyusers&q0=%@&q1=%d",urlt,mystring2,indes];
     AFHTTPRequestOperation *op=[self GETurlString:urlStr];
-    
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"%@", responseObject      );
-        NSLog(@"JSON: %@", responseObject);
-        
-      NSDictionary *dict=responseObject;
-        if (![dict objectForKey:@"ResultObject"]==nil) {
-             NSMutableArray *dictarr=[[dict objectForKey:@"ResultObject"] mutableCopy];
-     
-     [self netwok:dictarr];
-       [self.tableview reloadData];
-
+        NSMutableDictionary *json=responseObject;
+        NSString *Status=[NSString stringWithFormat:@"%@",json[@"Status"]];
+        if ([Status isEqualToString:@"0"]){
+            NSString *ReturnMsg=[NSString stringWithFormat:@"%@",json[@"ReturnMsg"]];
+            [MBProgressHUD showError:ReturnMsg];
+            return ;
+        }else{
+            NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
+//            if (dictarr !=nil && dictarr.count < 10) {
+//                self.tableview.footer = nil;
+//            }
+//            else if(dictarr.count >=10 && self.tableview.footer == nil)
+//            {
+//                self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+//            }
+            [self netwok:dictarr];
+            [self.tableview reloadData];
         }
-         
-      
-    
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
         [MBProgressHUD showError:@"网络异常！"];
-        
         return ;
-        
     }];
     
     [[NSOperationQueue mainQueue] addOperation:op];
@@ -244,9 +244,6 @@
         
         NSString *orderq=rowdata[@"Apply_UserID"];
         [detai setValue:orderq forKey:@"strTtile"];}
-    
-  
-    
 }
 
 @end

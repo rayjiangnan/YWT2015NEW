@@ -85,16 +85,16 @@
     }
     cell.orderno.text=[NSString stringWithFormat:@"单号：%@",dict2[@"OrderNo"]];
     
-    NSString *dt3=dict2[@"CreateDateTime"];;
-    dt3=[dt3 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
-    dt3=[dt3 stringByReplacingOccurrencesOfString:@")/" withString:@""];
- 
-    NSString * timeStampString3 =dt3;
-    NSTimeInterval _interval3=[timeStampString3 doubleValue] / 1000;
-    NSDate *date3 = [NSDate dateWithTimeIntervalSince1970:_interval3];
-    NSDateFormatter *objDateformat3 = [[NSDateFormatter alloc] init];
-    [objDateformat3 setDateFormat:@"MM-dd"];
-    cell.time.text=[objDateformat3 stringFromDate: date3];
+//    NSString *dt3=dict2[@"CreateDateTime"];;
+//    dt3=[dt3 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
+//    dt3=[dt3 stringByReplacingOccurrencesOfString:@")/" withString:@""];
+// 
+//    NSString * timeStampString3 =dt3;
+//    NSTimeInterval _interval3=[timeStampString3 doubleValue] / 1000;
+//    NSDate *date3 = [NSDate dateWithTimeIntervalSince1970:_interval3];
+//    NSDateFormatter *objDateformat3 = [[NSDateFormatter alloc] init];
+//    [objDateformat3 setDateFormat:@"MM-dd"];
+    cell.time.text=[self DateFormartMD:dict2[@"CreateDateTime"]];//[objDateformat3 stringFromDate: date3];
     
     cell.title.text=[NSString stringWithFormat:@"%@",dict2[@"OrderTitle"]];
     NSMutableArray *array=[dict2 objectForKey:@"Files"];
@@ -158,14 +158,18 @@
     
     AFHTTPRequestOperation *op=[self GETurlString:urlStr2];
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSMutableDictionary *dict=responseObject;
-        if(![[dict objectForKey:@"ResultObject"] isEqual:[NSNull null]])
-        {
-            NSMutableArray *dictarr=[[dict objectForKey:@"ResultObject"] mutableCopy];
+        NSMutableDictionary *json=responseObject;
+        NSString *Status=[NSString stringWithFormat:@"%@",json[@"Status"]];
+        if ([Status isEqualToString:@"0"]){
+            NSString *ReturnMsg=[NSString stringWithFormat:@"%@",json[@"ReturnMsg"]];
+            [MBProgressHUD showError:ReturnMsg];
+            return ;
+        }else{
+            NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
             if (dictarr.count < 10) {
                 self.tableview.footer = nil;
             }
-            else if (dictarr.count>=10)
+            else if(dictarr.count >= 10 && self.tableview.footer == nil)
             {
                 self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
             }
@@ -193,19 +197,22 @@
     
     NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Order.ashx?action=imgviewend&q0=%@&q1=%d",urlt,myString,num];
     
-    NSLog(@"000000%@",urlStr2);
+ 
         
-        NSString *str = @"type=focus-c";
-        AFHTTPRequestOperation *op=  [self POSTurlString:urlStr2 parameters:str];
+        AFHTTPRequestOperation *op=[self GETurlString:urlStr2];
         [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSMutableDictionary *dict=responseObject;
-            if(![[dict objectForKey:@"ResultObject"] isEqual:[NSNull null]])
-            {
-                NSMutableArray *dictarr=[[dict objectForKey:@"ResultObject"] mutableCopy];
+            NSMutableDictionary *json=responseObject;
+            NSString *Status=[NSString stringWithFormat:@"%@",json[@"Status"]];
+            if ([Status isEqualToString:@"0"]){
+                NSString *ReturnMsg=[NSString stringWithFormat:@"%@",json[@"ReturnMsg"]];
+                [MBProgressHUD showError:ReturnMsg];
+                return ;
+            }else{
+                NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
                 if (dictarr.count < 10) {
                     self.tableview.footer = nil;
                 }
-                else if (dictarr.count>=10)
+                else if(dictarr.count >= 10 && self.tableview.footer == nil)
                 {
                     self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
                 }

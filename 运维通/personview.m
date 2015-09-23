@@ -9,7 +9,10 @@
 #import "personview.h"
 #import "editview.h"
 #import "ChineseString.h"
-
+#import "MJRefresh.h"
+#import "MBProgressHUD+MJ.h"
+#import "UIImageView+WebCache.h"
+#import "UIViewController+Extension.h"
 
 @interface personview ()<UIWebViewDelegate>
 @property (nonatomic,strong)NSMutableArray *tgs;
@@ -40,17 +43,17 @@
     [super viewDidLoad];
 
     UIColor *myColorRGB =[self GetUIColor];
-    
+
     self.navigationController.navigationBar.barTintColor=myColorRGB;
-    
+
     [self.navigationController.navigationBar setTitleTextAttributes:
-     
-     @{NSFontAttributeName:[UIFont systemFontOfSize:17],
-       
-       NSForegroundColorAttributeName:[UIColor whiteColor]}];
-    
+
+    @{NSFontAttributeName:[UIFont systemFontOfSize:17],
+
+    NSForegroundColorAttributeName:[UIColor whiteColor]}];
+
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    
+
     self.tableview.rowHeight=50;
 
 
@@ -137,7 +140,7 @@
     
     
     NSDictionary *dict2=[_tgs objectAtIndex:indexPath.row];
-  NSLog(@"%@",dict2);
+    NSLog(@"%@",dict2);
     static NSString *ID = @"tg";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ID];
     if (cell == nil) {
@@ -155,7 +158,7 @@
     
     
     // }
-    cell.imageView.image=[UIImage imageNamed:@"sjtx"];
+    //cell.imageView.image=[UIImage imageNamed:@"sjtx"];
  
     cell.textLabel.text = [[self.LetterResultArr objectAtIndex:indexPath.section]objectAtIndex:indexPath.row];
     int index=_tgs.count;
@@ -176,32 +179,28 @@
             cell.detailTextLabel.textColor=[UIColor whiteColor];
             cell.detailTextLabel.font=[UIFont systemFontOfSize:12.0];
         
-            NSString *img=[NSString stringWithFormat:@"%@",[_tgs objectAtIndex:i][@"UserImg"]];
+            NSString *img2=[NSString stringWithFormat:@"%@",[_tgs objectAtIndex:i][@"UserImg"]];
+
+
+            //NSString *img2=[NSString stringWithFormat:@"%@%@",urlt,[_tgs objectAtIndex:i][@"UserImg"]];
             
-            NSString *img2=[NSString stringWithFormat:@"%@%@",urlt,[_tgs objectAtIndex:i][@"UserImg"]];
-            if (![img isEqualToString:@"/Images/defaultPhoto.png"]) {
-                NSURL *imgurl=[NSURL URLWithString:img2];
-                UIImage *icon = [[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];                CGSize itemSize = CGSizeMake(40, 40);
-                UIGraphicsBeginImageContextWithOptions(itemSize, NO,0.0);
-                CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
-                [icon drawInRect:imageRect];
+            if (![img2 isEqualToString:@"/Images/defaultPhoto.png"]) {
                 
-                cell.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
-                UIGraphicsEndImageContext();
+                NSString *img=[NSString stringWithFormat:@"%@%@",urlt,img2];
+                NSURL *imgurl=[NSURL URLWithString:img];
                 
+                [cell.imageView setImageWithURL:imgurl placeholderImage:[UIImage imageNamed:img]];
                 
             }else{
                 UIImage *icon = [UIImage imageNamed:@"icon_tx"];
-                CGSize itemSize = CGSizeMake(40, 40);
+                CGSize itemSize = CGSizeMake(60, 60);
                 UIGraphicsBeginImageContextWithOptions(itemSize, NO,0.0);
                 CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
                 [icon drawInRect:imageRect];
                 
                 cell.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
                 UIGraphicsEndImageContext();
-                
             }
-        
         }
         
     }
@@ -253,9 +252,6 @@
     
 }
 
-
-
-
 - (void)totalnarray{
  
         NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
@@ -263,38 +259,29 @@
         
         NSString *urlStr = [NSString stringWithFormat:@"%@/API/YWT_User.ashx?action=getsupuser&q0=%@",urlt,myString];
         
-        NSURL *url = [NSURL URLWithString:urlStr];
-        NSLog(@"%@",url);
-        NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:2.0f];
-        WebView = [[UIWebView alloc] init];
-        [WebView setUserInteractionEnabled:NO];
-        [WebView setBackgroundColor:[UIColor clearColor]];
-        [WebView setDelegate:self];
-        [WebView setOpaque:NO];
-          [WebView loadRequest:request];
-        [request setHTTPMethod:@"POST"];//设置请求方式为POST，默认为GET
-        NSString *str = @"type=focus-c";//设置参数
-        NSData *data = [str dataUsingEncoding:NSUTF8StringEncoding];
-        [request setHTTPBody:data];
-
-        NSData *received = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
-        if (received==nil) {
-            return;
+    AFHTTPRequestOperation *op=[self POSTurlString:urlStr parameters:@""];
+    [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSMutableDictionary *json=responseObject;
+        NSString *Status=[NSString stringWithFormat:@"%@",json[@"Status"]];
+        if ([Status isEqualToString:@"0"]){
+            NSString *ReturnMsg=[NSString stringWithFormat:@"%@",json[@"ReturnMsg"]];
+            [MBProgressHUD showError:ReturnMsg];
+            return ;
         }else{
-          NSDictionary *dict=[NSJSONSerialization JSONObjectWithData:received options:NSJSONReadingMutableLeaves error:nil];
-        NSArray *dictarr2=[dict objectForKey:@"ResultObject"];
-        NSMutableArray *dictotal=[NSMutableArray array];
-        [dictotal addObjectsFromArray:dictarr2];
-     
-        [self network:dictotal];
+            NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
+            [self network:dictarr];
         }
+        [self.tableview.header endRefreshing];
         
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        [MBProgressHUD showError:@"网络异常！"];
+        
+        return ;
+    }];
     
-    
-    }
-
-
-
+    [[NSOperationQueue mainQueue] addOperation:op];
+}
 
 #pragma mark - 加载
 

@@ -23,8 +23,6 @@
 
 @implementation mylist
 
-
-
 -(void)viewDidAppear:(BOOL)animated{
     NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
     NSString *usertype = [userDefaultes stringForKey:@"usertype"];
@@ -35,8 +33,19 @@
         self.tabBarController.tabBar.hidden=NO;
     }
     pagnum=0;
-    [self network2];
-    [self.tableview reloadData];
+    int chageStatus=[self ChangePageInit:@"Order"];
+    if (chageStatus==1 || chageStatus==4) {
+        [self network2];
+        [self.tableview reloadData];
+    }
+    else if (chageStatus==2) {
+        
+    }
+    else if (chageStatus==3) {
+        //[self ChangeLoad];
+    }
+    
+
 }
 
 - (void)viewDidLoad {
@@ -150,33 +159,31 @@
     
     NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_OrderPlatform.ashx?action=getlistforall&q0=%d",urlt,indes];
     
-    NSURL *url = [NSURL URLWithString:urlStr2];
-    
-    NSLog(@"%@",url);
-    
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:2.0f];
-    
-    [request setHTTPMethod:@"POST"];//设置请求方式为POST，默认为GET
-    NSString *str = @"type=focus-c";//设置参数
-    NSData *data = [str dataUsingEncoding:NSUTF8StringEncoding];
-    [request setHTTPBody:data];
-    
-    NSData *received = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
-    if(received!=nil){
-        
-        NSMutableDictionary *dict=[NSJSONSerialization JSONObjectWithData:received options:NSJSONReadingMutableLeaves error:nil];
-        
-        NSMutableArray *dictarr=[[dict objectForKey:@"ResultObject"] mutableCopy];
-        [self netwok:dictarr];
-        [self.tableview reloadData];
-        
-    }else
-    {
-        [MBProgressHUD showError:@"网络请求出错"];
-        return ;
-    }
-
-    
+    AFHTTPRequestOperation *op=[self GETurlString:urlStr2];
+    [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSMutableDictionary *json=responseObject;
+        NSString *Status=[NSString stringWithFormat:@"%@",json[@"Status"]];
+        if ([Status isEqualToString:@"0"]){
+            NSString *ReturnMsg=[NSString stringWithFormat:@"%@",json[@"ReturnMsg"]];
+            [MBProgressHUD showError:ReturnMsg];
+            return ;
+        }else{
+            NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
+            if (dictarr !=nil && dictarr.count < 10) {
+                self.tableview.footer = nil;
+            }
+            else if(dictarr.count >=10 && self.tableview.footer == nil)
+            {
+                self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+            }
+            [self netwok:dictarr];
+            [self.tableview reloadData];
+        }
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            [MBProgressHUD showError:@"网络异常！"];
+            return ;
+        }];
+        [[NSOperationQueue mainQueue] addOperation:op];
 }
 
 -(void )repeatnetwork{
@@ -191,18 +198,27 @@
 {
     
     pagnum=pagnum+1;
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *myString = [userDefaultes stringForKey:@"myidt"];
     
     NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_OrderPlatform.ashx?action=getlistforall&q0=%d",urlt,pagnum];
 
     
     AFHTTPRequestOperation *op=[self GETurlString:urlStr2];
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSMutableDictionary *dict=responseObject;
-          NSMutableArray *dictarr=[[dict objectForKey:@"ResultObject"] mutableCopy];
-        if(![dictarr isEqual:[NSNull null]])
-        {
+        NSMutableDictionary *json=responseObject;
+        NSString *Status=[NSString stringWithFormat:@"%@",json[@"Status"]];
+        if ([Status isEqualToString:@"0"]){
+            NSString *ReturnMsg=[NSString stringWithFormat:@"%@",json[@"ReturnMsg"]];
+            [MBProgressHUD showError:ReturnMsg];
+            return ;
+        }else{
+            NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
+            if (dictarr !=nil && dictarr.count < 10) {
+                self.tableview.footer = nil;
+            }
+            else if(dictarr.count >=10 && self.tableview.footer == nil)
+            {
+                self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+            }
             [_tgs addObjectsFromArray:dictarr];
             [self.tableview reloadData];
         }

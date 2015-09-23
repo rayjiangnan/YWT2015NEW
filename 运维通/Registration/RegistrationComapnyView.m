@@ -114,16 +114,21 @@
     NSLog(@"－－－－%@",urlStr2);
     AFHTTPRequestOperation *op=[self GETurlString:urlStr2];
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSDictionary *dict2=responseObject;
-         NSMutableArray *dictarr=[[dict2 objectForKey:@"ResultObject"] mutableCopy];
-        if (dictarr.count>0) {
-            NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
-            num=[dict3[@"Registration_ID"] intValue];
-
-            [self netwok:dictarr];
-            [self.tableview reloadData];
-            NSLog(@"加载数据完成。");
-
+        NSMutableDictionary *json=responseObject;
+        NSString *Status=[NSString stringWithFormat:@"%@",json[@"Status"]];
+        if ([Status isEqualToString:@"0"]){
+            NSString *ReturnMsg=[NSString stringWithFormat:@"%@",json[@"ReturnMsg"]];
+            [MBProgressHUD showError:ReturnMsg];
+            return ;
+        }else{
+            NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
+            if (dictarr.count>0) {
+                NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
+                num=[dict3[@"Registration_ID"] intValue];
+                [self netwok:dictarr];
+                [self.tableview reloadData];
+                NSLog(@"加载数据完成。");
+            }
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
@@ -212,10 +217,21 @@
     
     AFHTTPRequestOperation *op=[self GETurlString:urlStr2];
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSMutableDictionary *dict=responseObject;
-        NSArray *dictarr=[dict objectForKey:@"ResultObject"];
-        if(![dictarr isEqual:[NSNull null]])
-        {
+        NSMutableDictionary *json=responseObject;
+        NSString *Status=[NSString stringWithFormat:@"%@",json[@"Status"]];
+        if ([Status isEqualToString:@"0"]){
+            NSString *ReturnMsg=[NSString stringWithFormat:@"%@",json[@"ReturnMsg"]];
+            [MBProgressHUD showError:ReturnMsg];
+            return ;
+        }else{
+            NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
+            if (dictarr !=nil && dictarr.count < 10) {
+                self.tableview.footer = nil;
+            }
+            else if(dictarr.count >=10 && self.tableview.footer == nil)
+            {
+                self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+            }
             if (dictarr.count>0) {
                 NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
                 num=[dict3[@"Registration_ID"] intValue];
@@ -223,16 +239,12 @@
                 [self.tableview reloadData];
                 
             }
-        }        [self.tableview.footer endRefreshing];
-        self.tableview.footer.autoChangeAlpha=YES;
-        
-        
+        }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [MBProgressHUD showError:@"网络请求出错"];
+        [MBProgressHUD showError:@"网络异常！"];
+        return ;
     }];
     [[NSOperationQueue mainQueue] addOperation:op];
-    
-    
 }
 
 

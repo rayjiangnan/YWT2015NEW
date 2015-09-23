@@ -30,9 +30,20 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     
+    
+    int chageStatus=[self ChangePageInit:@"log"];
+    if (chageStatus==1 || chageStatus==4) {
+        [self network2];
+        [self.tableview reloadData];
+        
+    }
+    else if (chageStatus==2) {
+        
+    }
+    else if (chageStatus==3) {
+        //[self ChangeLoad];
+    }
     self.tabBarController.tabBar.hidden=YES;
-    [self network2];
-    [self.tableview reloadData];
     
 }
 
@@ -110,14 +121,26 @@
     NSString *myString = [userDefaultes stringForKey:@"myidt"];
     
     NSString *urlStr = [NSString stringWithFormat:@"%@/api/YWT_YWLog.ashx?action=getcompanylist&q0=%@&q1=%d",urlt,myString,indes];
-//    self.tableview.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-    NSString *str = @"type=focus-c";
-    NSLog(@"%@",urlStr);
-    AFHTTPRequestOperation *op=  [self POSTurlString:urlStr parameters:str];
+ 
+ 
+ 
+    AFHTTPRequestOperation *op=[self GETurlString:urlStr];
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSMutableDictionary *dict=responseObject;
-        if (![[dict objectForKey:@"ResultObject"] isEqual:[NSNull null]]) {
-            NSMutableArray *dictarr=[[dict objectForKey:@"ResultObject"] mutableCopy];
+        NSMutableDictionary *json=responseObject;
+        NSString *Status=[NSString stringWithFormat:@"%@",json[@"Status"]];
+        if ([Status isEqualToString:@"0"]){
+            NSString *ReturnMsg=[NSString stringWithFormat:@"%@",json[@"ReturnMsg"]];
+            [MBProgressHUD showError:ReturnMsg];
+            return ;
+        }else{
+            NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
+            if (dictarr !=nil && dictarr.count < 10) {
+                self.tableview.footer = nil;
+            }
+            else if(dictarr.count >=10 && self.tableview.footer == nil)
+            {
+                self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+            }
             NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
             num=[dict3[@"AutoID"] intValue];
             [self netwok:dictarr];
@@ -126,9 +149,7 @@
         
         [self.tableview.header endRefreshing];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
         [MBProgressHUD showError:@"网络异常！"];
-        
         return ;
     }];
     
@@ -149,9 +170,24 @@
 }
 
 
--(void)loadMoreData
+-(void) ChangeLoad
 {
     
+    NSString *strid=[self ChangeGetChageID:@"log"];
+    int chageid=[strid integerValue]+1;
+//    int _pagenum=  [self ChangeNnm:_tgs  ItemIDKey:@"AutoID"  ID:strid];
+//    if (_pagenum >=0) {
+        [self  loadMoreData: chageid IsChangeAdd:FALSE];
+    //}
+}
+
+-(void)loadMoreData
+{
+    [self loadMoreData : num IsChangeAdd:true];
+}
+
+-(void)loadMoreData :(int) ChageNum IsChangeAdd:(BOOL) _IsChange
+{
     
     NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
     NSString *myString = [userDefaultes stringForKey:@"myidt"];
@@ -160,21 +196,41 @@
     NSLog(@"%@",urlStr);
     AFHTTPRequestOperation *op=[self GETurlString:urlStr];
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSMutableDictionary *dict=responseObject;
-        NSArray *dictarr=[dict objectForKey:@"ResultObject"];
-        if(![dictarr isEqual:[NSNull null]])
-        {
-            if (dictarr.count>0) {
-                NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
-                num=[dict3[@"AutoID"] intValue];
-                [_tgs addObjectsFromArray:dictarr];
-                [self.tableview reloadData];
-
+        
+        
+        NSMutableDictionary *json=responseObject;
+        NSString *Status=[NSString stringWithFormat:@"%@",json[@"Status"]];
+        if ([Status isEqualToString:@"0"]){
+            NSString *ReturnMsg=[NSString stringWithFormat:@"%@",json[@"ReturnMsg"]];
+            [MBProgressHUD showError:ReturnMsg];
+            return ;
+        }else{
+            NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
+            if (dictarr.count < 10) {
+                self.tableview.footer = nil;
             }
-                   }
+            else if(dictarr.count >=10 &&  self.tableview.footer == nil)
+            {
+                self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+            }
+            if (dictarr.count>0) {
+                if (_IsChange) {
+                    [_tgs addObjectsFromArray:dictarr];
+                    NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
+                    num=[dict3[@"AutoID"] intValue];
+                }
+                else
+                {
+                    NSString *strid=[self ChangeGetChageID:@"log"];
+                    if (![self ChangeData:_tgs NewLoadRecords:dictarr ItemIDKey:@"AutoID"  ID:strid]) {
+                        //NSLog("加载数据出错。%@",);
+                    }
+                }
+                [self.tableview reloadData];
+            }
+        }
         [self.tableview.footer endRefreshing];
         self.tableview.footer.autoChangeAlpha=YES;
-        
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [MBProgressHUD showError:@"网络请求出错"];

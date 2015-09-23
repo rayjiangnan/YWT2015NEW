@@ -29,10 +29,19 @@
 @implementation daywrite
 
 -(void)viewDidAppear:(BOOL)animated{
-    [self network2];
-    [self.tableview reloadData];
-self.tabBarController.tabBar.hidden=YES;
-    
+    int chageStatus=[self ChangePageInit:@"log"];
+    if (chageStatus==1 || chageStatus==4) {
+        [self network2];
+        [self.tableview reloadData];
+        
+    }
+    else if (chageStatus==2) {
+        
+    }
+    else if (chageStatus==3) {
+        //[self ChangeLoad];
+    }
+    self.tabBarController.tabBar.hidden=YES;
 }
 
 
@@ -67,8 +76,8 @@ self.tabBarController.tabBar.hidden=YES;
         cell=[[[NSBundle mainBundle] loadNibNamed:@"dayCell" owner:nil options:nil] lastObject];
     }
     cell.bt.text=dict2[@"Title"];
-    NSString *num=[NSString stringWithFormat:@"%@",dict2[@"LogStatus"]];
-    if ([num isEqualToString:@"0"]) {
+    NSString *LogStatus=[NSString stringWithFormat:@"%@",dict2[@"LogStatus"]];
+    if ([LogStatus isEqualToString:@"0"]) {
        cell.pl.text=@"未发布";
         cell.pl.backgroundColor=[UIColor redColor];
     }else{
@@ -85,7 +94,7 @@ self.tabBarController.tabBar.hidden=YES;
     NSDate *date3 = [NSDate dateWithTimeIntervalSince1970:_interval3];
     NSDateFormatter *objDateformat3 = [[NSDateFormatter alloc] init];
     [objDateformat3 setDateFormat:@"yyyy年MM月dd日 hh:mm"];
-   cell.time.text=[objDateformat3 stringFromDate: date3];
+    cell.time.text=[objDateformat3 stringFromDate: date3];
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
@@ -95,16 +104,12 @@ self.tabBarController.tabBar.hidden=YES;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     NSDictionary *dict2=[self.tgs objectAtIndex:[indexPath row]];
-    NSString *num=[NSString stringWithFormat:@"%@",dict2[@"LogStatus"]];
-    if ([num isEqualToString:@"0"]) {
+    NSString *LogStatus=[NSString stringWithFormat:@"%@",dict2[@"LogStatus"]];
+    if ([LogStatus isEqualToString:@"0"]) {
        [self performSegueWithIdentifier:@"write" sender:nil];
     }else{
         [self performSegueWithIdentifier:@"xiangxi" sender:nil];
-        }
-
-   
-    
-    
+    }
 }
 
 -(void)network2{
@@ -115,24 +120,25 @@ self.tabBarController.tabBar.hidden=YES;
     NSString *myString = [userDefaultes stringForKey:@"myidt"];
     
     NSString *urlStr = [NSString stringWithFormat:@"%@/api/YWT_YWLog.ashx?action=getlist&q0=%@&q1=%d",urlt,myString,indes];
-//    self.tableview.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-    
-        NSString *str = @"type=focus-c";
-  
-    AFHTTPRequestOperation *op=[self POSTurlString:urlStr parameters:str];
-    [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSMutableDictionary *dict=responseObject;
-        if (![[dict objectForKey:@"ResultObject"] isEqual:[NSNull null]]) {
 
-          NSMutableArray *dictarr=[[dict objectForKey:@"ResultObject"] mutableCopy];
-        NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
-        num=[dict3[@"AutoID"] intValue];
-        [self netwok:dictarr];
-        [self.tableview reloadData];
+    AFHTTPRequestOperation *op=[self GETurlString:urlStr];
+    [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSMutableDictionary *json=responseObject;
+        NSString *Status=[NSString stringWithFormat:@"%@",json[@"Status"]];
+        if ([Status isEqualToString:@"0"]){
+            NSString *ReturnMsg=[NSString stringWithFormat:@"%@",json[@"ReturnMsg"]];
+            [MBProgressHUD showError:ReturnMsg];
+            return ;
+        }else{
+            NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
+            NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
+            num=[dict3[@"AutoID"] intValue];
+            [self netwok:dictarr];
+            [self.tableview reloadData];
         }
          [self.tableview.header endRefreshing];
         
-  } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
         [MBProgressHUD showError:@"网络异常！"];
         
@@ -141,33 +147,22 @@ self.tabBarController.tabBar.hidden=YES;
     
     [[NSOperationQueue mainQueue] addOperation:op];
     
-        
-//    }];
-//    self.tableview.header.autoChangeAlpha = YES;
-//    [self.tableview.header beginRefreshing];
-
-  
-    
 }
 -(NSMutableArray *)repeatnetwork{
-    
-    
     self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
     
     return _tgs;
-    
-    
 }
 
 -(void)loadMoreData
 {
     
-    NSInteger indes=11;
+    //NSInteger indes=11;
     NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
     
     NSString *myString = [userDefaultes stringForKey:@"myidt"];
     
-    NSString *urlStr = [NSString stringWithFormat:@"%@/api/YWT_YWLog.ashx?action=getlist&q0=%@&q1=%d",urlt,myString,indes];
+    NSString *urlStr = [NSString stringWithFormat:@"%@/api/YWT_YWLog.ashx?action=getlist&q0=%@&q1=%d",urlt,myString,num];
       NSLog(@"++++%@",urlStr);
     
     AFHTTPRequestOperation *op=[self GETurlString:urlStr];
@@ -179,7 +174,7 @@ self.tabBarController.tabBar.hidden=YES;
             if (dictarr.count < 10) {
                 self.tableview.footer = nil;
             }
-            else if (dictarr.count>=10)
+            else if(dictarr.count >= 10 && self.tableview.footer == nil)
             {
                 self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
             }
@@ -188,9 +183,7 @@ self.tabBarController.tabBar.hidden=YES;
                 num=[dict3[@"AutoID"] intValue];
                 [_tgs addObjectsFromArray:dictarr];
                 [self.tableview reloadData];
-                
             }
-
         }
         [self.tableview.footer endRefreshing];
         self.tableview.footer.autoChangeAlpha=YES;

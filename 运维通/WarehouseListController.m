@@ -32,8 +32,19 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     self.tabBarController.tabBar.hidden=NO;
-    [self network2];
-    [self.tableview reloadData];}
+    int chageStatus=[self ChangePageInit:@"Warehouse"];
+    if (chageStatus==1 || chageStatus==4) {
+        [self network2];
+        [self.tableview reloadData];
+    }
+    else if (chageStatus==2) {
+        
+    }
+    else if (chageStatus==3) {
+        
+    }
+
+}
 
 
 - (void)viewDidLoad {
@@ -81,21 +92,28 @@
     AFHTTPRequestOperation *op=[self GETurlString:urlStr2];
           
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSDictionary *dict2=responseObject;
-      NSMutableArray *dictarr=[[dict2 objectForKey:@"ResultObject"] mutableCopy];
-        if (dictarr.count < 10) {
-            self.tableview.footer = nil;
-        }
-        else if (dictarr.count>=10)
-        {
-            self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
-        }
-        NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
-        num=[dict3[@"Warehouse_ID"] intValue];
-        [self netwok:dictarr];
-        [self.tableview reloadData];
+        NSMutableDictionary *json=responseObject;
+        NSString *Status=[NSString stringWithFormat:@"%@",json[@"Status"]];
+        if ([Status isEqualToString:@"0"]){
+            NSString *ReturnMsg=[NSString stringWithFormat:@"%@",json[@"ReturnMsg"]];
+            [MBProgressHUD showError:ReturnMsg];
+            return ;
+        }else{
+            NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
+            if (dictarr.count < 10) {
+                self.tableview.footer = nil;
+            }
+            else if(dictarr.count >= 10 && self.tableview.footer == nil)
+            {
+                self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+            }
+            NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
+            num=[dict3[@"Warehouse_ID"] intValue];
+            [self netwok:dictarr];
+            [self.tableview reloadData];
 
-         [self.tableview.header endRefreshing];
+            [self.tableview.header endRefreshing];
+        }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
         [MBProgressHUD showError:@"网络异常！"];
@@ -113,13 +131,8 @@
 
 
 -(NSMutableArray *)repeatnetwork{
-    
-    
     self.tableView.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
-    
     return _tgs;
-    
-    
 }
 
 
@@ -133,14 +146,18 @@
 
     AFHTTPRequestOperation *op=[self GETurlString:urlStr2];
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSMutableDictionary *dict=responseObject;
-        NSArray *dictarr=[dict objectForKey:@"ResultObject"];
-        if(![dictarr isEqual:[NSNull null]])
-        {
+        NSMutableDictionary *json=responseObject;
+        NSString *Status=[NSString stringWithFormat:@"%@",json[@"Status"]];
+        if ([Status isEqualToString:@"0"]){
+            NSString *ReturnMsg=[NSString stringWithFormat:@"%@",json[@"ReturnMsg"]];
+            [MBProgressHUD showError:ReturnMsg];
+            return ;
+        }else{
+            NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
             if (dictarr.count < 10) {
                 self.tableview.footer = nil;
             }
-            else if (dictarr.count>=10)
+            else if(dictarr.count >= 10 && self.tableview.footer == nil)
             {
                 self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
             }
@@ -155,7 +172,6 @@
         }
         [self.tableView.footer endRefreshing];
         self.tableView.footer.autoChangeAlpha=YES;
-        
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [MBProgressHUD showError:@"网络请求出错"];

@@ -27,9 +27,20 @@
 @implementation postlist
 
 -(void)viewDidAppear:(BOOL)animated{
-    [self network2];
-    [self.tableview reloadData];
+
     self.tabBarController.tabBar.hidden=YES;
+    int chageStatus=[self ChangePageInit:@"Order"];
+    if (chageStatus==1 || chageStatus==4) {
+        [self network2];
+        [self.tableview reloadData];
+    }
+    else if (chageStatus==2) {
+        
+    }
+    else if (chageStatus==3) {
+        //[self ChangeLoad];
+    }
+    
 }
 
 - (void)viewDidLoad {
@@ -72,23 +83,23 @@
     cell.sq.text=[NSString stringWithFormat:@"%@人申请",dict2[@"ApplyNum"]];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    NSString *dt3=dict2[@"CreateDateTime"];;
-    dt3=[dt3 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
-    dt3=[dt3 stringByReplacingOccurrencesOfString:@")/" withString:@""];
-    // NSLog(@"%@",dt3);
-    NSString * timeStampString3 =dt3;
-    NSTimeInterval _interval3=[timeStampString3 doubleValue] / 1000;
-    NSDate *date3 = [NSDate dateWithTimeIntervalSince1970:_interval3];
-    NSDateFormatter *objDateformat3 = [[NSDateFormatter alloc] init];
-    [objDateformat3 setDateFormat:@"MM-dd"];
-    cell.sj.text=[objDateformat3 stringFromDate: date3];
+//    NSString *dt3=dict2[@"CreateDateTime"];;
+//    dt3=[dt3 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
+//    dt3=[dt3 stringByReplacingOccurrencesOfString:@")/" withString:@""];
+//    // NSLog(@"%@",dt3);
+//    NSString * timeStampString3 =dt3;
+//    NSTimeInterval _interval3=[timeStampString3 doubleValue] / 1000;
+//    NSDate *date3 = [NSDate dateWithTimeIntervalSince1970:_interval3];
+//    NSDateFormatter *objDateformat3 = [[NSDateFormatter alloc] init];
+//    [objDateformat3 setDateFormat:@"MM-dd"];
+    cell.sj.text=[self DateFormartMD:dict2[@"CreateDateTime"]];//[objDateformat3 stringFromDate: date3];
     
     return cell;
 }
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSDictionary *rowdata=[self.tgs objectAtIndex:[indexPath row]];
+    //NSDictionary *rowdata=[self.tgs objectAtIndex:[indexPath row]];
    
  [self performSegueWithIdentifier:@"xiangxi" sender:nil];
     
@@ -101,38 +112,33 @@
     NSString *myString = [userDefaultes stringForKey:@"myidt"];
     
     NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_OrderPlatform.ashx?action=getlistforsupplier&q0=%d&q1=%@",urlt,indes,myString];
-//     self.tableview.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
     
-    NSURL *url = [NSURL URLWithString:urlStr2];
-    
-    NSLog(@"%@",url);
-    
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:2.0f];
-
-    [request setHTTPMethod:@"POST"];//设置请求方式为POST，默认为GET
-    NSString *str = @"type=focus-c";//设置参数
-    NSData *data = [str dataUsingEncoding:NSUTF8StringEncoding];
-    [request setHTTPBody:data];
-    
-    NSData *received = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
-    if(received!=nil){
+    AFHTTPRequestOperation *op=[self GETurlString:urlStr2];
+    [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSMutableDictionary *json=responseObject;
+        NSString *Status=[NSString stringWithFormat:@"%@",json[@"Status"]];
+        if ([Status isEqualToString:@"0"]){
+            NSString *ReturnMsg=[NSString stringWithFormat:@"%@",json[@"ReturnMsg"]];
+            [MBProgressHUD showError:ReturnMsg];
+            return ;
+        }else{
+            NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
+            if (dictarr !=nil && dictarr.count < 10) {
+                self.tableview.footer = nil;
+            }
+            else if(dictarr.count >=10 && self.tableview.footer == nil)
+            {
+                self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+            }
+            [self netwok:dictarr];
+            [self.tableview reloadData];
+        }
+        [self.tableview.header endRefreshing];
         
-        NSMutableDictionary *dict=[NSJSONSerialization JSONObjectWithData:received options:NSJSONReadingMutableLeaves error:nil];
-        
-        NSMutableArray *dictarr=[[dict objectForKey:@"ResultObject"] mutableCopy];
-        
-        
-        [self netwok:dictarr];
-        [self.tableview reloadData];
-          [self.tableview.header endRefreshing];
-    }else
-    {
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [MBProgressHUD showError:@"网络请求出错"];
-        return ;
-    }
-//     }];
-//    self.tableview.header.autoChangeAlpha = YES;
-//    [self.tableview.header beginRefreshing];
+    }];
+    [[NSOperationQueue mainQueue] addOperation:op];
 
 }
 
@@ -142,8 +148,6 @@
     self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
     
     return _tgs;
-    
-    
 }
 
 
@@ -157,16 +161,26 @@
     NSLog(@"%@",urlStr2);
     AFHTTPRequestOperation *op=[self GETurlString:urlStr2];
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSMutableDictionary *dict=responseObject;
-        NSArray *dictarr=[dict objectForKey:@"ResultObject"];
-        if(![dictarr isEqual:[NSNull null]])
-        {
+        NSMutableDictionary *json=responseObject;
+        NSString *Status=[NSString stringWithFormat:@"%@",json[@"Status"]];
+        if ([Status isEqualToString:@"0"]){
+            NSString *ReturnMsg=[NSString stringWithFormat:@"%@",json[@"ReturnMsg"]];
+            [MBProgressHUD showError:ReturnMsg];
+            return ;
+        }else{
+            NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
+            if (dictarr !=nil && dictarr.count < 10) {
+                self.tableview.footer = nil;
+            }
+            else if(dictarr.count >=10 && self.tableview.footer == nil)
+            {
+                self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+            }
             [_tgs addObjectsFromArray:dictarr];
             [self.tableview reloadData];
         }
         [self.tableview.footer endRefreshing];
         self.tableview.footer.autoChangeAlpha=YES;
-        
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [MBProgressHUD showError:@"网络请求出错"];

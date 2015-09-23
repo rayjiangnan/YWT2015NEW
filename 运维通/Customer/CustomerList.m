@@ -13,7 +13,7 @@
 #import "UIViewController+Extension.h"
 #import "CustomerEidt.h"
 #import "CustomerCell.h"
-#import "UIViewController+Extension.h"
+
 
 @interface CustomerList ()<UITableViewDataSource,UITableViewDelegate>
 {
@@ -28,19 +28,27 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     self.tabBarController.tabBar.hidden=YES;
-    [self network2];
-    [self.tableview reloadData];
+
+    
+    int chageStatus=[self ChangePageInit:@"Customer"];
+    if (chageStatus==1 || chageStatus==4) {
+        [self network2];
+        [self.tableview reloadData];
+    }
+    else if (chageStatus==2) {
+        
+    }
+    else if (chageStatus==3) {
+        [self ChangeLoad];
+    }
     
     
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *addr=@"";
-
     [userDefaults setObject:addr forKey:@"detaaddr"];
     [userDefaults setObject:addr forKey:@"detaaddr1"];
     [userDefaults setObject:addr forKey:@"detaaddr2"];
     [userDefaults synchronize];
-
-    
 }
 
 - (void)viewDidLoad {
@@ -86,29 +94,36 @@
     NSString *Create_User = [userDefaultes stringForKey:@"myidt"];
     NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Customer.ashx?action=getlist&q0=%@&q1=%d",urlt,Create_User,indes];
         
-        NSString *str = @"type=focus-c";
-        AFHTTPRequestOperation *op=  [self POSTurlString:urlStr2 parameters:str];
-        [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSMutableDictionary *dict=responseObject;
-            if(![[dict objectForKey:@"ResultObject"] isEqual:[NSNull null]])
-            {
-                NSMutableArray *dictarr=[[dict objectForKey:@"ResultObject"] mutableCopy];
-                if (dictarr.count < 10) {
-                    self.tableview.footer = nil;
-                }
-                [self netwok:dictarr];
-                [self.tableView reloadData];
-            }
-            
-            [self.tableView.header endRefreshing];
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            
-            [MBProgressHUD showError:@"网络异常！"];
-            
+    AFHTTPRequestOperation *op=[self GETurlString:urlStr2];
+    [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSMutableDictionary *json=responseObject;
+        NSString *Status=[NSString stringWithFormat:@"%@",json[@"Status"]];
+        if ([Status isEqualToString:@"0"]){
+            NSString *ReturnMsg=[NSString stringWithFormat:@"%@",json[@"ReturnMsg"]];
+            [MBProgressHUD showError:ReturnMsg];
             return ;
-        }];
+        }else{
+            NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
+            if (dictarr.count < 10) {
+                self.tableview.footer = nil;
+            }
+            else if(dictarr.count >= 10 && self.tableview.footer == nil)
+            {
+                self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+            }
+            [self netwok:dictarr];
+            [self.tableView reloadData];
+        }
         
-        [[NSOperationQueue mainQueue] addOperation:op];
+        [self.tableView.header endRefreshing];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        [MBProgressHUD showError:@"网络异常！"];
+        
+        return ;
+    }];
+    
+    [[NSOperationQueue mainQueue] addOperation:op];
 }
 
 -(NSMutableArray *)netwok:(NSMutableArray *)array
@@ -128,37 +143,64 @@
     
     
 }
-
+-(void) ChangeLoad
+{
+    NSString *strid=[self ChangeGetChageID:@"Customer"];
+    int _pagenum=  [self ChangeNnm:_tgs  ItemIDKey:@"CustomerID"  ID:strid];
+    if (_pagenum >=0) {
+        [self  loadMoreData: _pagenum IsChangeAdd:FALSE];
+    }
+}
 
 -(void)loadMoreData
 {
-   num=num+1;
+    num=num+1;
+    [self loadMoreData : num IsChangeAdd:true];
+}
+
+-(void)loadMoreData :(int) ChageNum IsChangeAdd:(BOOL) _IsChange
+{
     NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
     NSString *Create_User = [userDefaultes stringForKey:@"myidt"];
-    NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Customer.ashx?action=getlist&q0=%@&q1=%d",urlt,Create_User,num];
+    NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Customer.ashx?action=getlist&q0=%@&q1=%d",urlt,Create_User,ChageNum];
 
     AFHTTPRequestOperation *op=[self GETurlString:urlStr2];
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSMutableDictionary *dict=responseObject;
-        NSArray *dictarr=[dict objectForKey:@"ResultObject"];
-        if(![dictarr isEqual:[NSNull null]])
-        {
+        NSMutableDictionary *json=responseObject;
+        NSString *Status=[NSString stringWithFormat:@"%@",json[@"Status"]];
+        if ([Status isEqualToString:@"0"]){
+            NSString *ReturnMsg=[NSString stringWithFormat:@"%@",json[@"ReturnMsg"]];
+            [MBProgressHUD showError:ReturnMsg];
+            return ;
+        }else{
+            NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
             if (dictarr.count < 10) {
                 self.tableview.footer = nil;
             }
-            [_tgs addObjectsFromArray:dictarr];
+            else if(dictarr.count >= 10 && self.tableView.footer == nil)
+            {
+                self.tableView.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+            }
+            if (dictarr.count>0) {
+                if (_IsChange) {
+                    [_tgs addObjectsFromArray:dictarr];
+                }
+                else
+                {
+                    NSString *strid=[self ChangeGetChageID:@"Customer"];
+                    if (![self ChangeData:_tgs NewLoadRecords:dictarr ItemIDKey:@"CustomerID"  ID:strid]) {
+                        NSLog(@"加载数据出错。");
+                    }
+                }
+            }
             [self.tableview reloadData];
         }
         [self.tableview.footer endRefreshing];
         self.tableview.footer.autoChangeAlpha=YES;
-        
-        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [MBProgressHUD showError:@"网络请求出错"];
     }];
     [[NSOperationQueue mainQueue] addOperation:op];
-    
-    
 }
 
 

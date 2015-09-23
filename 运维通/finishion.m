@@ -393,17 +393,18 @@
     
 }
 - (IBAction)post:(id)sender {
-    NSString *lat=[NSString stringWithFormat:@"%f",_locationManager.location.coordinate.latitude];
-    NSString *longti=[NSString stringWithFormat:@"%f",_locationManager.location.coordinate.longitude];
+//    NSString *lat=[NSString stringWithFormat:@"%f",_locationManager.location.coordinate.latitude];
+//    NSString *longti=[NSString stringWithFormat:@"%f",_locationManager.location.coordinate.longitude];
     
-    [self tijiao2:lat :longti :@"西乡" :self.beiz.text :@""];
+    [self tijiao2]; //]:lat :longti :@"西乡" :self.beiz.text :@""];
 }
 -(NSString *)idt:(NSString *)id1{
     _idtt=id1;
     return _idtt ;
 }
 
--(void)tijiao2:(NSString *)t1:(NSString *)t2:(NSString *)t3:(NSString *)t4:(NSString *)t5{
+-(void)tijiao2//:(NSString *)t1:(NSString *)t2:(NSString *)t3:(NSString *)t4:(NSString *)t5
+{
     
     NSString *urlStr =[NSString stringWithFormat:@"%@/API/YWT_Order.ashx",urlt] ;
     
@@ -418,7 +419,7 @@
     NSString *myString = [userDefaultes stringForKey:@"myidt"];
     
     NSString *dest=[NSString stringWithFormat:@"[{\"FileName\":\"%@\",\"FileIcon\":\"%@\"},{\"FileName\":\"%@\",\"FileIcon\":\"%@\"},{\"FileName\":\"%@\",\"FileIcon\":\"%@\"},{\"FileName\":\"%@\",\"FileIcon\":\"%@\"}]",_img1,_img1icon,_img2,_img2icon,_img3,_img3icon,_img4,_img4icon];
-    NSString *str = [NSString stringWithFormat:@"action=saveorderflow&q0=%@&q1=90&q2=%@&q3=%@&q4=%@&q5=%@&q6=%@&q7=%@",_idtt,myString,t1,t2,t3,t4,dest];
+    NSString *str = [NSString stringWithFormat:@"action=saveorderflow&q0=%@&q1=90&q2=%@&q3=%@&q4=%@&q5=%@&q6=%@&q7=%@",_idtt,myString,@"",@"",@"",self.beiz.text,dest];
     
     NSLog(@"%@?%@",urlt,str);
     request.HTTPBody = [str dataUsingEncoding:NSUTF8StringEncoding];

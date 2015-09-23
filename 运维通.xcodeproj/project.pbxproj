@@ -729,25 +729,8 @@
 		283A8D281B6E24F9001DF53A /* ywperson */ = {
 			isa = PBXGroup;
 			children = (
+				78376FC41BB2DE97009AF59B /* ywlog */,
 				283A8D311B6E2D13001DF53A /* order */,
-				283A8D291B6E2541001DF53A /* daywrite.h */,
-				283A8D2A1B6E2541001DF53A /* daywrite.m */,
-				283A8D2C1B6E2664001DF53A /* dayCell.h */,
-				283A8D2D1B6E2664001DF53A /* dayCell.m */,
-				283A8D2E1B6E2664001DF53A /* dayCell.xib */,
-				284B339A1B6FB325001D8A88 /* writedate.h */,
-				284B339B1B6FB325001D8A88 /* writedate.m */,
-				284B339D1B6FC556001D8A88 /* dianping.h */,
-				284B339E1B6FC556001D8A88 /* dianping.m */,
-				286CF6761B71128B00B43CD3 /* editdate.h */,
-				286CF6771B71128B00B43CD3 /* editdate.m */,
-				286CF6791B7119EE00B43CD3 /* detaildaywrite.h */,
-				286CF67A1B7119EE00B43CD3 /* detaildaywrite.m */,
-				28B6A8191B727368005ED2E9 /* diandetail.h */,
-				28B6A81A1B727368005ED2E9 /* diandetail.m */,
-				285EEABE1B74FA8B002D7656 /* pinglunCell.h */,
-				285EEABF1B74FA8B002D7656 /* pinglunCell.m */,
-				285EEAC01B74FA8B002D7656 /* pinglunCell.xib */,
 				285EEAC31B75C255002D7656 /* rz.h */,
 				285EEAC41B75C255002D7656 /* rz.m */,
 				285EEAC61B75E39E002D7656 /* personcenter.h */,
@@ -760,9 +743,6 @@
 				284132151B765610005B5872 /* xietongcenter.m */,
 				284132171B7657E1005B5872 /* qiandao.h */,
 				284132181B7657E1005B5872 /* qiandao.m */,
-				285C9F701B7CFBD7008BB8F3 /* diancell.h */,
-				285C9F711B7CFBD7008BB8F3 /* diancell.m */,
-				285C9F721B7CFBD7008BB8F3 /* diancell.xib */,
 				282CCA451B9ABA300087E3CB /* renzhen.h */,
 				282CCA461B9ABA300087E3CB /* renzhen.m */,
 				2854D4C21B9B1FD600209D4A /* paylist.h */,
@@ -1217,6 +1197,34 @@
 				4EC967271B5C98BC00A59F0B /* mapViewController.m */,
 			);
 			name = map;
+			sourceTree = "<group>";
+		};
+		78376FC41BB2DE97009AF59B /* ywlog */ = {
+			isa = PBXGroup;
+			children = (
+				285C9F701B7CFBD7008BB8F3 /* diancell.h */,
+				285C9F711B7CFBD7008BB8F3 /* diancell.m */,
+				285C9F721B7CFBD7008BB8F3 /* diancell.xib */,
+				284B339D1B6FC556001D8A88 /* dianping.h */,
+				284B339E1B6FC556001D8A88 /* dianping.m */,
+				28B6A8191B727368005ED2E9 /* diandetail.h */,
+				28B6A81A1B727368005ED2E9 /* diandetail.m */,
+				284B339A1B6FB325001D8A88 /* writedate.h */,
+				284B339B1B6FB325001D8A88 /* writedate.m */,
+				283A8D291B6E2541001DF53A /* daywrite.h */,
+				283A8D2A1B6E2541001DF53A /* daywrite.m */,
+				283A8D2C1B6E2664001DF53A /* dayCell.h */,
+				283A8D2D1B6E2664001DF53A /* dayCell.m */,
+				283A8D2E1B6E2664001DF53A /* dayCell.xib */,
+				285EEABE1B74FA8B002D7656 /* pinglunCell.h */,
+				285EEABF1B74FA8B002D7656 /* pinglunCell.m */,
+				285EEAC01B74FA8B002D7656 /* pinglunCell.xib */,
+				286CF6761B71128B00B43CD3 /* editdate.h */,
+				286CF6771B71128B00B43CD3 /* editdate.m */,
+				286CF6791B7119EE00B43CD3 /* detaildaywrite.h */,
+				286CF67A1B7119EE00B43CD3 /* detaildaywrite.m */,
+			);
+			name = ywlog;
 			sourceTree = "<group>";
 		};
 		78402A551B5B90B800908FA9 /* RefreshTableHeaderView */ = {

@@ -35,7 +35,7 @@
 
 
 -(void)viewDidAppear:(BOOL)animated{
-   
+   [self ChangeItemInit:@"log"];
     self.tabBarController.tabBar.hidden=YES;
     
 }
@@ -95,9 +95,7 @@
         return ;
         
     }];
-    
-    
-    
+
     [[NSOperationQueue mainQueue] addOperation:op];
     
     
@@ -110,9 +108,7 @@
 
 
 - (void)postJSON:(NSString *)text1
-
 {
-  //YWT_YWLog.ashx?action=logreply&q0=&q1=&q2=
     NSString *urlstr=[NSString stringWithFormat:@"%@/API/YWT_YWLog.ashx",urlt];
     
     NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
@@ -126,32 +122,20 @@
     AFHTTPRequestOperation *op=[self POSTurlString:urlstr parameters:str];
     
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        
-        
         NSDictionary *dict=responseObject;
         
         NSString *sta=[NSString stringWithFormat:@"%@",dict[@"Status"]];
-        
-        
-        
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            
             if ([sta isEqualToString:@"1"]){
-                
                 [MBProgressHUD showSuccess:@"评论成功！"];
-
                 [self network];
                 [self.tableview reloadData];
+                [self ChangeRecord:strTtile key:@"log"];
                 self.pltext.text=@"";
-                  [self.view setNeedsDisplay];
-                
-   
+                [self.view setNeedsDisplay];
                 [self tapOnce];
             }else{
-                
                 [MBProgressHUD showError:sta];
-                
                 return ;
             }
         }];
@@ -226,16 +210,16 @@
     cell.pl.text=dict2[@"ReplyContent"];
     cell.lc.text=[NSString stringWithFormat:@"%@",dict2[@"ReplyID"]];
     
-    NSString *dt3=dict2[@"Create_Date"];
-    dt3=[dt3 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
-    dt3=[dt3 stringByReplacingOccurrencesOfString:@")/" withString:@""];
-    // NSLog(@"%@",dt3);
-    NSString * timeStampString3 =dt3;
-    NSTimeInterval _interval3=[timeStampString3 doubleValue] / 1000;
-    NSDate *date3 = [NSDate dateWithTimeIntervalSince1970:_interval3];
-    NSDateFormatter *objDateformat3 = [[NSDateFormatter alloc] init];
-    [objDateformat3 setDateFormat:@"yyyy-MM-dd hh:ss"];
-    cell.time.text=[objDateformat3 stringFromDate: date3];
+//    NSString *dt3=dict2[@"Create_Date"];
+//    dt3=[dt3 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
+//    dt3=[dt3 stringByReplacingOccurrencesOfString:@")/" withString:@""];
+//    // NSLog(@"%@",dt3);
+//    NSString * timeStampString3 =dt3;
+//    NSTimeInterval _interval3=[timeStampString3 doubleValue] / 1000;
+//    NSDate *date3 = [NSDate dateWithTimeIntervalSince1970:_interval3];
+//    NSDateFormatter *objDateformat3 = [[NSDateFormatter alloc] init];
+//    [objDateformat3 setDateFormat:@"yyyy-MM-dd hh:ss"];
+    cell.time.text=cell.time.text=[self DateFormartString:dict2[@"Create_Date"]];//[objDateformat3 stringFromDate: date3];
     
     if (![dict2[@"UserImg"] isEqual:[NSNull null]]) {
         NSString *img=[NSString stringWithFormat:@"%@%@",urlt,dict2[@"UserImg"]];

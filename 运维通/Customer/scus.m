@@ -80,10 +80,14 @@
         NSString *str = @"type=focus-c";
         AFHTTPRequestOperation *op=  [self POSTurlString:urlStr2 parameters:str];
         [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSMutableDictionary *dict=responseObject;
-            if(![[dict objectForKey:@"ResultObject"] isEqual:[NSNull null]])
-            {
-                NSMutableArray *dictarr=[[dict objectForKey:@"ResultObject"] mutableCopy];
+            NSMutableDictionary *json=responseObject;
+            NSString *Status=[NSString stringWithFormat:@"%@",json[@"Status"]];
+            if ([Status isEqualToString:@"0"]){
+                NSString *ReturnMsg=[NSString stringWithFormat:@"%@",json[@"ReturnMsg"]];
+                [MBProgressHUD showError:ReturnMsg];
+                return ;
+            }else{
+                NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
                 [self netwok:dictarr];
                 [self.tableview reloadData];
             }

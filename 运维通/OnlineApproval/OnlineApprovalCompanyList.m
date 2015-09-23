@@ -31,8 +31,21 @@
 
 
 -(void)viewDidAppear:(BOOL)animated{
-      [self indexchang:0];
-      [self.tableview reloadData];
+    
+    
+    int chageStatus=[self ChangePageInit:@"OnlineApproval"];
+    if (chageStatus==1 || chageStatus==4) {
+        [self indexchang:0];
+        [self.tableview reloadData];
+    }
+    else if (chageStatus==2) {
+        
+    }
+    else if (chageStatus==3) {
+        [self ChangeLoad];
+    }
+
+    
 }
 
 - (void)viewDidLoad {
@@ -102,7 +115,7 @@
     
     
     NSInteger colum=sender.selectedSegmentIndex;
-   pg=colum-1;
+    pg=colum-1;
     NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
     NSString *Create_User = [userDefaultes stringForKey:@"myidt"];
    
@@ -112,18 +125,25 @@
 
     AFHTTPRequestOperation *op=[self GETurlString:urlStr2];
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSDictionary *dict2=responseObject;
-        NSMutableArray *dictarr=[[dict2 objectForKey:@"ResultObject"] mutableCopy];
-        if (dictarr.count < 10) {
-            self.tableview.footer = nil;
+        NSMutableDictionary *json=responseObject;
+        NSString *Status=[NSString stringWithFormat:@"%@",json[@"Status"]];
+        if ([Status isEqualToString:@"0"]){
+            NSString *ReturnMsg=[NSString stringWithFormat:@"%@",json[@"ReturnMsg"]];
+            [MBProgressHUD showError:ReturnMsg];
+            return ;
+        }else{
+            NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
+            if (dictarr.count < 10) {
+                self.tableview.footer = nil;
+            }
+            else if (dictarr.count >= 10 && dictarr.count>=10)
+            {
+                self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+            }
+            [self netwok:dictarr];
+            [self.tableview reloadData];
+            NSLog(@"加载数据完成。");
         }
-        else if (dictarr.count>=10)
-        {
-            self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
-        }
-        [self netwok:dictarr];
-        [self.tableview reloadData];
-        NSLog(@"加载数据完成。");
         [self.tableview.header endRefreshing];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
@@ -166,21 +186,34 @@
 }
 
 
+-(void) ChangeLoad
+{
+    NSString *strid=[self ChangeGetChageID:@"OnlineApproval"];
+    int _pagenum=  [self ChangeNnm:_tgs  ItemIDKey:@"OnlineApproval_ID"  ID:strid];
+    if (_pagenum >=0) {
+        [self  loadMoreData: _pagenum IsChangeAdd:FALSE];
+    }
+}
+
 -(void)loadMoreData
 {
-    
     num=num+1;
-    pg=self.segement.selectedSegmentIndex;
+    [self loadMoreData : num IsChangeAdd:true];
+}
+
+-(void)loadMoreData :(int) ChageNum IsChangeAdd:(BOOL) _IsChange
+{
+    //pg=self.segement.selectedSegmentIndex;
     NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
     NSString *myString = [userDefaultes stringForKey:@"myidt"];
     
     //分状态展示 0 未审核 1 已审核 -1 全部
-    NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_OnlineApproval.ashx?action=getcompanylist&q0=%@&q1=%d&q2=%d",urlt,myString,num,pg];
+    NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_OnlineApproval.ashx?action=getcompanylist&q0=%@&q1=%d&q2=%d",urlt,myString,ChageNum,pg];
     NSLog(@"%@",urlStr2);
     AFHTTPRequestOperation *op=[self GETurlString:urlStr2];
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSMutableDictionary *dict=responseObject;
-        NSArray *dictarr=[dict objectForKey:@"ResultObject"];
+        NSMutableArray *dictarr=[dict objectForKey:@"ResultObject"];
         if(![dictarr isEqual:[NSNull null]])
         {
             if (dictarr.count < 10) {
@@ -191,9 +224,18 @@
                 self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
             }
             if (dictarr.count>0) {
-                [_tgs addObjectsFromArray:dictarr];
-                [self.tableview reloadData];
+                if (_IsChange) {
+                    [_tgs addObjectsFromArray:dictarr];
+                }
+                else
+                {
+                    NSString *strid=[self ChangeGetChageID:@"OnlineApproval"];
+                    if (![self ChangeData:_tgs NewLoadRecords:dictarr ItemIDKey:@"OnlineApproval_ID"  ID:strid]) {
+                        NSLog(@"加载数据出错。");
+                    }
+                }
             }
+            [self.tableview reloadData];
         }
         [self.tableview.footer endRefreshing];
         self.tableview.footer.autoChangeAlpha=YES;

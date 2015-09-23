@@ -24,10 +24,6 @@
 @property (weak, nonatomic) IBOutlet UIImageView *x1;
 
 
-
-
-
-
 @end
 
 @implementation sywindex

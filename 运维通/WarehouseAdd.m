@@ -39,16 +39,18 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-  if ([self isBlankString:strTtile] == NO) {
+    if ([self isBlankString:strTtile] == NO) {
       self.tempid=[NSString stringWithFormat:@"%@",strTtile];
       [self LoadItem];
-  }
+    }
     for (int component = 0; component < self.foods.count; component++) {
         [self pickerView:nil didSelectRow:0 inComponent:component];
     }
 
     [self tapOnce];
     [self tapBackground];
+    
+    [self ChangeItemInit:@"Warehouse"];
 }
 
 - (NSArray *)foods
@@ -127,7 +129,7 @@
 //    NSString *Create_User = [userDefaultes stringForKey:@"myidt"];
     
     NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Warehouse.ashx?action=getitem&q0=%@",urlt,strTtile];
-    //YWT_YWLog.ashx?action=getcompanylist&q0=45885420-6c17-4b93-b367-d3eb55a8077c&q1=-1
+
     
     NSLog(@"%@",urlStr2);
     AFHTTPRequestOperation *op=[self GETurlString:urlStr2];

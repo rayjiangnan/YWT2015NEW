@@ -92,7 +92,7 @@
             
             [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
                 
-                if (!data == nil) {
+                if (data != nil) {
                     NSDictionary *dict=[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:nil];
                     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                         NSString *str=[NSString stringWithFormat:@"%@",dict[@"ReturnMsg"]];
@@ -134,16 +134,8 @@
                                 }
                                 else
                                 {
-                                    
-                            
-                                  
-                                        
-                                        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-                                        [userDefaults setObject:@"go" forKey:@"autopass"];
-                                        
-                                                                 
-                                    
-                                    
+                                    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+                                    [userDefaults setObject:@"go" forKey:@"autopass"];
                                 }
                             }
                             

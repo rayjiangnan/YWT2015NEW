@@ -64,8 +64,12 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     self.tabBarController.tabBar.hidden=YES;
+     self.postbtn.hidden=YES;
+    
     [self requestaaa];
-      [self.view setNeedsDisplay];
+    [self.view setNeedsDisplay];
+    
+    [self ChangeItemInit:@"Order"];
 }
 
 
@@ -127,6 +131,10 @@
         NSString *apply=[NSString stringWithFormat:@"%@",dict[@"IsHaveApplay"]];
         if (![apply isEqualToString:@"1"]) {
             self.postbtn.hidden=NO;
+        }
+        else
+        {
+            self.postbtn.hidden=YES;
         }
         
         

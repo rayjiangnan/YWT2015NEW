@@ -161,16 +161,23 @@
     AFHTTPRequestOperation *op=[self GETurlString:urlStr2];
     
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSDictionary *dict2=responseObject;
-      NSMutableArray *dictarr=[[dict2 objectForKey:@"ResultObject"] mutableCopy];
-        NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
-        num=[dict3[@"Registration_ID"] intValue];
+        NSMutableDictionary *json=responseObject;
+        NSString *Status=[NSString stringWithFormat:@"%@",json[@"Status"]];
+        if ([Status isEqualToString:@"0"]){
+            NSString *ReturnMsg=[NSString stringWithFormat:@"%@",json[@"ReturnMsg"]];
+            [MBProgressHUD showError:ReturnMsg];
+            return ;
+        }else{
+            NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
+            NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
+            num=[dict3[@"Registration_ID"] intValue];
 
-        NSLog(@"%@",dictarr);
-        [self netwok:dictarr];
-        [self.tableview reloadData];
-        NSLog(@"加载数据完成。");
-           [self.tableview.header endRefreshing];
+            NSLog(@"%@",dictarr);
+            [self netwok:dictarr];
+            [self.tableview reloadData];
+            NSLog(@"加载数据完成。");
+            [self.tableview.header endRefreshing];
+        }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
         [MBProgressHUD showError:@"网络异常！"];
@@ -213,7 +220,7 @@
             if (dictarr.count < 10) {
                 self.tableview.footer = nil;
             }
-            else if (dictarr.count>=10)
+            else if(dictarr.count >= 10 && self.tableview.footer == nil)
             {
                 self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
             }

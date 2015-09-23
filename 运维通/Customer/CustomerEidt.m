@@ -33,10 +33,11 @@
 -(void)viewDidAppear:(BOOL)animated{
 
     self.tabBarController.tabBar.hidden=YES;
+
+    [self ChangeItemInit:@"Customer"];
     NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
     NSString *mygh = [userDefaultes stringForKey:@"detaaddr"];
 
-    
     if ([mygh isEqualToString:@""]) {
 
     }else{
@@ -148,6 +149,13 @@
             NSLog(@"%@",ReturnMsg);
             return ;
         }else{
+            if ([self isBlankString:self.tempid] == NO) {
+                [self ChangeRecord:self.tempid key:@"Customer"];
+            }
+            else
+            {
+                [self ChangeRecordAdd:@"Customer"];
+            }
             [MBProgressHUD showSuccess:@"保存成功！"];
             [[self navigationController] popViewControllerAnimated:YES];
         }
