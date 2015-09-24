@@ -141,8 +141,10 @@
             {
                 self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
             }
-            NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
-            num=[dict3[@"AutoID"] intValue];
+            if (dictarr.count>0) {
+                NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
+                num=[dict3[@"AutoID"] intValue];
+            }
             [self netwok:dictarr];
             [self.tableview reloadData];
         }
@@ -196,8 +198,6 @@
     NSLog(@"%@",urlStr);
     AFHTTPRequestOperation *op=[self GETurlString:urlStr];
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        
         NSMutableDictionary *json=responseObject;
         NSString *Status=[NSString stringWithFormat:@"%@",json[@"Status"]];
         if ([Status isEqualToString:@"0"]){

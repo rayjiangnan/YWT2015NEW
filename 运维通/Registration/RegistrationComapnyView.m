@@ -25,6 +25,7 @@
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segDay;
 @property (weak, nonatomic) IBOutlet UITextField *txtUserID;
 - (IBAction)btnSearchClick:(id)sender;
+- (IBAction)DayChange:(id)sender;
 
 @property (nonatomic, strong) NSMutableArray *tgs;
 
@@ -35,8 +36,10 @@
 -(void)viewDidAppear:(BOOL)animated{
     NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
     if (![[userDefaultes stringForKey:@"personname"] isEqualToString:@""]) {
-
-    self.txtUserID.text = [userDefaultes stringForKey:@"personname"];
+        self.txtUserID.text = [userDefaultes stringForKey:@"personname"];
+        num=-1;
+        [self LoadDataList];
+        [self.tableview reloadData];
     }
 }
 
@@ -75,7 +78,16 @@
     
     
 }
+- (IBAction)btnSearchClick:(id)sender {
+    [self LoadDataList];
+    [self.tableview reloadData];
+}
 
+- (IBAction)DayChange:(id)sender {
+    num=-1;
+    [self LoadDataList];
+    [self.tableview reloadData];
+}
 
 -(void)LoadDataList{
     int indes=-1;
@@ -125,10 +137,11 @@
             if (dictarr.count>0) {
                 NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
                 num=[dict3[@"Registration_ID"] intValue];
-                [self netwok:dictarr];
-                [self.tableview reloadData];
-                NSLog(@"加载数据完成。");
             }
+            [self netwok:dictarr];
+            [self.tableview reloadData];
+            NSLog(@"加载数据完成。");
+            
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
@@ -168,13 +181,8 @@
 
 
 -(NSMutableArray *)repeatnetwork{
-    
-    
     self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
-    
     return _tgs;
-    
-    
 }
 
 
@@ -249,8 +257,5 @@
 
 
 
-- (IBAction)btnSearchClick:(id)sender {
-    [self LoadDataList];
-    [self.tableview reloadData];
-}
+
 @end

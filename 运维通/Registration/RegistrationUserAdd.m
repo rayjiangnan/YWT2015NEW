@@ -169,9 +169,11 @@
             return ;
         }else{
             NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
-            NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
-            num=[dict3[@"Registration_ID"] intValue];
-
+            if(dictarr.count> 0)
+            {
+                NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
+                num=[dict3[@"Registration_ID"] intValue];
+            }
             NSLog(@"%@",dictarr);
             [self netwok:dictarr];
             [self.tableview reloadData];
@@ -191,13 +193,8 @@
 
 
 -(NSMutableArray *)repeatnetwork{
-    
-    
     self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
-    
     return _tgs;
-    
-    
 }
 
 

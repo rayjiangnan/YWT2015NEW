@@ -10,6 +10,7 @@
 #import "MBProgressHUD+MJ.h"
 #import <MapKit/MapKit.h>
 #import <CoreLocation/CoreLocation.h>
+#import "UIViewController+Extension.h"
 
 @interface login ()<UIApplicationDelegate,CLLocationManagerDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *useName;
@@ -58,6 +59,9 @@
         return;
         
     }
+    [self ChangePageInit:@"log"];
+    [self ChangePageInit:@"Order"];
+    [self ChangePageInit:@"OnlineApproval"];
     
     if ([CLLocationManager authorizationStatus]==kCLAuthorizationStatusNotDetermined){
         [self._locationManager requestWhenInUseAuthorization]; }

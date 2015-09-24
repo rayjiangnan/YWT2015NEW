@@ -108,7 +108,7 @@
             NSDictionary *dictmoney=[dict2 objectForKey:@"Wallet"];
             self.money.text=[NSString stringWithFormat:@"%@",dictmoney[@"Wallet_Lave"]];
             NSMutableArray *dictarr=[[dict2 objectForKey:@"Records"] mutableCopy];
-            if (dictarr.count>0) {
+            
                 if (dictarr.count < 10) {
                     self.tableview.footer = nil;
                 }
@@ -124,7 +124,7 @@
                 [self netwok:dictarr];
                 [self.tableview reloadData];
                 NSLog(@"加载数据完成。");
-            }
+             
            
      }
         

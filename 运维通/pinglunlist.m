@@ -10,10 +10,13 @@
 #import "MBProgressHUD+MJ.h"
 #import "pinglunCell.h"
 #import "UIImageView+WebCache.h"
+#import "AFNetworkTool.h"
+#import "MJRefresh.h"
 
 @interface pinglunlist ()<UITableViewDataSource,UITableViewDelegate,UIWebViewDelegate>
 {
     int pagnum;
+    int minReplyID;
 }
 @property (nonatomic, strong) NSMutableArray *tgs;
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
@@ -29,38 +32,58 @@
     [self ChangeItemInit:@"log"];
     self.tabBarController.tabBar.hidden=YES;
     
+    
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+        [self repeatnetwork];
     [self network];
     self.tableview.rowHeight=70;
+    minReplyID=-1;
 }
 
 -(void)network{
     NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
     
-    NSString *myString = [userDefaultes stringForKey:@"myidt"];
+    NSString *CreateUserid = [userDefaultes stringForKey:@"myidt"];
     
-    NSString *mystring2=[NSString stringWithFormat:@"%@",strTtile];
-    
-    NSString *urlStr = [NSString stringWithFormat:@"%@/API/YWT_YWLog.ashx?action=getitem&q0=%@&q1=%@",urlt,myString,mystring2];
+    //NSString *mystring2=[NSString stringWithFormat:@"%@",strTtile];
+ 
+    NSString *urlStr = [NSString stringWithFormat:@"%@/API/YWT_YWLog.ashx?action=getitemreply&q0=%@&q1=%@&q2=-1",urlt,CreateUserid,strTtile];
     
     NSString *str = @"type=focus-c";
-    
     NSLog(@"%@",urlStr);
     AFHTTPRequestOperation *op=[self POSTurlString:urlStr parameters:str];
     
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        NSDictionary *dict=responseObject;
-        if (![dict[@"ResultObject"] isEqual:[NSNull null]]) {
-             NSDictionary *dict1=[dict[@"ResultObject"] mutableCopy];
-        NSMutableArray *pliun=[dict1 objectForKey:@"Replys"];
-        pagnum=pliun.count;
-        [self netwok:pliun];
-        [self.tableview reloadData]; 
+        NSMutableDictionary *json=responseObject;
+        NSString *Status=[NSString stringWithFormat:@"%@",json[@"Status"]];
+        if ([Status isEqualToString:@"0"]){
+            NSString *ReturnMsg=[NSString stringWithFormat:@"%@",json[@"ReturnMsg"]];
+            [MBProgressHUD showError:ReturnMsg];
+            return ;
+        }else{
+            NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
+            if (dictarr.count < 10) {
+                self.tableview.footer = nil;
+            }
+            else if(dictarr.count >= 10 && self.tableview.footer == nil)
+            {
+                self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+            }
+            if (dictarr.count>0) {
+                NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
+                minReplyID=[dict3[@"ReplyID"] intValue];
+//                [_tgs addObjectsFromArray:dictarr];
+//                [self.tableview reloadData];
+            }
+            [self netwok:dictarr];
+            [self.tableview reloadData];
         }
+        
+        [self.tableview.footer endRefreshing];
+        self.tableview.footer.autoChangeAlpha=YES;
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [MBProgressHUD showError:@"网络请求出错"];
         return ;
@@ -70,17 +93,13 @@
 
 -(NSMutableArray *)netwok:(NSMutableArray *)array
 {
-    
     _tgs=array;
     return _tgs;
-    
-    
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
 {
-    return pagnum;
-    
+    return _tgs.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -93,16 +112,8 @@
     }
     cell.user.text=dict2[@"RealName"];
     cell.pl.text=dict2[@"ReplyContent"];
-    cell.lc.text=[NSString stringWithFormat:@"%@",dict2[@"ReplyID"]];
+    cell.lc.text=[NSString stringWithFormat:@"%@",dict2[@"rowid"]];
     
-//    NSString *dt3=dict2[@"Create_Date"];
-//    dt3=[dt3 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
-//    dt3=[dt3 stringByReplacingOccurrencesOfString:@")/" withString:@""];
-//    NSString * timeStampString3 =dt3;
-//    NSTimeInterval _interval3=[timeStampString3 doubleValue] / 1000;
-//    NSDate *date3 = [NSDate dateWithTimeIntervalSince1970:_interval3];
-//    NSDateFormatter *objDateformat3 = [[NSDateFormatter alloc] init];
-//    [objDateformat3 setDateFormat:@"yyyy-MM-dd hh:ss"];
     cell.time.text=[self DateFormartString:dict2[@"Create_Date"]];//[objDateformat3 stringFromDate: date3];
     
     if (![dict2[@"UserImg"] isEqual:[NSNull null]]) {
@@ -121,6 +132,61 @@
     
     return cell;
 }
+-(NSMutableArray *)repeatnetwork{
+    self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+    
+    return _tgs;
+}
 
+-(void)loadMoreData
+{
+    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
+    
+    NSString *CreateUserid = [userDefaultes stringForKey:@"myidt"];
+    
+    //NSString *mystring2=[NSString stringWithFormat:@"%@",strTtile];
+    
+    NSString *urlStr = [NSString stringWithFormat:@"%@/API/YWT_YWLog.ashx?action=getitemreply&q0=%@&q1=%@&q2=%d",urlt,CreateUserid,strTtile,minReplyID];
+    
+    NSString *str = @"type=focus-c";
+    NSLog(@"%@",urlStr);
+    AFHTTPRequestOperation *op=[self POSTurlString:urlStr parameters:str];
+    
+    [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSMutableDictionary *json=responseObject;
+        NSString *Status=[NSString stringWithFormat:@"%@",json[@"Status"]];
+        if ([Status isEqualToString:@"0"]){
+            NSString *ReturnMsg=[NSString stringWithFormat:@"%@",json[@"ReturnMsg"]];
+            [MBProgressHUD showError:ReturnMsg];
+            return ;
+        }else{
+            NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
+            if (dictarr.count < 10) {
+                self.tableview.footer = nil;
+            }
+            else if(dictarr.count >= 10 && self.tableview.footer == nil)
+            {
+                self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+            }
+            if (dictarr.count>0) {
+                NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
+                minReplyID=[dict3[@"ReplyID"] intValue];
+                [_tgs addObjectsFromArray:dictarr];
+                [self.tableview reloadData];
+            }
+//            [self netwok:dictarr];
+//            [self.tableview reloadData];
+        }
+        [self.tableview.footer endRefreshing];
+        self.tableview.footer.autoChangeAlpha=YES;
+        
+        
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [MBProgressHUD showError:@"网络请求出错"];
+        return ;
+    }];
+    [[NSOperationQueue mainQueue] addOperation:op];
+}
 
 @end

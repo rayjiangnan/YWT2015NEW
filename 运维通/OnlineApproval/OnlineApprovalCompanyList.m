@@ -113,7 +113,7 @@
 
 - (IBAction)indexchang:(UISegmentedControl *)sender {
     
-    
+    num=0;
     NSInteger colum=sender.selectedSegmentIndex;
     pg=colum-1;
     NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];

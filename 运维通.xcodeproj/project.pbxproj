@@ -750,8 +750,6 @@
 				2854D4C81B9B243F00209D4A /* paylistcell.h */,
 				2854D4C91B9B243F00209D4A /* paylistcell.m */,
 				2854D4CA1B9B243F00209D4A /* paylistcell.xib */,
-				4E72A9EC1BA7FCEF001FDC7A /* pinglunlist.h */,
-				4E72A9ED1BA7FCEF001FDC7A /* pinglunlist.m */,
 			);
 			name = ywperson;
 			sourceTree = "<group>";
@@ -1223,6 +1221,8 @@
 				286CF6771B71128B00B43CD3 /* editdate.m */,
 				286CF6791B7119EE00B43CD3 /* detaildaywrite.h */,
 				286CF67A1B7119EE00B43CD3 /* detaildaywrite.m */,
+				4E72A9EC1BA7FCEF001FDC7A /* pinglunlist.h */,
+				4E72A9ED1BA7FCEF001FDC7A /* pinglunlist.m */,
 			);
 			name = ywlog;
 			sourceTree = "<group>";

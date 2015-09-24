@@ -181,18 +181,18 @@
             {
                 self.tableView.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
             }
-            if (dictarr.count>0) {
-                if (_IsChange) {
-                    [_tgs addObjectsFromArray:dictarr];
-                }
-                else
-                {
-                    NSString *strid=[self ChangeGetChageID:@"Customer"];
-                    if (![self ChangeData:_tgs NewLoadRecords:dictarr ItemIDKey:@"CustomerID"  ID:strid]) {
-                        NSLog(@"加载数据出错。");
-                    }
+            
+            if (_IsChange) {
+                [_tgs addObjectsFromArray:dictarr];
+            }
+            else
+            {
+                NSString *strid=[self ChangeGetChageID:@"Customer"];
+                if (![self ChangeData:_tgs NewLoadRecords:dictarr ItemIDKey:@"CustomerID"  ID:strid]) {
+                    NSLog(@"加载数据出错。");
                 }
             }
+            
             [self.tableview reloadData];
         }
         [self.tableview.footer endRefreshing];

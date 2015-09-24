@@ -208,7 +208,7 @@
     }
     cell.user.text=dict2[@"RealName"];
     cell.pl.text=dict2[@"ReplyContent"];
-    cell.lc.text=[NSString stringWithFormat:@"%@",dict2[@"ReplyID"]];
+    cell.lc.text=[NSString stringWithFormat:@"%@",dict2[@"rowid"]];
     
 //    NSString *dt3=dict2[@"Create_Date"];
 //    dt3=[dt3 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];

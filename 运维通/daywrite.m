@@ -131,8 +131,10 @@
             return ;
         }else{
             NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
-            NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
-            num=[dict3[@"AutoID"] intValue];
+            if (dictarr.count>0) {
+                NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
+                num=[dict3[@"AutoID"] intValue];
+            }
             [self netwok:dictarr];
             [self.tableview reloadData];
         }
