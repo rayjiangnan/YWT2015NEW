@@ -1,6 +1,6 @@
 //
 //  drViewController.m
-//  送哪儿
+//  
 //
 //  Created by apple on 15/5/3.
 //  Copyright (c) 2015年 Tony. All rights reserved.
@@ -60,8 +60,7 @@ _idtt2=[NSString stringWithFormat:@"%@",strTtile];
 
 -(NSArray *)network{
 
-        NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-        NSString *myString = [userDefaultes stringForKey:@"myidt"];
+        NSString *myString =[self GetUserID];
         NSString *urlStr = [NSString stringWithFormat:@"%@/API/YWT_User.ashx?action=getsupuser&q0=%@",urlt,myString];
         NSURL *url = [NSURL URLWithString:urlStr];
         
@@ -113,7 +112,7 @@ _idtt2=[NSString stringWithFormat:@"%@",strTtile];
     NSString *idr=dicr[@"ID"];
     
     [self idt:idr];
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"消息提示" message:@"是否提交选中人员？" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:nil];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"消息提示" message:@"确定指派选中运维人员？" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:nil];
     // optional - add more buttons:
     [alert addButtonWithTitle:@"确定"];
     [alert show];
@@ -142,10 +141,8 @@ _idtt2=[NSString stringWithFormat:@"%@",strTtile];
 }
 - (void)postJSON{
     [super viewDidLoad];
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *myString = [userDefaultes stringForKey:@"myidt"];
-    //NSLog(@"%@",myString);
-
+        NSString *myString =[self GetUserID];
+    
         NSString *urlstr=[NSString stringWithFormat:@"%@/API/YWT_Order.ashx",urlt];
         
         NSURL *urlsd=[NSURL URLWithString:urlstr];
@@ -153,11 +150,7 @@ _idtt2=[NSString stringWithFormat:@"%@",strTtile];
         NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:urlsd cachePolicy:0 timeoutInterval:2.0f];
         
         request.HTTPMethod = @"POST";
-        
-        //  NSString *did=@"019735FD-3157-42D4-BF18-4724AC16B8A9";
-        //NSDictionary *dict = @{@"x":text1,@"y":text2};
-        //NSArray *array= @[dict];
-        //NSLog(@"%@",array);
+    
        NSString *dstr=[NSString stringWithFormat:@"[{\"UserID\":\"%@\"}]",_idtt];
         // ? 数据体
         NSString *str = [NSString stringWithFormat:@"action=designateuser&q0=%@&q1=%@&q2=%@",dstr,_idtt2,myString];
@@ -187,7 +180,7 @@ _idtt2=[NSString stringWithFormat:@"%@",strTtile];
                     }else{
                         [self ChangeRecord:_idtt2 key:@"Order"]; //处理刷新问题
 
-                        [MBProgressHUD showSuccess:@"选择司机成功！"];
+                        [MBProgressHUD showSuccess:@"成功指派运维人员！"];
                         [[self navigationController] popViewControllerAnimated:YES];
                         
                     }

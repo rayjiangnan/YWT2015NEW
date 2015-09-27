@@ -215,11 +215,10 @@
 - (void)btnupload_Click:(id)sender {
   
     
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *myString = [userDefaultes stringForKey:@"myidt"];
-    NSString *orderid = [userDefaultes stringForKey:@"orderid"];
+    NSString *Create_User = [self GetUserID];
+    //NSString *orderid = [userDefaultes stringForKey:@"orderid"];
     
-    [self UpdateFileImage:_receiveImage action:@"" orderid:myString creatorid:myString uploadUrl:urlt];
+    [self UpdateFileImage:_receiveImage action:@"" orderid:Create_User creatorid:Create_User uploadUrl:urlt];
     
     NSLog(@"完成上传图片。");
 }
@@ -354,13 +353,12 @@
 
 -(void)requestaaa
 {
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *myString = [userDefaultes stringForKey:@"myidt"];
+    NSString *Create_User = [self GetUserID];
     
     NSString *mystring2=[NSString stringWithFormat:@"%@",strTtile];
     
     
-    NSString *urlStr = [NSString stringWithFormat:@"%@/API/YWT_Order.ashx?action=getitem&q0=%@&q1=%@",urlt,mystring2,myString];
+    NSString *urlStr = [NSString stringWithFormat:@"%@/API/YWT_Order.ashx?action=getitem&q0=%@&q1=%@",urlt,mystring2,Create_User];
     AFHTTPRequestOperation *op=[self GETurlString:urlStr];
     NSLog(@"%@",urlStr);
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -385,16 +383,16 @@
         
         
         self.danhao.text=dict[@"OrderNo"];
-        NSString *dt3=dict[@"CreateDateTime"];
-        dt3=[dt3 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
-        dt3=[dt3 stringByReplacingOccurrencesOfString:@")/" withString:@""];
-        // NSLog(@"%@",dt3);
-        NSString * timeStampString3 =dt3;
-        NSTimeInterval _interval3=[timeStampString3 doubleValue] / 1000;
-        NSDate *date3 = [NSDate dateWithTimeIntervalSince1970:_interval3];
-        NSDateFormatter *objDateformat3 = [[NSDateFormatter alloc] init];
-        [objDateformat3 setDateFormat:@"yyyy-MM-dd"];
-        self.time.text=[objDateformat3 stringFromDate: date3];
+//        NSString *dt3=dict[@"CreateDateTime"];
+//        dt3=[dt3 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
+//        dt3=[dt3 stringByReplacingOccurrencesOfString:@")/" withString:@""];
+//        // NSLog(@"%@",dt3);
+//        NSString * timeStampString3 =dt3;
+//        NSTimeInterval _interval3=[timeStampString3 doubleValue] / 1000;
+//        NSDate *date3 = [NSDate dateWithTimeIntervalSince1970:_interval3];
+//        NSDateFormatter *objDateformat3 = [[NSDateFormatter alloc] init];
+//        [objDateformat3 setDateFormat:@"yyyy-MM-dd"];
+        self.time.text=[self DateFormartYMD:dict[@"CreateDateTime"]];//[objDateformat3 stringFromDate: date3];
         
         [self idt:dict[@"Order_ID"]];
         
@@ -435,13 +433,11 @@
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:0 timeoutInterval:2.0f];
     
     request.HTTPMethod = @"POST";
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    //NSString *img=@"123.png";
-    NSString *myString = [userDefaultes stringForKey:@"myidt"];
+    NSString *Create_User = [self GetUserID];
     
     NSString *dest=[NSString stringWithFormat:@"[{\"FileName\":\"%@\",\"FileIcon\":\"%@\"},{\"FileName\":\"%@\",\"FileIcon\":\"%@\"},{\"FileName\":\"%@\",\"FileIcon\":\"%@\"},{\"FileName\":\"%@\",\"FileIcon\":\"%@\"}]",_img1,_img1icon,_img2,_img2icon,_img3,_img3icon,_img4,_img4icon];
     
-    NSString *str = [NSString stringWithFormat:@"action=saveorderflow&q0=%@&q1=30&q2=%@&q3=%@&q4=%@&q5=%@&q6=%@&q7=%@",_idtt,myString,@"",@"",@"",self.beiz.text,dest];
+    NSString *str = [NSString stringWithFormat:@"action=saveorderflow&q0=%@&q1=30&q2=%@&q3=%@&q4=%@&q5=%@&q6=%@&q7=%@",_idtt,Create_User,@"",@"",@"",self.beiz.text,dest];
     
     NSLog(@"%@?%@",urlt,str);
     request.HTTPBody = [str dataUsingEncoding:NSUTF8StringEncoding];

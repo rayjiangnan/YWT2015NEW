@@ -27,14 +27,12 @@
 
 @implementation paylist
 -(void)viewDidAppear:(BOOL)animated{
-    
     self.tabBarController.tabBar.hidden=YES;
-    
 }
-
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     [self network2];
     [self.tableview reloadData];
     self.tableview.rowHeight=60;
@@ -42,19 +40,13 @@
 
 -(NSMutableArray *)netwok:(NSMutableArray *)array
 {
-    
     _tgs=array;
     return _tgs;
-    
-    
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
 {
-    
     return _tgs.count;
-    
-    
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -68,16 +60,16 @@
     cell.title.text=dict2[@"Remark"];
     cell.status.text=dict2[@"ItemTypeName"];
     cell.money.text=[NSString stringWithFormat:@"%@%@",dict2[@"Mark"],dict2[@"Money"]];
-    NSString *dt3=dict2[@"Create_Date"];
-    dt3=[dt3 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
-    dt3=[dt3 stringByReplacingOccurrencesOfString:@")/" withString:@""];
-    // NSLog(@"%@",dt3);
-    NSString * timeStampString3 =dt3;
-    NSTimeInterval _interval3=[timeStampString3 doubleValue] / 1000;
-    NSDate *date3 = [NSDate dateWithTimeIntervalSince1970:_interval3];
-    NSDateFormatter *objDateformat3 = [[NSDateFormatter alloc] init];
-    [objDateformat3 setDateFormat:@"yyyy-MM-dd"];
-    cell.time.text=[objDateformat3 stringFromDate: date3];
+//    NSString *dt3=dict2[@"Create_Date"];
+//    dt3=[dt3 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
+//    dt3=[dt3 stringByReplacingOccurrencesOfString:@")/" withString:@""];
+//    // NSLog(@"%@",dt3);
+//    NSString * timeStampString3 =dt3;
+//    NSTimeInterval _interval3=[timeStampString3 doubleValue] / 1000;
+//    NSDate *date3 = [NSDate dateWithTimeIntervalSince1970:_interval3];
+//    NSDateFormatter *objDateformat3 = [[NSDateFormatter alloc] init];
+//    [objDateformat3 setDateFormat:@"yyyy-MM-dd"];
+    cell.time.text=[self DateFormartYMD:dict2[@"CreateDateTime"]];//[objDateformat3 stringFromDate: date3];
     
     if (![dict2[@"UserImg"] isEqual:[NSNull null]]) {
         NSString *img=[NSString stringWithFormat:@"%@%@",urlt,dict2[@"UserImg"]];
@@ -92,9 +84,7 @@
 
 -(void)network2{
     
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    
-    NSString *myString = [userDefaultes stringForKey:@"myidt"];
+    NSString *myString =[self GetUserID];
     
     NSString *urlStr = [NSString stringWithFormat:@"%@/api/YWT_Wallet.ashx?action=getlist&q0=%@&q1=-1",urlt,myString];
     

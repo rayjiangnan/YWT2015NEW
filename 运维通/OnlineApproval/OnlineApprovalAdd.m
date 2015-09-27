@@ -56,8 +56,8 @@
 
     //Json数据 {"ApplyType":"","ApplyContent":"申请内容","ApplyUserID":"申请人"}
     
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *Create_User = [userDefaultes stringForKey:@"myidt"];
+     
+    NSString *Create_User  =[self GetUserID];
     NSLog(@"%@",Create_User);
     
     //NSMutableArray *jsonArray = [[NSMutableArray alloc]init];//创建最外层的数组

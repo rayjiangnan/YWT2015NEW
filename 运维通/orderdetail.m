@@ -71,8 +71,7 @@
 
 -(void)requestaaa
 {
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *myString = [userDefaultes stringForKey:@"myidt"];
+    NSString *myString =[self GetUserID];
     
     NSString *mystring2=[NSString stringWithFormat:@"%@",strTtile];
     

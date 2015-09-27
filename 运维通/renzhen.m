@@ -47,14 +47,12 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:YES];
-    [self network];
-    [self requestPic];
+
     
 }
 -(void)requestPic
 {
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *myString = [userDefaultes stringForKey:@"myidt"];
+    NSString *myString =[self GetUserID];
     NSString *urlStr = [NSString stringWithFormat:@"%@/API/YWT_User.ashx?action=getuserfile&q0=%@",urlt,myString];
     
      NSLog(@"%@",urlStr);
@@ -65,28 +63,15 @@
         NSMutableArray *arrray=responseObject[@"ResultObject"];
         if (![arrray isEqual:[NSNull null]]) {
             for (NSDictionary *str in arrray) {
-                
                 NSString *imgpath=[NSString stringWithFormat:@"%@%@",urlt,str[@"FileName"]];
-                //NSURL *imgurl2=[NSURL URLWithString:img2];
-                //UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl2]];
-
-//                if([str[@"FileType"] isEqualToString:@"p_sfzzm"]){
-//                    self.identyCardImageV.image=imgstr;
-//                }
-//                else if ([FileType isEqualToString:@"p_sfzbm"]) {
-//                    self.imgSfzbm.image=imgstr;
-//                }
-//                else if ([FileType isEqualToString:@"p_byz"]) {
-//                    self.imgByz.image=imgstr;
-//                }
                 FileType=str[@"FileType"];
                 [self ShowImg:imgpath showType:str[@"FileType"] ];
-
             }
-        }else{
+        }
+        else
+        {
             return ;
         }
-        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
     }];
@@ -98,13 +83,13 @@
     [super viewDidLoad];
     
     self.view.backgroundColor=[UIColor whiteColor];
-    //self.headYellowV.hidden=YES;
-    // Do any additional setup after loading the view.
+    
+    [self network];
+    [self requestPic];
 }
 -(void)network{
     
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *myString = [userDefaultes stringForKey:@"myidt"];
+    NSString *myString =[self GetUserID];
     NSString *urlStr = [NSString stringWithFormat:@"%@/API/YWT_User.ashx?action=getauserbyid&q0=%@",urlt,myString];
     NSLog(@"%@",urlStr);
     AFHTTPRequestOperation *op=[self GETurlString:urlStr];
@@ -224,11 +209,10 @@
 
 - (IBAction)didClickCommitButAction:(id)sender {
     
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *myStr = [userDefaultes stringForKey:@"myidt"];
+    NSString *UserID =[self GetUserID];
     
     NSString *strurl=[NSString stringWithFormat:@"%@/API/YWT_User.ashx",urlt];
-    NSString *str = [NSString stringWithFormat:@"action=userfilecertify&q0=%@&q1=%@&q2=%@&q3=%@&q4=%@",myStr,@"P",self.personName.text, self.identityCard.text,@""];
+    NSString *str = [NSString stringWithFormat:@"action=userfilecertify&q0=%@&q1=%@&q2=%@&q3=%@&q4=%@",UserID,@"P",self.personName.text, self.identityCard.text,@""];
     NSLog(@"%@ %@",strurl,str);
     AFHTTPRequestOperation *op=[self POSTurlString:strurl parameters:str];
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -391,8 +375,7 @@
     [myRequestData1 appendData:[hyphens dataUsingEncoding:NSUTF8StringEncoding]];
     [myRequestData1 appendData:[end dataUsingEncoding:NSUTF8StringEncoding]];
     
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *userid = [userDefaultes stringForKey:@"myidt"];
+    NSString *userid =[self GetUserID];
     //NSString *url=[NSString stringWithFormat:@"%@/API/YWT_OrderFile.ashx?action=90",strUploadUrl];
     NSString *url=[NSString stringWithFormat:@"%@/API/YWT_UPUserFile.ashx?action=%@&q0=%@&q1=%@&from=ios",urlt,FileType,userid,userid];
 

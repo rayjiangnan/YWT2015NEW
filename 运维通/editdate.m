@@ -39,13 +39,8 @@
      self.scrollview.contentSize=CGSizeMake(320, 800);
 }
 
--(void)network{
-    
-    
-    
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    
-    NSString *myString = [userDefaultes stringForKey:@"myidt"];
+-(void)network{     
+    NSString *myString =[self GetUserID];
     
     NSString *mystring2=[NSString stringWithFormat:@"%@",strTtile];
     
@@ -74,67 +69,50 @@
 
 
 - (IBAction)save:(id)sender {
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
     
-    NSString *myString = [userDefaultes stringForKey:@"myidt"];
-    [self postJSON:myString :self.bt.text :self.nr.text :@"123456.png" :@"0"];
+    [self postJSON:@"0"];
 }
 
 - (IBAction)post:(id)sender {
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
+ 
     
-    NSString *myString = [userDefaultes stringForKey:@"myidt"];
-    
-    [self postJSON:myString :self.bt.text :self.nr.text :@"123456.png" :@"1"];
+    [self postJSON:@"1"];
     
     
 }
-
-
-
-
-
-- (void)postJSON:(NSString *)text1:(NSString *)text2:(NSString *)text3:(NSString *)pic:(NSString *)text4
+- (void)postJSON:(NSString *)LogStatus
 
 {
+    NSString *myString =[self GetUserID];
     
     NSString *urlstr=[NSString stringWithFormat:@"%@/API/YWT_YWLog.ashx",urlt];
     
     NSMutableDictionary *dic = [[NSMutableDictionary alloc]init];//创建内层的字典
-    [dic setValue:text1 forKey:@"UserID"];
-    [dic setValue:text2 forKey:@"Title"];
-    [dic setValue:text3 forKey:@"Content"];
-    [dic setValue:text4 forKey:@"LogStatus"];
+    [dic setValue:myString forKey:@"UserID"];
+    [dic setValue:self.bt.text forKey:@"Title"];
+    [dic setValue:self.nr.text forKey:@"Content"];
+    [dic setValue:LogStatus forKey:@"LogStatus"];
+    [dic setValue:strTtile forKey:@"LogID"];
     
     SBJsonWriter *jsonWriter = [[SBJsonWriter alloc] init];
     NSString *jsonString = [jsonWriter stringWithObject:dic];
     
-    //NSString *tu=[NSString stringWithFormat:@"[{\"FileName\":\"%@\"}]",pic];
+
     NSString *str = [NSString stringWithFormat:@"action=addedit&q0=%@&q1=%@",jsonString,@""];
-    
-//    NSString *dater=[NSString stringWithFormat:@"{\"UserID\":\"%@\",\"Title\":\"%@\", \"Content\":\"%@\", \"LogStatus\":\"%@\"}",text1,text2,text3,text4];
-//    
-//    NSString *tu=[NSString stringWithFormat:@"[{\"FileName\":\"%@\"}]",pic];
-//    NSString *str = [NSString stringWithFormat:@"action=addedit&q0=%@&q1=%@",dater,tu];
     
     NSLog(@"%@?%@",urlstr,str);    
     
     AFHTTPRequestOperation *op=[self POSTurlString:urlstr parameters:str];
-    
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *dict=responseObject;
         NSString *sta=[NSString stringWithFormat:@"%@",dict[@"Status"]];
-        NSString *msg=[NSString stringWithFormat:@"%@",dict[@"ReturnMsg"]];
-        
-        
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            
             if ([sta isEqualToString:@"1"]){
-                
                 [MBProgressHUD showSuccess:@"提交成功！"];
                 
                 [[self navigationController] popViewControllerAnimated:YES];
             }else{
+                NSString *msg=[NSString stringWithFormat:@"%@",dict[@"ReturnMsg"]];
                 [MBProgressHUD showError:msg];
                 return ;
             }
@@ -146,9 +124,6 @@
     }];
     
     [[NSOperationQueue mainQueue] addOperation:op];
-    
-    
-    
 }
 
 -(void)tapBackground

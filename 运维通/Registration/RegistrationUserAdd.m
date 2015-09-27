@@ -70,9 +70,8 @@
 }
 
 -(NSString*) SetValue {
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *Create_User = [userDefaultes stringForKey:@"myidt"];
-    NSLog(@"%@",Create_User);
+    NSString *Create_User =[self GetUserID];
+    //NSLog(@"%@",Create_User);
     
     //{UserID":"","latitude":"","longitude":"","Position":"坐标转换的位置信息","IMEI":""}
     NSMutableDictionary *dic = [[NSMutableDictionary alloc]init];//创建内层的字典
@@ -106,8 +105,8 @@
     if (![self.addr.text isEqualToString:@"(null)"]) {
         NSString *jsonString =[self SetValue];
         
-        NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-        NSString *Create_User = [userDefaultes stringForKey:@"myidt"];
+        
+        NSString *Create_User =  [self GetUserID];
         
         NSString *urlStr = [NSString stringWithFormat:@"%@/API/YWT_Registration.ashx",urlt];
         NSString *strparameters=[NSString stringWithFormat:@"action=add&q0=%@&q1=%@",jsonString,Create_User];
@@ -152,8 +151,8 @@
 
 -(void)LoadDataList{
     int indes=-1;
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *Create_User = [userDefaultes stringForKey:@"myidt"];
+    
+    NSString *Create_User =  [self GetUserID];
     
     NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Registration.ashx?action=getlist&q0=%@&q1=%d",urlt,Create_User,indes];
     NSLog(@"000000000000-－－%@",urlStr2);
@@ -200,9 +199,8 @@
 
 -(void)loadMoreData
 {
-    
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *Create_User = [userDefaultes stringForKey:@"myidt"];
+   
+    NSString *Create_User =  [self GetUserID];
     
     NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Registration.ashx?action=getlist&q0=%@&q1=%d",urlt,Create_User,num];
     
@@ -228,7 +226,8 @@
                 [self.tableview reloadData];
                 
             }
-        }        [self.tableview.footer endRefreshing];
+        }
+        [self.tableview.footer endRefreshing];
         self.tableview.footer.autoChangeAlpha=YES;
         
         

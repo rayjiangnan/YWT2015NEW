@@ -66,7 +66,7 @@
     NSDictionary *rowdata=[self.tgs objectAtIndex:[indexPath row]];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults setObject:rowdata[@"Order_ID"] forKey:@"orderidt"];
-    [userDefaults setObject:@"imgviewstartitem" forKey:@"action"];
+    [userDefaults setObject:@"imgviewenditem" forKey:@"action"];
     [userDefaults synchronize];
     
     [self performSegueWithIdentifier:@"xiangxi" sender:nil];
@@ -150,8 +150,7 @@
 -(void)loadMoreData
 {
     num=num+1;
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *myString = [userDefaultes stringForKey:@"myidt"];
+    NSString *myString =[self GetUserID];
     
     NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Order.ashx?action=imgviewend&q0=%@&q1=%d",urlt,myString,num];
     NSLog(@"---------%@",urlStr2);
@@ -192,8 +191,7 @@
 -(void)netWorkRequest2
 {
     
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *myString = [userDefaultes stringForKey:@"myidt"];
+    NSString *myString =[self GetUserID];
     
     NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Order.ashx?action=imgviewend&q0=%@&q1=%d",urlt,myString,num];
     

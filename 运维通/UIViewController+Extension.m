@@ -1,6 +1,6 @@
 //
 //  UIViewController+Extension.m
-//  送哪儿
+//  
 //
 //  Created by pan on 15/7/13.
 //  Copyright (c) 2015年 Tony. All rights reserved.
@@ -44,48 +44,29 @@
     return NO;
 }
 
+
+
 -(NSString*) DateFormartString:(NSString*) sourcedate
 {
-    NSString *dt3=sourcedate;
-    dt3=[dt3 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
-    dt3=[dt3 stringByReplacingOccurrencesOfString:@")/" withString:@""];
-    
-    NSString * timeStampString3 =dt3;
-    NSTimeInterval _interval3=[timeStampString3 doubleValue] / 1000;
-    NSDate *date3 = [NSDate dateWithTimeIntervalSince1970:_interval3];
-    NSDateFormatter *objDateformat3 = [[NSDateFormatter alloc] init];
-    [objDateformat3 setDateFormat:@"yyyy-MM-dd HH:mm"];
-    return [objDateformat3 stringFromDate: date3];
+   return [self DateFormartKey:sourcedate FormartKey:@"yyyy-MM-dd HH:mm"];
 }
+
 -(NSString*) DateFormartMDHM:(NSString*) sourcedate
 {
-    NSString *dt3=sourcedate;
-    dt3=[dt3 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
-    dt3=[dt3 stringByReplacingOccurrencesOfString:@")/" withString:@""];
-    
-    NSString * timeStampString3 =dt3;
-    NSTimeInterval _interval3=[timeStampString3 doubleValue] / 1000;
-    NSDate *date3 = [NSDate dateWithTimeIntervalSince1970:_interval3];
-    NSDateFormatter *objDateformat3 = [[NSDateFormatter alloc] init];
-    [objDateformat3 setDateFormat:@"MM-dd HH:mm"];
-    return [objDateformat3 stringFromDate: date3];
+    return [self DateFormartKey:sourcedate FormartKey:@"MM-dd HH:mm"];
 }
 
 -(NSString*) DateFormartYMD:(NSString*) sourcedate
 {
-    NSString *dt3=sourcedate;
-    dt3=[dt3 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
-    dt3=[dt3 stringByReplacingOccurrencesOfString:@")/" withString:@""];
-    
-    NSString * timeStampString3 =dt3;
-    NSTimeInterval _interval3=[timeStampString3 doubleValue] / 1000;
-    NSDate *date3 = [NSDate dateWithTimeIntervalSince1970:_interval3];
-    NSDateFormatter *objDateformat3 = [[NSDateFormatter alloc] init];
-    [objDateformat3 setDateFormat:@"yyyy-MM-dd"];
-    return [objDateformat3 stringFromDate: date3];
+    return [self DateFormartKey:sourcedate FormartKey:@"yyyy-MM-dd"];
 }
 
 -(NSString*) DateFormartMD:(NSString*) sourcedate
+{
+    return [self DateFormartKey:sourcedate FormartKey:@"MM-dd"];
+}
+
+-(NSString*) DateFormartKey:(NSString*) sourcedate FormartKey:(NSString *) _FormartKey
 {
     NSString *dt3=sourcedate;
     dt3=[dt3 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
@@ -95,9 +76,10 @@
     NSTimeInterval _interval3=[timeStampString3 doubleValue] / 1000;
     NSDate *date3 = [NSDate dateWithTimeIntervalSince1970:_interval3];
     NSDateFormatter *objDateformat3 = [[NSDateFormatter alloc] init];
-    [objDateformat3 setDateFormat:@"MM-dd"];
+    [objDateformat3 setDateFormat:_FormartKey];
     return [objDateformat3 stringFromDate: date3];
 }
+
 
 #pragma  分页刷新处理。
 -(int) ChangePageInit:(NSString *) CKey
@@ -161,9 +143,28 @@
             chagePage=tNum;
         }
     }
-    
     return chagePage;
 }
+-(int) ChangeGetAutoID:(NSMutableArray *) Records ItemIDKey:(NSString *) _idkey AutoIDKey:(NSString *) _AutoIDKey  key:(NSString *) CKey
+{
+    NSString *chageID=[self ChangeGetChageID:CKey];
+    
+    int PageCount=Records.count;
+    
+    for(int i=0;i< PageCount;i++)
+    {
+        NSDictionary *dictarr=[Records objectAtIndex:i];
+        
+        NSString *strid=[NSString stringWithFormat:@"%@",dictarr[_idkey]];
+        if ([strid isEqualToString: chageID]) {
+           NSString *strautoid=[NSString stringWithFormat:@"%@",dictarr[_AutoIDKey]];
+            return [strautoid intValue];
+        }
+    }
+    
+    return -1;
+}
+
 //替换集合中的数据
 -(BOOL) ChangeData:(NSMutableArray *) CRecord NewLoadRecords: (NSMutableArray *) _NewLoadRecords   ItemIDKey:(NSString *) _idkey ID:(NSString *) _id
 {
@@ -185,7 +186,7 @@
     if (Index>=0) {
         for(int i=0;i< _NewLoadRecords.count;i++)
         {
-            NSDictionary *dictarr=[CRecord objectAtIndex:i];
+            NSDictionary *dictarr=[_NewLoadRecords objectAtIndex:i];
             NSString *strid=[NSString stringWithFormat:@"%@",dictarr[_idkey]];
             if ([strid isEqualToString: _id]) {
                 IndexN=i;
@@ -194,7 +195,8 @@
         }
     }
     if (IndexN==-1) {
-        return  FALSE;
+        [CRecord removeObjectAtIndex:Index];
+        return  TRUE;
     }
     //替换集合
     CRecord[Index]=_NewLoadRecords[IndexN];
@@ -208,6 +210,13 @@
 
     NSString *strid= [defau stringForKey:[NSString stringWithFormat:@"changeKeyID%@",CKey]];
     return strid;
+}
+
+-(NSString *)  GetUserID
+{
+    NSUserDefaults *defau=[NSUserDefaults standardUserDefaults];
+    NSString *UserID = [defau stringForKey:@"myidt"];
+    return UserID;
 }
 
 

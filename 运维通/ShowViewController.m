@@ -46,7 +46,7 @@
     [self.view addSubview:  but ];
     
     
-    NSInteger lastImage = _idex;
+    //NSInteger lastImage = _idex;
 
     _buttomScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 100, self.view.frame.size.width, self.view.frame.size.height-200)];
     _buttomScrollView.contentSize = CGSizeMake(_buttomScrollView.frame.size.width *( _receiveimageArray.count), _buttomScrollView.frame.size.height);
@@ -84,7 +84,7 @@
     if (scrollView == _buttomScrollView) {
         NSInteger number = scrollView.contentOffset.x / _buttomScrollView.frame.size.width;
         _pageControl.currentPage = number;
-        self.navigationItem.title = [NSString stringWithFormat:@"第%ld张", number + 1];
+        self.navigationItem.title = [NSString stringWithFormat:@"第%d张", number + 1];
 //        _latestScrollView.zoomScale = 1.0;
 //        _latestScrollView = (ZoomScrollView *)[_buttomScrollView viewWithTag:100 + number];
         NSInteger currentPage = scrollView.contentOffset.x / scrollView.frame.size.width;
@@ -109,7 +109,7 @@
 - (void)handlePageControlAction:(UIPageControl *)pageControl
 {
     _buttomScrollView.contentOffset = CGPointMake(pageControl.currentPage * _buttomScrollView.frame.size.width, 0);
-    self.navigationItem.title = [NSString stringWithFormat:@"第%ld张", pageControl.currentPage + 1];
+    self.navigationItem.title = [NSString stringWithFormat:@"第%d张", pageControl.currentPage + 1];
 }
 /*
 #pragma mark - Navigation

@@ -13,7 +13,7 @@
 #define ORIGINAL_MAX_WIDTH 640.0f
 #import"MBProgressHUD.h"
 #import "UIImageView+WebCache.h"
-@interface personcenter ()<UIWebViewDelegate,UITableViewDataSource, UITableViewDelegate,UIImagePickerControllerDelegate, UIActionSheetDelegate, VPImageCropperDelegate>
+@interface personcenter ()<UIWebViewDelegate,UIImagePickerControllerDelegate, UIActionSheetDelegate, VPImageCropperDelegate>
 {
     
     NSString *_accountType;
@@ -39,6 +39,7 @@
     
     [self network];
     [self.view setNeedsDisplay];
+    
     NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
     NSString *usertype = [userDefaultes stringForKey:@"usertype"];
     if ([usertype isEqualToString:@"40"]) {
@@ -283,9 +284,8 @@
     
     [loading show:YES];
     
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *myString = [userDefaultes stringForKey:@"myidt"];
-    //NSString *orderid = [userDefaultes stringForKey:@"orderid"];
+    NSString *myString =[self GetUserID];
+     
     
     [self UpdateFileImage:_receiveImage action:@"userimg" orderid:myString creatorid:myString uploadUrl:urlt];
     

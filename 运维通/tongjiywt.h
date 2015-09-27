@@ -15,10 +15,10 @@
     UIWebView *WebView;
     
 }
--(void)genz;
-- (void)reloadTableViewDataSource;
-- (void)doneLoadingTableViewData;
--(int *)num:(int *)num2;
+//-(void)genz;
+//- (void)reloadTableViewDataSource;
+//- (void)doneLoadingTableViewData;
+//-(int *)num:(int *)num2;
 
 
 @end

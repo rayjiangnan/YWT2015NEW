@@ -68,7 +68,7 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     self.tabBarController.tabBar.hidden=YES;
-    [self requestaaa];
+
     
     [self ChangeItemInit:@"Order"];
 }
@@ -78,14 +78,13 @@
     [super viewDidLoad];
     self.scrollview.contentSize=CGSizeMake(320, 800);
     
-    
+    [self requestaaa];
 }
 
 
 -(void)requestaaa
 {
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *myString = [userDefaultes stringForKey:@"myidt"];
+    NSString *myString =[self GetUserID];
     
     NSString *mystring2=[NSString stringWithFormat:@"%@",strTtile];
     

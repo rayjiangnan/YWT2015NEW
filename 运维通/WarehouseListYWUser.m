@@ -13,7 +13,7 @@
 #import "MJRefresh.h"
 #import "UIViewController+Extension.h"
 #import "WarehouseView.h"
-
+ 
 
 @interface WarehouseListYWUser ()<UITableViewDataSource,UITableViewDelegate>
 {
@@ -29,10 +29,12 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     self.tabBarController.tabBar.hidden=YES;
-    }
+    
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     [self repeatnetwork];
     [self network2];
     self.tableview.rowHeight=60;
@@ -67,10 +69,9 @@
 
 -(void)network2{
     int indes=-1;
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *Create_User = [userDefaultes stringForKey:@"myidt"];
+    NSString *UserID =[self GetUserID];
     
-    NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Warehouse.ashx?action=getlist&q0=%@&q1=%d",urlt,Create_User,indes];
+    NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Warehouse.ashx?action=getlist&q0=%@&q1=%d",urlt,UserID,indes];
     NSLog(@"%@",urlStr2);
 //    self.tableView.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
     
@@ -119,8 +120,6 @@
 }
 
 -(NSMutableArray *)repeatnetwork{
-    
-    
     self.tableView.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
     return _tgs;
 }
@@ -129,10 +128,9 @@
 -(void)loadMoreData
 {
  
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *Create_User = [userDefaultes stringForKey:@"myidt"];
+    NSString *UserID =[self GetUserID];
     
-    NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Warehouse.ashx?action=getlist&q0=%@&q1=%d",urlt,Create_User,num];
+    NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Warehouse.ashx?action=getlist&q0=%@&q1=%d",urlt,UserID,num];
     NSLog(@"%@",urlStr2);
     AFHTTPRequestOperation *op=[self GETurlString:urlStr2];
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {

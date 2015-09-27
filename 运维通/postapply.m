@@ -45,8 +45,7 @@
 
 -(NSString*) SetValue {
     
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *Userid = [userDefaultes stringForKey:@"myidt"];
+    NSString *Userid = [self GetUserID];
     
     NSMutableDictionary *dic = [[NSMutableDictionary alloc]init];//创建内层的字典
     [dic setValue:strTtile forKey:@"Order_ID"];

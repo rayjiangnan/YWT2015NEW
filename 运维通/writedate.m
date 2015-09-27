@@ -50,9 +50,7 @@
 - (void)postJSON:(NSString *)LogStatus
 
 {
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    
-    NSString *myString = [userDefaultes stringForKey:@"myidt"];
+    NSString *myString =[self GetUserID];
     
     NSString *urlstr=[NSString stringWithFormat:@"%@/API/YWT_YWLog.ashx",urlt];
     

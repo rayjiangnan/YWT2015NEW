@@ -34,6 +34,7 @@
 @implementation RegistrationComapnyView
 
 -(void)viewDidAppear:(BOOL)animated{
+    
     NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
     if (![[userDefaultes stringForKey:@"personname"] isEqualToString:@""]) {
         self.txtUserID.text = [userDefaultes stringForKey:@"personname"];
@@ -48,11 +49,11 @@
     self.tableview.delegate = self;
     self.tableview.dataSource = self;
 
-   
-    [self LoadDataList];
-     [self repeatnetwork];
-    [self.tableview reloadData];
     self.tableview.rowHeight=75;
+    
+    num=-1;
+    [self LoadDataList];
+    [self.tableview reloadData];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -91,8 +92,8 @@
 
 -(void)LoadDataList{
     int indes=-1;
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *Create_User = [userDefaultes stringForKey:@"myidt"];
+     
+    NSString *Create_User = [self GetUserID];
     /*
     YWT_Registration.ashx?action=getcompanylist&q0=&q1=&q2=&q3=	查询员工打卡记录
     q0	操作人ID
@@ -117,7 +118,7 @@
     else if(sem==4) {
         searchtype=@"3month";
     }
-    
+    NSUserDefaults *userDefaultes=[NSUserDefaults standardUserDefaults];
     NSString *searchUserID=[userDefaultes stringForKey:@"personID"];
 
     NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Registration.ashx?action=getcompanylist&q0=%@&q1=%@&q2=%@&q3=%d"
@@ -134,6 +135,13 @@
             return ;
         }else{
             NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
+            if (dictarr !=nil && dictarr.count < 10) {
+                self.tableview.footer = nil;
+            }
+            else if(dictarr.count >=10 && self.tableview.footer == nil)
+            {
+                self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+            }
             if (dictarr.count>0) {
                 NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
                 num=[dict3[@"Registration_ID"] intValue];
@@ -143,6 +151,8 @@
             NSLog(@"加载数据完成。");
             
         }
+        [self.tableview.footer endRefreshing];
+        self.tableview.footer.autoChangeAlpha=YES;
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
         [MBProgressHUD showError:@"网络异常！"];
@@ -189,8 +199,8 @@
 -(void)loadMoreData
 {
     
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *Create_User = [userDefaultes stringForKey:@"myidt"];
+    
+    NSString *Create_User   =[self GetUserID];
     /*
      YWT_Registration.ashx?action=getcompanylist&q0=&q1=&q2=&q3=	查询员工打卡记录
      q0	操作人ID
@@ -215,7 +225,7 @@
     else if(sem==4) {
         searchtype=@"3month";
     }
-    
+    NSUserDefaults *userDefaultes=[NSUserDefaults standardUserDefaults];
     NSString *searchUserID=[userDefaultes stringForKey:@"personID"];
     
     NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Registration.ashx?action=getcompanylist&q0=%@&q1=%@&q2=%@&q3=%d"
@@ -248,6 +258,8 @@
                 
             }
         }
+        [self.tableview.footer endRefreshing];
+        self.tableview.footer.autoChangeAlpha=YES;
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [MBProgressHUD showError:@"网络异常！"];
         return ;

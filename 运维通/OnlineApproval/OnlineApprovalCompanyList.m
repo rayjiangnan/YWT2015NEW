@@ -32,9 +32,8 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     
-    
     int chageStatus=[self ChangePageInit:@"OnlineApproval"];
-    if (chageStatus==1 || chageStatus==4) {
+    if (chageStatus==4) {
         [self indexchang:0];
         [self.tableview reloadData];
     }
@@ -42,7 +41,13 @@
         
     }
     else if (chageStatus==3) {
-        [self ChangeLoad];
+        if (_segement.selectedSegmentIndex==1) {
+            [self ChangeTable:1];
+        }
+        else
+        {
+            [self ChangeLoad];
+        }
     }
 
     
@@ -50,25 +55,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    int chageStatus=[self ChangePageInit:@"OnlineApproval"];
-    if (chageStatus==1 || chageStatus==4) {
-        self.tableview.delegate = self;
-        self.tableview.dataSource = self;
-        
-        num=0;
-        [self repeatnetwork];
-    }
-    else if (chageStatus==2) {
-        
-    }
-    else if (chageStatus==3) {
-        
-    }
-
-  
-    self.tableview.rowHeight=120;
-    NSLog(@"加载数据。。。。");
     
+    self.tableview.rowHeight=120;
+    self.tableview.delegate=self;
+    self.tableview.dataSource=self;
+    
+    [self indexchang:0];
+    [self.tableview reloadData];
 }
 
 
@@ -105,19 +98,24 @@
         //UIImage *imgUserimg=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
         //[cell.UserImg setImage:imgUserimg];
         [cell.UserImg setImageWithURL:imgurl placeholderImage:[UIImage imageNamed:img]];
+        cell.UserImg.layer.cornerRadius = cell.UserImg.frame.size.width *0.4;
+        cell.UserImg.clipsToBounds = YES;
     }
 
     return cell;
 }
-
-
-- (IBAction)indexchang:(UISegmentedControl *)sender {
-    
+- (IBAction)indexchang:(UISegmentedControl *)sender
+{
     num=0;
     NSInteger colum=sender.selectedSegmentIndex;
+    [self ChangeTable:colum];
+}
+
+- (void) ChangeTable:(int) colum {
+    
     pg=colum-1;
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *Create_User = [userDefaultes stringForKey:@"myidt"];
+    
+    NSString *Create_User = [self GetUserID];
    
     //分状态展示 0 未审核 1 已审核 -1 全部
     NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_OnlineApproval.ashx?action=getcompanylist&q0=%@&q1=%d&q2=%d",urlt,Create_User,num,pg];
@@ -153,9 +151,6 @@
     [[NSOperationQueue mainQueue] addOperation:op];
 }
 
-
-
-
 -(NSMutableArray *)netwok:(NSMutableArray *)array
 {
     _tgs=array;
@@ -164,8 +159,6 @@
 
 /***数据跳转****/
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    
     NSIndexPath *path=[self.tableview indexPathForSelectedRow];
     NSDictionary *rowdata=[self.tgs objectAtIndex:path.row];
     NSString *strStatus=  [NSString stringWithFormat:@"%@",rowdata[@"ApprovalStatus"]];
@@ -204,8 +197,7 @@
 -(void)loadMoreData :(int) ChageNum IsChangeAdd:(BOOL) _IsChange
 {
     //pg=self.segement.selectedSegmentIndex;
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *myString = [userDefaultes stringForKey:@"myidt"];
+    NSString *myString =[self GetUserID];
     
     //分状态展示 0 未审核 1 已审核 -1 全部
     NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_OnlineApproval.ashx?action=getcompanylist&q0=%@&q1=%d&q2=%d",urlt,myString,ChageNum,pg];

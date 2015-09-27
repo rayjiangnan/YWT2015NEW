@@ -125,8 +125,7 @@
 
 -(void) LoadItem
 {
-//    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-//    NSString *Create_User = [userDefaultes stringForKey:@"myidt"];
+ 
     
     NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Warehouse.ashx?action=getitem&q0=%@",urlt,strTtile];
 
@@ -166,8 +165,8 @@
     NSString *Number = [NSString stringWithFormat:@"%@",self.txtNum.text];
     NSString *Unit = [NSString stringWithFormat:@"%@",self.txtUnit.text];
     
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *Create_User = [userDefaultes stringForKey:@"myidt"];
+    
+    NSString *Create_User  =[self GetUserID];
     NSLog(@"%@",Create_User);
     
     //NSMutableArray *jsonArray = [[NSMutableArray alloc]init];//创建最外层的数组
@@ -215,6 +214,13 @@
             NSLog(@"%@",ReturnMsg);
             return ;
         }else{
+            if ([self isBlankString:self.tempid] == NO) {
+                [self ChangeRecord:self.tempid key:@"Warehouse"];
+            }
+            else
+            {
+                [self ChangeRecordAdd:@"Warehouse"];
+            }
             [MBProgressHUD showSuccess:@"保存成功！"];
             [[self navigationController] popViewControllerAnimated:YES];
         }

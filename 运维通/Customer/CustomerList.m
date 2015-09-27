@@ -31,9 +31,8 @@
 
     
     int chageStatus=[self ChangePageInit:@"Customer"];
-    if (chageStatus==1 || chageStatus==4) {
-        [self network2];
-        [self.tableview reloadData];
+    if (chageStatus==4) {
+        
     }
     else if (chageStatus==2) {
         
@@ -58,6 +57,8 @@
     self.tableview.rowHeight=60;
     NSLog(@"加载数据。。。。");
     
+    [self network2];
+    [self.tableview reloadData];
 }
 
 
@@ -90,8 +91,8 @@
 -(void)network2{
     
     int indes=0;
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *Create_User = [userDefaultes stringForKey:@"myidt"];
+    
+    NSString *Create_User = [self GetUserID];
     NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Customer.ashx?action=getlist&q0=%@&q1=%d",urlt,Create_User,indes];
         
     AFHTTPRequestOperation *op=[self GETurlString:urlStr2];
@@ -160,8 +161,8 @@
 
 -(void)loadMoreData :(int) ChageNum IsChangeAdd:(BOOL) _IsChange
 {
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *Create_User = [userDefaultes stringForKey:@"myidt"];
+    
+    NSString *Create_User  =[self GetUserID];
     NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Customer.ashx?action=getlist&q0=%@&q1=%d",urlt,Create_User,ChageNum];
 
     AFHTTPRequestOperation *op=[self GETurlString:urlStr2];

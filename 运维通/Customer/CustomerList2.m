@@ -27,8 +27,7 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     self.tabBarController.tabBar.hidden=YES;
-    [self network2];
-    [self.tableview reloadData];
+    
 }
 
 - (void)viewDidLoad {
@@ -37,6 +36,9 @@
     [self repeatnetwork];
     self.tableview.rowHeight=60;
     NSLog(@"加载数据。。。。");
+    
+    [self network2];
+    [self.tableview reloadData];
     
 }
 
@@ -70,8 +72,8 @@
 -(void)network2{
     
     int indes=0;
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *Create_User = [userDefaultes stringForKey:@"myidt"];
+     
+    NSString *Create_User  =[self GetUserID];
     NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Customer.ashx?action=getlist&q0=%@&q1=%d",urlt,Create_User,indes];
  
     
@@ -130,8 +132,7 @@
 -(void)loadMoreData
 {
    num=num+1;
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *Create_User = [userDefaultes stringForKey:@"myidt"];
+    NSString *Create_User =[self GetUserID];
     NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Customer.ashx?action=getlist&q0=%@&q1=%d",urlt,Create_User,num];
 
     AFHTTPRequestOperation *op=[self GETurlString:urlStr2];
@@ -173,7 +174,7 @@
     
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults setObject:[NSString stringWithFormat:@"%@",dict2[@"CusShort"]] forKey:@"CusShort"];
-     [userDefaults setObject:[NSString stringWithFormat:@"%@",dict2[@"ContactMan"]] forKey:@"ContactMan"];
+    [userDefaults setObject:[NSString stringWithFormat:@"%@",dict2[@"ContactMan"]] forKey:@"ContactMan"];
     [userDefaults setObject:[NSString stringWithFormat:@"%@",dict2[@"ContactMobile"]] forKey:@"ContactMobile"];
     [userDefaults setObject:[NSString stringWithFormat:@"%@",dict2[@"ContactAddress"]] forKey:@"ContactAddress"];
 

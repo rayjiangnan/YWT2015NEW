@@ -83,14 +83,12 @@
 
 -(void)requestaaa
 {
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *myString = [userDefaultes stringForKey:@"myidt"];
-    
+    NSString *Create_User = [self GetUserID];
     NSString *mystring2=[NSString stringWithFormat:@"%@",strTtile];
     
     
     
-    NSString *urlStr = [NSString stringWithFormat:@"%@/API/YWT_OrderPlatform.ashx?action=getitem&q0=%@&q1=%@",urlt,mystring2,myString];
+    NSString *urlStr = [NSString stringWithFormat:@"%@/API/YWT_OrderPlatform.ashx?action=getitem&q0=%@&q1=%@",urlt,mystring2,Create_User];
     AFHTTPRequestOperation *op=[self GETurlString:urlStr];
     NSLog(@"applyorder:%@",urlStr);
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -101,47 +99,42 @@
         NSDictionary *dict=dict2[@"ResultObject"];
         
         self.dh.text=dict[@"OrderNo"];
-        NSString *dt3=dict[@"CreateDateTime"];
-        dt3=[dt3 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
-        dt3=[dt3 stringByReplacingOccurrencesOfString:@")/" withString:@""];
-        // NSLog(@"%@",dt3);
-        NSString * timeStampString3 =dt3;
-        NSTimeInterval _interval3=[timeStampString3 doubleValue] / 1000;
-        NSDate *date3 = [NSDate dateWithTimeIntervalSince1970:_interval3];
-        NSDateFormatter *objDateformat3 = [[NSDateFormatter alloc] init];
-        [objDateformat3 setDateFormat:@"yyyy-MM-dd"];
-        self.sj.text=[objDateformat3 stringFromDate: date3];
-        [self idt:dict[@"Order_ID"]];
-        self.fdr.text=dict[@"Company"];
-        self.wcds.text=[NSString stringWithFormat:@"%@",dict[@"OrderFinishNum"]];
-//        [self idt:dict[@"Order_ID"]];
-        self.yf.text=[NSString stringWithFormat:@"%@",dict[@"Freight"]];
-           self.lxr.text=[NSString stringWithFormat:@"%@  %@",dict[@"ContactMan"],dict[@"ContactMobile"]];
-        self.ywdz.text=dict[@"Task_Address"];
-        self.bt.text=dict[@"OrderTitle"];
-        NSString *st=dict[@"OrderType_Name"];
-             self.lx.text=st;
-         self.nlyq.text=dict[@"AbilityRequest"];
-        self.gzrw.text=dict[@"OrderTask"];
-        self.gzsc.text=[NSString stringWithFormat:@"%@",dict[@"TaskTimeLen"]];
-        self.bz.text=dict[@"Remark"];
+//        NSString *dt3=dict[@"CreateDateTime"];
+//        dt3=[dt3 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
+//        dt3=[dt3 stringByReplacingOccurrencesOfString:@")/" withString:@""];
+//        // NSLog(@"%@",dt3);
+//        NSString * timeStampString3 =dt3;
+//        NSTimeInterval _interval3=[timeStampString3 doubleValue] / 1000;
+//        NSDate *date3 = [NSDate dateWithTimeIntervalSince1970:_interval3];
+//        NSDateFormatter *objDateformat3 = [[NSDateFormatter alloc] init];
+//        [objDateformat3 setDateFormat:@"yyyy-MM-dd"];
         
-        
-        
-        NSString *apply=[NSString stringWithFormat:@"%@",dict[@"IsHaveApplay"]];
+            self.sj.text=[self DateFormartYMD:dict[@"CreateDateTime"]];//[objDateformat3 stringFromDate: date3];
+            [self idt:dict[@"Order_ID"]];
+            self.fdr.text=dict[@"Company"];
+            self.wcds.text=[NSString stringWithFormat:@"%@",dict[@"OrderFinishNum"]];
+            //        [self idt:dict[@"Order_ID"]];
+            self.yf.text=[NSString stringWithFormat:@"%@",dict[@"Freight"]];
+            self.lxr.text=[NSString stringWithFormat:@"%@  %@",dict[@"ContactMan"],dict[@"ContactMobile"]];
+            self.ywdz.text=dict[@"Task_Address"];
+            self.bt.text=dict[@"OrderTitle"];
+            NSString *st=dict[@"OrderType_Name"];
+            self.lx.text=st;
+            self.nlyq.text=dict[@"AbilityRequest"];
+            self.gzrw.text=dict[@"OrderTask"];
+            self.gzsc.text=[NSString stringWithFormat:@"%@",dict[@"TaskTimeLen"]];
+            self.bz.text=dict[@"Remark"];
+
+
+
+            NSString *apply=[NSString stringWithFormat:@"%@",dict[@"IsHaveApplay"]];
         if (![apply isEqualToString:@"1"]) {
             self.postbtn.hidden=NO;
         }
         else
         {
             self.postbtn.hidden=YES;
-        }
-        
-        
-        
-        
-        
-        
+        }         
         
         NSString *xin=[NSString stringWithFormat:@"%@",dict[@"Stars"]];
         if ([xin isEqualToString:@"5"]) {

@@ -12,6 +12,8 @@
 #import "ritaccViewController.h"
 #import "MBProgressHUD+MJ.h"
 #import "ZCNoneiFLYTEK.h"
+#import "UIViewController+Extension.h"
+ 
 
 @implementation ritaccAppDelegate
 {
@@ -209,8 +211,8 @@
 
 
 -(void)loca{
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *myString = [userDefaultes stringForKey:@"myidt"];
+    NSUserDefaults *defau=[NSUserDefaults standardUserDefaults];
+    NSString *myString = [defau stringForKey:@"myidt"];
     if (myString==NULL) {
         NSLog(@"%@",myString);
         return;
@@ -233,8 +235,8 @@
 {
     @try
     {
-        NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-        NSString *myString = [userDefaultes stringForKey:@"myidt"];
+        NSUserDefaults *defau=[NSUserDefaults standardUserDefaults];
+        NSString *myString = [defau stringForKey:@"myidt"];
         
         if (myString==NULL) {
             // NSLog(@"%@",myString);
@@ -266,10 +268,10 @@
 -(void)update{
     @try
     {
-        NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-        NSString *myString = [userDefaultes stringForKey:@"myidt"];
+        NSUserDefaults *defau=[NSUserDefaults standardUserDefaults];
+        NSString *UserID = [defau stringForKey:@"myidt"];
         
-        NSString *urlStr = [NSString stringWithFormat:@"%@/API/YWT_MSG.ashx?action=get&q0=%@",urlt,myString];
+        NSString *urlStr = [NSString stringWithFormat:@"%@/API/YWT_MSG.ashx?action=get&q0=%@",urlt,UserID];
         NSURL *url = [NSURL URLWithString:urlStr];
         //第二步，创建请求
         NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:2];
@@ -299,7 +301,7 @@
                     
                     NSString *strword=[NSString stringWithFormat:@"实时:%@，%@！",Title,Content];
                     
-                    [self scheduleNotification:Title:Content];
+                    [self scheduleNotification:Title content:Content];
                     ZCNoneiFLYTEK*manager=[ZCNoneiFLYTEK shareManager];
                     [manager playVoice:strword];
                     //NSString *result = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
@@ -315,7 +317,7 @@
     
 }
 // 进行推送的方法
-- (void)scheduleNotification:(NSString *)title:(NSString *)content{
+- (void)scheduleNotification:(NSString *)title content:(NSString *)_content{
     UILocalNotification *notification = [[UILocalNotification alloc] init];
     //设置5秒之后
     NSDate *pushDate = [NSDate dateWithTimeIntervalSinceNow:5];
@@ -329,7 +331,7 @@
         // 推送声音（系统默认）
         notification.soundName = UILocalNotificationDefaultSoundName;
         // 推送内容
-        notification.alertBody = content;
+        notification.alertBody = _content;
         //显示在icon上的数字
         // notification.applicationIconBadgeNumber = 1;
         //设置userinfo 方便在之后需要撤销的时候使用

@@ -29,8 +29,9 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     self.tabBarController.tabBar.hidden=YES;
+    
     int chageStatus=[self ChangePageInit:@"OnlineApproval"];
-    if (chageStatus==1 || chageStatus==4) {
+    if (chageStatus==4) {
         [self network2];
         [self.tableview reloadData];
     }
@@ -40,14 +41,16 @@
     else if (chageStatus==3) {
         [self ChangeLoad];
     }
-    self.tableview.rowHeight=120;
+    
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self repeatnetwork];
     
-    NSLog(@"加载数据。。。。");
+    [self network2];
+    [self.tableview reloadData];
+    self.tableview.rowHeight=120;
 }
 
 
@@ -86,8 +89,8 @@
      num=0;
 //self.tableview.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
     
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *Create_User = [userDefaultes stringForKey:@"myidt"];
+   
+    NSString *Create_User =  [self GetUserID];
     
     NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_OnlineApproval.ashx?action=getlist&q0=%@&q1=%d",urlt,Create_User,num];
     NSLog(@"%@",urlStr2);
@@ -147,10 +150,8 @@
 
 -(void)loadMoreData :(int) ChageNum IsChangeAdd:(BOOL) _IsChange
 {
-//    int index=num;
-//    num=index+1;
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *Create_User = [userDefaultes stringForKey:@"myidt"];
+ 
+    NSString *Create_User  =[self GetUserID];
     
     NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_OnlineApproval.ashx?action=getlist&q0=%@&q1=%d",urlt,Create_User,ChageNum];
     //NSLog(@"%@",urlStr2);
@@ -179,9 +180,9 @@
                         NSLog(@"加载数据出错。");
                     }
                 }
-                [self.tableView reloadData];
+                //[self.tableView reloadData];
             }
-            [_tgs addObjectsFromArray:dictarr];
+            //[_tgs addObjectsFromArray:dictarr];
             [self.tableView reloadData];
         }
         [self.tableView.footer endRefreshing];

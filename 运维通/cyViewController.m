@@ -1,6 +1,6 @@
 //
 //  cyViewController.m
-//  送哪儿
+//  
 //
 //  Created by 南江 on 15/5/13.
 //  Copyright (c) 2015年 Tony. All rights reserved.
@@ -129,7 +129,7 @@
 
         
         NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-        NSString *myString = [userDefaultes stringForKey:@"myidt"];
+        NSString *myString =[self GetUserID];
          NSString *myString2 = [userDefaultes stringForKey:@"myidt2"];
         
         if ([myString2 isEqualToString:@""]) {

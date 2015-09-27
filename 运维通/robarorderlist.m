@@ -172,8 +172,7 @@
 {
     NSInteger indes=0;
          _igt=@"0";
-        NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-        NSString *myString = [userDefaultes stringForKey:@"myidt"];
+        NSString *myString =[self GetUserID];
         NSString *urlStr = [NSString stringWithFormat:@"%@/api/YWT_OrderPlatform.ashx?action=ywusergetlist&q0=%d&q1=%@",urlt,indes,myString];
     NSLog(@"%@",urlStr);
         NSString *str = @"type=focus-c";
@@ -207,8 +206,7 @@
 {
     NSInteger indes=0;
     _igt=@"1";
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *myString = [userDefaultes stringForKey:@"myidt"];
+    NSString *myString =[self GetUserID];
     NSString *urlStr = [NSString stringWithFormat:@"%@/api/YWT_OrderPlatform.ashx?action=applyrecord&q0=%d&q1=%@",urlt,indes,myString];
     NSLog(@"%@",urlStr);
     NSString *str = @"type=focus-c";
@@ -234,36 +232,23 @@
     }];
     
     [[NSOperationQueue mainQueue] addOperation:op];
-    
-    
 }
 
-
-
 -(void )repeatnetwork{
-    
-    
     self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
-    
-    
 }
 
 -(void)loadMoreData
 {
     NSString *urlStr2;
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *myString = [userDefaultes stringForKey:@"myidt"];
+    NSString *myString =[self GetUserID];
     
     if (selectnum==1) {
         pagenum1=pagenum1+1;
-//        NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-//        NSString *myString = [userDefaultes stringForKey:@"myidt"];
-        
          urlStr2= [NSString stringWithFormat:@"%@/api/YWT_OrderPlatform.ashx?action=ywusergetlist&q0=%d&q1=%@",urlt,pagenum1,myString];
     }else  if (selectnum==2) {
         pagenum2=pagenum2+1;
-//        NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-//        NSString *myString = [userDefaultes stringForKey:@"myidt"];
+ 
         
         urlStr2= [NSString stringWithFormat:@"%@/api/YWT_OrderPlatform.ashx?action=applyrecord&q0=%d&q1=%@",urlt,pagenum2,myString];
     }

@@ -98,8 +98,8 @@
     
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *pass= [userDefaultes stringForKey:@"passkey"];
+    //NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
+    //NSString *pass= [userDefaultes stringForKey:@"passkey"];
       self.tableView.rowHeight=50;
     self.tableView.delegate=self;
     
@@ -166,45 +166,45 @@
 
 
 
-- (void)tijiao2:(NSString *)t1:(NSString *)t2:(NSString *)t3:(NSString *)t4:(NSString *)t5{
-    
-    NSString *urlStr =[NSString stringWithFormat:@"%@/API/HDL_Order.ashx",urlt] ;
-    
-    NSURL *url = [NSURL URLWithString:urlStr];
-    
-    
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:0 timeoutInterval:2.0f];
-    
-    request.HTTPMethod = @"POST";
-    
-    
-    NSString *str = [NSString stringWithFormat:@"action=saveorderflow&q0=%@&q1=100&q2=%@&q3=%@&q4=%@&q5=%@",t1,t2,t3,t4,t5];
-    
-    
-    request.HTTPBody = [str dataUsingEncoding:NSUTF8StringEncoding];
-    
-    
-    [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc]init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-        
-        if(data!=nil)
-        {
-            NSString *result = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-            
-        }else{
-            [MBProgressHUD showError:@"网络请求出错"];
-            return ;
-        }
-    }];
-    
-    
-}
+//- (void)tijiao2:(NSString *)t1:(NSString *)t2:(NSString *)t3:(NSString *)t4:(NSString *)t5{
+//    
+//    NSString *urlStr =[NSString stringWithFormat:@"%@/API/HDL_Order.ashx",urlt] ;
+//    
+//    NSURL *url = [NSURL URLWithString:urlStr];
+//    
+//    
+//    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:0 timeoutInterval:2.0f];
+//    
+//    request.HTTPMethod = @"POST";
+//    
+//    
+//    NSString *str = [NSString stringWithFormat:@"action=saveorderflow&q0=%@&q1=100&q2=%@&q3=%@&q4=%@&q5=%@",t1,t2,t3,t4,t5];
+//    
+//    
+//    request.HTTPBody = [str dataUsingEncoding:NSUTF8StringEncoding];
+//    
+//    
+//    [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc]init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+//        
+//        if(data!=nil)
+//        {
+//            NSString *result = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+//            
+//        }else{
+//            [MBProgressHUD showError:@"网络请求出错"];
+//            return ;
+//        }
+//    }];
+//    
+//    
+//}
 
 
 
--(void)genz2:(UIButton *)sender{
-    [self idt3:sender.tag];
-    [self performSegueWithIdentifier:@"gz" sender:nil];
-}
+//-(void)genz2:(UIButton *)sender{
+//    [self idt3:sender.tag];
+//    [self performSegueWithIdentifier:@"gz" sender:nil];
+//}
 
 
 
@@ -269,8 +269,7 @@
 //        waitPayPageNum++;
 //        pageNum=waitPayPageNum;
 //    }
-//    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-//    NSString *myString = [userDefaultes stringForKey:@"myidt"];
+//    NSString *myString =[self GetUserID];
 //    
 //    NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Order.ashx?action=monthviewaadmin&q0=%@&q1=%@",urlt,myString,idts];
 //    
@@ -300,8 +299,7 @@
 -(void)netWorkRequest
 {
     
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *myString = [userDefaultes stringForKey:@"myidt"];
+    NSString *myString =[self GetUserID];
     
     NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Order.ashx?action=monthviewaadmin&q0=%@&q1=%@",urlt,myString,idts];
     
@@ -341,8 +339,7 @@
 -(void)netWorkRequest2
 {
     
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *myString = [userDefaultes stringForKey:@"myidt"];
+    NSString *myString =[self GetUserID];
     
     NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Order.ashx?action=monthviewaadmin&q0=%@&q1=%@",urlt,myString,idts];
     

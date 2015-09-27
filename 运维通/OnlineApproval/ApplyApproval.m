@@ -80,8 +80,7 @@
 
 
 - (IBAction)btnSaveClick:(id)sender {
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *Create_User = [userDefaultes stringForKey:@"myidt"];
+    NSString *Create_User = [self GetUserID];
     
     NSInteger indexseg= self.sgStatus.selectedSegmentIndex;
     int istatus=1;

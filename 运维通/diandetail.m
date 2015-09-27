@@ -53,12 +53,7 @@
 }
 
 -(void)network{
-    
-    
-    
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    
-    NSString *myString = [userDefaultes stringForKey:@"myidt"];
+    NSString *myString =[self GetUserID];
     
     NSString *mystring2=[NSString stringWithFormat:@"%@",strTtile];
     
@@ -111,9 +106,8 @@
 {
     NSString *urlstr=[NSString stringWithFormat:@"%@/API/YWT_YWLog.ashx",urlt];
     
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
+    NSString *myString =[self GetUserID];
     
-    NSString *myString = [userDefaultes stringForKey:@"myidt"];
      NSString *mystring2=[NSString stringWithFormat:@"%@",strTtile];
     
     
@@ -210,15 +204,7 @@
     cell.pl.text=dict2[@"ReplyContent"];
     cell.lc.text=[NSString stringWithFormat:@"%@",dict2[@"rowid"]];
     
-//    NSString *dt3=dict2[@"Create_Date"];
-//    dt3=[dt3 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
-//    dt3=[dt3 stringByReplacingOccurrencesOfString:@")/" withString:@""];
-//    // NSLog(@"%@",dt3);
-//    NSString * timeStampString3 =dt3;
-//    NSTimeInterval _interval3=[timeStampString3 doubleValue] / 1000;
-//    NSDate *date3 = [NSDate dateWithTimeIntervalSince1970:_interval3];
-//    NSDateFormatter *objDateformat3 = [[NSDateFormatter alloc] init];
-//    [objDateformat3 setDateFormat:@"yyyy-MM-dd hh:ss"];
+ 
     cell.time.text=cell.time.text=[self DateFormartString:dict2[@"Create_Date"]];//[objDateformat3 stringFromDate: date3];
     
     if (![dict2[@"UserImg"] isEqual:[NSNull null]]) {
@@ -226,7 +212,7 @@
         NSURL *imgurl=[NSURL URLWithString:img];
         [cell.img setImageWithURL:imgurl placeholderImage:[UIImage imageNamed:img]];
         
-        cell.img.layer.cornerRadius = cell.img.frame.size.width / 2;
+        cell.img.layer.cornerRadius = cell.img.frame.size.width *0.4;
         cell.img.clipsToBounds = YES;
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;

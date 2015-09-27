@@ -70,8 +70,7 @@
 
 -(void)requestaaa
 {
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *myString = [userDefaultes stringForKey:@"myidt"];
+    NSString *myString =[self GetUserID];
     
     NSString *mystring2=[NSString stringWithFormat:@"%@",strTtile];
     
@@ -138,8 +137,8 @@
 -(NSString*) SetValue {
     
     
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *Create_User = [userDefaultes stringForKey:@"myidt"];
+    
+    NSString *Create_User   =[self GetUserID];
     
     //NSMutableArray *jsonArray = [[NSMutableArray alloc]init];//创建最外层的数组
     NSMutableDictionary *dic = [[NSMutableDictionary alloc]init];//创建内层的字典

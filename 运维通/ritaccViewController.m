@@ -39,14 +39,7 @@
 //        [_timeer fire];
 //    }
     
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *addr=@"";
-    
-    [userDefaults setObject:addr forKey:@"detaaddr"];
-    [userDefaults setObject:addr forKey:@"detaaddr1"];
-    [userDefaults setObject:addr forKey:@"detaaddr2"];
-    [userDefaults synchronize];
-    
+
 }
 
 
@@ -75,25 +68,14 @@
     //self._mapview.userTrackingMode=MKUserTrackingModeFollowWithHeading;
     self._mapview.delegate = self;
     
-//    if ([CLLocationManager locationServicesEnabled]) {
-//        
-//        
-//        _locationManager= [[CLLocationManager alloc] init];
-//        
-//        _locationManager.delegate = self;
-//        
-//        _locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-//        
-//        _locationManager.distanceFilter = 100;
-//        
-//        [_locationManager startUpdatingLocation];
-//        
-//        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
-//            
-//            //     [_locationManager requestWhenInUseAuthorization];
-//            
-//            _locationManager.pausesLocationUpdatesAutomatically = NO;
-//    }
+
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *addr=@"";
+    
+    [userDefaults setObject:addr forKey:@"detaaddr"];
+    [userDefaults setObject:addr forKey:@"detaaddr1"];
+    [userDefaults setObject:addr forKey:@"detaaddr2"];
+    [userDefaults synchronize];
 
     
     [self initData];
@@ -171,8 +153,7 @@
         NSLog(@"后台运行，不选择。");
         return;
     }
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *myString = [userDefaultes stringForKey:@"myidt"];
+    NSString *myString =[self GetUserID];
     
     NSString *urlStr = [NSString stringWithFormat:@"%@/API/HL.ashx?action=getsubxy&q0=%@",urlt,myString];
     NSURL *url = [NSURL URLWithString:urlStr];
@@ -351,8 +332,7 @@
 {
     @try
     {
-        NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-        NSString *myString = [userDefaultes stringForKey:@"myidt"];
+        NSString *myString =[self GetUserID];
         
         if (myString==NULL) {
             // NSLog(@"%@",myString);
@@ -370,7 +350,7 @@
             
             [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc]init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
                 
-                if (!data== nil) {
+                if (data!= nil) {
                     NSString *result = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
                     NSLog(@"ritaccView:%@",result);
                 }else{

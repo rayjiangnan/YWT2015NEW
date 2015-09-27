@@ -35,24 +35,24 @@
     self.tabBarController.tabBar.hidden=YES;
 
     [self ChangeItemInit:@"Customer"];
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *mygh = [userDefaultes stringForKey:@"detaaddr"];
-
-    if ([mygh isEqualToString:@""]) {
-
-    }else{
-        
-        self.txtContactAddress.text=mygh;
-    }
+    
     
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-       if ([self isBlankString:strTtile] == NO) {
+    
+    if ([self isBlankString:strTtile] == NO) {
         self.tempid=[NSString stringWithFormat:@"%@",strTtile];
         [self LoadItem];
     }
+    
+    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
+    NSString *mygh = [userDefaultes stringForKey:@"detaaddr"];
+    if (![mygh isEqualToString:@""]) {
+        self.txtContactAddress.text=mygh;
+    }
+    
     [self tapBackground];
     [self tapOnce];
 }
@@ -104,8 +104,7 @@
     
     
     
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *Create_User = [userDefaultes stringForKey:@"myidt"];
+    NSString *Create_User =[self GetUserID];
     NSLog(@"%@",Create_User);
     
     //NSMutableArray *jsonArray = [[NSMutableArray alloc]init];//创建最外层的数组

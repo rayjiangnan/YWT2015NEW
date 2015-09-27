@@ -6206,7 +6206,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CDZ-Vo-Dgc">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CDZ-Vo-Dgc">
                                 <rect key="frame" x="-3" y="0.0" width="326" height="568"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gk6-UN-b4c">
@@ -6387,6 +6387,7 @@
                     <connections>
                         <outlet property="bt" destination="wdg-rd-YSJ" id="9hz-Y5-Vkm"/>
                         <outlet property="nr" destination="BFx-Xs-bu1" id="Iu8-K5-Uts"/>
+                        <outlet property="pl" destination="ia8-2Y-UpD" id="cNa-K7-HN6"/>
                         <outlet property="scrollview" destination="Lna-51-kVw" id="OVu-Mg-wZU"/>
                         <outlet property="tableview" destination="EPo-n6-98n" id="OyF-P6-Jh8"/>
                         <segue destination="gL3-y5-kOf" kind="push" identifier="pl" id="DBg-wL-fJh"/>
@@ -8508,7 +8509,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4da-Mo-uAP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2644" y="496"/>
+            <point key="canvasLocation" x="2647" y="426"/>
         </scene>
         <!--关联客户-->
         <scene sceneID="uwd-lf-oy5">

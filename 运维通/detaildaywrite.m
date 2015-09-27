@@ -48,8 +48,7 @@
 
 -(void)network{
         
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *UserID = [userDefaultes stringForKey:@"myidt"];
+    NSString *UserID =[self GetUserID];
     
     NSString *Logid=[NSString stringWithFormat:@"%@",strTtile];
     nid=Logid;
@@ -106,7 +105,7 @@
     }
     cell.user.text=dict2[@"RealName"];
     cell.pl.text=dict2[@"ReplyContent"];
-    cell.lc.text=[NSString stringWithFormat:@"%@",dict2[@"ReplyID"]];
+    cell.lc.text=[NSString stringWithFormat:@"%@",dict2[@"rowid"]];
     
  
     cell.time.text=[self DateFormartString:dict2[@"Create_Date"]];//[objDateformat3 stringFromDate: date3];
@@ -116,7 +115,7 @@
         NSURL *imgurl=[NSURL URLWithString:img];
         //cell.img.image=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
         [cell.img setImageWithURL:imgurl placeholderImage:[UIImage imageNamed:img]];
-        cell.img.layer.cornerRadius = cell.img.frame.size.width / 2;
+        cell.img.layer.cornerRadius = cell.img.frame.size.width *0.4;
         cell.img.clipsToBounds = YES;
     }
     

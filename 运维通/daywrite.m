@@ -30,7 +30,7 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     int chageStatus=[self ChangePageInit:@"log"];
-    if (chageStatus==1 || chageStatus==4) {
+    if (chageStatus==4) {
         [self network2];
         [self.tableview reloadData];
         
@@ -49,6 +49,9 @@
     [super viewDidLoad];
     [self repeatnetwork];
     self.tableview.rowHeight=60;
+    
+    [self network2];
+    [self.tableview reloadData];
 }
 
 -(NSMutableArray *)netwok:(NSMutableArray *)array
@@ -85,17 +88,17 @@
         cell.pl.text=[NSString stringWithFormat:@"评论%@",dict2[@"ReplyNumber"]];
     }
     }
-    NSString *dt3=dict2[@"Create_Date"];
-    dt3=[dt3 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
-    dt3=[dt3 stringByReplacingOccurrencesOfString:@")/" withString:@""];
-    // NSLog(@"%@",dt3);
-    NSString * timeStampString3 =dt3;
-    NSTimeInterval _interval3=[timeStampString3 doubleValue] / 1000;
-    NSDate *date3 = [NSDate dateWithTimeIntervalSince1970:_interval3];
-    NSDateFormatter *objDateformat3 = [[NSDateFormatter alloc] init];
-    [objDateformat3 setDateFormat:@"yyyy年MM月dd日 hh:mm"];
-    cell.time.text=[objDateformat3 stringFromDate: date3];
-    
+//    NSString *dt3=dict2[@"Create_Date"];
+//    dt3=[dt3 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
+//    dt3=[dt3 stringByReplacingOccurrencesOfString:@")/" withString:@""];
+//    // NSLog(@"%@",dt3);
+//    NSString * timeStampString3 =dt3;
+//    NSTimeInterval _interval3=[timeStampString3 doubleValue] / 1000;
+//    NSDate *date3 = [NSDate dateWithTimeIntervalSince1970:_interval3];
+//    NSDateFormatter *objDateformat3 = [[NSDateFormatter alloc] init];
+//    [objDateformat3 setDateFormat:@"yyyy年MM月dd日 hh:mm"];
+//    cell.time.text=[objDateformat3 stringFromDate: date3];
+    cell.time.text= [self DateFormartKey:dict2[@"Create_Date"] FormartKey:@"yyyy年MM月dd日 hh:mm"];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     
@@ -115,9 +118,7 @@
 -(void)network2{
     
     NSInteger indes=-1;
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    
-    NSString *myString = [userDefaultes stringForKey:@"myidt"];
+    NSString *myString =[self GetUserID];
     
     NSString *urlStr = [NSString stringWithFormat:@"%@/api/YWT_YWLog.ashx?action=getlist&q0=%@&q1=%d",urlt,myString,indes];
 
@@ -139,11 +140,9 @@
             [self.tableview reloadData];
         }
          [self.tableview.header endRefreshing];
-        
+
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
         [MBProgressHUD showError:@"网络异常！"];
-        
         return ;
     }];
     
@@ -158,11 +157,7 @@
 
 -(void)loadMoreData
 {
-    
-    //NSInteger indes=11;
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    
-    NSString *myString = [userDefaultes stringForKey:@"myidt"];
+    NSString *myString =[self GetUserID];
     
     NSString *urlStr = [NSString stringWithFormat:@"%@/api/YWT_YWLog.ashx?action=getlist&q0=%@&q1=%d",urlt,myString,num];
       NSLog(@"++++%@",urlStr);
@@ -189,8 +184,6 @@
         }
         [self.tableview.footer endRefreshing];
         self.tableview.footer.autoChangeAlpha=YES;
-        
-        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [MBProgressHUD showError:@"网络请求出错"];
     }];

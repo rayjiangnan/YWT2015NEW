@@ -1,6 +1,6 @@
 //
 //  orderViewController.m
-//  送哪儿
+//  
 //
 //  Created by apple on 15/4/27.
 //  Copyright (c) 2015年 Tony. All rights reserved.
@@ -54,20 +54,26 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     self.tabBarController.tabBar.hidden=YES;
+    
     NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
     NSString *mygh = [userDefaultes stringForKey:@"detaaddr"];
     
-    self.khjc.text = [userDefaultes stringForKey:@"CusShort"];
-    self.lxr.text=[userDefaultes stringForKey:@"ContactMan"];
-    self.lxdh.text = [userDefaultes stringForKey:@"ContactMobile"];
+    NSString *CusShort= [userDefaultes stringForKey:@"CusShort"];
     
-    if ([mygh isEqualToString:@""]) {
-          self.dz.text=[userDefaultes stringForKey:@"ContactAddress"];
-    }else{
-    
-     self.dz.text=mygh;
+    if (![mygh isEqualToString:@""])
+    {
+        self.dz.text=mygh;
     }
-    [self ChangeItemInit:@"Order"];
+    else  if (![CusShort isEqualToString:@""])
+    {
+        self.khjc.text = [userDefaultes stringForKey:@"CusShort"];
+        self.lxr.text=[userDefaultes stringForKey:@"ContactMan"];
+        self.lxdh.text = [userDefaultes stringForKey:@"ContactMobile"];
+        self.dz.text=[userDefaultes stringForKey:@"ContactAddress"];
+        
+    }
+    [userDefaultes setObject:@"" forKey:@"CusShort"];
+    [userDefaultes setObject:@"" forKey:@"detaaddr"];
 }
 
 - (void)viewDidLoad {
@@ -76,11 +82,11 @@
         [self pickerView:nil didSelectRow:0 inComponent:component];
     }
     
- self.scrollview.contentSize=CGSizeMake(320, 1000);
+    self.scrollview.contentSize=CGSizeMake(320, 1000);
     self.navigationController.navigationBar.hidden=NO;
-[self tapBackground];
-
+    [self tapBackground];
     
+    [self ChangeItemInit:@"Order"];
 }
 
 - (IBAction)fghZ:(id)sender {
@@ -185,8 +191,7 @@
     {
         NSString *strurl=[NSString stringWithFormat:@"%@/api/YWT_Order.ashx",urlt];
         
-        NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-        NSString *myString = [userDefaultes stringForKey:@"myidt"];
+        NSString *myString =[self GetUserID];
         NSString *jsonString =[self SetValue];
         NSString *strparameters = [NSString stringWithFormat:@"action=addinternal&q0=%@&q1=%@",jsonString,myString];
         

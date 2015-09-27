@@ -62,6 +62,8 @@
     [self ChangePageInit:@"log"];
     [self ChangePageInit:@"Order"];
     [self ChangePageInit:@"OnlineApproval"];
+    [self ChangePageInit:@"Customer"];
+    [self ChangePageInit:@"Warehouse"];
     
     if ([CLLocationManager authorizationStatus]==kCLAuthorizationStatusNotDetermined){
         [self._locationManager requestWhenInUseAuthorization]; }

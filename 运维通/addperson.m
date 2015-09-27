@@ -1,6 +1,6 @@
 //
 //  addperson.m
-//  送哪儿
+//  
 //
 //  Created by 南江 on 15/5/12.
 //  Copyright (c) 2015年 Tony. All rights reserved.
@@ -107,11 +107,11 @@ if ([self.sty.text isEqualToString:@"运维人员"]) {
         
         NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
         NSString *myString = [userDefaultes stringForKey:@"myidt2"];
- NSString *myString2 = [userDefaultes stringForKey:@"myidt"];
+         
         [self getUniqueStrByUUID];
        // NSLog(@"%@",_uuid);
        
-        _ac=@1;
+        _ac=@"1";
 
         NSString *dtr=[NSString stringWithFormat:@"{\"User\":{\"UserType\":\"%@\",\"Mobile\":\"%@\",\"RealName\":\"%@\",\"SupplierID\":\"%@\",\"PassWord\":\"%@\",\"Active\":\"1\"}}",text1,text2,text3,myString,self.pwd.text];
         
@@ -131,21 +131,12 @@ if ([self.sty.text isEqualToString:@"运维人员"]) {
               
                 if ([errstr2 isEqualToString:@"0"]){
                       NSString *str=[NSString stringWithFormat:@"%@",dict[@"ReturnMsg"]];
-                    
                     [MBProgressHUD showError:str];
-                    
-                    
-                    
                     return ;
-                
-                
                 }else{
                     [MBProgressHUD showSuccess:@"注册成功"];
                     [[self navigationController] popViewControllerAnimated:YES];
-
-                
                 }
-               
             }];
 
             }else{

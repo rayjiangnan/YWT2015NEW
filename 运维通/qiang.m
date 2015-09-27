@@ -59,11 +59,6 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     self.tabBarController.tabBar.hidden=NO;
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *mygh = [userDefaultes stringForKey:@"detaaddr"];
-    NSString *iphone=[userDefaultes stringForKey:@"iphone"];
-    self.lxdh.text=iphone;
-    self.dz.text=mygh;
     
     [self ChangeItemInit:@"Order"];
     
@@ -78,7 +73,11 @@
     self.navigationController.navigationBar.hidden=NO;
     [self tapBackground];
     
-    
+    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
+    NSString *mygh = [userDefaultes stringForKey:@"detaaddr"];
+    NSString *iphone=[userDefaultes stringForKey:@"iphone"];
+    self.lxdh.text=iphone;
+    self.dz.text=mygh;
 }
 
 - (IBAction)fghZ:(id)sender {
@@ -188,8 +187,8 @@
     @try
     {
         NSString *strurl=[NSString stringWithFormat:@"%@/api/YWT_OrderPlatform.ashx",urlt];
-        NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-        NSString *Userid = [userDefaultes stringForKey:@"myidt"];
+       
+        NSString *Userid   =[self GetUserID];
         NSString *dstr=[self SetValue];
         NSString *strparameters = [NSString stringWithFormat:@"action=addexternal&q0=%@&q1=%@",dstr,Userid];
         

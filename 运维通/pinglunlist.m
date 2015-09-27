@@ -31,8 +31,6 @@
 -(void)viewDidAppear:(BOOL)animated{
     [self ChangeItemInit:@"log"];
     self.tabBarController.tabBar.hidden=YES;
-    
-    
 }
 
 - (void)viewDidLoad {
@@ -43,10 +41,8 @@
     minReplyID=-1;
 }
 
--(void)network{
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    
-    NSString *CreateUserid = [userDefaultes stringForKey:@"myidt"];
+-(void)network{     
+    NSString *CreateUserid  =[self GetUserID];
     
     //NSString *mystring2=[NSString stringWithFormat:@"%@",strTtile];
  
@@ -121,7 +117,7 @@
         NSURL *imgurl=[NSURL URLWithString:img];
         //cell.img.image=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
         [cell.img setImageWithURL:imgurl placeholderImage:[UIImage imageNamed:img]];
-        cell.img.layer.cornerRadius = cell.img.frame.size.width / 2;
+        cell.img.layer.cornerRadius = cell.img.frame.size.width *0.4;
         cell.img.clipsToBounds = YES;
     }
     
@@ -140,9 +136,7 @@
 
 -(void)loadMoreData
 {
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    
-    NSString *CreateUserid = [userDefaultes stringForKey:@"myidt"];
+    NSString *CreateUserid  =[self GetUserID];
     
     //NSString *mystring2=[NSString stringWithFormat:@"%@",strTtile];
     

@@ -34,7 +34,7 @@
     }
     pagnum=0;
     int chageStatus=[self ChangePageInit:@"Order"];
-    if (chageStatus==1 || chageStatus==4) {
+    if (chageStatus==4) {
         [self network2];
         [self.tableview reloadData];
     }
@@ -52,6 +52,9 @@
     [super viewDidLoad];
     [self repeatnetwork];
     self.tableview.rowHeight=155;
+    
+    [self network2];
+    [self.tableview reloadData];
 }
 
 -(NSMutableArray *)netwok:(NSMutableArray *)array
@@ -123,16 +126,16 @@
     
     
      cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    NSString *dt3=dict2[@"CreateDateTime"];;
-    dt3=[dt3 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
-    dt3=[dt3 stringByReplacingOccurrencesOfString:@")/" withString:@""];
-    // NSLog(@"%@",dt3);
-    NSString * timeStampString3 =dt3;
-    NSTimeInterval _interval3=[timeStampString3 doubleValue] / 1000;
-    NSDate *date3 = [NSDate dateWithTimeIntervalSince1970:_interval3];
-    NSDateFormatter *objDateformat3 = [[NSDateFormatter alloc] init];
-    [objDateformat3 setDateFormat:@"MM-dd"];
-    cell.sj.text=[objDateformat3 stringFromDate: date3];
+//    NSString *dt3=dict2[@"CreateDateTime"];;
+//    dt3=[dt3 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
+//    dt3=[dt3 stringByReplacingOccurrencesOfString:@")/" withString:@""];
+//    // NSLog(@"%@",dt3);
+//    NSString * timeStampString3 =dt3;
+//    NSTimeInterval _interval3=[timeStampString3 doubleValue] / 1000;
+//    NSDate *date3 = [NSDate dateWithTimeIntervalSince1970:_interval3];
+//    NSDateFormatter *objDateformat3 = [[NSDateFormatter alloc] init];
+//    [objDateformat3 setDateFormat:@"MM-dd"];
+    cell.sj.text=[self DateFormartMD:dict2[@"CreateDateTime"]];//[objDateformat3 stringFromDate: date3];
     
 
     
@@ -154,8 +157,7 @@
 
 -(void)network2{
     int indes=0;
-//    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-//    NSString *myString = [userDefaultes stringForKey:@"myidt"];
+ 
     
     NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_OrderPlatform.ashx?action=getlistforall&q0=%d",urlt,indes];
     

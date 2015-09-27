@@ -30,9 +30,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    for (int component = 0; component < self.foods.count; component++) {
-        [self pickerView:nil didSelectRow:0 inComponent:component];
-    }
+//    for (int component = 0; component < self.foods.count; component++) {
+//        [self pickerView:nil didSelectRow:0 inComponent:component];
+//    }
     [self tapBackground];
     [self tapOnce];
 
@@ -110,43 +110,43 @@
     
 }
 
-- (NSArray *)foods
-{
-    if (_foods == nil) {
-        
-        _foods = [NSArray arrayWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"style" ofType:@"plist"]];
-    }
-    return _foods;
-}
+//- (NSArray *)foods
+//{
+//    if (_foods == nil) {
+//        
+//        _foods = [NSArray arrayWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"style" ofType:@"plist"]];
+//    }
+//    return _foods;
+//}
+//
+//#pragma mark - 数据源方法
+//
+//- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
+//{
+//    return self.foods.count;
+//}
 
-#pragma mark - 数据源方法
-
-- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
-{
-    return self.foods.count;
-}
-
-
-- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
-{
-    NSArray *subfoods = self.foods[component];
-    return subfoods.count;
-}
-
-#pragma mark - 代理方法
-
-- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
-{
-    return self.foods[component][row];
-}
-
-
-- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
-{
-    if (component == 0) {
-        self.sty.text = self.foods[component][row];
-    }
-}
+//
+//- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+//{
+//    NSArray *subfoods = self.foods[component];
+//    return subfoods.count;
+//}
+//
+//#pragma mark - 代理方法
+//
+//- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+//{
+//    return self.foods[component][row];
+//}
+//
+//
+//- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+//{
+//    if (component == 0) {
+//        self.sty.text = self.foods[component][row];
+//    }
+//}
 
 
 

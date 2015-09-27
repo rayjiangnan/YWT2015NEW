@@ -1,6 +1,6 @@
 //
 //  cpassword.m
-//  送哪儿
+//  
 //
 //  Created by 南江 on 15/5/13.
 //  Copyright (c) 2015年 Tony. All rights reserved.
@@ -33,7 +33,7 @@
     }else if(![self.pwd.text isEqualToString:self.cpwd.text]){
         [MBProgressHUD showError:@"新密码两次输入不相同！"];
     }else{
-        [self postJSON:self.ypwd.text:self.pwd.text];
+        [self postJSON];
     }
     
     
@@ -44,15 +44,15 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)postJSON:(NSString *)text1:(NSString *)text2
+- (void)postJSON//:(NSString *)text1:(NSString *)text2
 {
     
     NSString *urlstr=[NSString stringWithFormat:@"%@/API/YWT_User.ashx",urlt];
 
         
-        NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-        NSString *myString = [userDefaultes stringForKey:@"myidt"];
-        NSString *str = [NSString stringWithFormat:@"action=alertpwd&q0=%@&q1=%@&q2=%@",myString,text1,text2];
+        NSString *myString =[self GetUserID];
+    
+        NSString *str = [NSString stringWithFormat:@"action=alertpwd&q0=%@&q1=%@&q2=%@",myString,self.ypwd.text,self.pwd.text];
     AFHTTPRequestOperation *op=[self POSTurlString:urlstr parameters:str];
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         

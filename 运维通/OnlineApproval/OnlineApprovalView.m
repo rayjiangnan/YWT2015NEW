@@ -41,7 +41,7 @@
     [super viewDidLoad];
     [self ChangeItemInit:@"OnlineApproval"];
     [self LoadItem];
-    [self ChangeItemInit:@"OnlineApproval"];
+
 }
 
 - (void)didReceiveMemoryWarning {

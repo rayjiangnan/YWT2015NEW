@@ -1,6 +1,6 @@
 //
 //  oilFoot.m
-//  送哪儿
+//  
 //
 //  Created by 南江 on 15/8/17.
 //  Copyright (c) 2015年 Tony. All rights reserved.
@@ -50,13 +50,8 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:YES];
-      [self network];
-
         
-        self.tabBarController.tabBar.hidden=YES;
-
- 
-    
+    self.tabBarController.tabBar.hidden=YES;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -71,10 +66,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    
-   
-    
+    [self network];
 }
 
 - (void)df
@@ -83,13 +75,7 @@
     //initate the graph view
     SHLineGraphView *_lineGraph = [[SHLineGraphView alloc] initWithFrame:CGRectMake(0, 0,320,200)];
     
-    //set the main graph area theme attributes
-    
-    /**
-     *  theme attributes dictionary. you can specify graph theme releated attributes in this dictionary. if this property is
-     *  nil, then a default theme setting is applied to the graph.
-     */
-    
+
     
     NSDictionary *_themeAttributes = @{
                                        kXAxisLabelColorKey : [UIColor colorWithRed:0.48 green:0.48 blue:0.49 alpha:0.8],
@@ -372,11 +358,7 @@
 
 
 -(void)network{
-    
-    
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    
-    NSString *myString = [userDefaultes stringForKey:@"myidt"];
+    NSString *myString =[self GetUserID];
     
     NSString *urlStr = [NSString stringWithFormat:@"%@/API/YWT_Order.ashx?action=monthview&q0=%@",urlt,myString];
     NSLog(@"----%@",urlStr);
@@ -393,9 +375,6 @@
             self.finiorder.text=[NSString stringWithFormat:@"%@",dict1[@"Item"][@"OrderFinishNum"]];
             self.pinfen.text=[NSString stringWithFormat:@"%@",dict1[@"Item"][@"ScoreAvg"]];
 
-           
-            
-            
             if (![dict1[@"Items"] isEqual:[NSNull null]]) {
                  NSArray *month=dict1[@"Items"];
                 

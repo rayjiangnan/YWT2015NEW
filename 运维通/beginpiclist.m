@@ -78,16 +78,16 @@
     }
     cell.orderno.text=[NSString stringWithFormat:@"单号：%@",dict2[@"OrderNo"]];
     
-    NSString *dt3=dict2[@"CreateDateTime"];;
-    dt3=[dt3 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
-    dt3=[dt3 stringByReplacingOccurrencesOfString:@")/" withString:@""];
-    // NSLog(@"%@",dt3);
-    NSString * timeStampString3 =dt3;
-    NSTimeInterval _interval3=[timeStampString3 doubleValue] / 1000;
-    NSDate *date3 = [NSDate dateWithTimeIntervalSince1970:_interval3];
-    NSDateFormatter *objDateformat3 = [[NSDateFormatter alloc] init];
-    [objDateformat3 setDateFormat:@"MM-dd"];
-    cell.time.text=[objDateformat3 stringFromDate: date3];
+//    NSString *dt3=dict2[@"CreateDateTime"];;
+//    dt3=[dt3 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
+//    dt3=[dt3 stringByReplacingOccurrencesOfString:@")/" withString:@""];
+//    // NSLog(@"%@",dt3);
+//    NSString * timeStampString3 =dt3;
+//    NSTimeInterval _interval3=[timeStampString3 doubleValue] / 1000;
+//    NSDate *date3 = [NSDate dateWithTimeIntervalSince1970:_interval3];
+//    NSDateFormatter *objDateformat3 = [[NSDateFormatter alloc] init];
+//    [objDateformat3 setDateFormat:@"MM-dd"];
+    cell.time.text=[self DateFormartMD:dict2[@"CreateDateTime"]];// ][objDateformat3 stringFromDate: date3];
     
     cell.title.text=[NSString stringWithFormat:@"%@",dict2[@"OrderTitle"]];
     NSMutableArray *array=[dict2 objectForKey:@"Files"];
@@ -157,10 +157,9 @@
 {
    num=num+1;
    
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *myString = [userDefaultes stringForKey:@"myidt"];
+    NSString *Create_User = [self GetUserID];
     
-    NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Order.ashx?action=imgviewstart&q0=%@&q1=%d",urlt,myString,num];
+    NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Order.ashx?action=imgviewstart&q0=%@&q1=%d",urlt,Create_User,num];
     NSLog(@"---------%@",urlStr2);
     
     AFHTTPRequestOperation *op=[self GETurlString:urlStr2];
@@ -204,8 +203,7 @@
 -(void)netWorkRequest2
 {
     
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *myString = [userDefaultes stringForKey:@"myidt"];
+    NSString *myString =[self GetUserID];
     
     NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Order.ashx?action=imgviewstart&q0=%@&q1=%d",urlt,myString,num];
 

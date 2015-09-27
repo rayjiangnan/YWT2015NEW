@@ -30,10 +30,11 @@
 
 -(void)viewDidAppear:(BOOL)animated{
 
-  self.navigationController.navigationBarHidden=NO;
+    self.navigationController.navigationBarHidden=NO;
     self.navigationItem.hidesBackButton=YES;
     self.tabBarController.tabBar.hidden=YES;
     
+    [self ChangePageInit:@"Order"];
 }
 
 - (void)viewDidLoad {
@@ -45,22 +46,22 @@
     
     
     self.navigationController.navigationBar.barTintColor=myColorRGB;
-    
+
     [self.navigationController.navigationBar setTitleTextAttributes:
-     
-     @{NSFontAttributeName:[UIFont systemFontOfSize:17],
-       
-       NSForegroundColorAttributeName:[UIColor whiteColor]}];
-    
+
+    @{NSFontAttributeName:[UIFont systemFontOfSize:17],
+
+    NSForegroundColorAttributeName:[UIColor whiteColor]}];
+
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
     
     [self network];
     NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
     NSString *Certify = [userDefaultes stringForKey:@"Certify"];
-     NSString *star = [userDefaultes stringForKey:@"star"];
-     NSString *RealName = [userDefaultes stringForKey:@"RealName"];
-     NSString *UserImg = [userDefaultes stringForKey:@"UserImg"];
+    NSString *star = [userDefaultes stringForKey:@"star"];
+    NSString *RealName = [userDefaultes stringForKey:@"RealName"];
+    NSString *UserImg = [userDefaultes stringForKey:@"UserImg"];
     
     self.realname.text=RealName;
     if ([Certify isEqualToString:@"0"]) {
@@ -111,12 +112,7 @@
 }
 
 -(void)network{
-    
-    
-    
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    
-    NSString *myString = [userDefaultes stringForKey:@"myidt"];
+    NSString *myString =[self GetUserID];
     
     
     NSString *urlStr = [NSString stringWithFormat:@"%@/api/YWT_User.ashx?action=getordernum&q0=%@",urlt,myString];

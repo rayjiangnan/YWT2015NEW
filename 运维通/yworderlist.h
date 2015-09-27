@@ -5,26 +5,26 @@
 //  Created by abc on 15/8/2.
 //  Copyright (c) 2015年 ritacc. All rights reserved.
 //
-#import "EGORefreshTableHeaderView.h"
+//#import "EGORefreshTableHeaderView.h"
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
 
-@interface yworderlist : UIViewController<EGORefreshTableHeaderDelegate, UITableViewDelegate, UITableViewDataSource,CLLocationManagerDelegate>{
+@interface yworderlist : UIViewController<UITableViewDelegate, UITableViewDataSource>{
     
-    EGORefreshTableHeaderView *_refreshHeaderView;
+    //EGORefreshTableHeaderView *_refreshHeaderView;
     
     //  Reloading var should really be your tableviews datasource
     //  Putting it here for demo purposes
     BOOL _reloading;
     int indexa;
-    UIWebView *WebView;
-    UIActivityIndicatorView *activityIndicator;
+    //UIWebView *WebView;
+    //UIActivityIndicatorView *activityIndicator;
     
 }
--(void)genz;
+//-(void)genz;
 - (IBAction)indexchang:(UISegmentedControl *)sender;
-- (void)reloadTableViewDataSource;
-- (void)doneLoadingTableViewData;
--(int *)num:(int *)num2;
-@property (nonatomic, strong) CLLocationManager *_locationManager;
+//- (void)reloadTableViewDataSource;
+//- (void)doneLoadingTableViewData;
+//-(int *)num:(int *)num2;
+//@property (nonatomic, strong) CLLocationManager *_locationManager;
 @end

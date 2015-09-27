@@ -83,7 +83,7 @@
     orderid = [userDefaultes stringForKey:@"orderidt"];
     NSString *action=[userDefaultes stringForKey:@"action"];
         
-    NSString *myString = [userDefaultes stringForKey:@"myidt"];
+    NSString *myString =[self GetUserID];
     
     NSString *urlStr = [NSString stringWithFormat:@"%@/API/YWT_Order.ashx?action=%@&q0=%@&q1=%@",urlt,action,orderid,myString];
     NSURL *url = [NSURL URLWithString:urlStr];

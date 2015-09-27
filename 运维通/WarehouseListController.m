@@ -32,8 +32,12 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     self.tabBarController.tabBar.hidden=NO;
+    
+    
+    //[self repeatnetwork];
+    self.tableview.rowHeight=60;
     int chageStatus=[self ChangePageInit:@"Warehouse"];
-    if (chageStatus==1 || chageStatus==4) {
+    if (chageStatus==4) {
         [self network2];
         [self.tableview reloadData];
     }
@@ -41,18 +45,17 @@
         
     }
     else if (chageStatus==3) {
-        
+        [self ChangeLoad];
     }
-
 }
 
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     num=0;
-    [self repeatnetwork];
+    [self network2];
+    [self.tableview reloadData];
     self.tableview.rowHeight=60;
-       
 }
 
 
@@ -84,8 +87,8 @@
 -(void)network2{
 
     int indes=-1;
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *Create_User = [userDefaultes stringForKey:@"myidt"];
+    
+    NSString *Create_User = [self GetUserID];
     NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Warehouse.ashx?action=getlist&q0=%@&q1=%d",urlt,Create_User,indes];
     
     NSLog(@"------%@",urlStr2);
@@ -139,14 +142,25 @@
     return _tgs;
 }
 
+-(void) ChangeLoad
+{
+    NSString *strid=[self ChangeGetChageID:@"Warehouse"];
+    int _pagenum=   [strid intValue];
+    if (_pagenum >=0) {
+        [self  loadMoreData: _pagenum+1 IsChangeAdd:FALSE];
+    }
+}
 
 -(void)loadMoreData
 {
     
+    [self loadMoreData : num IsChangeAdd:true];
+}
 
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *Create_User = [userDefaultes stringForKey:@"myidt"];
-    NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Warehouse.ashx?action=getlist&q0=%@&q1=%d",urlt,Create_User,num];
+-(void)loadMoreData :(int) ChageNum IsChangeAdd:(BOOL) _IsChange
+{
+    NSString *Create_User =[self GetUserID];
+    NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Warehouse.ashx?action=getlist&q0=%@&q1=%d",urlt,Create_User,ChageNum];
 
     AFHTTPRequestOperation *op=[self GETurlString:urlStr2];
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -165,14 +179,23 @@
             {
                 self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
             }
+            
             if (dictarr.count>0) {
-                NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
-                num=[dict3[@"Warehouse_ID"] intValue];
-                [_tgs addObjectsFromArray:dictarr];
-                [self.tableview reloadData];
-                
+                if (_IsChange) {
+                    NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
+                    num=[dict3[@"Warehouse_ID"] intValue];
+                    
+                    [_tgs addObjectsFromArray:dictarr];
+                }
+                else
+                {
+                    NSString *strid=[self ChangeGetChageID:@"Warehouse"];
+                    if (![self ChangeData:_tgs NewLoadRecords:dictarr ItemIDKey:@"Warehouse_ID"  ID:strid]) {
+                        NSLog(@"加载数据出错。");
+                    }
+                }
             }
-
+            [self.tableView reloadData];
         }
         [self.tableView.footer endRefreshing];
         self.tableView.footer.autoChangeAlpha=YES;
@@ -181,8 +204,6 @@
         [MBProgressHUD showError:@"网络请求出错"];
     }];
     [[NSOperationQueue mainQueue] addOperation:op];
-    
-    
 }
 
 

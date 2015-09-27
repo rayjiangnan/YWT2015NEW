@@ -1,6 +1,6 @@
 //
 //  mapViewController.m
-//  送哪儿
+//  
 //
 //  Created by apple on 15/4/28.
 //  Copyright (c) 2015年 Tony. All rights reserved.
@@ -54,28 +54,22 @@
     self.searchfield.delegate=self;
     self.mapView.delegate = self;
     if ([CLLocationManager locationServicesEnabled]) {
-        
         _locationManager= [[CLLocationManager alloc] init];
-        
         _locationManager.delegate = self;
-        
         _locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-        
         _locationManager.distanceFilter = 100;
-        
         [_locationManager startUpdatingLocation];
-        
+
         if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
-            
-            [_locationManager requestWhenInUseAuthorization];
-        
+
+        [_locationManager requestWhenInUseAuthorization];
         _locationManager.pausesLocationUpdatesAutomatically = NO;
     }
     //self.mapView.userTrackingMode=MKUserTrackingModeFollowWithHeading;
     [self.mapView setUserTrackingMode:MKUserTrackingModeFollow animated:NO];
     self.mapView.delegate = self;
     _geocoder=[[CLGeocoder alloc]init];
-        _search = [[AMapSearchAPI alloc] initWithSearchKey:@"84b236dd100187d3b2f86f878bbf1b33" Delegate:self];
+    _search = [[AMapSearchAPI alloc] initWithSearchKey:@"84b236dd100187d3b2f86f878bbf1b33" Delegate:self];
 
     self.tabBarController.tabBar.hidden=YES;
     self.tableview.rowHeight=70;
@@ -120,7 +114,7 @@
     for (AMapTip *p in response.tips) {
         NSString *name = [NSString stringWithFormat:@"%@",p.name];
          NSString *diqu = [NSString stringWithFormat:@"%@",p.district];
-        NSMutableArray *dictArray =@{
+        NSDictionary *dictArray =@{
                                           @"name" :name,
                                           @"diqu" :diqu,
 
@@ -258,8 +252,8 @@
         CLPlacemark *placemark=[placemarks firstObject];
         
         CLLocation *location=placemark.location;//位置
-        CLRegion *region=placemark.region;//区域
-        NSDictionary *addressDic= placemark.addressDictionary;//详细地址信息字典,包含以下部分信息
+        //CLRegion *region=placemark.region;//区域
+        //NSDictionary *addressDic= placemark.addressDictionary;//详细地址信息字典,包含以下部分信息
         //        NSString *name=placemark.name;//地名
         //        NSString *thoroughfare=placemark.thoroughfare;//街道
         //        NSString *subThoroughfare=placemark.subThoroughfare; //街道相关信息，例如门牌等

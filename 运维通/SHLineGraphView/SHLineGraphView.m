@@ -26,6 +26,7 @@
 #import <math.h>
 #import <objc/runtime.h>
 #import "MBProgressHUD+MJ.h"
+#import "UIViewController+Extension.h"
 
 #define BOTTOM_MARGIN_TO_LEAVE 30.0
 #define TOP_MARGIN_TO_LEAVE 30.0
@@ -351,15 +352,11 @@
     UIButton *btn = (UIButton *)sender;
 		NSUInteger tag = btn.tag;
     
-    SHPlot *_plot = objc_getAssociatedObject(btn, kAssociatedPlotObject);
+        SHPlot *_plot = objc_getAssociatedObject(btn, kAssociatedPlotObject);
 		NSString *text = [_plot.plottingPointsLabels objectAtIndex:tag];
 		
-        
-        
-        
-        NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-        
-        NSString *myString = [userDefaultes stringForKey:@"myidt"];
+        NSUserDefaults *defau=[NSUserDefaults standardUserDefaults];
+        NSString *myString = [defau stringForKey:@"myidt"];
         
         NSString *urlStr = [NSString stringWithFormat:@"%@/API/YWT_Order.ashx?action=monthview&q0=%@",urlt,myString];
         NSURL *url = [NSURL URLWithString:urlStr];
@@ -378,13 +375,13 @@
             //  NSArray *dictarr=[dictarr2 objectForKey:@"OrderFile"];
             
             if (![dictarr2[@"Items"] isEqual:[NSNull null]]){
-                  NSArray *month=dictarr2[@"Items"];
+                NSArray *month=dictarr2[@"Items"];
                 NSLog(@"%@",[_plot.plottingPointsLabels objectAtIndex:1]);
                 NSString *aa1=[NSString stringWithFormat:@"%@",[_plot.plottingPointsLabels objectAtIndex:0]];
-                  NSString *aa2=[NSString stringWithFormat:@"%@",[_plot.plottingPointsLabels objectAtIndex:1]];
-                  NSString *aa3=[NSString stringWithFormat:@"%@",[_plot.plottingPointsLabels objectAtIndex:2]];
-                  NSString *aa4=[NSString stringWithFormat:@"%@",[_plot.plottingPointsLabels objectAtIndex:3]];
-                
+                NSString *aa2=[NSString stringWithFormat:@"%@",[_plot.plottingPointsLabels objectAtIndex:1]];
+                NSString *aa3=[NSString stringWithFormat:@"%@",[_plot.plottingPointsLabels objectAtIndex:2]];
+                NSString *aa4=[NSString stringWithFormat:@"%@",[_plot.plottingPointsLabels objectAtIndex:3]];
+
                 NSString *n1;
                 NSString *n2;
                 NSString *n3;
@@ -408,10 +405,9 @@
                      if ([aa2 isEqualToString:@"a2"]) {
                          n2=[NSString stringWithFormat:@"%@",dict2[@"ScoreAvg"]];
                      }else{
-                         
-                         
                          n2=[NSString stringWithFormat:@"%@",dict2[@"OrderFinishNum"]];
-                     }                 }
+                     }
+                 }
                 
                 if (month.count>2) {
                     NSDictionary *dict3=[month objectAtIndex:2];
@@ -432,24 +428,22 @@
                         
                         
                         n1=[NSString stringWithFormat:@"%@",dict4[@"OrderFinishNum"]];
-                    }                }
+                    }
+                }
                 
-                    if ([text isEqualToString:@"1"]) {
-                        
-                        lbl.text =n1;
-                    }
-                    if ([text isEqualToString:@"2"]) {
-                        
-                        lbl.text =n2;
-                    }
-                    if ([text isEqualToString:@"3"]) {
-                        
-                        lbl.text =n3;
-                    }
-                    if ([text isEqualToString:@"4"]) {
-                        
-                        lbl.text =n4;
-                    }
+                if ([text isEqualToString:@"1"]) {
+                    
+                    lbl.text =n1;
+                }
+                if ([text isEqualToString:@"2"]) {
+                    lbl.text =n2;
+                }
+                if ([text isEqualToString:@"3"]) {
+                    lbl.text =n3;
+                }
+                if ([text isEqualToString:@"4"]) {
+                    lbl.text =n4;
+                }
                
                 if ([text isEqualToString:@"a1"]) {
                     
@@ -466,10 +460,7 @@
                 if ([text isEqualToString:@"a4"]) {
                     
                     lbl.text =n4;
-                }
-
-                
-                
+                }                
             }
             
             

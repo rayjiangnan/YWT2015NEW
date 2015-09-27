@@ -15,7 +15,7 @@
 #import "MJRefresh.h"
 #import "UIViewController+Extension.h"
 
-@interface yworderlist ()<UITableViewDataSource,UITableViewDelegate,UIWebViewDelegate,CLLocationManagerDelegate>
+@interface yworderlist ()<UITableViewDataSource,UITableViewDelegate>
 {
     NSInteger rowNumber;
     int pagenum;
@@ -34,12 +34,12 @@
 @property NSInteger *idenxx;
 
 
-@property (weak, nonatomic) IBOutlet UIButton *fanhui;
-
-
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *addbtn;
-
-@property (weak, nonatomic) IBOutlet UIView *bottomview;
+//@property (weak, nonatomic) IBOutlet UIButton *fanhui;
+//
+//
+//@property (weak, nonatomic) IBOutlet UIBarButtonItem *addbtn;
+//
+//@property (weak, nonatomic) IBOutlet UIView *bottomview;
 
 
 
@@ -47,7 +47,7 @@
 
 @implementation yworderlist
 @synthesize title;
-@synthesize _locationManager;
+//@synthesize _locationManager;
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidLoad];
@@ -56,7 +56,7 @@
     self.tabBarController.tabBar.hidden=NO;
     
     int chageStatus=[self ChangePageInit:@"Order"];
-    if (chageStatus==1 || chageStatus==4) {
+    if (chageStatus==4) {
         
         [self indexchang:self.segmentControl];
         
@@ -97,19 +97,25 @@
     NSString *pass= [userDefaultes stringForKey:@"passkey"];
     if ([pass isEqualToString:@"pass"]) {
         self.navigationItem.hidesBackButton =YES;
-        self.fanhui.hidden=YES;
+        //self.fanhui.hidden=YES;
         
     }else if([pass isEqualToString:@"sjpass"]){
-        self.bottomview.hidden=YES;
+        //self.bottomview.hidden=YES;
         self.navigationItem.hidesBackButton =YES;
     }
     [self.tableView reloadData];
     self.tableView.rowHeight=155;
+    
     [self indexchang:self.segmentControl];
     self.tableView.delegate=self;
 
     indexa=0;
     [self repeatnetwork];
+    
+    //[self indexchang:self.segmentControl];
+    
+    [AFNetworkTool netWorkStatus];
+    num=0;
 }
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     return YES;
@@ -208,8 +214,7 @@
 - (IBAction)indexchang:(UISegmentedControl *)sender {
     NSInteger colum=sender.selectedSegmentIndex;
     pagenum=colum-1;
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *myString = [userDefaultes stringForKey:@"myidt"];
+    NSString *myString =[self GetUserID];
     if (myString == nil) {
         return;
     }
@@ -243,35 +248,35 @@
     [[NSOperationQueue mainQueue] addOperation:op];
 }
 
-//开始加载数据
-- (void)webViewDidStartLoad:(UIWebView *)webView {
-    
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-    [view setTag:103];
-    [view setBackgroundColor:[UIColor clearColor]];
-    [view setAlpha:0.8];
-    [self.view addSubview:view];
-    activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 32.0f, 32.0f)];
-    [activityIndicator setCenter:view.center];
-    [activityIndicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-    [view addSubview:activityIndicator];
-    [self.view addSubview:WebView];
-    [activityIndicator startAnimating];
-}
-
-//数据加载完
-- (void)webViewDidFinishLoad:(UIWebView *)webView {
-    [activityIndicator stopAnimating];
-    UIView *view = (UIView *)[self.view viewWithTag:103];
-    [view removeFromSuperview];
-}
-
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
-{
-    [activityIndicator stopAnimating];
-    UIView *view = (UIView *)[self.view viewWithTag:103];
-    [view removeFromSuperview];
-}
+////开始加载数据
+//- (void)webViewDidStartLoad:(UIWebView *)webView {
+//    
+//    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+//    [view setTag:103];
+//    [view setBackgroundColor:[UIColor clearColor]];
+//    [view setAlpha:0.8];
+//    [self.view addSubview:view];
+//    activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 32.0f, 32.0f)];
+//    [activityIndicator setCenter:view.center];
+//    [activityIndicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+//    [view addSubview:activityIndicator];
+//    [self.view addSubview:WebView];
+//    [activityIndicator startAnimating];
+//}
+//
+////数据加载完
+//- (void)webViewDidFinishLoad:(UIWebView *)webView {
+//    [activityIndicator stopAnimating];
+//    UIView *view = (UIView *)[self.view viewWithTag:103];
+//    [view removeFromSuperview];
+//}
+//
+//- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+//{
+//    [activityIndicator stopAnimating];
+//    UIView *view = (UIView *)[self.view viewWithTag:103];
+//    [view removeFromSuperview];
+//}
 
 
 
@@ -296,8 +301,7 @@
 -(void)loadMoreData:(int) ChageNum IsChangeAdd:(BOOL) _IsChange
 {
    
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *myString = [userDefaultes stringForKey:@"myidt"];
+    NSString *myString =[self GetUserID];
     
     NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_Order.ashx?action=getlist&q0=%d&q1=%@&q2=%d",urlt,ChageNum,myString,pagenum];
     

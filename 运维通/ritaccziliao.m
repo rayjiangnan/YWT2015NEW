@@ -50,9 +50,7 @@
     
     NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
     NSString *myString = [userDefaultes stringForKey:@"myidt2"];
-    // NSString *mystring2=[NSString stringWithFormat:@"%@",strTtile];
-    // NSString *tr=@"B6D13BE7-990C-4DA6-A757-088ED994D9EA";
-    //NSLog(@"%@",myString)
+ 
     NSString *urlStr = [NSString stringWithFormat:@"%@/API/HDL_Supplier.ashx?action=get&q0=%@",urlt,myString];
     
     NSURL *url = [NSURL URLWithString:urlStr];
@@ -85,21 +83,12 @@
         [MBProgressHUD showError:@"网络请求出错"];
         return ;
     }
-    
-    
-    
-    
 }
 
 -(void)network2{
-    
-    
-    
     NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
     NSString *myString = [userDefaultes stringForKey:@"myidt2"];
-    // NSString *mystring2=[NSString stringWithFormat:@"%@",strTtile];
-    // NSString *tr=@"B6D13BE7-990C-4DA6-A757-088ED994D9EA";
-    //NSLog(@"%@",myString)
+ 
     NSString *urlStr = [NSString stringWithFormat:@"%@/API/YWT_Supplier.ashx?action=get&q0=%@",urlt,myString];
     
     NSURL *url = [NSURL URLWithString:urlStr];
@@ -173,7 +162,7 @@
     
     
     NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *myString = [userDefaultes stringForKey:@"myidt"];
+    NSString *myString =[self GetUserID];
     NSString *myString2 = [userDefaultes stringForKey:@"myidt2"];
     
     if ([myString2 isEqualToString:@""]) {

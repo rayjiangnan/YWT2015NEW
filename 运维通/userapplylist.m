@@ -58,16 +58,16 @@
 
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    NSString *dt3=dict2[@"Apply_Date"];
-    dt3=[dt3 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
-    dt3=[dt3 stringByReplacingOccurrencesOfString:@")/" withString:@""];
-    // NSLog(@"%@",dt3);
-    NSString * timeStampString3 =dt3;
-    NSTimeInterval _interval3=[timeStampString3 doubleValue] / 1000;
-    NSDate *date3 = [NSDate dateWithTimeIntervalSince1970:_interval3];
-    NSDateFormatter *objDateformat3 = [[NSDateFormatter alloc] init];
-    [objDateformat3 setDateFormat:@"yyyy-MM-dd"];
-    cell.time.text=[objDateformat3 stringFromDate: date3];
+//    NSString *dt3=dict2[@"Apply_Date"];
+//    dt3=[dt3 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
+//    dt3=[dt3 stringByReplacingOccurrencesOfString:@")/" withString:@""];
+//    // NSLog(@"%@",dt3);
+//    NSString * timeStampString3 =dt3;
+//    NSTimeInterval _interval3=[timeStampString3 doubleValue] / 1000;
+//    NSDate *date3 = [NSDate dateWithTimeIntervalSince1970:_interval3];
+//    NSDateFormatter *objDateformat3 = [[NSDateFormatter alloc] init];
+//    [objDateformat3 setDateFormat:@"yyyy-MM-dd"];
+    cell.time.text=[self DateFormartYMD:dict2[@"Apply_Date"]];//[objDateformat3 stringFromDate: date3];
     
     NSString *lr=[NSString stringWithFormat:@"%@  %@",dict2[@"ContactMan"],dict2[@"ContactMobile"]];
     cell.lxr.text=lr;
@@ -151,8 +151,7 @@
     NSString *orderq=rowdata[@"Platform_Apply_ID"];
     NSString *urlStr =[NSString stringWithFormat:@"%@/API/YWT_OrderPlatform.ashx",urlt] ;
     
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *myString = [userDefaultes stringForKey:@"myidt"];
+    NSString *myString =[self GetUserID];
     
     NSString *str = [NSString stringWithFormat:@"action=comfirmapplyuser&q0=%@&q1=%@&q2=%@",mystring2,orderq,myString];
     NSLog(@"%@?%@",urlStr,str);

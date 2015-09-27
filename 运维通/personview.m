@@ -1,6 +1,6 @@
 //
 //  personview.m
-//  送哪儿
+//
 //
 //  Created by 南江 on 15/5/12.
 //  Copyright (c) 2015年 Tony. All rights reserved.
@@ -14,7 +14,7 @@
 #import "UIImageView+WebCache.h"
 #import "UIViewController+Extension.h"
 
-@interface personview ()<UIWebViewDelegate>
+@interface personview ()<UIWebViewDelegate,UITableViewDataSource,UITableViewDelegate,UIWebViewDelegate>
 @property (nonatomic,strong)NSMutableArray *tgs;
 @property (nonatomic,strong)NSMutableArray *tgsname;
 @property (nonatomic,strong)NSDictionary *siji;
@@ -34,9 +34,12 @@
 
 
 -(void)viewDidAppear:(BOOL)animated{
-    [self viewDidLoad];
-    [self.tableview reloadData];
+
     self.tabBarController.tabBar.hidden=YES;
+
+        [self totalnarray];
+        [self.tableview reloadData];
+
 }
 
 - (void)viewDidLoad {
@@ -55,22 +58,10 @@
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
 
     self.tableview.rowHeight=50;
+ 
 
-
-  [self totalnarray];
-    NSMutableArray *array=[NSMutableArray array];
-    for (NSDictionary *str in _tgs) {
-        if (![str[@"RealName"] isEqual:[NSNull null]]) {
-           NSMutableArray *name=str[@"RealName"];
-        [array addObject:name];  
-        }
-    }
-    [self namec:array];
-    NSArray *stringsToSort=_tgsname;
-   
-   self.indexArray = [ChineseString IndexArray:stringsToSort];
-   self.LetterResultArr = [ChineseString LetterSortArray:stringsToSort];
-
+    [self totalnarray];
+    [self.tableview reloadData];
     
 }
 - (void)didReceiveMemoryWarning
@@ -84,25 +75,6 @@
     return key;
 }
 
--(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    UILabel *lab = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 320, 20)];
-    CGFloat R  = (CGFloat) 245/255.0;
-    CGFloat G = (CGFloat) 245/255.0;
-    CGFloat B = (CGFloat) 245/255.0;
-    CGFloat alpha = (CGFloat) 1.0;
-    
-    UIColor *myColorRGB = [ UIColor colorWithRed: R
-                                           green: G
-                                            blue: B
-                                           alpha: alpha
-                           ];
-    lab.backgroundColor =myColorRGB;
-    lab.text = [indexArray objectAtIndex:section];
-    lab.textColor = [UIColor grayColor];
-    
-    return lab;
-}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -137,8 +109,6 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    
-    
     NSDictionary *dict2=[_tgs objectAtIndex:indexPath.row];
     NSLog(@"%@",dict2);
     static NSString *ID = @"tg";
@@ -146,20 +116,7 @@
     if (cell == nil) {
         cell=[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:ID];
     }
-    
-    //  NSString *pan=[NSString stringWithFormat:@"%@",dict2[@"UserImg"]];
-    // if ([pan isEqualToString:@""]) {
-    
-    //}else{
-    
-    //    NSString *img=[NSString stringWithFormat:@"%@%@",urlt,dict2[@"UserImg"]];
-    // NSURL *imgurl=[NSURL URLWithString:img];
-    //  cell.imageView.image=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
-    
-    
-    // }
-    //cell.imageView.image=[UIImage imageNamed:@"sjtx"];
- 
+
     cell.textLabel.text = [[self.LetterResultArr objectAtIndex:indexPath.section]objectAtIndex:indexPath.row];
     int index=_tgs.count;
     NSString *namec=[[self.LetterResultArr objectAtIndex:indexPath.section]objectAtIndex:indexPath.row];
@@ -204,9 +161,6 @@
         }
         
     }
-    
-    
-    
     return cell;
 }
 
@@ -237,27 +191,36 @@
 
 -(NSMutableArray *)network:(NSMutableArray *)dict
 {
-
         _tgs=dict;
-        return _tgs;
     
+    NSMutableArray *array=[NSMutableArray array];
+    for (NSDictionary *str in _tgs) {
+        if (![str[@"RealName"] isEqual:[NSNull null]]) {
+            NSMutableArray *name=str[@"RealName"];
+            [array addObject:name];
+        }
+    }
+    [self namec:array];
+    NSArray *stringsToSort=_tgsname;
+    
+    self.indexArray = [ChineseString IndexArray:stringsToSort];
+    self.LetterResultArr = [ChineseString LetterSortArray:stringsToSort];
+    
+    return _tgs;
 }
 
 -(NSMutableArray *)namec:(NSMutableArray *)dict
 {
-    
     _tgsname=dict;
-   
     return _tgsname;
     
 }
 
 - (void)totalnarray{
  
-        NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-        NSString *myString = [userDefaultes stringForKey:@"myidt"];
-        
-        NSString *urlStr = [NSString stringWithFormat:@"%@/API/YWT_User.ashx?action=getsupuser&q0=%@",urlt,myString];
+    NSString *myString =[self GetUserID];
+    
+    NSString *urlStr = [NSString stringWithFormat:@"%@/API/YWT_User.ashx?action=getsupuser&q0=%@",urlt,myString];
         
     AFHTTPRequestOperation *op=[self POSTurlString:urlStr parameters:@""];
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -283,52 +246,6 @@
     [[NSOperationQueue mainQueue] addOperation:op];
 }
 
-#pragma mark - 加载
-
-- (void)webViewDidStartLoad:(UIWebView *)webView {
-    
-    
-    
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-    
-    [view setTag:103];
-    
-    [view setBackgroundColor:[UIColor clearColor]];
-    
-    [view setAlpha:0.8];
-    
-    [self.view addSubview:view];
-    
-    activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 32.0f, 32.0f)];
-    
-    [activityIndicator setCenter:view.center];
-    
-    [activityIndicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-    
-    [view addSubview:activityIndicator];
-    
-    [self.view addSubview:WebView];
-    
-    [activityIndicator startAnimating];
-    
-}
-
-- (void)webViewDidFinishLoad:(UIWebView *)webView {
-    
-    [activityIndicator stopAnimating];
-    
-    UIView *view = (UIView *)[self.view viewWithTag:103];
-    
-    [view removeFromSuperview];
-    
-}
-
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
-{
-    [activityIndicator stopAnimating];
-    UIView *view = (UIView *)[self.view viewWithTag:103];
-    [view removeFromSuperview];
-}
 
 
 

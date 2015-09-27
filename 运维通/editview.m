@@ -1,6 +1,6 @@
 //
 //  editview.m
-//  送哪儿
+//  
 //
 //  Created by 南江 on 15/5/12.
 //  Copyright (c) 2015年 Tony. All rights reserved.
@@ -78,9 +78,8 @@
  
     NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
        NSString *myString = [userDefaultes stringForKey:@"personid"];
-         NSString *myString2 = [userDefaultes stringForKey:@"myidt"];      //  NSString *mystring2=[NSString stringWithFormat:@"%@",strTtile];
-    // NSString *tr=@"B6D13BE7-990C-4DA6-A757-088ED994D9EA";
-        //NSLog(@"%@",myString)
+         NSString *myString2  =[self GetUserID];      //  NSString *mystring2=[NSString
+    
         NSString *urlStr = [NSString stringWithFormat:@"%@/API/YWT_User.ashx?action=getasupuser&q0=%@&q1=%@",urlt,myString,myString2];
         
         NSURL *url = [NSURL URLWithString:urlStr];

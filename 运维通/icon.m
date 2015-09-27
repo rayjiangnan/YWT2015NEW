@@ -33,38 +33,7 @@
     return _idtt2 ;
 }
 
-//-(void)net{
-//    
-//    
-//    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-//    NSString *myString = [userDefaultes stringForKey:@"myidt"];
-//    NSString *urlStr = [NSString stringWithFormat:@"%@/API/HDL_User.ashx?action=getasupuser&q0=%@&q1=%@",urlt,myString,myString];
-//    NSURL *url = [NSURL URLWithString:urlStr];
-//    NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:2.0f];
-//    [request setHTTPMethod:@"POST"];//设置请求方式为POST，默认为GET
-//    NSString *str = @"type=focus-c";//设置参数
-//    NSData *data = [str dataUsingEncoding:NSUTF8StringEncoding];
-//    [request setHTTPBody:data];
-//    NSData *received = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
-//    if(received!=nil){
-//        NSDictionary *dict=[NSJSONSerialization JSONObjectWithData:received options:NSJSONReadingMutableLeaves error:nil];
-// //       NSDictionary *dictarr2=[dict objectForKey:@"ResultObject"];
-////        NSString *img=[NSString stringWithFormat:@"%@%@",urlt,dictarr2[@"UserImg"]];
-////        NSURL *imgurl=[NSURL URLWithString:img];
-////        UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
-////        self.imageView.image=imgstr;
-//        
-//        
-//    }else
-//    {
-//        [MBProgressHUD showError:@"网络请求出错"];
-//        return ;
-//    }
-//    
-//    
-//    
-//    
-//}
+
 
 - (IBAction)reg {
     
@@ -74,42 +43,7 @@
 }
 
 
-
-
-
-
-//- (void)postJSON:(NSString *)text1 :(NSString *)text2:(NSString *)text3 :(NSString *)text4:(NSString *)text5 :(NSString *)text6:(NSString *)text7:(NSString *)text8 :(NSString *)text9:(NSString *)text10 :(NSString *)text11:(NSString *)text12:(NSString *)text13
-//{
-//    
-//    NSString *strurl=[NSString stringWithFormat:@"%@/API/HDL_Order.ashx",urlt];
-//    
-//    
-//    
-//    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-//    NSString *myString = [userDefaultes stringForKey:@"myidt"];
-//    NSLog(@"3333%@",myString);
-//    
-//    
-//    NSString *dstr=[NSString stringWithFormat:@"{\"OrderMain\":{\"Creator\":\"%@\",\"Piece\":\"%@\", \"Plate\":\"%@\", \"Freight\":\"%@\", \"PickAddress\":\"%@\", \"PickContactMan\":\"%@\", \"PickContactMobile\":\"%@\", \"PickDateTime\":\"%@\", \"DeliveryAddress\":\"%@\", \"DeliveryContactMan\":\"%@\", \"DeliveryContactMobile\":\"%@\", \"DeliveryDateTime\":\"%@\", \"ToOrderUserID\":\"%@\"},\"OrderFile\":[{\"FileType\":\"%@\",\"FileName\":\"%@\",\"Creator\":\"%@\"}]}",myString,text1,text2,text3,text4,text5,text6,text7,text8,text9,text10,text11,myString,text12,text13,myString];
-//    //,\"OrderFile\":[{\"FileType\":\"%@\", \"FileName\":\"%@\", \"CreateDateTime\":\"%@\"]}
-//    // ? 数据体
-//    NSString *str = [NSString stringWithFormat:@"action=add&q0=%@",dstr];
-//    
-//    AFHTTPRequestOperation *op=[self POSTurlString:strurl parameters:str];
-//    [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-//        NSLog(@"%@", responseObject);
-//        
-//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//        [MBProgressHUD showError:@"网络请求出错"];
-//        return ;
-//    }];
-//    [[NSOperationQueue mainQueue] addOperation:op];
-//    
-//    
-//}
-
-
-
+ 
 
 - (IBAction)selectImg_Click:(id)sender {
     
@@ -126,9 +60,7 @@
 }
 
 - (void)btnupload_Click:(id)sender {
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *myString = [userDefaultes stringForKey:@"myidt"];
-    //NSString *orderid = [userDefaultes stringForKey:@"orderid"];
+    NSString *myString =[self GetUserID];
     
     [self UpdateFileImage:self.imageView.image  action:@"userimg" orderid:myString creatorid:myString uploadUrl:urlt];
     

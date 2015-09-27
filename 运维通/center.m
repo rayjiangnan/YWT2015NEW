@@ -40,29 +40,7 @@
 
 
 -(void)viewDidAppear:(BOOL)animated{
-    
-    [self network];
     [self.view setNeedsDisplay];
-    
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *usertype= [userDefaultes stringForKey:@"usertype"];
-    if ([usertype isEqualToString:@"10"]) {
-        self.gerenbtn.hidden=NO;
-    }
-
-    NSString *Certify = [userDefaultes stringForKey:@"Certify"];
-
-    if ([Certify isEqualToString:@"0"]) {
-        [self.renz setTitle:@"未认证" forState:UIControlStateNormal];
-    }else if ([Certify isEqualToString:@"1"]) {
-        [self.renz setTitle:@"已认证" forState:UIControlStateNormal];
-    }else if ([Certify isEqualToString:@"2"]) {
-        [self.renz setTitle:@"审核中" forState:UIControlStateNormal];
-    }else if ([Certify isEqualToString:@"10"]) {
-        [self.renz setTitle:@"认证失败" forState:UIControlStateNormal];
-    }
-
-    
 }
 
 - (void)viewDidLoad {
@@ -86,8 +64,64 @@
     
     UITapGestureRecognizer *tap=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(didClickIconImageV)];
     [self.img addGestureRecognizer:tap];
+    
+    //显示信息
+    [self network];
 }
+-(void)network{
+    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
+    
+    //认证
+    NSString *Certify = [userDefaultes stringForKey:@"Certify"];
+    if ([Certify isEqualToString:@"0"]) {
+        [self.renz setTitle:@"未认证" forState:UIControlStateNormal];
+    }else if ([Certify isEqualToString:@"1"]) {
+        [self.renz setTitle:@"已认证" forState:UIControlStateNormal];
+    }else if ([Certify isEqualToString:@"2"]) {
+        [self.renz setTitle:@"审核中" forState:UIControlStateNormal];
+    }else if ([Certify isEqualToString:@"10"]) {
+        [self.renz setTitle:@"认证失败" forState:UIControlStateNormal];
+    }
 
+    
+    
+    NSString *usertype=[userDefaultes stringForKey:@"usertype"];
+    if ([usertype isEqualToString:@"10"]) {
+        self.style.text=@"维运商";
+    }else if([usertype isEqualToString:@"20"]){
+        self.style.text=@"维运人员";
+    }else if([usertype isEqualToString:@"30"]){
+        self.style.text=@"调度";}
+    else if([usertype isEqualToString:@"40"]){
+        self.style.text=@"第三方运维人员";
+    }
+    if ([usertype isEqualToString:@"10"]) {
+        self.gerenbtn.hidden=NO;
+    }
+    
+    self.tel.text=[userDefaultes stringForKey:@"Mobile"];
+    self.username.text=[userDefaultes stringForKey:@"RealName"];
+    NSString *strUserimg=[userDefaultes stringForKey:@"UserImg"];
+    if ([[NSString stringWithFormat:@"%@",strUserimg] isEqualToString:@"/Images/defaultPhoto.png"]) {
+        return;
+    }else{
+        NSString *img=[NSString stringWithFormat:@"%@%@",urlt,strUserimg];
+        NSURL *imgurl=[NSURL URLWithString:img];
+        
+        SDWebImageManager *manager = [SDWebImageManager sharedManager];
+        UIImage *cachedImage = [manager imageWithURL:imgurl];
+        if (cachedImage)
+        {
+            [self.img setBackgroundImage:cachedImage forState:UIControlStateNormal];
+        }
+        else
+        {
+            [manager downloadWithURL:imgurl delegate:nil];
+            UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
+            [self.img setBackgroundImage:imgstr forState:UIControlStateNormal];
+        }
+    }
+}
 
 -(void)didClickIconImageV
 {
@@ -294,8 +328,7 @@
 
 - (void)btnupload_Click:(id)sender {
 
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *myString = [userDefaultes stringForKey:@"myidt"];
+    NSString *myString =[self GetUserID];
 
     [self UpdateFileImage:_receiveImage action:@"userimg" userid:myString creatorid:myString uploadUrl:urlt];
     NSLog(@"完成上传图片。");
@@ -396,90 +429,8 @@
     
 }
 
--(void)network{
-        NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-        //NSString *myString = [userDefaultes stringForKey:@"myidt"];
-    
-        NSString *sty=[userDefaultes stringForKey:@"usertype"];
-        if ([sty isEqualToString:@"10"]) {
-            self.style.text=@"维运商";
-        }else if([sty isEqualToString:@"20"]){
-            self.style.text=@"维运人员";
-        }else if([sty isEqualToString:@"30"]){
-            self.style.text=@"调度";}
-        else if([sty isEqualToString:@"40"]){
-            self.style.text=@"第三方运维人员";
-        }
-        
-        self.tel.text=[userDefaultes stringForKey:@"Mobile"];
-        self.username.text=[userDefaultes stringForKey:@"RealName"];
-        NSString *strUserimg=[userDefaultes stringForKey:@"UserImg"];
-        if ([[NSString stringWithFormat:@"%@",strUserimg] isEqualToString:@"/Images/defaultPhoto.png"]) {
-            return;
-        }else{
-            NSString *img=[NSString stringWithFormat:@"%@%@",urlt,strUserimg];
-            NSURL *imgurl=[NSURL URLWithString:img];
-            
-            SDWebImageManager *manager = [SDWebImageManager sharedManager];
-            UIImage *cachedImage = [manager imageWithURL:imgurl];
-            if (cachedImage)
-            {
-                [self.img setBackgroundImage:cachedImage forState:UIControlStateNormal];
-            }
-            else
-            {
-                [manager downloadWithURL:imgurl delegate:nil];
-                UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
-                [self.img setBackgroundImage:imgstr forState:UIControlStateNormal];
-            }
-        }
 
-    
-//        NSString *urlStr = [NSString stringWithFormat:@"%@/API/YWT_User.ashx?action=getasupuser&q0=%@&q1=%@",urlt,myString,myString];
-//    
-//    
-//    [AFNetworkTool JSONDataWithUrl:[NSString stringWithFormat:@"%@",urlStr] success:^(id json) {
-//        NSDictionary *dict=json;
-//        NSDictionary *dictarr2=[dict objectForKey:@"ResultObject"];
-//
-//    NSLog(@"%@",dict);
-//    NSDictionary *dictarr=[dictarr2 objectForKey:@"User"];
-//    NSString *sty=[NSString stringWithFormat:@"%@",dictarr[@"UserType"]];
-//    if ([sty isEqualToString:@"10"]) {
-//        self.style.text=@"维运商";
-//    }else if([sty isEqualToString:@"20"]){
-//        self.style.text=@"维运人员";
-//    }else if([sty isEqualToString:@"30"]){
-//        self.style.text=@"调度";}
-//    else if([sty isEqualToString:@"40"]){
-//        self.style.text=@"第三方运维人员";
-//    }
-//
-//    self.tel.text=dictarr[@"UserName"];
-//    self.username.text=dictarr[@"RealName"];
-//        if ([[NSString stringWithFormat:@"%@",dictarr[@"UserImg"]] isEqualToString:@"/Images/defaultPhoto.png"]) {
-//            return;
-//        }else{
-//            NSString *img=[NSString stringWithFormat:@"%@%@",urlt,dictarr[@"UserImg"]];
-//            NSURL *imgurl=[NSURL URLWithString:img];
-//
-//            UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
-//            [self.img setBackgroundImage:imgstr forState:UIControlStateNormal];
-//        }
-//        //NSString *cyi=[NSString stringWithFormat:@"%@",dictarr2[@"UserType"]];
-//
-//    } fail:^{
-//        [MBProgressHUD showError:@"网络请求出错"];
-//        
-//        return ;
-//    }];
-
-}
-
-
-
-
-
+ 
 
 - (IBAction)exit:(id)sender {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"消息提示" message:@"您确定注销登录吗？" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:nil];

@@ -77,8 +77,7 @@
 -(void)network{
     
     
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *myString = [userDefaultes stringForKey:@"myidt"];
+    NSString *myString =[self GetUserID];
     NSString *urlStr = [NSString stringWithFormat:@"%@/API/YWT_User.ashx?action=getasupuser&q0=%@&q1=%@",urlt,myString,myString];
     
     NSURL *url = [NSURL URLWithString:urlStr];
@@ -139,8 +138,8 @@
 }
 -(NSString*) SetValue {
     
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *Create_User = [userDefaultes stringForKey:@"myidt"];
+   
+    NSString *Create_User   =[self GetUserID];
     NSLog(@"%@",Create_User);
     
     NSString *sex=@"男";

@@ -30,7 +30,7 @@
 
     self.tabBarController.tabBar.hidden=YES;
     int chageStatus=[self ChangePageInit:@"Order"];
-    if (chageStatus==1 || chageStatus==4) {
+    if (chageStatus==4) {
         [self network2];
         [self.tableview reloadData];
     }
@@ -48,6 +48,9 @@
     num=0;
     [self repeatnetwork];
     self.tableview.rowHeight=155;
+    
+    [self network2];
+    [self.tableview reloadData];
 }
 
 -(NSMutableArray *)netwok:(NSMutableArray *)array
@@ -108,8 +111,7 @@
 
 -(void)network2{
     int indes=0;
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *myString = [userDefaultes stringForKey:@"myidt"];
+    NSString *myString =[self GetUserID];
     
     NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_OrderPlatform.ashx?action=getlistforsupplier&q0=%d&q1=%@",urlt,indes,myString];
     
@@ -154,8 +156,7 @@
 -(void)loadMoreData
 {
     num=num+1;
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *myString = [userDefaultes stringForKey:@"myidt"];
+    NSString *myString =[self GetUserID];
     
     NSString *urlStr2 = [NSString stringWithFormat:@"%@/API/YWT_OrderPlatform.ashx?action=getlistforsupplier&q0=%d&q1=%@",urlt,num,myString];
     NSLog(@"%@",urlStr2);

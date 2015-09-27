@@ -8,6 +8,7 @@
 
 #import "registperson.h"
 #import "MBProgressHUD+MJ.h"
+#import "UIImageView+WebCache.h"
 
 @interface registperson ()<UITableViewDataSource,UITableViewDelegate>
 @property (nonatomic,strong)NSArray *tgs;
@@ -53,8 +54,7 @@
 
 -(NSArray *)network{
     
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *myString = [userDefaultes stringForKey:@"myidt"];
+    NSString *myString =[self GetUserID];
     NSString *urlStr = [NSString stringWithFormat:@"%@/API/YWT_User.ashx?action=getsupuser&q0=%@",urlt,myString];
     NSURL *url = [NSURL URLWithString:urlStr];
     
@@ -99,31 +99,33 @@
     }
     cell.imageView.image=[UIImage imageNamed:@"sjtx"];
     
-    NSString *img=[NSString stringWithFormat:@"%@",dict2[@"UserImg"]];
+    //NSString *img=[NSString stringWithFormat:@"%@",dict2[@"UserImg"]];
     
-    NSString *img2=[NSString stringWithFormat:@"%@%@",urlt,dict2[@"UserImg"]];
-    if (![img isEqualToString:@"/Images/defaultPhoto.png"]) {
-        NSURL *imgurl=[NSURL URLWithString:img2];
-        UIImage *icon = [[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];                CGSize itemSize = CGSizeMake(40, 40);
-        UIGraphicsBeginImageContextWithOptions(itemSize, NO,0.0);
-        CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
-        [icon drawInRect:imageRect];
-        
-        cell.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-        
-        
-    }else{
-        UIImage *icon = [UIImage imageNamed:@"icon_tx"];
-        CGSize itemSize = CGSizeMake(40, 40);
-        UIGraphicsBeginImageContextWithOptions(itemSize, NO,0.0);
-        CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
-        [icon drawInRect:imageRect];
-        
-        cell.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-        
-    }
+//NSString *img2=[NSString stringWithFormat:@"%@%@",urlt,dict2[@"UserImg"]];
+    
+//    if (![img2 isEqualToString:@"/Images/defaultPhoto.png"]) {
+//        
+//        NSString *img=[NSString stringWithFormat:@"%@%@",urlt,img2];
+//        NSURL *imgurl=[NSURL URLWithString:img];
+//        
+//        [cell.imageView setImageWithURL:imgurl placeholderImage:[UIImage imageNamed:img]];
+//        cell.imageView.layer.cornerRadius = cell.imageView.frame.size.width *0.4;
+//        cell.imageView.clipsToBounds = YES;
+//        
+//    }else{
+//        UIImage *icon = [UIImage imageNamed:@"icon_tx"];
+//        CGSize itemSize = CGSizeMake(60, 60);
+//        UIGraphicsBeginImageContextWithOptions(itemSize, NO,0.0);
+//        CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
+//        [icon drawInRect:imageRect];
+//        
+//        cell.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
+//        
+//        cell.imageView.layer.cornerRadius = cell.imageView.frame.size.width *0.4;
+//        cell.imageView.clipsToBounds = YES;
+//        UIGraphicsEndImageContext();
+//
+//    }
 
     
     cell.textLabel.text=dict2[@"RealName"];

@@ -1,6 +1,6 @@
 //
 //  listViewController.m
-//  送哪儿
+//  
 //
 //  Created by 南江 on 15/5/21.
 //  Copyright (c) 2015年 Tony. All rights reserved.
@@ -68,15 +68,15 @@
     cell.liststyle.text=dict2[@"ItemName"];
     cell.listno.text=dict2[@"Remark"];
     cell.money.text=[NSString stringWithFormat:@"￥%@",dict2[@"Money"]];
-    NSString *dt3=dict2[@"CreateDateTime"];
-    dt3=[dt3 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
-    dt3=[dt3 stringByReplacingOccurrencesOfString:@")/" withString:@""];
-    NSString * timeStampString3 =dt3;
-    NSTimeInterval _interval3=[timeStampString3 doubleValue] / 1000;
-    NSDate *date3 = [NSDate dateWithTimeIntervalSince1970:_interval3];
-    NSDateFormatter *objDateformat3 = [[NSDateFormatter alloc] init];
-    [objDateformat3 setDateFormat:@"yyyy-MM-dd"];
-    cell.listdate.text=[objDateformat3 stringFromDate: date3];
+//    NSString *dt3=dict2[@"CreateDateTime"];
+//    dt3=[dt3 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
+//    dt3=[dt3 stringByReplacingOccurrencesOfString:@")/" withString:@""];
+//    NSString * timeStampString3 =dt3;
+//    NSTimeInterval _interval3=[timeStampString3 doubleValue] / 1000;
+//    NSDate *date3 = [NSDate dateWithTimeIntervalSince1970:_interval3];
+//    NSDateFormatter *objDateformat3 = [[NSDateFormatter alloc] init];
+//    [objDateformat3 setDateFormat:@"yyyy-MM-dd"];
+    cell.listdate.text= [self DateFormartYMD:dict2[@"CreateDateTime"]];//[objDateformat3 stringFromDate: date3];
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
@@ -114,8 +114,7 @@
     // 设置回调（一旦进入刷新状态就会调用这个refreshingBlock）
 //    self.tableview.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
     
-        NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-        NSString *myString = [userDefaultes stringForKey:@"myidt"];
+        NSString *myString =[self GetUserID];
         NSString *urlStr = [NSString stringWithFormat:@"%@/API/HDL_SNRUserQuota.ashx?action=getlist&q0=0&q1=%@&q2=%d",urlt,myString,indes];
         NSString *str = @"type=focus-c";
         AFHTTPRequestOperation *op=  [self POSTurlString:urlStr parameters:str];

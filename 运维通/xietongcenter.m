@@ -23,13 +23,13 @@
     
     
     self.navigationController.navigationBar.barTintColor=myColorRGB;
-    
+
     [self.navigationController.navigationBar setTitleTextAttributes:
-     
-     @{NSFontAttributeName:[UIFont systemFontOfSize:17],
-       
-       NSForegroundColorAttributeName:[UIColor whiteColor]}];
-    
+
+    @{NSFontAttributeName:[UIFont systemFontOfSize:17],
+
+    NSForegroundColorAttributeName:[UIColor whiteColor]}];
+
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
 
 }
