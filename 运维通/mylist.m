@@ -11,6 +11,7 @@
 #import "mycell.h"
 #import "applyorder.h"
 #import "MJRefresh.h"
+#import "UIImageView+WebCache.h"
 
 @interface mylist ()<UITableViewDataSource,UITableViewDelegate,UIWebViewDelegate>
 {
@@ -143,6 +144,9 @@
 //    
 //    NSURL *imgurl=[NSURL URLWithString:img2];
 //    cell.img.image= [[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
+    NSString *img2=[NSString stringWithFormat:@"%@%@",urlt,dict2[@"SuppImg"]];
+    NSURL *imgurl=[NSURL URLWithString:img2];
+    [cell.img setImageWithURL:imgurl placeholderImage:[UIImage imageNamed:img2]];
     
     
     return cell;

@@ -103,10 +103,10 @@
                         </constraints>
                     </imageView>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="la2" translatesAutoresizingMaskIntoConstraints="NO" id="eZW-Dn-RQF">
-                        <rect key="frame" x="70" y="100" width="30" height="30"/>
+                        <rect key="frame" x="76" y="100" width="30" height="30"/>
                     </imageView>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="la2" translatesAutoresizingMaskIntoConstraints="NO" id="etb-zj-bji">
-                        <rect key="frame" x="100" y="100" width="30" height="30"/>
+                        <rect key="frame" x="102" y="100" width="30" height="30"/>
                     </imageView>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="la2" translatesAutoresizingMaskIntoConstraints="NO" id="8Qb-U9-iVV">
                         <rect key="frame" x="131" y="100" width="30" height="30"/>
@@ -115,7 +115,7 @@
                         <rect key="frame" x="160" y="100" width="30" height="30"/>
                     </imageView>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="la2" translatesAutoresizingMaskIntoConstraints="NO" id="wg1-ci-B9U">
-                        <rect key="frame" x="190" y="100" width="30" height="30"/>
+                        <rect key="frame" x="188" y="100" width="30" height="30"/>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="205" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fjA-uH-vwB">
                         <rect key="frame" x="245" y="73" width="50" height="26"/>

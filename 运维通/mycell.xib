@@ -103,16 +103,16 @@
                         </constraints>
                     </imageView>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="la2" translatesAutoresizingMaskIntoConstraints="NO" id="JM5-7M-vr1">
-                        <rect key="frame" x="70" y="100" width="30" height="30"/>
+                        <rect key="frame" x="75" y="100" width="30" height="30"/>
                     </imageView>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="la2" translatesAutoresizingMaskIntoConstraints="NO" id="Avh-vW-hzR">
-                        <rect key="frame" x="100" y="100" width="30" height="30"/>
+                        <rect key="frame" x="104" y="100" width="30" height="30"/>
                     </imageView>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="la2" translatesAutoresizingMaskIntoConstraints="NO" id="UTh-CR-9bn">
-                        <rect key="frame" x="131" y="100" width="30" height="30"/>
+                        <rect key="frame" x="132" y="100" width="30" height="30"/>
                     </imageView>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="la2" translatesAutoresizingMaskIntoConstraints="NO" id="ezk-bh-NXW">
-                        <rect key="frame" x="160" y="100" width="30" height="30"/>
+                        <rect key="frame" x="161" y="100" width="30" height="30"/>
                     </imageView>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="la2" translatesAutoresizingMaskIntoConstraints="NO" id="nyY-aH-EOE">
                         <rect key="frame" x="190" y="100" width="30" height="30"/>

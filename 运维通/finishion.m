@@ -19,7 +19,8 @@
     NSString *_accountType;
     UIImage *_receiveImage;
     MBProgressHUD *HUD;
-      MBProgressHUD *loading;
+    
+    MBProgressHUD *loading;
     int btnnum;
 }
 

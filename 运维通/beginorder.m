@@ -224,10 +224,6 @@
 }
 
 
-
-
-
-
 - (void) UpdateFileImage:(UIImage *)currentImage
                   action:(NSString *) straction
                  orderid:(NSString *) strOrderid

@@ -2413,7 +2413,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qjM-cQ-a4u">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qjM-cQ-a4u">
                                 <rect key="frame" x="0.0" y="48" width="320" height="568"/>
                                 <subviews>
                                     <textField hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ke7-q5-aP8">
@@ -4248,7 +4248,7 @@
                                 <rect key="frame" x="0.0" y="28" width="320" height="66"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="la1" translatesAutoresizingMaskIntoConstraints="NO" id="kv8-WF-olv">
-                                        <rect key="frame" x="14" y="11" width="51" height="51"/>
+                                        <rect key="frame" x="11" y="8" width="51" height="51"/>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="姓名" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="adH-3j-Eyg">
                                         <rect key="frame" x="71" y="15" width="48" height="21"/>
@@ -4331,7 +4331,7 @@
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="本科" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tXb-fd-njp">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="本" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tXb-fd-njp">
                                         <rect key="frame" x="99" y="8" width="213" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -4343,7 +4343,7 @@
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="本科" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h4m-qm-Vr7">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h4m-qm-Vr7">
                                         <rect key="frame" x="99" y="42" width="213" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -4355,7 +4355,7 @@
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="本科" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h4b-yz-lNe">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h4b-yz-lNe">
                                         <rect key="frame" x="99" y="77" width="220" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -4402,7 +4402,7 @@
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="本科" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cda-uV-6fG">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cda-uV-6fG">
                                         <rect key="frame" x="99" y="111" width="220" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -4421,13 +4421,13 @@
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QZD-bU-BFY">
-                                        <rect key="frame" x="87" y="237" width="225" height="67"/>
+                                        <rect key="frame" x="87" y="229" width="225" height="67"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="专长：" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jsb-uq-FaE">
-                                        <rect key="frame" x="14" y="229" width="77" height="21"/>
+                                        <rect key="frame" x="14" y="238" width="77" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -4466,6 +4466,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="iEz-0v-Scx"/>
                     <connections>
+                        <outlet property="ImgUser" destination="kv8-WF-olv" id="Zh6-m5-N1R"/>
                         <outlet property="bysj" destination="Cda-uV-6fG" id="i5v-FM-h2h"/>
                         <outlet property="byxy" destination="h4m-qm-Vr7" id="gLm-Xt-Etz"/>
                         <outlet property="f1" destination="6py-Yz-v3P" id="8jN-e4-k6c"/>
@@ -4775,7 +4776,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1JV-rl-VSi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2050" y="-4127"/>
+            <point key="canvasLocation" x="1998" y="-3659"/>
         </scene>
         <!--Item-->
         <scene sceneID="eA2-0i-IuV">
@@ -4994,7 +4995,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="itq-la-Qfh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2776" y="-4127"/>
+            <point key="canvasLocation" x="3142" y="-3860"/>
         </scene>
         <!--Finishion-->
         <scene sceneID="Kys-v5-osK">
@@ -5209,7 +5210,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xNd-ll-5Nt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2401" y="-4127"/>
+            <point key="canvasLocation" x="2535" y="-4121"/>
         </scene>
         <!--详情-->
         <scene sceneID="7s1-lS-02C">
@@ -6293,7 +6294,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Lna-51-kVw">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Lna-51-kVw">
                                 <rect key="frame" x="-2" y="-213" width="322" height="746"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PM3-of-sXq">
@@ -7439,6 +7440,7 @@
                         <outlet property="scrollview" destination="19z-br-dfb" id="CsC-Si-ffX"/>
                         <outlet property="sj" destination="WgX-hY-VaE" id="Cws-IG-MMT"/>
                         <outlet property="sta" destination="FSN-Is-3iU" id="usC-S8-KQd"/>
+                        <outlet property="suppimg" destination="0B6-AG-nRs" id="2ir-vQ-6bs"/>
                         <outlet property="wcds" destination="mLj-8N-oP3" id="MR8-4o-w55"/>
                         <outlet property="x1" destination="oEk-fF-QUC" id="5S1-Un-Ydu"/>
                         <outlet property="x2" destination="Iqp-fe-XiN" id="DCX-1W-aPE"/>
@@ -7454,7 +7456,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YGA-va-1OG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1580" y="-3830"/>
+            <point key="canvasLocation" x="1464" y="-3772"/>
         </scene>
         <!--在线仓库查询-->
         <scene sceneID="vcu-Ad-rpA">
@@ -10097,23 +10099,23 @@
         <segue reference="2cH-fb-GsD"/>
         <segue reference="Oas-do-MOp"/>
         <segue reference="KOT-aG-dYA"/>
+        <segue reference="ywF-jE-EbS"/>
         <segue reference="J3M-Lu-ZMf"/>
+        <segue reference="44r-wV-P6y"/>
         <segue reference="EZI-rT-3TM"/>
         <segue reference="DBg-wL-fJh"/>
-        <segue reference="GV5-3J-q4j"/>
-        <segue reference="64d-NN-AQD"/>
-        <segue reference="oSQ-Ye-m8c"/>
-        <segue reference="nZZ-AE-M7a"/>
-        <segue reference="VJZ-AJ-OKR"/>
-        <segue reference="iIe-g5-Y5W"/>
-        <segue reference="H9h-JT-fG9"/>
-        <segue reference="050-Ae-Gpm"/>
-        <segue reference="7al-Gw-RFH"/>
         <segue reference="z9T-58-7PP"/>
         <segue reference="A5w-83-lnn"/>
         <segue reference="EhQ-I1-eq4"/>
+        <segue reference="7al-Gw-RFH"/>
+        <segue reference="050-Ae-Gpm"/>
+        <segue reference="H9h-JT-fG9"/>
+        <segue reference="VJZ-AJ-OKR"/>
+        <segue reference="iIe-g5-Y5W"/>
+        <segue reference="GV5-3J-q4j"/>
+        <segue reference="64d-NN-AQD"/>
+        <segue reference="5io-Ku-tJx"/>
         <segue reference="aCX-Aw-QYs"/>
         <segue reference="Ckp-XC-Ulu"/>
-        <segue reference="5io-Ku-tJx"/>
     </inferredMetricsTieBreakers>
 </document>

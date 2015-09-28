@@ -11,6 +11,7 @@
 #import "AFNetworkTool.h"
 #import "MJRefresh.h"
 #import "UIViewController+Extension.h"
+#import "UIImageView+WebCache.h"
 
 @interface applyperson ()
 @property (weak, nonatomic) IBOutlet UILabel *name;
@@ -26,6 +27,8 @@
 @property (weak, nonatomic) IBOutlet UIImageView *f3;
 @property (weak, nonatomic) IBOutlet UIImageView *f4;
 @property (weak, nonatomic) IBOutlet UIImageView *f5;
+
+@property (weak, nonatomic) IBOutlet UIImageView *ImgUser;
 
 @property (weak, nonatomic) IBOutlet UILabel *xl;
 @property (weak, nonatomic) IBOutlet UILabel *byxy;
@@ -110,6 +113,10 @@
                 self.x4.image=[UIImage imageNamed:@"hxx"];
                 self.x5.image=[UIImage imageNamed:@"hxx"];
             }
+            
+            NSString *img2=[NSString stringWithFormat:@"%@%@",urlt,dict[@"UserImg"]];
+            NSURL *imgurl=[NSURL URLWithString:img2];
+            [self.ImgUser setImageWithURL:imgurl placeholderImage:[UIImage imageNamed:img2]];
             
             
             NSString *fen=[NSString stringWithFormat:@"%@",dict[@"ScoreAvg"]];

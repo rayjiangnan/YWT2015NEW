@@ -13,6 +13,7 @@
 #import "finishion.h"
 #import "pinjia.h"
 #import "UIViewController+Extension.h"
+#import "UIImageView+WebCache.h"
 
 @interface plist ()
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollview;
@@ -48,6 +49,7 @@
 @property (nonatomic, strong) NSDictionary *tgs;
 @property (weak, nonatomic) IBOutlet UIButton *postbtn;
 
+@property (weak, nonatomic) IBOutlet UIImageView *suppimg;
 
 @property (weak, nonatomic) IBOutlet UIImageView *x1;
 @property (weak, nonatomic) IBOutlet UIImageView *x2;
@@ -101,22 +103,14 @@
         NSDictionary *dict=dict2[@"ResultObject"];
         
         self.dh.text=dict[@"OrderNo"];
-//        NSString *dt3=dict[@"CreateDateTime"];
-//        dt3=[dt3 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
-//        dt3=[dt3 stringByReplacingOccurrencesOfString:@")/" withString:@""];
-//        // NSLog(@"%@",dt3);
-//        NSString * timeStampString3 =dt3;
-//        NSTimeInterval _interval3=[timeStampString3 doubleValue] / 1000;
-//        NSDate *date3 = [NSDate dateWithTimeIntervalSince1970:_interval3];
-//        NSDateFormatter *objDateformat3 = [[NSDateFormatter alloc] init];
-//        [objDateformat3 setDateFormat:@"yyyy-MM-dd"];
+
         self.sj.text=[self DateFormartYMD:dict[@"CreateDateTime"]];//[objDateformat3 stringFromDate: date3];
         [self idt:dict[@"Order_ID"]];
         self.fdr.text=dict[@"Company"];
         self.wcds.text=[NSString stringWithFormat:@"%@",dict[@"OrderFinishNum"]];
         //        [self idt:dict[@"Order_ID"]];
         self.yf.text=[NSString stringWithFormat:@"%@",dict[@"Freight"]];
-           self.lxr.text=[NSString stringWithFormat:@"%@  %@",dict[@"ContactMan"],dict[@"ContactMobile"]];
+        self.lxr.text=[NSString stringWithFormat:@"%@  %@",dict[@"ContactMan"],dict[@"ContactMobile"]];
         self.ywdz.text=dict[@"Task_Address"];
         self.bt.text=dict[@"OrderTitle"];
         NSString *st=dict[@"OrderType_Name"];
@@ -126,6 +120,11 @@
         self.gzsc.text=[NSString stringWithFormat:@"%@",dict[@"TaskTimeLen"]];
         self.bz.text=dict[@"Remark"];
         self.sta.text=dict[@"Status_Name"];
+
+
+        NSString *img2=[NSString stringWithFormat:@"%@%@",urlt,dict[@"SuppImg"]];
+        NSURL *imgurl=[NSURL URLWithString:img2];
+        [self.suppimg setImageWithURL:imgurl placeholderImage:[UIImage imageNamed:img2]];
         
         NSString *xin=[NSString stringWithFormat:@"%@",dict[@"Stars"]];
         if ([xin isEqualToString:@"5"]) {
@@ -191,30 +190,22 @@
         }
 
         
-        
-        NSString *status=[NSString stringWithFormat:@"%@",dict[@"Status"]];
-        if ([status isEqualToString:@"0"]) {
-            self.postbtn.hidden=YES;
-        }else if ([status isEqualToString:@"21"]) {
-            
+        if ([[NSString stringWithFormat:@"%@",dict[@"FlowRight"]] isEqualToString:@"1"]) {
             self.postbtn.hidden=NO;
-      
-        }else if ([status isEqualToString:@"25"]) {
+            NSString *status=[NSString stringWithFormat:@"%@",dict[@"Status"]];
+            NSString *nextstatus=[NSString stringWithFormat:@"%@",dict[@"Next_Status_Name"]];
             
-            self.postbtn.hidden=NO;
+            [self.postbtn setTitle:nextstatus forState:UIControlStateNormal];
             
-        }else if ([status isEqualToString:@"30"]&[[NSString stringWithFormat:@"%@",dict[@"FlowRight"]] isEqualToString:@"1"]) {
-          
-            [self.postbtn setTitle:@"完成维运" forState:UIControlStateNormal];
-        }else if ([status isEqualToString:@"90"]&[[NSString stringWithFormat:@"%@",dict[@"FlowRight"]] isEqualToString:@"1"]) {
-     
-            [self.postbtn setTitle:@"维运评价" forState:UIControlStateNormal];
-        }else if ([status isEqualToString:@"99"]) {
-         
-            self.postbtn.hidden=YES;
-        }else{
-          self.postbtn.hidden=YES;
+            if ([status isEqualToString:@"90"]) {
+                [self.postbtn setTitle:@"维运评价" forState:UIControlStateNormal];
+            }
         }
+        else
+        {
+            self.postbtn.hidden=YES;
+        }
+
         _tgs=dict;
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);

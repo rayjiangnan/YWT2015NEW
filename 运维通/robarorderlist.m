@@ -13,7 +13,7 @@
 #import "MJRefresh.h"
 #import "plistcell.h"
 #import "plist.h"
-
+#import "UIImageView+WebCache.h"
 
 @interface robarorderlist ()<UITableViewDataSource,UITableViewDelegate>
 {
@@ -150,11 +150,9 @@
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-//    NSString *img2=[NSString stringWithFormat:@"%@%@",urlt,dict2[@"UserImg"]];
-//    
-//    NSURL *imgurl=[NSURL URLWithString:img2];
-//   cell.img.image= [[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
-
+    NSString *img2=[NSString stringWithFormat:@"%@%@",urlt,dict2[@"SuppImg"]];
+    NSURL *imgurl=[NSURL URLWithString:img2];
+    [cell.img setImageWithURL:imgurl placeholderImage:[UIImage imageNamed:img2]];
     
     return cell;
 }
@@ -248,8 +246,6 @@
          urlStr2= [NSString stringWithFormat:@"%@/api/YWT_OrderPlatform.ashx?action=ywusergetlist&q0=%d&q1=%@",urlt,pagenum1,myString];
     }else  if (selectnum==2) {
         pagenum2=pagenum2+1;
- 
-        
         urlStr2= [NSString stringWithFormat:@"%@/api/YWT_OrderPlatform.ashx?action=applyrecord&q0=%d&q1=%@",urlt,pagenum2,myString];
     }
 //    NSLog(@"999999999----%@",urlStr2);
@@ -273,14 +269,12 @@
             [_tgs addObjectsFromArray:dictarr];
             [self.tableview reloadData];
         }
-//        [self.tableview.footer endRefreshing];
-//        self.tableview.footer.autoChangeAlpha=YES;
+       [self.tableview.footer endRefreshing];
+       self.tableview.footer.autoChangeAlpha=YES;
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [MBProgressHUD showError:@"网络请求出错"];
     }];
     [[NSOperationQueue mainQueue] addOperation:op];
-    
-    
 }
 
 
