@@ -9,8 +9,8 @@
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
 
-@interface beginorder : UIViewController<CLLocationManagerDelegate>
+@interface beginorder : UIViewController
 
 @property(nonatomic,weak)NSString *strTtile;
-@property (nonatomic, strong) CLLocationManager *_locationManager;
+
 @end

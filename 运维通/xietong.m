@@ -72,7 +72,7 @@
         
         if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
             
-            //     [_locationManager requestWhenInUseAuthorization];
+            //[_locationManager requestWhenInUseAuthorization];
             
             _locationManager.pausesLocationUpdatesAutomatically = NO;
     }
@@ -266,13 +266,5 @@
     
     return annoView;
 }
-
-
-
-
-
-
-
-
 
 @end

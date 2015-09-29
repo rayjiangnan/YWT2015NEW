@@ -9,8 +9,8 @@
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
 #import <CoreLocation/CoreLocation.h>
-@interface drViewController : UIViewController<CLLocationManagerDelegate>
-@property (nonatomic, strong) CLLocationManager *_locationManager;
+@interface drViewController : UIViewController
+
 @property(nonatomic,weak)NSString *strTtile;
 @property(nonatomic,strong)NSString *receiveID;
 @property(nonatomic,strong)NSString *receiveCbscs;

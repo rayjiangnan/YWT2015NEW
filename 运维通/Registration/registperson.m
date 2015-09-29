@@ -20,14 +20,12 @@
 
 @implementation registperson
 @synthesize strTtile;
-@synthesize _locationManager;
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self._locationManager = [[CLLocationManager alloc] init];
-    self._locationManager.delegate = self;
-    self._locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-    self._locationManager.distanceFilter = 1000.0f;
+    
+    
     self.tableview.rowHeight=70;
     [self network];
     _idtt2=[NSString stringWithFormat:@"%@",strTtile];
@@ -36,19 +34,6 @@
 
 }
 
-- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation
-{
-    // 获取经纬度
-    //  NSLog(@"纬度:%f",newLocation.coordinate.latitude);
-    //  NSLog(@"经度:%f",newLocation.coordinate.longitude);
-    
-}
-
-// 定位失误时触发
-- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
-{
-    NSLog(@"error:%@",error);
-}
 
 
 
@@ -99,7 +84,7 @@
     }
     cell.imageView.image=[UIImage imageNamed:@"sjtx"];
     
-    //NSString *img=[NSString stringWithFormat:@"%@",dict2[@"UserImg"]];
+//NSString *img=[NSString stringWithFormat:@"%@",dict2[@"UserImg"]];
     
 //NSString *img2=[NSString stringWithFormat:@"%@%@",urlt,dict2[@"UserImg"]];
     

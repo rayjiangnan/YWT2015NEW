@@ -65,20 +65,20 @@
     [self ChangePageInit:@"Customer"];
     [self ChangePageInit:@"Warehouse"];
     
-    if ([CLLocationManager authorizationStatus]==kCLAuthorizationStatusNotDetermined){
-        [self._locationManager requestWhenInUseAuthorization]; }
-    else if([CLLocationManager authorizationStatus]==kCLAuthorizationStatusAuthorizedWhenInUse){
-        
-       self._locationManager.delegate=self;
-        
-       self._locationManager.desiredAccuracy=kCLLocationAccuracyBest;
-        
-        CLLocationDistance distance=10.0;
-        
-        self._locationManager.distanceFilter=distance;
-        
-        //[self._locationManager startUpdatingLocation];
-    }
+//    if ([CLLocationManager authorizationStatus]==kCLAuthorizationStatusNotDetermined){
+//        [self._locationManager requestWhenInUseAuthorization]; }
+//    else if([CLLocationManager authorizationStatus]==kCLAuthorizationStatusAuthorizedWhenInUse){
+//        
+//       self._locationManager.delegate=self;
+//        
+//       self._locationManager.desiredAccuracy=kCLLocationAccuracyBest;
+//        
+//        CLLocationDistance distance=10.0;
+//        
+//        self._locationManager.distanceFilter=distance;
+//        
+//        //[self._locationManager startUpdatingLocation];
+//    }
     UIImageView *image=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dl_ren.png"]];
     self.useName.leftView=image;
     self.useName.leftViewMode = UITextFieldViewModeAlways;

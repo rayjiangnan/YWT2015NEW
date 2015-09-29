@@ -9,9 +9,9 @@
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
 
-@interface finishion : UIViewController<CLLocationManagerDelegate>
+@interface finishion : UIViewController
 
 @property(nonatomic,weak)NSString *strTtile;
-@property (nonatomic, strong) CLLocationManager *_locationManager;
+
 
 @end

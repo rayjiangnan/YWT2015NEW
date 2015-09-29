@@ -2413,7 +2413,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qjM-cQ-a4u">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qjM-cQ-a4u">
                                 <rect key="frame" x="0.0" y="48" width="320" height="568"/>
                                 <subviews>
                                     <textField hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ke7-q5-aP8">
@@ -6893,7 +6893,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Mie-19-Y7s">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mie-19-Y7s">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <subviews>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hYM-Yi-j7R">
@@ -10094,28 +10094,28 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="KOT-aG-dYA"/>
+        <segue reference="Oas-do-MOp"/>
         <segue reference="uIt-i3-sxT"/>
         <segue reference="rJg-SZ-34s"/>
         <segue reference="2cH-fb-GsD"/>
-        <segue reference="Oas-do-MOp"/>
-        <segue reference="KOT-aG-dYA"/>
-        <segue reference="ywF-jE-EbS"/>
-        <segue reference="J3M-Lu-ZMf"/>
-        <segue reference="44r-wV-P6y"/>
         <segue reference="EZI-rT-3TM"/>
         <segue reference="DBg-wL-fJh"/>
-        <segue reference="z9T-58-7PP"/>
-        <segue reference="A5w-83-lnn"/>
-        <segue reference="EhQ-I1-eq4"/>
-        <segue reference="7al-Gw-RFH"/>
-        <segue reference="050-Ae-Gpm"/>
-        <segue reference="H9h-JT-fG9"/>
-        <segue reference="VJZ-AJ-OKR"/>
-        <segue reference="iIe-g5-Y5W"/>
-        <segue reference="GV5-3J-q4j"/>
         <segue reference="64d-NN-AQD"/>
-        <segue reference="5io-Ku-tJx"/>
+        <segue reference="oSQ-Ye-m8c"/>
+        <segue reference="nZZ-AE-M7a"/>
+        <segue reference="GV5-3J-q4j"/>
+        <segue reference="A5w-83-lnn"/>
+        <segue reference="z9T-58-7PP"/>
+        <segue reference="EhQ-I1-eq4"/>
+        <segue reference="050-Ae-Gpm"/>
+        <segue reference="VJZ-AJ-OKR"/>
+        <segue reference="H9h-JT-fG9"/>
+        <segue reference="7al-Gw-RFH"/>
+        <segue reference="iIe-g5-Y5W"/>
+        <segue reference="J3M-Lu-ZMf"/>
         <segue reference="aCX-Aw-QYs"/>
         <segue reference="Ckp-XC-Ulu"/>
+        <segue reference="5io-Ku-tJx"/>
     </inferredMetricsTieBreakers>
 </document>

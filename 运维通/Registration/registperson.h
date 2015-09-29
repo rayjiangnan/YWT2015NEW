@@ -10,8 +10,8 @@
 #import <MapKit/MapKit.h>
 #import <CoreLocation/CoreLocation.h>
 
-@interface registperson : UIViewController<CLLocationManagerDelegate>
-@property (nonatomic, strong) CLLocationManager *_locationManager;
+@interface registperson : UIViewController
+
 @property(nonatomic,weak)NSString *strTtile;
 @property(nonatomic,strong)NSString *receiveID;
 @property(nonatomic,strong)NSString *receiveCbscs;

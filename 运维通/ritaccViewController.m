@@ -87,10 +87,7 @@
 }
 
 -(void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation{
-    //userLocation.title=@"当前位置";
-    //userLocation.subtitle=@"";
-    //CLLocationCoordinate2D center=userLocation.location.coordinate;
-    //  [self postJSON:lati:longti];
+
 }
 -(NSArray *)netwok:(NSArray *)tgsa
 {
@@ -195,12 +192,6 @@
 -(void)initData{
         backgroundUpdateInterval = RUNTIME;
         self._saveLocations = [[NSMutableArray alloc] init];
-    //    self._locationManager = [[CLLocationManager alloc] init];
-    //    self._locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-    //    self._locationManager.delegate = self;
-    //
-    
-    
 }
 
 -(void)updateloaction

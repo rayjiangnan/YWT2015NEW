@@ -33,10 +33,14 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.tabBarController.tabBar.hidden=YES;
+    
     [self netWorkRequest2];
     [self repeatnetwork];
     num=0;
     self.tableview.rowHeight=130;
+    
+    
 }
 
 -(NSMutableArray *)netwok:(NSMutableArray *)array

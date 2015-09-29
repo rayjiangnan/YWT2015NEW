@@ -21,10 +21,7 @@
     //UIActivityIndicatorView *activityIndicator;
     
 }
-//-(void)genz;
+
 - (IBAction)indexchang:(UISegmentedControl *)sender;
-//- (void)reloadTableViewDataSource;
-//- (void)doneLoadingTableViewData;
-//-(int *)num:(int *)num2;
-//@property (nonatomic, strong) CLLocationManager *_locationManager;
+
 @end

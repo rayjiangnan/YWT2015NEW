@@ -22,6 +22,8 @@
 -(NSString*) DateFormartMD:(NSString*) sourcedate;
 
 -(int) ChangePageInit:(NSString *) CKey;
+-(int) ChangeStatus:(NSString *) CKey;
+
 -(void)  ChangeItemInit:(NSString *) CKey;
 -(void)  ChangeRecord:(NSString *) chageID key:(NSString *) CKey;
 -(void)  ChangeRecordAdd:(NSString *) CKey;

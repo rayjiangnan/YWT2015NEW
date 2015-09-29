@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 //#import <CoreLocation/CoreLocation.h>
 
-@interface WarehouseAdd : UIViewController//<CLLocationManagerDelegate>
+@interface WarehouseAdd : UIViewController
 @property(nonatomic,weak)NSString *strTtile;
  
 @end

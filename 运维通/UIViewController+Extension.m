@@ -95,6 +95,17 @@
     return  v ;
 }
 
+-(int) ChangeStatus:(NSString *) CKey
+{
+    NSLog(@"%@",@"ChangePageInit");
+    NSUserDefaults *defau=[NSUserDefaults standardUserDefaults];
+    int v=[defau integerForKey:[NSString stringWithFormat:@"changeKey%@",CKey]];
+    if (!v) {
+        v=1;
+    }
+    return  v ;
+}
+
 -(void)  ChangeItemInit:(NSString *) CKey
 {
     NSLog(@"%@",@"ChangeItemInit");

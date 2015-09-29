@@ -13,7 +13,7 @@
 #import"MBProgressHUD.h"
 #import "UIViewController+Extension.h"
 
-@interface finishion ()<CLLocationManagerDelegate,UIImagePickerControllerDelegate, UIActionSheetDelegate>
+@interface finishion ()<UIImagePickerControllerDelegate, UIActionSheetDelegate>
 {
     
     NSString *_accountType;
@@ -58,24 +58,12 @@
 
 @implementation finishion
 @synthesize strTtile;
-@synthesize _locationManager;
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    _locationManager= [[CLLocationManager alloc] init];
     
-    _locationManager.delegate = self;
-    
-    _locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-    
-    _locationManager.distanceFilter = 100;
-    
-    [_locationManager startUpdatingLocation];
-    
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0){
-        
-        _locationManager.pausesLocationUpdatesAutomatically = NO;
-    }
+
     [self requestaaa];
 }
 

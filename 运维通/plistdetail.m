@@ -58,7 +58,10 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     self.tabBarController.tabBar.hidden=YES;
-
+    int status=[self ChangeStatus:@"Order"];
+    if (status==3) {
+        [self requestaaa];
+    }
     
     [self ChangeItemInit:@"Order"];
 }

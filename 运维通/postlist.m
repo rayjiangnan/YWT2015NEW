@@ -30,7 +30,8 @@
 
     self.tabBarController.tabBar.hidden=YES;
     int chageStatus=[self ChangePageInit:@"Order"];
-    if (chageStatus==4) {
+    if (chageStatus==4 || chageStatus==3) {
+        num=0;
         [self network2];
         [self.tableview reloadData];
     }
@@ -45,6 +46,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.tabBarController.tabBar.hidden=YES;
+    
     num=0;
     [self repeatnetwork];
     self.tableview.rowHeight=155;

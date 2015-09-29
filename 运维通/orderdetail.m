@@ -15,7 +15,7 @@
 #import"finishion.h"
 #import "pinjia.h"
 
-@interface orderdetail ()<CLLocationManagerDelegate,UIAlertViewDelegate>
+@interface orderdetail ()<UIAlertViewDelegate>
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollview;
 @property (weak, nonatomic) IBOutlet UILabel *danhao;
 

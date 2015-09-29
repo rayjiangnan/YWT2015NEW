@@ -21,37 +21,34 @@
 
 @implementation drViewController
 @synthesize strTtile;
-@synthesize _locationManager;
+
 
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self._locationManager = [[CLLocationManager alloc] init];
-    self._locationManager.delegate = self;
-    self._locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-    self._locationManager.distanceFilter = 1000.0f;
+
     
     [self network];
-_idtt2=[NSString stringWithFormat:@"%@",strTtile];
+    _idtt2=[NSString stringWithFormat:@"%@",strTtile];
     NSLog(@"---%@",_idtt2);
     [self idt2:_idtt2];
     
 }
 
-- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation
-{
-    // 获取经纬度
-    //  NSLog(@"纬度:%f",newLocation.coordinate.latitude);
-    //  NSLog(@"经度:%f",newLocation.coordinate.longitude);
-    
-}
-
-// 定位失误时触发
-- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
-{
-    NSLog(@"error:%@",error);
-}
+//- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation
+//{
+//    // 获取经纬度
+//    //  NSLog(@"纬度:%f",newLocation.coordinate.latitude);
+//    //  NSLog(@"经度:%f",newLocation.coordinate.longitude);
+//    
+//}
+//
+//// 定位失误时触发
+//- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
+//{
+//    NSLog(@"error:%@",error);
+//}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

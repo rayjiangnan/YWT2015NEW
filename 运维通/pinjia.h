@@ -9,9 +9,9 @@
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
 
-@interface pinjia : UIViewController<CLLocationManagerDelegate>
+@interface pinjia : UIViewController
 
 @property(nonatomic,weak)NSString *strTtile;
-@property (nonatomic, strong) CLLocationManager *_locationManager;
+
 
 @end

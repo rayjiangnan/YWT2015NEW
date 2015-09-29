@@ -14,7 +14,7 @@
 #import"MBProgressHUD.h"
 #import "UIViewController+Extension.h"
 
-@interface beginorder ()<CLLocationManagerDelegate,UIWebViewDelegate,UITableViewDataSource, UITableViewDelegate,UIImagePickerControllerDelegate, UIActionSheetDelegate, VPImageCropperDelegate>
+@interface beginorder ()<UIWebViewDelegate,UITableViewDataSource, UITableViewDelegate,UIImagePickerControllerDelegate, UIActionSheetDelegate, VPImageCropperDelegate>
 {
     
     NSString *_accountType;
@@ -61,28 +61,11 @@
 
 @implementation beginorder
 @synthesize strTtile;
-@synthesize _locationManager;
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    _locationManager= [[CLLocationManager alloc] init];
-    
-    _locationManager.delegate = self;
-    
-    _locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-    
-    _locationManager.distanceFilter = 100;
-    
-    [_locationManager startUpdatingLocation];
-    
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0){
-        
-        _locationManager.pausesLocationUpdatesAutomatically = NO;
-    }
     [self requestaaa];
-    
-    
-    
     
 }
 - (IBAction)selectImg_Click:(id)sender {
