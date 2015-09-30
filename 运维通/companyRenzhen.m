@@ -18,6 +18,7 @@
     NSString *_accountType;
     NSString *_name;
     NSString *FileType;
+    MBProgressHUD *loading;
 }
 
 @property (weak, nonatomic) IBOutlet UITextField *companyName;
@@ -338,7 +339,12 @@
         UIImage *portraitImg = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
         UpFile *_upfile=[[UpFile alloc]init];
         portraitImg=[_upfile fixOrientation:portraitImg];
-        //_receiveImage=portraitImg;
+   
+        loading= [[MBProgressHUD alloc] initWithView:self.view];
+        
+        [self.view addSubview:loading];
+        
+        [loading show:YES];
         [self UpdateFileImage:portraitImg];
     }];
 }
@@ -403,12 +409,12 @@
     NSError *error = [[NSError alloc]init];
     
     NSData* resultData = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponese error:&error];
-    
-    
-    NSDictionary *dict=[NSJSONSerialization JSONObjectWithData:resultData options:NSJSONReadingMutableLeaves error:nil];
+    if (!resultData==Nil) {
+         NSDictionary *dict=[NSJSONSerialization JSONObjectWithData:resultData options:NSJSONReadingMutableLeaves error:nil];
     
     NSString *Status=[NSString stringWithFormat:@"%@",dict[@"Status"]];
     if ([Status isEqualToString:@"0"]){
+        [loading hide:YES];
         NSString *ReturnMsg=[NSString stringWithFormat:@"%@",dict[@"ReturnMsg"]];
         [MBProgressHUD showError:ReturnMsg];
         NSLog(@"%@",ReturnMsg);
@@ -416,9 +422,19 @@
     else
     {
         NSString *img=[NSString stringWithFormat:@"%@/%@",urlt,dict[@"ReturnMsg"]];
+        [loading hide:YES];
         [self ShowImg:img showType:FileType];
     }
-}
+
+    }else{
+        [loading hide:YES];
+        [MBProgressHUD showError:@"网络异常！"];
+        return;
+    
+    }
+    
+    
+   }
 
 
 @end
