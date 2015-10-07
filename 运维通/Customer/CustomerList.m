@@ -53,7 +53,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     num=0;
-    [self repeatnetwork];
+
+    
     self.tableview.rowHeight=60;
     NSLog(@"加载数据。。。。");
     
@@ -85,6 +86,8 @@
     cell.CusShort.text= [NSString stringWithFormat:@"%@",dict2[@"CusShort"]];;
     
     cell.ContactMan.text= [NSString stringWithFormat:@"%@",dict2[@"ContactMan"]];
+    
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 
@@ -105,12 +108,12 @@
             return ;
         }else{
             NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
-            if (dictarr.count < 10) {
-                self.tableview.footer = nil;
-            }
-            else if(dictarr.count >= 10 && self.tableview.footer == nil)
-            {
+            if (dictarr !=nil && dictarr.count >= 10) {
                 self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+            }
+            else
+            {
+                self.tableview.footer = nil;
             }
             [self netwok:dictarr];
             [self.tableView reloadData];
@@ -135,15 +138,7 @@
 
 
 
--(NSMutableArray *)repeatnetwork{
-    
-    
-    self.tableView.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
-    
-    return _tgs;
-    
-    
-}
+
 -(void) ChangeLoad
 {
     NSString *strid=[self ChangeGetChageID:@"Customer"];
@@ -175,12 +170,12 @@
             return ;
         }else{
             NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
-            if (dictarr.count < 10) {
-                self.tableview.footer = nil;
+            if (dictarr !=nil && dictarr.count >= 10) {
+                self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
             }
-            else if(dictarr.count >= 10 && self.tableView.footer == nil)
+            else
             {
-                self.tableView.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+                self.tableview.footer = nil;
             }
             
             if (_IsChange) {

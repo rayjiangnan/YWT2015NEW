@@ -3,8 +3,8 @@
 <plist version="1.0">
 <array>
 	<array>
-		<string>维运商</string>
-		<string>维运人员</string>
+		<string>运维商</string>
+		<string>运维人员</string>
 	</array>
 </array>
 </plist>

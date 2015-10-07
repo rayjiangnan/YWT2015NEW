@@ -87,7 +87,7 @@
     cell.lblTime.text= [self DateFormartMDHM:dict2[@"ApplyDate"]];
     cell.lblType.text= [NSString stringWithFormat:@"%@",dict2[@"ApplyType"]];
     cell.lblContent.text= [NSString stringWithFormat:@"%@",dict2[@"ApplyContent"]];
-    cell.lblContent.lineBreakMode = UILineBreakModeWordWrap;
+    //cell.lblContent.lineBreakMode = UILineBreakModeWordWrap;
     cell.lblContent.numberOfLines = 0;
     
     cell.lblStatusName.text= [NSString stringWithFormat:@"%@",dict2[@"ApprovalStatusName"]];
@@ -95,13 +95,12 @@
     if ([[NSString stringWithFormat:@"%@",dict2[@"UserImg"]] isEqualToString:@"/Images/defaultPhoto.png"]==NO) {
         NSString *img=[NSString stringWithFormat:@"%@%@",urlt,dict2[@"UserImg"]];
         NSURL *imgurl=[NSURL URLWithString:img];
-        //UIImage *imgUserimg=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
-        //[cell.UserImg setImage:imgUserimg];
+        
         [cell.UserImg setImageWithURL:imgurl placeholderImage:[UIImage imageNamed:img]];
-        cell.UserImg.layer.cornerRadius = cell.UserImg.frame.size.width *0.4;
+        cell.UserImg.layer.cornerRadius = cell.UserImg.frame.size.width  /2;
         cell.UserImg.clipsToBounds = YES;
     }
-
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 - (IBAction)indexchang:(UISegmentedControl *)sender
@@ -131,12 +130,12 @@
             return ;
         }else{
             NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
-            if (dictarr.count < 10) {
-                self.tableview.footer = nil;
-            }
-            else if (dictarr.count >= 10 && dictarr.count>=10)
-            {
+            if (dictarr !=nil && dictarr.count >= 10) {
                 self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+            }
+            else
+            {
+                self.tableview.footer = nil;
             }
             [self netwok:dictarr];
             [self.tableview reloadData];
@@ -173,12 +172,6 @@
 }
 
 
--(NSMutableArray *)repeatnetwork{
-    self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
-    return _tgs;
-}
-
-
 -(void) ChangeLoad
 {
     NSString *strid=[self ChangeGetChageID:@"OnlineApproval"];
@@ -208,12 +201,12 @@
         NSMutableArray *dictarr=[dict objectForKey:@"ResultObject"];
         if(![dictarr isEqual:[NSNull null]])
         {
-            if (dictarr.count < 10) {
-                self.tableview.footer = nil;
-            }
-            else if (dictarr.count>=10)
-            {
+            if (dictarr !=nil && dictarr.count >= 10) {
                 self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+            }
+            else
+            {
+                self.tableview.footer = nil;
             }
             if (dictarr.count>0) {
                 if (_IsChange) {

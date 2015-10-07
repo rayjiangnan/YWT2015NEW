@@ -52,11 +52,8 @@
     else if(indexseg==1) {
         ApplyType=@"增加人员";
     }
-     
-
-    //Json数据 {"ApplyType":"","ApplyContent":"申请内容","ApplyUserID":"申请人"}
     
-     
+    
     NSString *Create_User  =[self GetUserID];
     NSLog(@"%@",Create_User);
     

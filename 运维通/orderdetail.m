@@ -75,8 +75,6 @@
     
     NSString *mystring2=[NSString stringWithFormat:@"%@",strTtile];
     
-
-
         NSString *urlStr = [NSString stringWithFormat:@"%@/API/YWT_Order.ashx?action=getitem&q0=%@&q1=%@",urlt,mystring2,myString];
         AFHTTPRequestOperation *op=[self GETurlString:urlStr];
         NSLog(@"%@",urlStr);
@@ -91,69 +89,58 @@
         NSString *status=[NSString stringWithFormat:@"%@",dict[@"Status"]];
         if ([status isEqualToString:@"0"]) {
             self.postbtn.hidden=YES;
-             self.siji.hidden=NO;
-            
+            self.siji.hidden=NO;
         }else if ([status isEqualToString:@"20"]) {
-             self.siji.hidden=YES;
+            self.siji.hidden=YES;
             self.postbtn.hidden=NO;
             self.drtelbtn.hidden=NO;
         }else if ([status isEqualToString:@"21"]) {
-         self.drtelbtn.hidden=NO;
-  self.postbtn.hidden=NO;
+            self.drtelbtn.hidden=NO;
+            self.postbtn.hidden=NO;
             self.siji.hidden=YES;
-        }else if ([status isEqualToString:@"30"]) {
-           self.drtelbtn.hidden=NO;
+        }
+        else if ([status isEqualToString:@"30"]) {
+            self.drtelbtn.hidden=NO;
             [self.postbtn setTitle:@"完成维运" forState:UIControlStateNormal];
-              self.postbtn.hidden=NO;
+            self.postbtn.hidden=NO;
         }else if ([status isEqualToString:@"90"]) {
-           self.drtelbtn.hidden=NO;
+            self.drtelbtn.hidden=NO;
             [self.postbtn setTitle:@"维运评价" forState:UIControlStateNormal];
             self.postbtn.hidden=NO;
-        }else if ([status isEqualToString:@"99"]) {
-          self.drtelbtn.hidden=NO;
-           
+        }
+        else if ([status isEqualToString:@"99"]) {
+            self.drtelbtn.hidden=NO;
         }
         
         
         self.danhao.text=dict[@"OrderNo"];
-//        NSString *dt3=dict[@"CreateDateTime"];
-//        dt3=[dt3 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
-//        dt3=[dt3 stringByReplacingOccurrencesOfString:@")/" withString:@""];
-//        // NSLog(@"%@",dt3);
-//        NSString * timeStampString3 =dt3;
-//        NSTimeInterval _interval3=[timeStampString3 doubleValue] / 1000;
-//        NSDate *date3 = [NSDate dateWithTimeIntervalSince1970:_interval3];
-//        NSDateFormatter *objDateformat3 = [[NSDateFormatter alloc] init];
-//        [objDateformat3 setDateFormat:@"yyyy-MM-dd"];
-            self.time.text=[self DateFormartYMD:dict[@"CreateDateTime"]];//[objDateformat3 stringFromDate: date3];
+        self.time.text=[self DateFormartYMD:dict[@"CreateDateTime"]];//[objDateformat3 stringFromDate: date3];
         if (![dict[@"OrderUsers"] isEqual:[NSNull null]]) {
             NSArray *dict3=dict[@"OrderUsers"];
             if (dict3.count>0) {
                  NSDictionary *dic=[dict3 objectAtIndex:0];
-            if (![dic[@"RealName"] isEqual:[NSNull null]]) {
-                NSString *dr=[NSString stringWithFormat:@"%@  %@",dic[@"RealName"],dic[@"Mobile"]];
-                self.dri.text=dr;
-               _drtel=[NSString stringWithFormat:@"%@",dic[@"Mobile"]];
+                if (![dic[@"RealName"] isEqual:[NSNull null]]) {
+                    NSString *dr=[NSString stringWithFormat:@"%@  %@",dic[@"RealName"],dic[@"Mobile"]];
+                    self.dri.text=dr;
+                   _drtel=[NSString stringWithFormat:@"%@",dic[@"Mobile"]];
+                }
             }
-
-            }
-                       
         }
 
         
         [self idt:dict[@"Order_ID"]];
- NSString *fright=[NSString stringWithFormat:@"%@",dict[@"FlowRight"]];
+        NSString *fright=[NSString stringWithFormat:@"%@",dict[@"FlowRight"]];
         if ([fright isEqualToString:@"0"]) {
             self.postbtn.hidden=YES;
         }
-        
-self.style.text=dict[@"Status_Name"];
+
+        self.style.text=dict[@"Status_Name"];
         self.khjc.text=dict[@"CustomerShort"];
         self.lxr.text=dict[@"ContactMan"];
         self.lxrdh.text=dict[@"ContactMobile"];
-        
-         _cotel=[NSString stringWithFormat:@"%@",dict[@"ContactMobile"]];
-        
+
+        _cotel=[NSString stringWithFormat:@"%@",dict[@"ContactMobile"]];
+
         self.dz.text=dict[@"Task_Address"];
         self.bt.text=dict[@"OrderTitle"];
         NSString *st=dict[@"OrderType"];
@@ -172,13 +159,10 @@ self.style.text=dict[@"Status_Name"];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
         [MBProgressHUD showError:@"网络异常！"];
-        
         return ;
-        
     }];
     
     [[NSOperationQueue mainQueue] addOperation:op];
-    
 }
 
 -(NSDictionary *)array:(NSDictionary *)array
@@ -252,12 +236,6 @@ self.style.text=dict[@"Status_Name"];
      [self tel:_drtel];
 }
 
--(void)tel:(NSString *)numb{
-    NSString *number =numb;// 此处读入电话号码
-    NSLog(@"---%@",number);
-    NSString *num = [[NSString alloc]initWithFormat:@"telprompt://%@",number]; //而这个方法则打电话前先弹框 是否打电话 然后打完电话之后回到程序中 网上说这个方法可能不合法 无法通过审核
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:num]]; //拨号
 
-}
 
 @end

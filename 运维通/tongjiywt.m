@@ -70,12 +70,8 @@
 {
     [super viewDidLoad];
     [self didClickAllAction:self.all];
-//    [self repeatnetwork];
+
     [self netWorkRequest2];
-    
-    
-    
-    
     
     _scrollLabel=[[UILabel alloc]initWithFrame:CGRectMake(0, 117, self.view.frame.size.width/4.0, 2)];
     
@@ -98,8 +94,7 @@
     
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
-    //NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    //NSString *pass= [userDefaultes stringForKey:@"passkey"];
+
       self.tableView.rowHeight=50;
     self.tableView.delegate=self;
     
@@ -152,10 +147,11 @@
     if (![dict2[@"RealName"] isEqual:[NSNull null]]) {
        cell.name.text=[NSString stringWithFormat:@"%@",dict2[@"RealName"]];
     }
-   cell.danno.text=[NSString stringWithFormat:@"%@",dict2[@"OrderFinishNum"]];
+    cell.danno.text=[NSString stringWithFormat:@"%@",dict2[@"OrderFinishNum"]];
     cell.fen.text=[NSString stringWithFormat:@"%@",dict2[@"ScoreAvg"]];
 
     
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 

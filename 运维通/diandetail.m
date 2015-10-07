@@ -178,18 +178,13 @@
 
 -(NSMutableArray *)netwok:(NSMutableArray *)array
 {
-    
     _tgs=array;
     return _tgs;
-    
-    
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
 {
-
     return _tgs.count;
-    
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -212,7 +207,7 @@
         NSURL *imgurl=[NSURL URLWithString:img];
         [cell.img setImageWithURL:imgurl placeholderImage:[UIImage imageNamed:img]];
         
-        cell.img.layer.cornerRadius = cell.img.frame.size.width *0.4;
+        cell.img.layer.cornerRadius = cell.img.frame.size.width  /2;
         cell.img.clipsToBounds = YES;
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -236,10 +231,7 @@
         pinglunlist *detai=vc;
 
         [detai setValue:nid forKey:@"strTtile"];
-        
     }
-    
-    
 }
 
 

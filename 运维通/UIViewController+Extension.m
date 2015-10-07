@@ -256,5 +256,16 @@
     return myColorRGB;
 }
 
+//打电话
+-(void)tel:(NSString *)numb{
+    if(numb== NULL)
+        return;
+    
+    NSString *number =numb;// 此处读入电话号码
+    NSLog(@"---%@",number);
+    NSString *num = [[NSString alloc]initWithFormat:@"telprompt://%@",number]; //而这个方法则打电话前先弹框 是否打电话 然后打完电话之后回到程序中 网上说这个方法可能不合法 无法通过审核
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:num]]; //拨号
+    
+}
 
 @end

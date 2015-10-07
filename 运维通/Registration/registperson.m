@@ -94,7 +94,7 @@
 //        NSURL *imgurl=[NSURL URLWithString:img];
 //        
 //        [cell.imageView setImageWithURL:imgurl placeholderImage:[UIImage imageNamed:img]];
-//        cell.imageView.layer.cornerRadius = cell.imageView.frame.size.width *0.4;
+//        cell.imageView.layer.cornerRadius = cell.imageView.frame.size.width  /2;
 //        cell.imageView.clipsToBounds = YES;
 //        
 //    }else{
@@ -106,7 +106,7 @@
 //        
 //        cell.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
 //        
-//        cell.imageView.layer.cornerRadius = cell.imageView.frame.size.width *0.4;
+//        cell.imageView.layer.cornerRadius = cell.imageView.frame.size.width  /2;
 //        cell.imageView.clipsToBounds = YES;
 //        UIGraphicsEndImageContext();
 //

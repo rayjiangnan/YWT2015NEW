@@ -9,7 +9,7 @@
 #import "mapViewController.h"
 #import <MapKit/MapKit.h>
 #import <CoreLocation/CoreLocation.h>
-#import "hjnANNINOTION.h"
+#import "MapAnninotionOR.h"
 #import <AMapSearchKit/AMapSearchAPI.h>
 #import "MBProgressHUD+MJ.h"
 #import <AMapSearchKit/AMapSearchAPI.h>
@@ -157,9 +157,9 @@
     }
     cell.imageView.image=[UIImage imageNamed:@"qsd"];
     cell.textLabel.text=[_tgs objectAtIndex:indexPath.row][@"name"];
-     cell.detailTextLabel.text=dict2[@"diqu"];
+    cell.detailTextLabel.text=dict2[@"diqu"];
 
-    
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -283,12 +283,12 @@
 - (void)addLineFrom:(CLPlacemark *)fromPm to:(CLPlacemark *)toPm
 {
     // 1.添加2个大头针
-    hjnANNINOTION *fromAnno = [[hjnANNINOTION alloc] init];
+    MapAnninotionOR *fromAnno = [[MapAnninotionOR alloc] init];
     fromAnno.coordinate = fromPm.location.coordinate;
     fromAnno.title = fromPm.name;
     [self.mapView addAnnotation:fromAnno];
     
-    hjnANNINOTION *toAnno = [[hjnANNINOTION alloc] init];
+    MapAnninotionOR *toAnno = [[MapAnninotionOR alloc] init];
     toAnno.coordinate = toPm.location.coordinate;
     toAnno.title = toPm.name;
     [self.mapView addAnnotation:toAnno];

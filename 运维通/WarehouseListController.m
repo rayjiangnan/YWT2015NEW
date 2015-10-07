@@ -34,7 +34,7 @@
     self.tabBarController.tabBar.hidden=NO;
     
     
-    //[self repeatnetwork];
+
     self.tableview.rowHeight=60;
     int chageStatus=[self ChangePageInit:@"Warehouse"];
     if (chageStatus==4) {
@@ -80,7 +80,7 @@
 //    cell.Model.text= [NSString stringWithFormat:@"%@",dict2[@"Prodeuct_Model"]];
     cell.Number.text= [NSString stringWithFormat:@"%@ %@",dict2[@"Number"],dict2[@"Unit"]];
      
-    
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 
@@ -103,12 +103,12 @@
             return ;
         }else{
             NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
-            if (dictarr.count < 10) {
-                self.tableview.footer = nil;
-            }
-            else if(dictarr.count >= 10 && self.tableview.footer == nil)
-            {
+            if (dictarr !=nil && dictarr.count >= 10) {
                 self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+            }
+            else
+            {
+                self.tableview.footer = nil;
             }
             
             if (dictarr.count > 0) {
@@ -133,12 +133,6 @@
 -(NSMutableArray *)netwok:(NSMutableArray *)array
 {
     _tgs=array;
-    return _tgs;
-}
-
-
--(NSMutableArray *)repeatnetwork{
-    self.tableView.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
     return _tgs;
 }
 
@@ -172,12 +166,12 @@
             return ;
         }else{
             NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
-            if (dictarr.count < 10) {
-                self.tableview.footer = nil;
-            }
-            else if(dictarr.count >= 10 && self.tableview.footer == nil)
-            {
+            if (dictarr !=nil && dictarr.count >= 10) {
                 self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+            }
+            else
+            {
+                self.tableview.footer = nil;
             }
             
             if (dictarr.count>0) {

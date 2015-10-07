@@ -9,7 +9,7 @@
 #import "ritaccViewController.h"
 #import <MapKit/MapKit.h>
 #import <CoreLocation/CoreLocation.h>
-#import"hjnANNINOTION.h"
+#import"MapAnninotionOR.h"
 
 @interface ritaccViewController ()<UIAlertViewDelegate,MKMapViewDelegate,CLLocationManagerDelegate>
 {
@@ -104,7 +104,7 @@
         int index=_tgs.count;
         for (int i=0; i<index; i++) {
             //NSLog(@"%d,%@",i,[_tgs objectAtIndex:i]);
-            hjnANNINOTION *annon=[[hjnANNINOTION alloc]init];
+            MapAnninotionOR *annon=[[MapAnninotionOR alloc]init];
             float x=[[_tgs objectAtIndex:i][@"latitude"] floatValue];//-0.00300;
             CLLocationDegrees latitude=x;
             float y=[[_tgs objectAtIndex:i][@"longitude"] floatValue];//+0.00500;
@@ -128,7 +128,7 @@
 
 -(void)removeCustomAnnotation{
     [self._mapview.annotations enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        if ([obj isKindOfClass:[hjnANNINOTION class]]) {
+        if ([obj isKindOfClass:[MapAnninotionOR class]]) {
             [self._mapview removeAnnotation:obj];
         }
     }];
@@ -325,31 +325,26 @@
     {
         NSString *myString =[self GetUserID];
         
-        if (myString==NULL) {
-            // NSLog(@"%@",myString);
-            return;
-        }else{
+        NSString *strurl=[NSString stringWithFormat:@"%@/API/HL.ashx",urlt];
+        NSURL *url = [NSURL URLWithString:strurl];
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:0 timeoutInterval:2.0f];
+        request.HTTPMethod = @"POST";
+        
+        NSString *str = [NSString stringWithFormat:@"action=sl&q0=%@&q1=%@&q2=%@",myString,text2,text1];
+        NSLog(@"-++++++++-%@",str);
+        request.HTTPBody = [str dataUsingEncoding:NSUTF8StringEncoding];
+        
+        [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc]init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
             
-            NSString *strurl=[NSString stringWithFormat:@"%@/API/HL.ashx",urlt];
-            NSURL *url = [NSURL URLWithString:strurl];
-            NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:0 timeoutInterval:2.0f];
-            request.HTTPMethod = @"POST";
+            if (data!= nil) {
+                NSString *result = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                NSLog(@"ritaccView:%@",result);
+            }else{
+                return ;
+            }
             
-            NSString *str = [NSString stringWithFormat:@"action=sl&q0=%@&q1=%@&q2=%@",myString,text2,text1];
-            NSLog(@"-++++++++-%@",str);
-            request.HTTPBody = [str dataUsingEncoding:NSUTF8StringEncoding];
-            
-            [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc]init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-                
-                if (data!= nil) {
-                    NSString *result = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                    NSLog(@"ritaccView:%@",result);
-                }else{
-                    return ;
-                }
-                
-            }];
-        }
+        }];
+        
         
     }
     @catch (NSException * e) {
@@ -362,7 +357,7 @@
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation
 {
-    if (![annotation isKindOfClass:[hjnANNINOTION class]]) return nil;
+    if (![annotation isKindOfClass:[MapAnninotionOR class]]) return nil;
     
     static NSString *ID = @"tuangou";
     
@@ -382,7 +377,7 @@
     
     annoView.annotation = annotation;
     
-    hjnANNINOTION *tuangouAnno = annotation;
+    MapAnninotionOR *tuangouAnno = annotation;
     annoView.image = [UIImage imageNamed:tuangouAnno.icon];
     
     return annoView;

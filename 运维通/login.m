@@ -23,23 +23,18 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     
+    [self ChangePageInit:@"log"];
+    [self ChangePageInit:@"Order"];
+    [self ChangePageInit:@"OnlineApproval"];
+    [self ChangePageInit:@"Customer"];
+    [self ChangePageInit:@"Warehouse"];
+    
     NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
     NSString *autopass = [userDefaultes stringForKey:@"autopass"];
-    NSString *usertype = [userDefaultes stringForKey:@"usertype"];
     if ([autopass isEqualToString:@"go"]) {
-        if ([usertype isEqualToString:@"10"]) {
-        
-            [self performSegueWithIdentifier:@"login" sender:nil];
-        }else if ([usertype isEqualToString:@"30"]) {
-            
-            [self performSegueWithIdentifier:@"login" sender:nil];
-        }else if ([usertype isEqualToString:@"20"]) {
-            
-            [self performSegueWithIdentifier:@"sj" sender:nil];
-        }else if ([usertype isEqualToString:@"40"]) {
-            
-            [self performSegueWithIdentifier:@"3yw" sender:nil];
-        }
+        NSString *password = [userDefaultes stringForKey:@"password"];
+        self.pwd.text=password;
+        [self getLogon];
     }
 }
 
@@ -59,26 +54,13 @@
         return;
         
     }
-    [self ChangePageInit:@"log"];
-    [self ChangePageInit:@"Order"];
-    [self ChangePageInit:@"OnlineApproval"];
-    [self ChangePageInit:@"Customer"];
-    [self ChangePageInit:@"Warehouse"];
     
-//    if ([CLLocationManager authorizationStatus]==kCLAuthorizationStatusNotDetermined){
-//        [self._locationManager requestWhenInUseAuthorization]; }
-//    else if([CLLocationManager authorizationStatus]==kCLAuthorizationStatusAuthorizedWhenInUse){
-//        
-//       self._locationManager.delegate=self;
-//        
-//       self._locationManager.desiredAccuracy=kCLLocationAccuracyBest;
-//        
-//        CLLocationDistance distance=10.0;
-//        
-//        self._locationManager.distanceFilter=distance;
-//        
-//        //[self._locationManager startUpdatingLocation];
-//    }
+    NSString *strphone= [userDefaults stringForKey:@"iphone"];
+    if(strphone != nil)
+    {
+        self.useName.text=strphone;
+    }
+
     UIImageView *image=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dl_ren.png"]];
     self.useName.leftView=image;
     self.useName.leftViewMode = UITextFieldViewModeAlways;
@@ -117,48 +99,53 @@
         }
         
         NSString *urlStr = [NSString stringWithFormat:@"%@/api/YWT_User.ashx?action=login&q0=%@&q1=%@&q2=%@&q3=%@&q4=%@",urlt,self.useName.text, self.pwd.text,uuids,os,xh];
-        
         NSURL *url = [NSURL URLWithString:urlStr];
-        
+        NSLog(@"%@",urlStr);
         
         NSURLRequest *request = [NSURLRequest requestWithURL:url];
-        
         [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
             
             if (data != nil) {
-                NSDictionary *dict=[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:nil];
+                NSMutableDictionary *json=[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:nil];
                 [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                    NSString *str=[NSString stringWithFormat:@"%@",dict[@"ReturnMsg"]];
-                    NSLog(@"＋＋＋%@",dict[@"ResultObject"]);
+                        NSString *Status=[NSString stringWithFormat:@"%@",json[@"Status"]];
+                        if ([Status isEqualToString:@"0"]){
+                            [MBProgressHUD showError:@"账号或密码错误！"];
+                            return ;
+                        }
                     
-                    if ([str isEqualToString:@"Success"]) {
-                        NSString *idt=[NSString stringWithFormat:@"%@",dict[@"ResultObject"][@"ID"]];
-                        NSString *idt2=[NSString stringWithFormat:@"%@",dict[@"ResultObject"][@"SupplierID"]];
-                        NSString *RealName=[NSString stringWithFormat:@"%@",dict[@"ResultObject"][@"RealName"]];
-                        NSString *Company=[NSString stringWithFormat:@"%@",dict[@"ResultObject"][@"Company"]];
-                        NSString *usertype=[NSString stringWithFormat:@"%@",dict[@"ResultObject"][@"UserType"]];
-                        NSString *UserImg=[NSString stringWithFormat:@"%@",dict[@"ResultObject"][@"UserImg"]];
-                        NSString *Mobile=[NSString stringWithFormat:@"%@",dict[@"ResultObject"][@"Mobile"]];
-                        NSString *Certify=[NSString stringWithFormat:@"%@",dict[@"ResultObject"][@"Certify"]];
+                       NSDictionary *dict=json[@"ResultObject"];
+                    
+                        NSString *idt=[NSString stringWithFormat:@"%@",dict[@"ID"]];
+                        NSString *idt2=[NSString stringWithFormat:@"%@",dict[@"SupplierID"]];
+                        NSString *RealName=[NSString stringWithFormat:@"%@",dict[@"RealName"]];
+                        NSString *Company=[NSString stringWithFormat:@"%@",dict[@"Company"]];
+                        NSString *usertype=[NSString stringWithFormat:@"%@",dict[@"UserType"]];
+                        NSString *UserImg=[NSString stringWithFormat:@"%@",dict[@"UserImg"]];
+                        NSString *Mobile=[NSString stringWithFormat:@"%@",dict[@"Mobile"]];
+                        NSString *Certify=[NSString stringWithFormat:@"%@",dict[@"Certify"]];
                         
-                        
+                        BOOL SuppAdmin=[dict[@"SuppAdmin"] boolValue];
+                    
                         if ([usertype isEqualToString:@"10"]&[idt2 isEqualToString:@""]) {
                             [MBProgressHUD showSuccess:@"请完善账号！"];
                             [self performSegueWithIdentifier:@"wan" sender:nil];
-                        }else
+                        }
+                        else
                         {
                             NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
                             [userDefaults setObject:idt forKey:@"myidt"];
                             [userDefaults setObject:idt2 forKey:@"myidt2"];
                             [userDefaults setObject:self.useName.text forKey:@"iphone"];
+                            [userDefaults setObject:self.pwd.text forKey:@"password"];
                             [userDefaults setObject:RealName forKey:@"RealName"];
                             [userDefaults setObject:Company forKey:@"Company"];
                             [userDefaults setObject:usertype forKey:@"usertype"];
                             [userDefaults setObject:UserImg forKey:@"UserImg"];
                             [userDefaults setObject:Certify forKey:@"Certify"];
                             [userDefaults setObject:Mobile forKey:@"Mobile"];
-                            
                             [userDefaults setInteger:1 forKey:@"changeKey"];
+                            [userDefaults setBool:SuppAdmin forKey:@"SuppAdmin"];
                             
                             [userDefaults synchronize];
                        
@@ -169,7 +156,13 @@
                             }
                             else
                             {
-                              
+                                NSString *autopass=@"";
+                                if (self.rememberbtn.on) {
+                                    autopass=@"go";
+                                    [userDefaults setObject:self.pwd.text forKey:@"password"];
+                                }
+                                [userDefaults setObject:autopass forKey:@"autopass"];
+                                
                                 [MBProgressHUD showSuccess:@"登录成功！"];
                                 if ([usertype isEqualToString:@"10"]) {
                                 
@@ -187,21 +180,13 @@
                                    
                                     [self performSegueWithIdentifier:@"3yw" sender:nil];
                                 }
-                                if (self.rememberbtn.on) {
-                                    NSString *passkey=@"pass";
-                                    [userDefaults setObject:passkey forKey:@"passkey"];
-                                     [userDefaults setObject:self.pwd.text forKey:@"password"];
-                                }
-
                                 
                             }
                         }
                                                
-                    }else{
-                        
-                        [MBProgressHUD showError:@"账号或密码错误！"];
-                        return ;}
                     
+                    
+    
                 }];
             }
         }];

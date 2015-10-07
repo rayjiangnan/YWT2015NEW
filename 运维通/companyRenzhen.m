@@ -9,17 +9,19 @@
 #import "companyRenzhen.h"
 #import"AFNetworking.h"
 #import"MBProgressHUD+MJ.h"
-#import "UpFile.h"
 #import "UIImageView+WebCache.h"
 #import "UIViewController+Extension.h"
+#import "UpFileSyn.h"
+#import "PhotoUpLoad.h"
 
 @interface companyRenzhen ()
 {
-    NSString *_accountType;
-    NSString *_name;
+//    NSString *_accountType;
+//    NSString *_name;
     NSString *FileType;
     MBProgressHUD *loading;
 }
+
 
 @property (weak, nonatomic) IBOutlet UITextField *companyName;
 
@@ -51,8 +53,6 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:YES];
-    
-    
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -61,6 +61,8 @@
     
     [self network];
     [self requestPic];
+    
+    [self tapBackground];
 }
 
 -(void)requestPic
@@ -82,16 +84,11 @@
                 FileType=str[@"FileType"];
                 [self ShowImg:imgpath showType:str[@"FileType"]];
             }
-        }else{
-            return ;
         }
-        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
     }];
     [[NSOperationQueue mainQueue] addOperation:op];
-    
-    
 }
 
 -(void)network{
@@ -102,77 +99,71 @@
     AFHTTPRequestOperation *op=[self GETurlString:urlStr];
     
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSMutableDictionary *dict=responseObject;
-        NSDictionary *dictarr2=[dict objectForKey:@"ResultObject"];
-        
-        _name=dictarr2[@"SupplierID_Name"];
-        _accountType=[NSString stringWithFormat:@"%@",dictarr2[@"UserType"]];
-        NSString *confirmState=[NSString   stringWithFormat:@"%@", dictarr2[@"Certify"]];
-        if (![dictarr2[@"RealName"] isEqual:[NSNull null]]) {
-            self.personName.text=[NSString stringWithFormat:@"%@", dictarr2[@"RealName"]];
-        }
-        
-        if (![dictarr2[@"CertifyIDCard"] isEqual:[NSNull null]]) {
-            self.identityCard.text=[NSString   stringWithFormat:@"%@", dictarr2[@"CertifyIDCard"]];
-        }
-        
-        if ([confirmState isEqual:[NSNull null]]||[confirmState isEqualToString:@"1"]||[confirmState isEqualToString:@"0"]) {
- 
-            self.tishi.text=@"审核状态:未提交审核请您提交真实有效的资料！";
-            self.yview.hidden=NO;
-            self.commitBut.hidden=NO;
+        NSMutableDictionary *json=responseObject;
+        NSString *Status=[NSString stringWithFormat:@"%@",json[@"Status"]];
+        if ([Status isEqualToString:@"0"]){
+            NSString *ReturnMsg=[NSString stringWithFormat:@"%@",json[@"ReturnMsg"]];
+            [MBProgressHUD showError:ReturnMsg];
+            return ;
+        }else{
+            NSDictionary *dictarr2=[json objectForKey:@"ResultObject"];
+            int confirmState=[dictarr2[@"Certify"] intValue];
             
-        }
-        else if ([confirmState isEqualToString:@"2"])
-        {
+            self.companyName.text=[NSString stringWithFormat:@"%@", dictarr2[@"CertifyCompanyName"]];
+            self.personName.text=[NSString stringWithFormat:@"%@", dictarr2[@"CertifyRealName"]];
+            self.identityCard.text=[NSString stringWithFormat:@"%@", dictarr2[@"CertifyIDCard"]];
             
- 
-            
-            self.tishi.hidden=NO;
-            self.yview.hidden=NO;
-            
-            self.tishi.text=@"审核状态:正在审核中，请耐心等候！";
-            self.commitBut.hidden=YES;
-            self.btnByz.hidden=YES;
-            self.btnSfzbm.hidden=YES;
-            self.identityCard.hidden=YES;
-            
-            
-            
-        }else if ([confirmState isEqualToString:@"10"]){
-            self.tishi.hidden=NO;
-            self.yview.hidden=NO;
-          
-            self.tishi.text=@"审核状态:认证失败，请重新提交资料！";            self.commitBut.hidden=NO;
-            
-        }
-        
-        
-        if ([confirmState isEqualToString:@"2"] ||[confirmState isEqualToString:@"99"])
-        {
-            self.identityCardBut.hidden=YES;
-            self.commitBut.hidden=YES;
-            self.btnByz.hidden=YES;
-            self.btnSfzbm.hidden=YES;
-            
-            
-            self.personName.userInteractionEnabled=NO;
-            self.identityCard.userInteractionEnabled=NO;
-        }
-        
+            //self.identityCard.text=dictarr2[@"CertifyRealName"];
 
+              NSLog(@"%@",dictarr2[@"CertifyIDCard"]);
+            
+            if (confirmState==1 ||confirmState == 0) {
+     
+                self.tishi.text=@"请您提交真实有效的资料！";
+                //self.tishi.hidden=YES;
+                self.yview.hidden=NO;
+                self.commitBut.hidden=NO;
+                
+            }
+            else if (confirmState==2)
+            {
+                self.tishi.hidden=NO;
+                self.yview.hidden=NO;
+                
+                self.tishi.text=@"审核状态:正在审核中，请耐心等候！";
+                self.commitBut.hidden=YES;
+                self.btnByz.hidden=YES;
+                self.btnSfzbm.hidden=YES;
+                self.identityCard.hidden=YES;
+            }
+            else if (confirmState==10)
+            {
+                self.tishi.hidden=NO;
+                self.yview.hidden=NO;
+              
+                self.tishi.text=@"审核状态:认证失败，请重新提交资料！";
+                self.commitBut.hidden=NO;
+            }
+            
+           if (confirmState==2 || confirmState==99)
+            {
+                self.identityCardBut.hidden=YES;
+                self.commitBut.hidden=YES;
+                self.btnByz.hidden=YES;
+                self.btnSfzbm.hidden=YES;
+                
+                
+                self.personName.userInteractionEnabled=NO;
+                self.identityCard.userInteractionEnabled=NO;
+            }
+        }
         
-             
-        
-        NSLog(@"公司的名称是 ======%@",_name);
+        //NSLog(@"公司的名称是 ======%@",_name);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
-        
     }];
     [[NSOperationQueue mainQueue] addOperation:op];
-    
-    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -184,17 +175,17 @@
 
 - (IBAction)sfzbmClick:(id)sender {
     FileType=@"e_fr_sfzfm";
-    [self SendImage];
+    [self SelectImg];
 }
 
 - (IBAction)byzClick:(id)sender {
     FileType=@"e_ylzz";
-    [self SendImage];
+    [self SelectImg];
 }
 
 - (IBAction)didClickidentityCardAction:(id)sender {
     FileType=@"e_fr_sfzzm";
-    [self SendImage];
+    [self SelectImg];
 }
 
 -(void) ShowImg:(NSString *) imgpath showType:(NSString *) mType
@@ -234,116 +225,15 @@
     [[NSOperationQueue mainQueue] addOperation:op];
 }
 
-- (void) SendImage
-{
-    UIActionSheet *sheet;
-    // 判断是否支持相机
-    sheet=[[UIActionSheet alloc] initWithTitle:@"选择"
-                                      delegate:self
-                             cancelButtonTitle:@"取消"
-                        destructiveButtonTitle:nil
-                             otherButtonTitles:@"拍照", @"从相册中选取", nil];
-    sheet.tag = 255;
-    [sheet showInView:self.view];
-}
-
-#pragma mark UIActionSheetDelegate
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 0) {
-        // 拍照
-        if ([self isCameraAvailable] && [self doesCameraSupportTakingPhotos]) {
-            UIImagePickerController *controller = [[UIImagePickerController alloc] init];
-            controller.sourceType = UIImagePickerControllerSourceTypeCamera;
-            if ([self isFrontCameraAvailable]) {
-                controller.cameraDevice = UIImagePickerControllerCameraDeviceFront;
-            }
-            NSMutableArray *mediaTypes = [[NSMutableArray alloc] init];
-            [mediaTypes addObject:(__bridge NSString *)kUTTypeImage];
-            controller.mediaTypes = mediaTypes;
-            controller.delegate = self;
-            [self presentViewController:controller
-                               animated:YES
-                             completion:^(void){
-                                 NSLog(@"Picker View Controller is presented");
-                             }];
-        }
-        
-    } else if (buttonIndex == 1) {
-        // 从相册中选取
-        if ([self isPhotoLibraryAvailable]) {
-            UIImagePickerController *controller = [[UIImagePickerController alloc] init];
-            controller.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-            NSMutableArray *mediaTypes = [[NSMutableArray alloc] init];
-            [mediaTypes addObject:(__bridge NSString *)kUTTypeImage];
-            controller.mediaTypes = mediaTypes;
-            controller.delegate = self;
-            [self presentViewController:controller
-                               animated:YES
-                             completion:^(void){
-                                 NSLog(@"Picker View Controller is presented");
-                             }];
-        }
-    }
-}
-
-#pragma mark camera utility
-- (BOOL) isCameraAvailable{
-    return [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera];
-}
-
-- (BOOL) isRearCameraAvailable{
-    return [UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceRear];
-}
-
-- (BOOL) isFrontCameraAvailable {
-    return [UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceFront];
-}
-
-- (BOOL) doesCameraSupportTakingPhotos {
-    return [self cameraSupportsMedia:(__bridge NSString *)kUTTypeImage sourceType:UIImagePickerControllerSourceTypeCamera];
-}
-
-- (BOOL) isPhotoLibraryAvailable{
-    return [UIImagePickerController isSourceTypeAvailable:
-            UIImagePickerControllerSourceTypePhotoLibrary];
-}
-- (BOOL) canUserPickVideosFromPhotoLibrary{
-    return [self
-            cameraSupportsMedia:(__bridge NSString *)kUTTypeMovie sourceType:UIImagePickerControllerSourceTypePhotoLibrary];
-}
-- (BOOL) canUserPickPhotosFromPhotoLibrary{
-    return [self
-            cameraSupportsMedia:(__bridge NSString *)kUTTypeImage sourceType:UIImagePickerControllerSourceTypePhotoLibrary];
-}
-
-- (BOOL) cameraSupportsMedia:(NSString *)paramMediaType sourceType:(UIImagePickerControllerSourceType)paramSourceType{
-    __block BOOL result = NO;
-    if ([paramMediaType length] == 0) {
-        return NO;
-    }
-    NSArray *availableMediaTypes = [UIImagePickerController availableMediaTypesForSourceType:paramSourceType];
-    [availableMediaTypes enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
-        NSString *mediaType = (NSString *)obj;
-        if ([mediaType isEqualToString:paramMediaType]){
-            result = YES;
-            *stop= YES;
-        }
-    }];
-    return result;
-}
-
-
 #pragma mark - UIImagePickerControllerDelegate
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     [picker dismissViewControllerAnimated:YES completion:^() {
         UIImage *portraitImg = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
-        UpFile *_upfile=[[UpFile alloc]init];
-        portraitImg=[_upfile fixOrientation:portraitImg];
+        
+        portraitImg=[self fixOrientation:portraitImg];
    
         loading= [[MBProgressHUD alloc] initWithView:self.view];
-        
         [self.view addSubview:loading];
-        
         [loading show:YES];
         [self UpdateFileImage:portraitImg];
     }];
@@ -354,87 +244,42 @@
 {
     NSData *data = UIImageJPEGRepresentation(currentImage, 0.5);
     
-    NSString *hyphens = @"--";
-    NSString *boundary = @"*****";
-    NSString *end = @"\r\n";
-    NSMutableData *myRequestData1=[NSMutableData data];
-    
-    [myRequestData1 appendData:[hyphens dataUsingEncoding:NSUTF8StringEncoding]];
-    [myRequestData1 appendData:[boundary dataUsingEncoding:NSUTF8StringEncoding]];
-    [myRequestData1 appendData:[end dataUsingEncoding:NSUTF8StringEncoding]];
-    
-    NSMutableString *fileTitle=[[NSMutableString alloc]init];
-    
-    
-    [fileTitle appendFormat:@"Content-Disposition:form-data;name=\"%@\";filename=\"%@\"",[NSString stringWithFormat:@"file%d",1],[NSString stringWithFormat:@"image%d.png",1]];
-    
-    [fileTitle appendString:end];
-    
-    [fileTitle appendString:[NSString stringWithFormat:@"Content-Type:application/octet-stream%@",end]];
-    [fileTitle appendString:end];
-    
-    [myRequestData1 appendData:[fileTitle dataUsingEncoding:NSUTF8StringEncoding]];
-    
-    [myRequestData1 appendData:data];
-    
-    [myRequestData1 appendData:[end dataUsingEncoding:NSUTF8StringEncoding]];
-    
-    [myRequestData1 appendData:[hyphens dataUsingEncoding:NSUTF8StringEncoding]];
-    [myRequestData1 appendData:[boundary dataUsingEncoding:NSUTF8StringEncoding]];
-    [myRequestData1 appendData:[hyphens dataUsingEncoding:NSUTF8StringEncoding]];
-    [myRequestData1 appendData:[end dataUsingEncoding:NSUTF8StringEncoding]];
-    
     NSString *userid =[self GetUserID];
-    //NSString *url=[NSString stringWithFormat:@"%@/API/YWT_OrderFile.ashx?action=90",strUploadUrl];
     NSString *url=[NSString stringWithFormat:@"%@/API/YWT_UPUserFile.ashx?action=%@&q0=%@&q1=%@&from=ios",urlt,FileType,userid,userid];
     
-    
-    
-    // NSLog(@"%@",url);
-    NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]
-                                                           cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
-                                                       timeoutInterval:5];
-    
-    //设置HTTPHeader中Content-Type的值
-    NSString *content=[[NSString alloc]initWithFormat:@"multipart/form-data; boundary=%@",boundary];
-    //设置HTTPHeader
-    [request setValue:content forHTTPHeaderField:@"Content-Type"];
-    
-    //设置http body
-    [request setHTTPBody:myRequestData1];
-    //http method
-    [request setHTTPMethod:@"POST"];
-    
-    NSHTTPURLResponse *urlResponese = nil;
-    NSError *error = [[NSError alloc]init];
-    
-    NSData* resultData = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponese error:&error];
-    if (!resultData==Nil) {
-         NSDictionary *dict=[NSJSONSerialization JSONObjectWithData:resultData options:NSJSONReadingMutableLeaves error:nil];
-    
-    NSString *Status=[NSString stringWithFormat:@"%@",dict[@"Status"]];
-    if ([Status isEqualToString:@"0"]){
+    UpFileSyn *_upfile=[UpFileSyn alloc];
+    [_upfile UpFile:data UpURL:url Success:^(NSDictionary *result) {
+        NSString *Status=[NSString stringWithFormat:@"%@",result[@"Status"]];
+        if ([Status isEqualToString:@"0"]){
+            [loading hide:YES];
+            NSString *ReturnMsg=[NSString stringWithFormat:@"%@",result[@"ReturnMsg"]];
+            [MBProgressHUD showError:ReturnMsg];
+            NSLog(@"%@",ReturnMsg);
+        }
+        else
+        {
+            [loading hide:YES];
+            NSString *img=[NSString stringWithFormat:@"%@/%@",urlt,result[@"ReturnMsg"]];
+            [self ShowImg:img showType:FileType];
+        }
         [loading hide:YES];
-        NSString *ReturnMsg=[NSString stringWithFormat:@"%@",dict[@"ReturnMsg"]];
-        [MBProgressHUD showError:ReturnMsg];
-        NSLog(@"%@",ReturnMsg);
-    }
-    else
-    {
-        NSString *img=[NSString stringWithFormat:@"%@/%@",urlt,dict[@"ReturnMsg"]];
+    } Failure:^(NSError *error) {
+        NSLog(@"出错啦：%@",error);
         [loading hide:YES];
-        [self ShowImg:img showType:FileType];
-    }
+    }];
+}
 
-    }else{
-        [loading hide:YES];
-        [MBProgressHUD showError:@"网络异常！"];
-        return;
-    
-    }
-    
-    
-   }
-
+-(void)tapBackground
+{
+    UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnce)];//定义一个手势
+    [tap setNumberOfTouchesRequired:1];//触击次数这里设为1
+    [self.view addGestureRecognizer:tap];//添加手势到View中
+}
+-(void)tapOnce
+{
+    [self.companyName resignFirstResponder];
+    [self.personName resignFirstResponder];
+    [self.identityCard resignFirstResponder];
+}
 
 @end

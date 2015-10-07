@@ -57,105 +57,104 @@
     
     
     
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *passkey = [userDefaultes stringForKey:@"passkey"];
-    if ([passkey isEqualToString:@"pass"]) {
-           NSString *username = [userDefaultes stringForKey:@"iphone"];
-         NSString *password = [userDefaultes stringForKey:@"password"];
-        @try
-        {
-            NSUUID *uuid=[UIDevice currentDevice].identifierForVendor;
-            NSString *uuidstr=uuid.UUIDString;
-            NSString *uuids=[NSString stringWithFormat:@"%@0000",uuidstr];
-            
-            NSString* phoneVersion = [[UIDevice currentDevice] systemVersion];
-            
-            NSString *os=[NSString stringWithFormat:@"ios%@",phoneVersion];
-            
-            NSString* phoneModel = [[UIDevice currentDevice] model];
-            NSString* xh;
-            xh=[NSString stringWithFormat:@"%@",phoneModel];
-            
-            if([xh isEqualToString:@"iPhone Simulator"])
-                
-            {
-                
-                xh=@"iPhone";
-                
-            }
-            
-            
-            NSString *urlStr = [NSString stringWithFormat:@"%@/api/YWT_User.ashx?action=login&q0=%@&q1=%@&q2=%@&q3=%@&q4=%@",urlt,username, password,uuids,os,xh];
-            
-            NSURL *url = [NSURL URLWithString:urlStr];
-            
-            
-            NSURLRequest *request = [NSURLRequest requestWithURL:url];
-            
-            [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-                
-                if (data != nil) {
-                    NSDictionary *dict=[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:nil];
-                    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                        NSString *str=[NSString stringWithFormat:@"%@",dict[@"ReturnMsg"]];
-                        NSLog(@"＋＋＋%@",dict[@"ResultObject"]);
-                        
-                        if ([str isEqualToString:@"Success"]) {
-                            NSString *idt=[NSString stringWithFormat:@"%@",dict[@"ResultObject"][@"ID"]];
-                            NSString *idt2=[NSString stringWithFormat:@"%@",dict[@"ResultObject"][@"SupplierID"]];
-                            NSString *RealName=[NSString stringWithFormat:@"%@",dict[@"ResultObject"][@"RealName"]];
-                            NSString *Company=[NSString stringWithFormat:@"%@",dict[@"ResultObject"][@"Company"]];
-                            NSString *usertype=[NSString stringWithFormat:@"%@",dict[@"ResultObject"][@"UserType"]];
-                            NSString *UserImg=[NSString stringWithFormat:@"%@",dict[@"ResultObject"][@"UserImg"]];
-                            NSString *Mobile=[NSString stringWithFormat:@"%@",dict[@"ResultObject"][@"Mobile"]];
-                            NSString *Certify=[NSString stringWithFormat:@"%@",dict[@"ResultObject"][@"Certify"]];
-                            
-                            
-                            if ([usertype isEqualToString:@"10"]&[idt2 isEqualToString:@""]) {
-                                [MBProgressHUD showSuccess:@"请完善账号！"];
-                            
-                            }else
-                            {
-                                NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-                                [userDefaults setObject:idt forKey:@"myidt"];
-                                [userDefaults setObject:idt2 forKey:@"myidt2"];
-                                [userDefaults setObject:username forKey:@"iphone"];
-                                [userDefaults setObject:RealName forKey:@"RealName"];
-                                [userDefaults setObject:Company forKey:@"Company"];
-                                [userDefaults setObject:usertype forKey:@"usertype"];
-                                [userDefaults setObject:UserImg forKey:@"UserImg"];
-                                [userDefaults setObject:Certify forKey:@"Certify"];
-                                [userDefaults setObject:Mobile forKey:@"Mobile"];
-                                
-                                [userDefaults synchronize];
-                                
-                                if ([idt2 isEqualToString:@""]&[usertype isEqualToString:@"0"])
-                                {
-                                    
-                                    [MBProgressHUD showSuccess:@"请完善账号设置！"];
-                                }
-                                else
-                                {
-                                    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-                                    [userDefaults setObject:@"go" forKey:@"autopass"];
-                                }
-                            }
-                            
-                        }else{
-                            
-                            [MBProgressHUD showError:@"账号或密码错误！"];
-                            return ;}
-                        
-                    }];
-                }
-            }];
-        }@catch (NSException * e) {
-            NSLog(@"Exception: %@", e);
-            
-        }
-        
-
-    }
+//    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
+//    NSString *passkey = [userDefaultes stringForKey:@"passkey"];
+//    if ([passkey isEqualToString:@"pass"]) {
+//         NSString *username = [userDefaultes stringForKey:@"iphone"];
+//         NSString *password = [userDefaultes stringForKey:@"password"];
+//        @try
+//        {
+//            NSUUID *uuid=[UIDevice currentDevice].identifierForVendor;
+//            NSString *uuidstr=uuid.UUIDString;
+//            NSString *uuids=[NSString stringWithFormat:@"%@0000",uuidstr];
+//            
+//            NSString* phoneVersion = [[UIDevice currentDevice] systemVersion];
+//            
+//            NSString *os=[NSString stringWithFormat:@"ios%@",phoneVersion];
+//            
+//            NSString* phoneModel = [[UIDevice currentDevice] model];
+//            NSString* xh;
+//            xh=[NSString stringWithFormat:@"%@",phoneModel];
+//            
+//            if([xh isEqualToString:@"iPhone Simulator"])
+//                
+//            {
+//                
+//                xh=@"iPhone";
+//                
+//            }
+//            
+//            
+//            NSString *urlStr = [NSString stringWithFormat:@"%@/api/YWT_User.ashx?action=login&q0=%@&q1=%@&q2=%@&q3=%@&q4=%@",urlt,username, password,uuids,os,xh];
+//            
+//            NSURL *url = [NSURL URLWithString:urlStr];
+//            
+//            
+//            NSURLRequest *request = [NSURLRequest requestWithURL:url];
+//            
+//            [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+//                
+//                if (data != nil) {
+//                    NSDictionary *dict=[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:nil];
+//                    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+//                        NSString *str=[NSString stringWithFormat:@"%@",dict[@"ReturnMsg"]];
+//                        NSLog(@"＋＋＋%@",dict[@"ResultObject"]);
+//                        
+//                        if ([str isEqualToString:@"Success"]) {
+//                            NSString *idt=[NSString stringWithFormat:@"%@",dict[@"ResultObject"][@"ID"]];
+//                            NSString *idt2=[NSString stringWithFormat:@"%@",dict[@"ResultObject"][@"SupplierID"]];
+//                            NSString *RealName=[NSString stringWithFormat:@"%@",dict[@"ResultObject"][@"RealName"]];
+//                            NSString *Company=[NSString stringWithFormat:@"%@",dict[@"ResultObject"][@"Company"]];
+//                            NSString *usertype=[NSString stringWithFormat:@"%@",dict[@"ResultObject"][@"UserType"]];
+//                            NSString *UserImg=[NSString stringWithFormat:@"%@",dict[@"ResultObject"][@"UserImg"]];
+//                            NSString *Mobile=[NSString stringWithFormat:@"%@",dict[@"ResultObject"][@"Mobile"]];
+//                            NSString *Certify=[NSString stringWithFormat:@"%@",dict[@"ResultObject"][@"Certify"]];
+//                            
+//                            
+//                            if ([usertype isEqualToString:@"10"]&[idt2 isEqualToString:@""]) {
+//                                [MBProgressHUD showSuccess:@"请完善账号！"];
+//                            
+//                            }else
+//                            {
+//                                NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+//                                [userDefaults setObject:idt forKey:@"myidt"];
+//                                [userDefaults setObject:idt2 forKey:@"myidt2"];
+//                                [userDefaults setObject:username forKey:@"iphone"];
+//                                [userDefaults setObject:RealName forKey:@"RealName"];
+//                                [userDefaults setObject:Company forKey:@"Company"];
+//                                [userDefaults setObject:usertype forKey:@"usertype"];
+//                                [userDefaults setObject:UserImg forKey:@"UserImg"];
+//                                [userDefaults setObject:Certify forKey:@"Certify"];
+//                                [userDefaults setObject:Mobile forKey:@"Mobile"];
+//                                
+//                                [userDefaults synchronize];
+//                                
+//                                if ([idt2 isEqualToString:@""]&[usertype isEqualToString:@"0"])
+//                                {
+//                                    
+//                                    [MBProgressHUD showSuccess:@"请完善账号设置！"];
+//                                }
+//                                else
+//                                {
+//                                    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+//                                    [userDefaults setObject:@"go" forKey:@"autopass"];
+//                                }
+//                            }
+//                            
+//                        }else{
+//                            [MBProgressHUD showError:@"账号或密码错误！"];
+//                            return ;
+//                        }
+//                    }];
+//                }
+//            }];
+//        }@catch (NSException * e) {
+//            NSLog(@"Exception: %@", e);
+//            
+//        }
+//        
+//
+//    }
     
     
     

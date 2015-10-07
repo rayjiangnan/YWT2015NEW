@@ -16,6 +16,9 @@
 #import "UIImageView+WebCache.h"
 
 @interface plist ()
+{
+    NSString *strTel;
+}
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollview;
 
 @property (weak, nonatomic) IBOutlet UILabel *fdr;
@@ -62,6 +65,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *f3;
 @property (weak, nonatomic) IBOutlet UIImageView *f4;
 @property (weak, nonatomic) IBOutlet UIImageView *f5;
+- (IBAction)btnTelClick:(id)sender;
 
 @end
 
@@ -70,7 +74,12 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     self.tabBarController.tabBar.hidden=YES;
-
+    
+    int status=[self ChangeStatus:@"Order"];
+    if (status==3) {
+        self.postbtn.hidden=YES;
+        [self requestaaa];
+    }
     
     [self ChangeItemInit:@"Order"];
 }
@@ -89,8 +98,6 @@
     NSString *myString =[self GetUserID];
     
     NSString *mystring2=[NSString stringWithFormat:@"%@",strTtile];
-    
-    
     
     NSString *urlStr = [NSString stringWithFormat:@"%@/API/YWT_OrderPlatform.ashx?action=getitem&q0=%@&q1=%@",urlt,mystring2,myString];
     AFHTTPRequestOperation *op=[self GETurlString:urlStr];
@@ -111,6 +118,7 @@
         //        [self idt:dict[@"Order_ID"]];
         self.yf.text=[NSString stringWithFormat:@"%@",dict[@"Freight"]];
         self.lxr.text=[NSString stringWithFormat:@"%@  %@",dict[@"ContactMan"],dict[@"ContactMobile"]];
+        strTel=dict[@"ContactMobile"];
         self.ywdz.text=dict[@"Task_Address"];
         self.bt.text=dict[@"OrderTitle"];
         NSString *st=dict[@"OrderType_Name"];
@@ -126,79 +134,74 @@
         NSURL *imgurl=[NSURL URLWithString:img2];
         [self.suppimg setImageWithURL:imgurl placeholderImage:[UIImage imageNamed:img2]];
         
-        NSString *xin=[NSString stringWithFormat:@"%@",dict[@"Stars"]];
-        if ([xin isEqualToString:@"5"]) {
+        UIImage *img=  [UIImage imageNamed:@"hxx"];
+        int Stars=[dict[@"Stars"] intValue];
+        if (Stars==0) {
             
+            self.x5.image=img;
+            self.x4.image=img;
+            self.x3.image=img;
+            self.x2.image=img;
+            self.x1.image=img;
         }
-        if ([xin isEqualToString:@"4"]) {
-            self.x5.image=[UIImage imageNamed:@"hxx"];
-        }
-        if ([xin isEqualToString:@"3"]) {
-            
-            self.x4.image=[UIImage imageNamed:@"hxx"];
-            self.x5.image=[UIImage imageNamed:@"hxx"];
-        }
-        if ([xin isEqualToString:@"2"]) {
-            
-            self.x3.image=[UIImage imageNamed:@"hxx"];
-            self.x4.image=[UIImage imageNamed:@"hxx"];
-            self.x5.image=[UIImage imageNamed:@"hxx"];
-        }
-        if ([xin isEqualToString:@"1"]) {
-            
-            self.x2.image=[UIImage imageNamed:@"hxx"];
-            self.x3.image=[UIImage imageNamed:@"hxx"];
-            self.x4.image=[UIImage imageNamed:@"hxx"];
-            self.x5.image=[UIImage imageNamed:@"hxx"];
-        }
-        if ([xin isEqualToString:@"0"]) {
-            self.x1.image=[UIImage imageNamed:@"hxx"];
-            self.x2.image=[UIImage imageNamed:@"hxx"];
-            self.x3.image=[UIImage imageNamed:@"hxx"];
-            self.x4.image=[UIImage imageNamed:@"hxx"];
-            self.x5.image=[UIImage imageNamed:@"hxx"];
+        else
+        {
+            if (Stars<=4){
+                self.x5.image=img;
+            }
+            if (Stars<=3){
+                self.x4.image=img;
+            }
+            if (Stars<=2)
+            {
+                self.x3.image=img;
+            }
+            if (Stars==1)
+            {
+                self.x2.image=img;
+            }
         }
         
         
-        NSString *fen=[NSString stringWithFormat:@"%@",dict[@"ScoreAvg"]];
-        if ([xin isEqualToString:@"0"]) {
-            self.f1.image=[UIImage imageNamed:@"hxx"];
-            self.f2.image=[UIImage imageNamed:@"hxx"];
-            self.f3.image=[UIImage imageNamed:@"hxx"];
-            self.f4.image=[UIImage imageNamed:@"hxx"];
-            self.f5.image=[UIImage imageNamed:@"hxx"];
-        }else if([fen isEqualToString:@"1"]) {
-            self.f2.image=[UIImage imageNamed:@"hxx"];
-            self.f3.image=[UIImage imageNamed:@"hxx"];
-            self.f4.image=[UIImage imageNamed:@"hxx"];
-            self.f5.image=[UIImage imageNamed:@"hxx"];
-        }else if([fen isEqualToString:@"2"]) {
-            
-            self.f3.image=[UIImage imageNamed:@"hxx"];
-            self.f4.image=[UIImage imageNamed:@"hxx"];
-            self.f5.image=[UIImage imageNamed:@"hxx"];
-        }else if([fen isEqualToString:@"3"]) {
-            
-            self.f4.image=[UIImage imageNamed:@"hxx"];
-            self.f5.image=[UIImage imageNamed:@"hxx"];
-        }else if([fen isEqualToString:@"4"]) {
-            
-            self.f5.image=[UIImage imageNamed:@"hxx"];
-            
-        }else if([fen isEqualToString:@"5"]) {
-            
+        int fen=[dict[@"ScoreAvg"] intValue];
+        if (fen==0) {
+            self.f5.image=img;
+            self.f4.image=img;
+            self.f3.image=img;
+            self.f2.image=img;
+            self.f1.image=img;
+        }
+        else
+        {
+            if (fen<=4){
+                self.f5.image=img;
+            }
+            if (fen<=3){
+                self.f4.image=img;
+            }
+            if (fen<=2){
+                self.f3.image=img;
+            }
+            if (fen==1){
+                self.f2.image=img;
+            }
         }
 
         
-        if ([[NSString stringWithFormat:@"%@",dict[@"FlowRight"]] isEqualToString:@"1"]) {
+        int flowright=[dict[@"FlowRight"] intValue];
+        if (flowright==1) {
             self.postbtn.hidden=NO;
-            NSString *status=[NSString stringWithFormat:@"%@",dict[@"Status"]];
+            int status=[dict[@"Status"] intValue];
             NSString *nextstatus=[NSString stringWithFormat:@"%@",dict[@"Next_Status_Name"]];
             
             [self.postbtn setTitle:nextstatus forState:UIControlStateNormal];
             
-            if ([status isEqualToString:@"90"]) {
+            if (status ==90) {
                 [self.postbtn setTitle:@"维运评价" forState:UIControlStateNormal];
+            }
+            else if (status ==25)
+            {
+                [self.postbtn setTitle:@"开始运维" forState:UIControlStateNormal];
             }
         }
         else
@@ -266,4 +269,7 @@
 }
 
 
+- (IBAction)btnTelClick:(id)sender {
+    [self tel:strTel];
+}
 @end

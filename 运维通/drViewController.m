@@ -101,6 +101,7 @@
     cell.textLabel.text=dict2[@"RealName"];
     cell.detailTextLabel.text=dict2[@"Mobile"];
     
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{

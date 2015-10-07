@@ -57,7 +57,7 @@
         pagenum1=0;
         pagenum2=0;
 
-        [self repeatnetwork];
+
 
         indexa=0;
     }
@@ -89,26 +89,20 @@
 
     cell.dh.text=dict2[@"OrderNo"];
     NSString *zt=[NSString stringWithFormat:@"%@",dict2[@"Status_Name"]];
-   
-        cell.zt.text=zt;
 
+    cell.zt.text=zt;
+    if (selectnum==1) {
+        cell.zt.hidden=NO;
+    }else  if (selectnum==2) {
+        cell.zt.hidden=YES;
+    }
+    
     cell.bt.text=dict2[@"OrderTitle"];
     cell.dz.text=dict2[@"Task_Address"];
-     cell.dz.lineBreakMode = UILineBreakModeWordWrap;
-     cell.dz.numberOfLines = 0;
+    cell.dz.numberOfLines = 0;
     
     
     
-    
-//    NSString *dt3=dict2[@"CreateDateTime"];
-//    dt3=[dt3 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
-//    dt3=[dt3 stringByReplacingOccurrencesOfString:@")/" withString:@""];
-//    // NSLog(@"%@",dt3);
-//    NSString * timeStampString3 =dt3;
-//    NSTimeInterval _interval3=[timeStampString3 doubleValue] / 1000;
-//    NSDate *date3 = [NSDate dateWithTimeIntervalSince1970:_interval3];
-//    NSDateFormatter *objDateformat3 = [[NSDateFormatter alloc] init];
-//    [objDateformat3 setDateFormat:@"MM-dd"];
     cell.sj.text=[self DateFormartMD:dict2[@"CreateDateTime"]];//[objDateformat3 stringFromDate: date3];
     NSString *xin=[NSString stringWithFormat:@"%@",dict2[@"Stars"]];
     if ([xin isEqualToString:@"5"]) {
@@ -142,11 +136,7 @@
         cell.x4.image=[UIImage imageNamed:@"hxx"];
         cell.x5.image=[UIImage imageNamed:@"hxx"];
     }
-    if ([_igt isEqualToString:@"0"]) {
-        cell.sq.hidden=NO;
-    }else{
-      cell.sq.hidden=YES;
-    }
+    
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
@@ -154,13 +144,8 @@
     NSURL *imgurl=[NSURL URLWithString:img2];
     [cell.img setImageWithURL:imgurl placeholderImage:[UIImage imageNamed:img2]];
     
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
-}
-
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    [self performSegueWithIdentifier:@"zd" sender:nil];
-    
 }
 
 
@@ -178,12 +163,12 @@
         [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSMutableDictionary *dict=responseObject;
             NSMutableArray *dictarr=[dict objectForKey:@"ResultObject"] ;
-            if (dictarr !=nil && dictarr.count < 10) {
-                self.tableview.footer = nil;
-            }
-            else if(dictarr.count >=10 && self.tableview.footer == nil)
-            {
+            if (dictarr !=nil && dictarr.count >= 10) {
                 self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+            }
+            else
+            {
+                self.tableview.footer = nil;
             }
             _tgs=dictarr;
             [self.tableview reloadData];
@@ -196,8 +181,6 @@
         }];
         
         [[NSOperationQueue mainQueue] addOperation:op];
-        
-    
 }
 
 -(void)netWorkRequest2:(int)parameter
@@ -212,12 +195,12 @@
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSMutableDictionary *dict=responseObject;
         NSMutableArray *dictarr=[dict objectForKey:@"ResultObject"] ;
-        if (dictarr !=nil && dictarr.count < 10) {
-            self.tableview.footer = nil;
-        }
-        else if(dictarr.count >=10 && self.tableview.footer == nil)
-        {
+        if (dictarr !=nil && dictarr.count >= 10) {
             self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+        }
+        else
+        {
+            self.tableview.footer = nil;
         }
         _tgs=dictarr;
         [self.tableview reloadData];
@@ -230,10 +213,6 @@
     }];
     
     [[NSOperationQueue mainQueue] addOperation:op];
-}
-
--(void )repeatnetwork{
-    self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
 }
 
 -(void)loadMoreData
@@ -259,12 +238,12 @@
             return ;
         }else{
             NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
-            if (dictarr !=nil && dictarr.count < 10) {
-                self.tableview.footer = nil;
-            }
-            else if(dictarr.count >=10 && self.tableview.footer == nil)
-            {
+            if (dictarr !=nil && dictarr.count >= 10) {
                 self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+            }
+            else
+            {
+                self.tableview.footer = nil;
             }
             [_tgs addObjectsFromArray:dictarr];
             [self.tableview reloadData];
@@ -299,7 +278,6 @@
     parameterNumber=0;
     selectnum=2;
     [UIView animateWithDuration:0.5 animations:^{
-        
         _scrollLabel.frame=CGRectMake(self.view.frame.size.width/2.0, 117,self.view.frame.size.width/2.0, 2);
         
     }];
@@ -308,22 +286,34 @@
     
 }
 
-- (IBAction)didClickCompletedAction:(UIButton *)sender {
-    [self publicMethod:sender];
-    parameterNumber=2;
-    [UIView animateWithDuration:0.5 animations:^{
-        
-        _scrollLabel.frame=CGRectMake(2*self.view.frame.size.width/2.0, 117, self.view.frame.size.width/3.0, 2);
-        
-    }];
-    [self netWorkRequest:parameterNumber];
-}
+//- (IBAction)didClickCompletedAction:(UIButton *)sender {
+//    [self publicMethod:sender];
+//    parameterNumber=2;
+//    [UIView animateWithDuration:0.5 animations:^{
+//        
+//        _scrollLabel.frame=CGRectMake(2*self.view.frame.size.width/2.0, 117, self.view.frame.size.width/3.0, 2);
+//        
+//    }];
+//    [self netWorkRequest:parameterNumber];
+//}
 -(void)publicMethod:(id)sender{
     [_selectBut setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     
     [sender setTitleColor:ZJColor(18, 138, 255) forState:UIControlStateNormal];
     
     _selectBut=sender;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [self performSegueWithIdentifier:@"zd" sender:nil];
+    
+    if (selectnum==1) {
+        //cell.zt.hidden=NO;
+    }else  if (selectnum==2) {
+        //cell.zt.hidden=YES;
+    }
+    
+    
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{

@@ -135,12 +135,12 @@
             return ;
         }else{
             NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
-            if (dictarr !=nil && dictarr.count < 10) {
-                self.tableview.footer = nil;
-            }
-            else if(dictarr.count >=10 && self.tableview.footer == nil)
-            {
+            if (dictarr !=nil && dictarr.count >= 10) {
                 self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+            }
+            else
+            {
+                self.tableview.footer = nil;
             }
             if (dictarr.count>0) {
                 NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
@@ -186,13 +186,9 @@
         //[cell.UserImg setImage:imgUserimg];
         [cell.UserImg setImageWithURL:imgurl placeholderImage:[UIImage imageNamed:img]];
     }
+    
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
-}
-
-
--(NSMutableArray *)repeatnetwork{
-    self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
-    return _tgs;
 }
 
 
@@ -243,12 +239,12 @@
             return ;
         }else{
             NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
-            if (dictarr !=nil && dictarr.count < 10) {
-                self.tableview.footer = nil;
-            }
-            else if(dictarr.count >=10 && self.tableview.footer == nil)
-            {
+            if (dictarr !=nil && dictarr.count >= 10) {
                 self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+            }
+            else
+            {
+                self.tableview.footer = nil;
             }
             if (dictarr.count>0) {
                 NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];

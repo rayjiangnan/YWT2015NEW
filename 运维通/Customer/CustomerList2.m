@@ -33,7 +33,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     num=0;
-    [self repeatnetwork];
+
     self.tableview.rowHeight=60;
     NSLog(@"加载数据。。。。");
     
@@ -62,10 +62,11 @@
         cell=[[[NSBundle mainBundle] loadNibNamed:@"CustomerCell" owner:nil options:nil] lastObject];
     }
     
-    //"CusShort":"简称","CusFullName":"名称","ContactMan","联系人","ContactMobile","联系电话","ContactAddress","地址","Create_User":""
     cell.CusShort.text= [NSString stringWithFormat:@"%@",dict2[@"CusShort"]];;
     
     cell.ContactMan.text= [NSString stringWithFormat:@"%@",dict2[@"ContactMan"]];
+    
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 
@@ -87,12 +88,12 @@
             return ;
         }else{
             NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
-            if (dictarr.count < 10) {
-                self.tableview.footer = nil;
+            if (dictarr !=nil && dictarr.count >= 10) {
+                self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
             }
-            else if(dictarr.count >= 10 && self.tableView.footer == nil)
+            else
             {
-                self.tableView.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+                self.tableview.footer = nil;
             }
             [self netwok:dictarr];
             [self.tableView reloadData];
@@ -117,18 +118,6 @@
 }
 
 
-
--(NSMutableArray *)repeatnetwork{
-    
-    
-    self.tableView.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
-    
-    return _tgs;
-    
-    
-}
-
-
 -(void)loadMoreData
 {
    num=num+1;
@@ -145,12 +134,12 @@
             return ;
         }else{
             NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
-            if (dictarr.count < 10) {
-                self.tableview.footer = nil;
+            if (dictarr !=nil && dictarr.count >= 10) {
+                self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
             }
-            else if(dictarr.count >= 10 && self.tableView.footer == nil)
+            else
             {
-                self.tableView.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+                self.tableview.footer = nil;
             }
 
             [_tgs addObjectsFromArray:dictarr];

@@ -156,7 +156,7 @@
             [MBProgressHUD showError:ReturnMsg];
             NSLog(@"%@",ReturnMsg);
         }else{
-             [self ChangeRecord:_idtt key:@"Order"]; //处理刷新问题
+            //[self ChangeRecord:_idtt key:@"Order"]; //处理刷新问题
             [self ChangeRecord:_idtt key:@"Order"]; //处理刷新问题
             [MBProgressHUD showSuccess:@"评价成功！"];
             [[self navigationController] popViewControllerAnimated:YES];

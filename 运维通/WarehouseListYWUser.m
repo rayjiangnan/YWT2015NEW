@@ -35,7 +35,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self repeatnetwork];
+
     [self network2];
     self.tableview.rowHeight=60;
     NSLog(@"加载数据。。。。");
@@ -64,6 +64,8 @@
     
     cell.ProductName.text= [NSString stringWithFormat:@"%@",dict2[@"Prodeuct_Name"]];;
     cell.Number.text= [NSString stringWithFormat:@"%@ %@",dict2[@"Number"],dict2[@"Unit"]];
+    
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 
@@ -85,12 +87,12 @@
             return ;
         }else{
             NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
-            if (dictarr.count < 10) {
-                self.tableview.footer = nil;
-            }
-            else if(dictarr.count >= 10 && self.tableview.footer == nil)
-            {
+            if (dictarr !=nil && dictarr.count >= 10) {
                 self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+            }
+            else
+            {
+                self.tableview.footer = nil;
             }
             if (dictarr.count >0) {
                 NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
@@ -119,11 +121,6 @@
     return _tgs;
 }
 
--(NSMutableArray *)repeatnetwork{
-    self.tableView.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
-    return _tgs;
-}
-
 
 -(void)loadMoreData
 {
@@ -138,12 +135,12 @@
         NSArray *dictarr=[dict objectForKey:@"ResultObject"];
         if(![dictarr isEqual:[NSNull null]])
         {
-            if (dictarr.count < 10) {
-                self.tableview.footer = nil;
-            }
-            else if(dictarr.count >= 10 && self.tableview.footer == nil)
-            {
+            if (dictarr !=nil && dictarr.count >= 10) {
                 self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+            }
+            else
+            {
+                self.tableview.footer = nil;
             }
             if (dictarr.count>0) {
                 NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];

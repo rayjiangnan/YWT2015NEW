@@ -10,7 +10,7 @@
 		186CCA401B56ABBC00F51EBA /* gerenzliao.m in Sources */ = {isa = PBXBuildFile; fileRef = 186CCA3F1B56ABBC00F51EBA /* gerenzliao.m */; };
 		1872E2211B542253008D1422 /* jrongViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1872E2201B542253008D1422 /* jrongViewController.m */; };
 		18B936361B55565600B2214C /* center.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B936351B55565600B2214C /* center.m */; };
-		18B936391B555EC100B2214C /* hjnANNINOTION.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B936381B555EC100B2214C /* hjnANNINOTION.m */; };
+		18B936391B555EC100B2214C /* MapAnninotionOR.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B936381B555EC100B2214C /* MapAnninotionOR.m */; };
 		282CCA471B9ABA300087E3CB /* renzhen.m in Sources */ = {isa = PBXBuildFile; fileRef = 282CCA461B9ABA300087E3CB /* renzhen.m */; };
 		282D754C1B8063A10019D78C /* registperson.m in Sources */ = {isa = PBXBuildFile; fileRef = 282D754B1B8063A10019D78C /* registperson.m */; };
 		282EA31B1B78FE0100A6893D /* VPImageCropperViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 282EA31A1B78FE0100A6893D /* VPImageCropperViewController.m */; };
@@ -157,6 +157,9 @@
 		78402A841B5BA98100908FA9 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 78402A831B5BA98100908FA9 /* QuartzCore.framework */; };
 		78402A861B5BA9AC00908FA9 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 78402A851B5BA9AC00908FA9 /* SystemConfiguration.framework */; };
 		78402A881B5BA9BB00908FA9 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 78402A871B5BA9BB00908FA9 /* libsqlite3.dylib */; };
+		784C7D7F1BBF5E4700F96466 /* UpFileSyn.m in Sources */ = {isa = PBXBuildFile; fileRef = 784C7D7E1BBF5E4700F96466 /* UpFileSyn.m */; };
+		784C7D851BBF989700F96466 /* PhotoUpLoad.m in Sources */ = {isa = PBXBuildFile; fileRef = 784C7D841BBF989700F96466 /* PhotoUpLoad.m */; };
+		784C7D881BBFC7A700F96466 /* PhotoPerson.m in Sources */ = {isa = PBXBuildFile; fileRef = 784C7D871BBFC7A700F96466 /* PhotoPerson.m */; };
 		784EF5501B5B6A1700113C3C /* styname.plist in Resources */ = {isa = PBXBuildFile; fileRef = 784EF54F1B5B6A1700113C3C /* styname.plist */; };
 		785027E41B593A5F00444333 /* fanhuiz.m in Sources */ = {isa = PBXBuildFile; fileRef = 785027E31B593A5F00444333 /* fanhuiz.m */; };
 		785027E71B593B7200444333 /* cpassword.m in Sources */ = {isa = PBXBuildFile; fileRef = 785027E61B593B7200444333 /* cpassword.m */; };
@@ -208,11 +211,15 @@
 		7860A5641B63BFA60067253C /* UIScrollView+MJExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 7860A54F1B63BFA60067253C /* UIScrollView+MJExtension.m */; };
 		7860A5651B63BFA60067253C /* UIScrollView+MJRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = 7860A5511B63BFA60067253C /* UIScrollView+MJRefresh.m */; };
 		7860A5661B63BFA60067253C /* UIView+MJExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 7860A5531B63BFA60067253C /* UIView+MJExtension.m */; };
+		786833EC1BC2C6B600E0256F /* RenzhenItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 786833E41BC2C6B600E0256F /* RenzhenItemCell.m */; };
+		786833ED1BC2C6B600E0256F /* RenzhenItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 786833E51BC2C6B600E0256F /* RenzhenItemCell.xib */; };
+		786833EE1BC2C6B600E0256F /* RenzhenItemCompany.m in Sources */ = {isa = PBXBuildFile; fileRef = 786833E71BC2C6B600E0256F /* RenzhenItemCompany.m */; };
+		786833EF1BC2C6B600E0256F /* RenzhenItemUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 786833E91BC2C6B600E0256F /* RenzhenItemUser.m */; };
+		786833F01BC2C6B600E0256F /* RenzhenList.m in Sources */ = {isa = PBXBuildFile; fileRef = 786833EB1BC2C6B600E0256F /* RenzhenList.m */; };
 		786AA23C1B5A9DA000E4CB66 /* cyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 786AA23B1B5A9DA000E4CB66 /* cyViewController.m */; };
 		7878B7101B59F59B004CB296 /* gongs.m in Sources */ = {isa = PBXBuildFile; fileRef = 7878B70F1B59F59B004CB296 /* gongs.m */; };
 		787A8B5F1B5E947900E2DBDB /* drViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 787A8B5E1B5E947900E2DBDB /* drViewController.m */; };
 		7886222F1B5D428F000D3C09 /* orderdetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 7886222E1B5D428F000D3C09 /* orderdetail.m */; };
-		78AC91961B9B317C00675176 /* UpFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 78AC91951B9B317C00675176 /* UpFile.m */; };
 		78B4536A1B63C848000C70A7 /* robarorderlist.m in Sources */ = {isa = PBXBuildFile; fileRef = 78B453691B63C848000C70A7 /* robarorderlist.m */; };
 		78B453731B647A6D000C70A7 /* mylist.m in Sources */ = {isa = PBXBuildFile; fileRef = 78B453721B647A6D000C70A7 /* mylist.m */; };
 		78B453771B647A97000C70A7 /* plist.m in Sources */ = {isa = PBXBuildFile; fileRef = 78B453761B647A97000C70A7 /* plist.m */; };
@@ -246,8 +253,8 @@
 		1872E2201B542253008D1422 /* jrongViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = jrongViewController.m; sourceTree = "<group>"; };
 		18B936341B55565600B2214C /* center.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = center.h; sourceTree = "<group>"; };
 		18B936351B55565600B2214C /* center.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = center.m; sourceTree = "<group>"; };
-		18B936371B555EC100B2214C /* hjnANNINOTION.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hjnANNINOTION.h; sourceTree = "<group>"; };
-		18B936381B555EC100B2214C /* hjnANNINOTION.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = hjnANNINOTION.m; sourceTree = "<group>"; };
+		18B936371B555EC100B2214C /* MapAnninotionOR.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapAnninotionOR.h; sourceTree = "<group>"; };
+		18B936381B555EC100B2214C /* MapAnninotionOR.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapAnninotionOR.m; sourceTree = "<group>"; };
 		282CCA451B9ABA300087E3CB /* renzhen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = renzhen.h; sourceTree = "<group>"; };
 		282CCA461B9ABA300087E3CB /* renzhen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = renzhen.m; sourceTree = "<group>"; };
 		282D754A1B8063A10019D78C /* registperson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = registperson.h; sourceTree = "<group>"; };
@@ -494,6 +501,12 @@
 		78402A831B5BA98100908FA9 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		78402A851B5BA9AC00908FA9 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		78402A871B5BA9BB00908FA9 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		784C7D7D1BBF5E4700F96466 /* UpFileSyn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpFileSyn.h; sourceTree = "<group>"; };
+		784C7D7E1BBF5E4700F96466 /* UpFileSyn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpFileSyn.m; sourceTree = "<group>"; };
+		784C7D831BBF989700F96466 /* PhotoUpLoad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PhotoUpLoad.h; path = UpFile/PhotoUpLoad.h; sourceTree = "<group>"; };
+		784C7D841BBF989700F96466 /* PhotoUpLoad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PhotoUpLoad.m; path = UpFile/PhotoUpLoad.m; sourceTree = "<group>"; };
+		784C7D861BBFC7A700F96466 /* PhotoPerson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PhotoPerson.h; path = UpFile/PhotoPerson.h; sourceTree = "<group>"; };
+		784C7D871BBFC7A700F96466 /* PhotoPerson.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PhotoPerson.m; path = UpFile/PhotoPerson.m; sourceTree = "<group>"; };
 		784EF54F1B5B6A1700113C3C /* styname.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = styname.plist; sourceTree = "<group>"; };
 		785027E21B593A5F00444333 /* fanhuiz.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fanhuiz.h; sourceTree = "<group>"; };
 		785027E31B593A5F00444333 /* fanhuiz.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = fanhuiz.m; sourceTree = "<group>"; };
@@ -597,6 +610,15 @@
 		7860A5511B63BFA60067253C /* UIScrollView+MJRefresh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+MJRefresh.m"; sourceTree = "<group>"; };
 		7860A5521B63BFA60067253C /* UIView+MJExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+MJExtension.h"; sourceTree = "<group>"; };
 		7860A5531B63BFA60067253C /* UIView+MJExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+MJExtension.m"; sourceTree = "<group>"; };
+		786833E31BC2C6B600E0256F /* RenzhenItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RenzhenItemCell.h; path = Renzhen/RenzhenItemCell.h; sourceTree = "<group>"; };
+		786833E41BC2C6B600E0256F /* RenzhenItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RenzhenItemCell.m; path = Renzhen/RenzhenItemCell.m; sourceTree = "<group>"; };
+		786833E51BC2C6B600E0256F /* RenzhenItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RenzhenItemCell.xib; path = Renzhen/RenzhenItemCell.xib; sourceTree = "<group>"; };
+		786833E61BC2C6B600E0256F /* RenzhenItemCompany.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RenzhenItemCompany.h; path = Renzhen/RenzhenItemCompany.h; sourceTree = "<group>"; };
+		786833E71BC2C6B600E0256F /* RenzhenItemCompany.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RenzhenItemCompany.m; path = Renzhen/RenzhenItemCompany.m; sourceTree = "<group>"; };
+		786833E81BC2C6B600E0256F /* RenzhenItemUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RenzhenItemUser.h; path = Renzhen/RenzhenItemUser.h; sourceTree = "<group>"; };
+		786833E91BC2C6B600E0256F /* RenzhenItemUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RenzhenItemUser.m; path = Renzhen/RenzhenItemUser.m; sourceTree = "<group>"; };
+		786833EA1BC2C6B600E0256F /* RenzhenList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RenzhenList.h; path = Renzhen/RenzhenList.h; sourceTree = "<group>"; };
+		786833EB1BC2C6B600E0256F /* RenzhenList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RenzhenList.m; path = Renzhen/RenzhenList.m; sourceTree = "<group>"; };
 		786AA23A1B5A9DA000E4CB66 /* cyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cyViewController.h; sourceTree = "<group>"; };
 		786AA23B1B5A9DA000E4CB66 /* cyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = cyViewController.m; sourceTree = "<group>"; };
 		7878B70E1B59F59B004CB296 /* gongs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gongs.h; sourceTree = "<group>"; };
@@ -605,8 +627,6 @@
 		787A8B5E1B5E947900E2DBDB /* drViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = drViewController.m; sourceTree = "<group>"; };
 		7886222D1B5D428F000D3C09 /* orderdetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = orderdetail.h; sourceTree = "<group>"; };
 		7886222E1B5D428F000D3C09 /* orderdetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = orderdetail.m; sourceTree = "<group>"; };
-		78AC91941B9B317C00675176 /* UpFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpFile.h; sourceTree = "<group>"; };
-		78AC91951B9B317C00675176 /* UpFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpFile.m; sourceTree = "<group>"; };
 		78B453681B63C848000C70A7 /* robarorderlist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = robarorderlist.h; sourceTree = "<group>"; };
 		78B453691B63C848000C70A7 /* robarorderlist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = robarorderlist.m; sourceTree = "<group>"; };
 		78B453711B647A6D000C70A7 /* mylist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mylist.h; sourceTree = "<group>"; };
@@ -711,8 +731,6 @@
 				7878B70F1B59F59B004CB296 /* gongs.m */,
 				284A5F591B7ECF0E000DF654 /* genxin.h */,
 				284A5F5A1B7ECF0E000DF654 /* genxin.m */,
-				4E7FA0E61BA27D52001769AE /* companyRenzhen.h */,
-				4E7FA0E71BA27D52001769AE /* companyRenzhen.m */,
 			);
 			name = geren;
 			sourceTree = "<group>";
@@ -731,20 +749,12 @@
 			children = (
 				78376FC41BB2DE97009AF59B /* ywlog */,
 				283A8D311B6E2D13001DF53A /* order */,
-				285EEAC31B75C255002D7656 /* rz.h */,
-				285EEAC41B75C255002D7656 /* rz.m */,
 				285EEAC61B75E39E002D7656 /* personcenter.h */,
 				285EEAC71B75E39E002D7656 /* personcenter.m */,
-				284E9B801B761B59004200D1 /* guanli.h */,
-				284E9B811B761B59004200D1 /* guanli.m */,
 				284132111B764DB2005B5872 /* xietong.h */,
 				284132121B764DB2005B5872 /* xietong.m */,
 				284132141B765610005B5872 /* xietongcenter.h */,
 				284132151B765610005B5872 /* xietongcenter.m */,
-				284132171B7657E1005B5872 /* qiandao.h */,
-				284132181B7657E1005B5872 /* qiandao.m */,
-				282CCA451B9ABA300087E3CB /* renzhen.h */,
-				282CCA461B9ABA300087E3CB /* renzhen.m */,
 				2854D4C21B9B1FD600209D4A /* paylist.h */,
 				2854D4C31B9B1FD600209D4A /* paylist.m */,
 				2854D4C81B9B243F00209D4A /* paylistcell.h */,
@@ -1033,6 +1043,8 @@
 		396B81811B526DEC0017305D /* classes */ = {
 			isa = PBXGroup;
 			children = (
+				785A4B571BC4FFED009ADC71 /* MainPage */,
+				786833E21BC2C69000E0256F /* Renzhen */,
 				28780FB61B8F5E8300023040 /* tongji */,
 				285525511B8E14770091491A /* yeji */,
 				2860FE141B82323E00C9B6CF /* Customer */,
@@ -1087,8 +1099,8 @@
 			children = (
 				396B81611B526D5B0017305D /* ritaccViewController.h */,
 				396B81621B526D5B0017305D /* ritaccViewController.m */,
-				18B936371B555EC100B2214C /* hjnANNINOTION.h */,
-				18B936381B555EC100B2214C /* hjnANNINOTION.m */,
+				18B936371B555EC100B2214C /* MapAnninotionOR.h */,
+				18B936381B555EC100B2214C /* MapAnninotionOR.m */,
 			);
 			name = main;
 			sourceTree = "<group>";
@@ -1302,6 +1314,19 @@
 			name = SDWebImage;
 			sourceTree = "<group>";
 		};
+		785A4B571BC4FFED009ADC71 /* MainPage */ = {
+			isa = PBXGroup;
+			children = (
+				285EEAC31B75C255002D7656 /* rz.h */,
+				285EEAC41B75C255002D7656 /* rz.m */,
+				284E9B801B761B59004200D1 /* guanli.h */,
+				284E9B811B761B59004200D1 /* guanli.m */,
+				284132171B7657E1005B5872 /* qiandao.h */,
+				284132181B7657E1005B5872 /* qiandao.m */,
+			);
+			name = MainPage;
+			sourceTree = "<group>";
+		};
 		7860A5271B63BFA60067253C /* MJRefresh */ = {
 			isa = PBXGroup;
 			children = (
@@ -1395,11 +1420,35 @@
 			path = Header;
 			sourceTree = "<group>";
 		};
+		786833E21BC2C69000E0256F /* Renzhen */ = {
+			isa = PBXGroup;
+			children = (
+				282CCA451B9ABA300087E3CB /* renzhen.h */,
+				282CCA461B9ABA300087E3CB /* renzhen.m */,
+				4E7FA0E61BA27D52001769AE /* companyRenzhen.h */,
+				4E7FA0E71BA27D52001769AE /* companyRenzhen.m */,
+				786833E31BC2C6B600E0256F /* RenzhenItemCell.h */,
+				786833E41BC2C6B600E0256F /* RenzhenItemCell.m */,
+				786833E51BC2C6B600E0256F /* RenzhenItemCell.xib */,
+				786833E61BC2C6B600E0256F /* RenzhenItemCompany.h */,
+				786833E71BC2C6B600E0256F /* RenzhenItemCompany.m */,
+				786833E81BC2C6B600E0256F /* RenzhenItemUser.h */,
+				786833E91BC2C6B600E0256F /* RenzhenItemUser.m */,
+				786833EA1BC2C6B600E0256F /* RenzhenList.h */,
+				786833EB1BC2C6B600E0256F /* RenzhenList.m */,
+			);
+			name = Renzhen;
+			sourceTree = "<group>";
+		};
 		78AC91931B9B316800675176 /* UpFile */ = {
 			isa = PBXGroup;
 			children = (
-				78AC91941B9B317C00675176 /* UpFile.h */,
-				78AC91951B9B317C00675176 /* UpFile.m */,
+				784C7D831BBF989700F96466 /* PhotoUpLoad.h */,
+				784C7D841BBF989700F96466 /* PhotoUpLoad.m */,
+				784C7D7D1BBF5E4700F96466 /* UpFileSyn.h */,
+				784C7D7E1BBF5E4700F96466 /* UpFileSyn.m */,
+				784C7D861BBFC7A700F96466 /* PhotoPerson.h */,
+				784C7D871BBFC7A700F96466 /* PhotoPerson.m */,
 			);
 			name = UpFile;
 			sourceTree = "<group>";
@@ -1568,6 +1617,7 @@
 				7860A5261B63BF260067253C /* listCell.xib in Resources */,
 				78402A611B5B910100908FA9 /* hjnTG.xib in Resources */,
 				396B81601B526D5B0017305D /* Main.storyboard in Resources */,
+				786833ED1BC2C6B600E0256F /* RenzhenItemCell.xib in Resources */,
 				285EEAC21B74FA8B002D7656 /* pinglunCell.xib in Resources */,
 				7860A5621B63BFA60067253C /* MJRefresh.bundle in Resources */,
 				3944E49F1B52EAB40086E456 /* name.plist in Resources */,
@@ -1618,7 +1668,7 @@
 				4EC967281B5C98BC00A59F0B /* mapViewController.m in Sources */,
 				396B81951B52801B0017305D /* MBProgressHUD+MJ.m in Sources */,
 				7860A5581B63BFA60067253C /* MJRefreshHeader.m in Sources */,
-				18B936391B555EC100B2214C /* hjnANNINOTION.m in Sources */,
+				18B936391B555EC100B2214C /* MapAnninotionOR.m in Sources */,
 				39998D711B529509001D4BCA /* login.m in Sources */,
 				7850280D1B59557900444333 /* icon.m in Sources */,
 				39998D6E1B528432001D4BCA /* ritaccreg2.m in Sources */,
@@ -1627,7 +1677,9 @@
 				78B453971B651061000C70A7 /* postapply.m in Sources */,
 				7860A5551B63BFA60067253C /* MJRefreshBackFooter.m in Sources */,
 				785027FC1B593BF400444333 /* AFHTTPRequestOperation.m in Sources */,
+				784C7D7F1BBF5E4700F96466 /* UpFileSyn.m in Sources */,
 				78402A541B5B904900908FA9 /* order2ViewController.m in Sources */,
+				784C7D851BBF989700F96466 /* PhotoUpLoad.m in Sources */,
 				7860A5541B63BFA60067253C /* MJRefreshAutoFooter.m in Sources */,
 				7860A55C1B63BFA60067253C /* MJRefreshBackGifFooter.m in Sources */,
 				78B4539A1B6528BE000C70A7 /* plistdetail.m in Sources */,
@@ -1641,6 +1693,7 @@
 				289E4EE81B7E2A1600C19D13 /* WarehouseAdd.m in Sources */,
 				289E4EEC1B7E2A1600C19D13 /* WarehouseListYWUser.m in Sources */,
 				78B453731B647A6D000C70A7 /* mylist.m in Sources */,
+				786833EC1BC2C6B600E0256F /* RenzhenItemCell.m in Sources */,
 				2844F7611B935B0D00ADE377 /* ShowViewController.m in Sources */,
 				7860A5571B63BFA60067253C /* MJRefreshFooter.m in Sources */,
 				2844F7041B93218400ADE377 /* CustomerList2.m in Sources */,
@@ -1693,15 +1746,17 @@
 				289E4F111B7E2CEC00C19D13 /* SBJsonStreamParserState.m in Sources */,
 				78B4536A1B63C848000C70A7 /* robarorderlist.m in Sources */,
 				78B4539D1B653287000C70A7 /* userapplylist.m in Sources */,
+				786833EE1BC2C6B600E0256F /* RenzhenItemCompany.m in Sources */,
 				289E4F0F1B7E2CEC00C19D13 /* SBJsonStreamParserAccumulator.m in Sources */,
 				289E4F0D1B7E2CEC00C19D13 /* SBJsonParser.m in Sources */,
 				7850F4C31BA502B3001116D6 /* README.md in Sources */,
 				7860A5661B63BFA60067253C /* UIView+MJExtension.m in Sources */,
+				786833F01BC2C6B600E0256F /* RenzhenList.m in Sources */,
 				78B4537B1B647AE2000C70A7 /* postlist.m in Sources */,
+				786833EF1BC2C6B600E0256F /* RenzhenItemUser.m in Sources */,
 				7860A5561B63BFA60067253C /* MJRefreshComponent.m in Sources */,
 				2844F70A1B93336500ADE377 /* scus.m in Sources */,
 				39998D8B1B52B781001D4BCA /* pinyin.c in Sources */,
-				78AC91961B9B317C00675176 /* UpFile.m in Sources */,
 				289E4F251B7E3A3800C19D13 /* RegistrationComapnyView.m in Sources */,
 				289E4F151B7E2CEC00C19D13 /* SBJsonTokeniser.m in Sources */,
 				289E4EEB1B7E2A1600C19D13 /* WarehouseListController.m in Sources */,
@@ -1737,6 +1792,7 @@
 				2860FE1C1B82323E00C9B6CF /* CustomerCell.m in Sources */,
 				2860FE1F1B82323E00C9B6CF /* CustomerList.m in Sources */,
 				284E9B821B761B59004200D1 /* guanli.m in Sources */,
+				784C7D881BBFC7A700F96466 /* PhotoPerson.m in Sources */,
 				78B453831B647C55000C70A7 /* postcell.m in Sources */,
 				1872E2211B542253008D1422 /* jrongViewController.m in Sources */,
 				286CF67B1B7119EE00B43CD3 /* detaildaywrite.m in Sources */,

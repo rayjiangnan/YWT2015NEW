@@ -9,6 +9,7 @@
 #import "cyViewController.h"
 #import "MBProgressHUD+MJ.h"
 #import "UIViewController+Extension.h"
+#import "SBJson.h"
 
 @interface cyViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *cname;
@@ -47,9 +48,6 @@
         
     NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
     NSString *myString = [userDefaultes stringForKey:@"myidt2"];
-    // NSString *mystring2=[NSString stringWithFormat:@"%@",strTtile];
-    // NSString *tr=@"B6D13BE7-990C-4DA6-A757-088ED994D9EA";
-    //NSLog(@"%@",myString)
     NSString *urlStr = [NSString stringWithFormat:@"%@/API/YWT_Supplier.ashx?action=get&q0=%@",urlt,myString];
     
     NSURL *url = [NSURL URLWithString:urlStr];
@@ -76,19 +74,11 @@
             self.email.text=dictarr2[@"Email"];
             self.mobile.text=dictarr2[@"Mobile"];
             }
-            // NSDictionary *dictarr=[dictarr2 objectForKey:@"OrderMain"];
-           
- 
-            
         }else
         {
             [MBProgressHUD showError:@"网络请求出错"];
             return ;
         }
-
-    
-    
-    
 }
 
 
@@ -111,77 +101,66 @@
     }else if([self.mobile.text isEqualToString:@""]){
         [MBProgressHUD showError:@"请输入手机号！"];
         return;
-    }else{
-        
-        [self postJSON:self.addr.text:self.cname.text:self.realname.text:self.email.text:self.fax.text:self.mobile.text:self.phone.text];
-      
     }
-
-    
+        
+    [self postJSON];
 }
 
+-(NSString*) SetValue {
+    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
+    //NSString *Create_User  =[self GetUserID];
+    NSString *supplierid = [userDefaultes stringForKey:@"myidt2"];
+    
+    NSMutableDictionary *dic = [[NSMutableDictionary alloc]init];//创建内层的字典
+    
+    if (![supplierid isEqualToString:@""]) {
+         [dic setValue:supplierid forKey:@"ID"];
+    }
+    
+    //[dic setValue:Create_User forKey:@"ID"];
+    [dic setValue:self.addr.text forKey:@"Address"];
 
-
-- (void)postJSON:(NSString *)text1 :(NSString *)text2:(NSString *)text3:(NSString *)text4:(NSString *)text5:(NSString *)text6:(NSString *)text7
-{
-
-        NSString *urlstr=[NSString stringWithFormat:@"%@/API/YWT_Supplier.ashx",urlt];
-
-        
-        NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-        NSString *myString =[self GetUserID];
-         NSString *myString2 = [userDefaultes stringForKey:@"myidt2"];
-        
-        if ([myString2 isEqualToString:@""]) {
-           NSString *dstr=[NSString stringWithFormat:@"{\"ID\":\"%@\",\"Address\":\"%@\", \"Company\":\"%@\", \"ContactMan\":\"%@\", \"Email\":\"%@\", \"Fax\":\"%@\", \"Mobile\":\"%@\", \"UserType\":1, \"Tel\":\"%@\"}",myString,text1,text2,text3,text4,text5,text6,text7];
-            // ? 数据体
-            NSString *str = [NSString stringWithFormat:@"action=addupdate&q0=%@&q1=%@",dstr,myString];
+    [dic setValue:self.cname.text forKey:@"Company"];
+    [dic setValue:self.realname.text forKey:@"ContactMan"];
+    [dic setValue:self.email.text forKey:@"Email"];
+    [dic setValue:self.fax.text forKey:@"Fax"];
+    [dic setValue:self.mobile.text forKey:@"Mobile"];
+    [dic setValue:@"1" forKey:@"UserType"];
+    [dic setValue:self.phone.text forKey:@"Tel"];
  
-            
-            AFHTTPRequestOperation *op=[self POSTurlString:urlstr parameters:str];
-            [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-                
-                NSLog(@"%@",responseObject);
-                
-            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                [MBProgressHUD showError:@"网络请求出错"];
-                return ;
-            }];
-            [[NSOperationQueue mainQueue] addOperation:op];
+    
+    SBJsonWriter *jsonWriter = [[SBJsonWriter alloc] init];
+    NSString *jsonString = [jsonWriter stringWithObject:dic];
+    return jsonString;
+}
 
-        }else{
-           NSString *dstr=[NSString stringWithFormat:@"{\"ID\":\"%@\",\"Address\":\"%@\", \"Company\":\"%@\", \"ContactMan\":\"%@\", \"Email\":\"%@\", \"Fax\":\"%@\", \"Mobile\":\"%@\", \"UserType\":1, \"Tel\":\"%@\"}",myString2,text1,text2,text3,text4,text5,text6,text7];
-            NSString *str = [NSString stringWithFormat:@"action=addupdate&q0=%@&q1=%@",dstr,myString];
+- (void)postJSON//:(NSString *)text1 :(NSString *)text2:(NSString *)text3:(NSString *)text4:(NSString *)text5:(NSString *)text6:(NSString *)text7
+{
+        NSString *dstr=[self SetValue];
+        NSString *Create_User  =[self GetUserID];
+        NSString *urlstr=[NSString stringWithFormat:@"%@/API/YWT_Supplier.ashx",urlt];
+        NSString *str = [NSString stringWithFormat:@"action=addupdate&q0=%@&q1=%@",dstr,Create_User];
 
-            
-            AFHTTPRequestOperation *op=[self POSTurlString:urlstr parameters:str];
-            [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-                
-                NSDictionary *dict=responseObject;
-                NSString *errstr2=[NSString stringWithFormat:@"%@",dict[@"Status"]];
+
+        AFHTTPRequestOperation *op=[self POSTurlString:urlstr parameters:str];
+        [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSDictionary *dict=responseObject;
+            NSString *errstr2=[NSString stringWithFormat:@"%@",dict[@"Status"]];
                 if ([errstr2 isEqualToString:@"0"]){
                     NSString *str=[NSString stringWithFormat:@"%@",dict[@"ReturnMsg"]];
                     [MBProgressHUD showError:str];
-                    
                     return ;
                     
                 }else{
                     [MBProgressHUD showSuccess:@"修改成功"];
                     [[self navigationController] popViewControllerAnimated:YES];
-                    
                 }
-                
+
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                [MBProgressHUD showError:@"网络请求出错"];
-                return ;
-            }];
-            [[NSOperationQueue mainQueue] addOperation:op];
-            
-
-         
-        }
-
-    
+            [MBProgressHUD showError:@"网络请求出错"];
+            return ;
+        }];
+        [[NSOperationQueue mainQueue] addOperation:op];
 }
 
 

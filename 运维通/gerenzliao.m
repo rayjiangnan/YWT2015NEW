@@ -99,9 +99,9 @@
 
         NSString *sty=[NSString stringWithFormat:@"%@",dictarr[@"UserType"]];
         if ([sty isEqualToString:@"10"]) {
-            self.sty.text=@"维运商";
+            self.sty.text=@"运维商";
         }else if([sty isEqualToString:@"20"]){
-            self.sty.text=@"维运人员";
+            self.sty.text=@"运维人员";
         }else if([sty isEqualToString:@"40"]){
             self.sty.text=@"调度";}
         self.tel.text=dictarr[@"UserName"];

@@ -36,6 +36,11 @@
 
     [self ChangeItemInit:@"Customer"];
     
+    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
+    NSString *mygh = [userDefaultes stringForKey:@"detaaddr"];
+    if (![mygh isEqualToString:@""]) {
+        self.txtContactAddress.text=mygh;
+    }
     
 }
 
@@ -47,11 +52,7 @@
         [self LoadItem];
     }
     
-    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-    NSString *mygh = [userDefaultes stringForKey:@"detaaddr"];
-    if (![mygh isEqualToString:@""]) {
-        self.txtContactAddress.text=mygh;
-    }
+
     
     [self tapBackground];
     [self tapOnce];

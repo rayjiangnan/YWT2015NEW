@@ -10,12 +10,17 @@
 #import "MBProgressHUD+MJ.h"
 #import "userCell.h"
 #import "applyperson.h"
+#import "MJRefresh.h"
+#import "UIViewController+Extension.h"
 
 @interface userapplylist ()<UITableViewDataSource,UITableViewDelegate,UIWebViewDelegate>
-
+{
+    int  OrderStatusS;
+    int indes;
+}
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
 @property (nonatomic, strong) NSMutableArray *tgs;
-@property (nonatomic,assign)int *idtt3;
+//@property (nonatomic,assign)int *idtt3;
 @end
 
 @implementation userapplylist
@@ -29,22 +34,18 @@
     self.tableview.rowHeight=255;
     
     [self ChangeItemInit:@"Order"];
+    OrderStatusS=self.OrderStatus;
 }
 
 -(NSMutableArray *)netwok:(NSMutableArray *)array
 {
-    
     _tgs=array;
     return _tgs;
-    
-    
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
 {
-    
     return _tgs.count;
-    
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -58,15 +59,6 @@
 
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-//    NSString *dt3=dict2[@"Apply_Date"];
-//    dt3=[dt3 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
-//    dt3=[dt3 stringByReplacingOccurrencesOfString:@")/" withString:@""];
-//    // NSLog(@"%@",dt3);
-//    NSString * timeStampString3 =dt3;
-//    NSTimeInterval _interval3=[timeStampString3 doubleValue] / 1000;
-//    NSDate *date3 = [NSDate dateWithTimeIntervalSince1970:_interval3];
-//    NSDateFormatter *objDateformat3 = [[NSDateFormatter alloc] init];
-//    [objDateformat3 setDateFormat:@"yyyy-MM-dd"];
     cell.time.text=[self DateFormartYMD:dict2[@"Apply_Date"]];//[objDateformat3 stringFromDate: date3];
     
     NSString *lr=[NSString stringWithFormat:@"%@  %@",dict2[@"ContactMan"],dict2[@"ContactMobile"]];
@@ -141,12 +133,17 @@
     [cell.btn addTarget:self action:@selector(genz2:) forControlEvents:UIControlEventTouchUpInside];
     cell.btn.tag =indexPath.row;
     [cell.contentView addSubview:cell.btn];
+    if (OrderStatusS != 0) {
+        cell.btn.hidden=TRUE;
+    }
     
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 -(void)genz2:(UIButton *)sender{
-    [self idt3:sender.tag];
-    NSDictionary *rowdata=[self.tgs objectAtIndex:_idtt3];
+    //[self idt3:sender.tag];
+    int index=sender.tag;
+    NSDictionary *rowdata=[self.tgs objectAtIndex:index];
     NSString *mystring2=[NSString stringWithFormat:@"%@",strTtile];
     NSString *orderq=rowdata[@"Platform_Apply_ID"];
     NSString *urlStr =[NSString stringWithFormat:@"%@/API/YWT_OrderPlatform.ashx",urlt] ;
@@ -163,7 +160,6 @@
             double delayInSeconds =0;
             dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
             dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                
                 [MBProgressHUD showSuccess:@"提交成功！"];
             [[self navigationController] popViewControllerAnimated:YES];
             });
@@ -177,17 +173,11 @@
     }];
     
     [[NSOperationQueue mainQueue] addOperation:op];
-    
-    
-    
-    
-    
 }
--(int *)idt3:(int *)id1{
-    _idtt3=id1;
-    return _idtt3;
-    
-}
+//-(int *)idt3:(int *)id1{
+//    _idtt3=id1;
+//    return _idtt3;
+//}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     //NSDictionary *rowdata=[self.tgs objectAtIndex:[indexPath row]];
@@ -200,7 +190,7 @@
 {
     
     NSString *mystring2=[NSString stringWithFormat:@"%@",strTtile];
-    int indes=-1;
+    indes=-1;
     
     NSString *urlStr = [NSString stringWithFormat:@"%@/API/YWT_OrderPlatform.ashx?action=getlistapplyusers&q0=%@&q1=%d",urlt,mystring2,indes];
     AFHTTPRequestOperation *op=[self GETurlString:urlStr];
@@ -213,13 +203,18 @@
             return ;
         }else{
             NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
-//            if (dictarr !=nil && dictarr.count < 10) {
-//                self.tableview.footer = nil;
-//            }
-//            else if(dictarr.count >=10 && self.tableview.footer == nil)
-//            {
-//                self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
-//            }
+            if (dictarr !=nil && dictarr.count >= 10) {
+                self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+            }
+            else
+            {
+                self.tableview.footer = nil;
+            }
+            if (dictarr.count>0) {
+                NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
+                indes=[dict3[@"Platform_Apply_ID"] intValue];
+            }
+            
             [self netwok:dictarr];
             [self.tableview reloadData];
         }
@@ -233,6 +228,42 @@
     
 }
 
+-(void)loadMoreData
+{
+    NSString *Create_User  =[self GetUserID];
+    NSString *urlStr = [NSString stringWithFormat:@"%@/API/YWT_OrderPlatform.ashx?action=getlistapplyusers&q0=%@&q1=%d",urlt,Create_User,indes];
+    
+    AFHTTPRequestOperation *op=[self GETurlString:urlStr];
+    [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSMutableDictionary *json=responseObject;
+        NSString *Status=[NSString stringWithFormat:@"%@",json[@"Status"]];
+        if ([Status isEqualToString:@"0"]){
+            NSString *ReturnMsg=[NSString stringWithFormat:@"%@",json[@"ReturnMsg"]];
+            [MBProgressHUD showError:ReturnMsg];
+            return ;
+        }else{
+            NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
+            if (dictarr !=nil && dictarr.count >= 10) {
+                self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+            }
+            else
+            {
+                self.tableview.footer = nil;
+            }
+            if (dictarr.count>0) {
+                NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
+                indes=[dict3[@"Platform_Apply_ID"] intValue];
+                [_tgs addObjectsFromArray:dictarr];
+                [self.tableview reloadData];
+            }
+        }
+        [self.tableview.footer endRefreshing];
+        self.tableview.footer.autoChangeAlpha=YES;
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [MBProgressHUD showError:@"网络请求出错"];
+    }];
+    [[NSOperationQueue mainQueue] addOperation:op];
+}
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     id vc=segue.destinationViewController;

@@ -47,10 +47,10 @@
     self.tableview.delegate = self;
     self.tableview.dataSource = self;
     //[self.view addSubview: self.tableview];
-    
+    self.tabBarController.tabBar.hidden=YES;
     
     [self LoadDataList];
-    [self repeatnetwork];
+
     [self.tableview reloadData];
     self.tableview.rowHeight=60;
     
@@ -166,34 +166,32 @@
             NSString *ReturnMsg=[NSString stringWithFormat:@"%@",json[@"ReturnMsg"]];
             [MBProgressHUD showError:ReturnMsg];
             return ;
-        }else{
-            NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
-            if(dictarr.count> 0)
-            {
-                NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
-                num=[dict3[@"Registration_ID"] intValue];
-            }
-            NSLog(@"%@",dictarr);
-            [self netwok:dictarr];
-            [self.tableview reloadData];
-            NSLog(@"加载数据完成。");
-            [self.tableview.header endRefreshing];
         }
+        NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
+        if (dictarr !=nil && dictarr.count >= 10) {
+            self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+        }
+        else
+        {
+            self.tableview.footer = nil;
+        }
+        if(dictarr.count> 0)
+        {
+            NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
+            num=[dict3[@"Registration_ID"] intValue];
+        }
+        NSLog(@"%@",dictarr);
+        [self netwok:dictarr];
+        [self.tableview reloadData];
+        
+        [self.tableview.header endRefreshing];
+        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
         [MBProgressHUD showError:@"网络异常！"];
         return ;
     }];
     [[NSOperationQueue mainQueue] addOperation:op];
-//     }];
-//    self.tableview.header.autoChangeAlpha = YES;
-//    [self.tableview.header beginRefreshing];
-}
-
-
--(NSMutableArray *)repeatnetwork{
-    self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
-    return _tgs;
 }
 
 
@@ -208,25 +206,31 @@
     
     AFHTTPRequestOperation *op=[self GETurlString:urlStr2];
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSMutableDictionary *dict=responseObject;
-        NSArray *dictarr=[dict objectForKey:@"ResultObject"];
-        if(![dictarr isEqual:[NSNull null]])
-        {
-            if (dictarr.count < 10) {
-                self.tableview.footer = nil;
-            }
-            else if(dictarr.count >= 10 && self.tableview.footer == nil)
-            {
-                self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
-            }
-            if (dictarr.count>0) {
-                NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
-                num=[dict3[@"Registration_ID"] intValue];
-                [_tgs addObjectsFromArray:dictarr];
-                [self.tableview reloadData];
-                
-            }
+        NSMutableDictionary *json=responseObject;
+        NSString *Status=[NSString stringWithFormat:@"%@",json[@"Status"]];
+        if ([Status isEqualToString:@"0"]){
+            NSString *ReturnMsg=[NSString stringWithFormat:@"%@",json[@"ReturnMsg"]];
+            [MBProgressHUD showError:ReturnMsg];
+            return ;
         }
+
+        NSArray *dictarr=[json objectForKey:@"ResultObject"];
+        
+        if (dictarr !=nil && dictarr.count >= 10) {
+            self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+        }
+        else
+        {
+            self.tableview.footer = nil;
+        }
+        if (dictarr.count>0) {
+            NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
+            num=[dict3[@"Registration_ID"] intValue];
+            [_tgs addObjectsFromArray:dictarr];
+            [self.tableview reloadData];
+            
+        }
+       
         [self.tableview.footer endRefreshing];
         self.tableview.footer.autoChangeAlpha=YES;
         
@@ -257,8 +261,7 @@
     cell.lblWhere.text=[NSString stringWithFormat:@"%@",dict2[@"Position"]];
     cell.lblTime.text=[self DateFormartString:dict2[@"Create_Date"]];
     
-    //    cell.ProductName.text= [NSString stringWithFormat:@"%@",dict2[@"Prodeuct_Name"]];;
-    //    cell.Number.text= [NSString stringWithFormat:@"%@ %@",dict2[@"Number"],dict2[@"Unit"]];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 

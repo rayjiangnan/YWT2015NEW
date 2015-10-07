@@ -22,5 +22,5 @@
 @property (weak, nonatomic) IBOutlet UIImageView *img;
 
 @property (weak, nonatomic) IBOutlet UIImageView *x5;
-@property (weak, nonatomic) IBOutlet UILabel *sq;
+//@property (weak, nonatomic) IBOutlet UILabel *sq;
 @end

@@ -68,19 +68,11 @@
     cell.liststyle.text=dict2[@"ItemName"];
     cell.listno.text=dict2[@"Remark"];
     cell.money.text=[NSString stringWithFormat:@"￥%@",dict2[@"Money"]];
-//    NSString *dt3=dict2[@"CreateDateTime"];
-//    dt3=[dt3 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
-//    dt3=[dt3 stringByReplacingOccurrencesOfString:@")/" withString:@""];
-//    NSString * timeStampString3 =dt3;
-//    NSTimeInterval _interval3=[timeStampString3 doubleValue] / 1000;
-//    NSDate *date3 = [NSDate dateWithTimeIntervalSince1970:_interval3];
-//    NSDateFormatter *objDateformat3 = [[NSDateFormatter alloc] init];
-//    [objDateformat3 setDateFormat:@"yyyy-MM-dd"];
+
+    
     cell.listdate.text= [self DateFormartYMD:dict2[@"CreateDateTime"]];//[objDateformat3 stringFromDate: date3];
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
-    
     return cell;
 }
 

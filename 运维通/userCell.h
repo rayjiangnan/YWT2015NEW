@@ -12,9 +12,9 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *time;
 @property (weak, nonatomic) IBOutlet UILabel *lxr;
-@property (weak, nonatomic) IBOutlet UILabel *xin;
-
-@property (weak, nonatomic) IBOutlet UILabel *pf;
+//@property (weak, nonatomic) IBOutlet UILabel *xin;
+//
+//@property (weak, nonatomic) IBOutlet UILabel *pf;
 
 @property (weak, nonatomic) IBOutlet UILabel *wcds;
 

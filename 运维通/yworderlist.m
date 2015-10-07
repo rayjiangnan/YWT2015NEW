@@ -50,7 +50,7 @@
 //@synthesize _locationManager;
 
 -(void)viewDidAppear:(BOOL)animated{
-    [super viewDidLoad];
+    //[super viewDidAppear];
     
     self.navigationController.navigationBar.hidden=NO;
     self.tabBarController.tabBar.hidden=NO;
@@ -110,9 +110,8 @@
     self.tableView.delegate=self;
 
     indexa=0;
-    [self repeatnetwork];
     
-    //[self indexchang:self.segmentControl];
+    [self indexchang:self.segmentControl];
     
     [AFNetworkTool netWorkStatus];
     num=0;
@@ -149,23 +148,11 @@
     cell.tel.text=dict2[@"ContactMobile"];
     cell.status.text=dict2[@"Status_Name"];
     
-//    NSString *dt3=dict2[@"CreateDateTime"];;
-//    dt3=[dt3 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
-//    dt3=[dt3 stringByReplacingOccurrencesOfString:@")/" withString:@""];
-//    // NSLog(@"%@",dt3);
-//    NSString * timeStampString3 =dt3;
-//    NSTimeInterval _interval3=[timeStampString3 doubleValue] / 1000;
-//    NSDate *date3 = [NSDate dateWithTimeIntervalSince1970:_interval3];
-//    NSDateFormatter *objDateformat3 = [[NSDateFormatter alloc] init];
-//    [objDateformat3 setDateFormat:@"MM-dd"];
-//    cell.time.text=[objDateformat3 stringFromDate: date3];
+
     cell.time.text=[self DateFormartMD:dict2[@"CreateDateTime"]];
     cell.addr.text=dict2[@"Task_Address"];
     
-//    [cell.btn addTarget:self action:@selector(genz2:) forControlEvents:UIControlEventTouchUpInside];
-//    cell.btn.tag =indexPath.row;
-//    [cell.contentView addSubview:cell.btn];
-    
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 
@@ -230,12 +217,12 @@
             return ;
         }else{
             NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
-            if (dictarr !=nil && dictarr.count < 10) {
-                self.tableView.footer = nil;
-            }
-            else if(dictarr.count >=10 && self.tableView.footer == nil)
-            {
+            if (dictarr !=nil && dictarr.count >= 10) {
                 self.tableView.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+            }
+            else
+            {
+                self.tableView.footer = nil;
             }
             [self netwok:dictarr];
             [self.tableView reloadData];
@@ -280,10 +267,6 @@
 
 
 
--(NSMutableArray *)repeatnetwork{
-    self.tableView.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
-    return _tgs;
-}
 -(void) ChangeLoad
 {
     
@@ -315,12 +298,12 @@
             return ;
         }else{
             NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
-            if (dictarr.count < 10) {
-                self.tableView.footer = nil;
-            }
-            else if(dictarr.count >=10 &&  self.tableView.footer == nil)
-            {
+            if (dictarr !=nil && dictarr.count >= 10) {
                 self.tableView.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+            }
+            else
+            {
+                self.tableView.footer = nil;
             }
             if (dictarr.count>0) {
                 if (_IsChange) {
@@ -344,10 +327,5 @@
     }];
     [[NSOperationQueue mainQueue] addOperation:op];
 }
-
-
-
-
-
 
 @end

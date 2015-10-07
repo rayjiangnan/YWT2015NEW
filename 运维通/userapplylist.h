@@ -10,4 +10,5 @@
 
 @interface userapplylist : UIViewController
 @property(nonatomic,weak)NSString *strTtile;
+@property(nonatomic,assign)int OrderStatus;
 @end

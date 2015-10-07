@@ -9,6 +9,7 @@
 #import "guanli.h"
 
 @interface guanli ()
+@property (weak, nonatomic) IBOutlet UIView *vRengzhenAudit;
 
 @end
 
@@ -27,6 +28,17 @@
     NSForegroundColorAttributeName:[UIColor whiteColor]}];
 
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    
+    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
+    BOOL SuppAdmin= [userDefaultes boolForKey:@"SuppAdmin"];
+    
+    if (SuppAdmin) {
+        self.vRengzhenAudit.hidden=NO;
+    }
+    else
+    {
+        self.vRengzhenAudit.hidden=TRUE;
+    }
 }
 
 -(void)viewDidAppear:(BOOL)animated{

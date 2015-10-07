@@ -120,7 +120,7 @@
     }else if([usertype isEqualToString:@"40"]){
      self.addbtn1.hidden=YES;
     }
-    [self repeatnetwork];
+
     indexa=0;
     
     [self indexchang:self.segmentControl];
@@ -151,7 +151,7 @@
         cell=[[[NSBundle mainBundle] loadNibNamed:@"hjnTG" owner:nil options:nil] lastObject];
     }
     cell.danhao.text=dict2[@"OrderNo"];
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+
     cell.biaoti.text=dict2[@"OrderTitle"];
     cell.lxr.text=dict2[@"ContactMan"];
     cell.tel.text=dict2[@"ContactMobile"];
@@ -162,7 +162,7 @@
     
     cell.addr.text=dict2[@"Task_Address"];
  
-
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 
@@ -232,12 +232,12 @@
             return ;
         }else{
             NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
-            if (dictarr !=nil && dictarr.count < 10) {
-                self.tableView.footer = nil;
-            }
-            else if(dictarr.count >=10 && self.tableView.footer == nil)
-            {
+            if (dictarr !=nil && dictarr.count >= 10) {
                 self.tableView.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+            }
+            else
+            {
+                self.tableView.footer = nil;
             }
             [self netwok:dictarr];
             [self.tableView reloadData];
@@ -281,13 +281,6 @@
 //}
 
 
-
-
--(NSMutableArray *)repeatnetwork{
-    self.tableView.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
-    return _tgs;
-}
-
 -(void) ChangeLoad
 {
     
@@ -320,12 +313,12 @@
             return ;
         }else{
             NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
-            if (dictarr.count < 10) {
-                self.tableView.footer = nil;
-            }
-            else if(dictarr.count >=10 &&  self.tableView.footer == nil)
-            {
+            if (dictarr !=nil && dictarr.count >= 10) {
                 self.tableView.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+            }
+            else
+            {
+                self.tableView.footer = nil;
             }
             if (dictarr.count>0) {
                 if (_IsChange) {

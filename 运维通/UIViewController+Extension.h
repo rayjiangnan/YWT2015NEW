@@ -37,5 +37,6 @@
 -(UIColor*)  GetUIColor;
 
 -(NSString *)  GetUserID;
-
+//打电话
+-(void)tel:(NSString *)numb;
 @end

@@ -64,16 +64,17 @@
     NSString *UserImg = [userDefaultes stringForKey:@"UserImg"];
     
     self.realname.text=RealName;
-    if ([Certify isEqualToString:@"0"]) {
-        [self.renz setTitle:@"未认证" forState:UIControlStateNormal];
-    }else if ([Certify isEqualToString:@"1"]) {
+    if ([Certify isEqualToString:@"99"]) {
         [self.renz setTitle:@"已认证" forState:UIControlStateNormal];
     }else if ([Certify isEqualToString:@"2"]) {
         [self.renz setTitle:@"审核中" forState:UIControlStateNormal];
     }else if ([Certify isEqualToString:@"10"]) {
         [self.renz setTitle:@"认证失败" forState:UIControlStateNormal];
     }
-    
+    else
+    {
+        [self.renz setTitle:@"未认证" forState:UIControlStateNormal];
+    }
     
     if ([UserImg isEqualToString:@"/Upload/defaultPhoto.png"]) {
         return;

@@ -35,7 +35,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-        [self repeatnetwork];
+
     [self network];
     self.tableview.rowHeight=70;
     minReplyID=-1;
@@ -61,12 +61,12 @@
             return ;
         }else{
             NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
-            if (dictarr.count < 10) {
-                self.tableview.footer = nil;
-            }
-            else if(dictarr.count >= 10 && self.tableview.footer == nil)
-            {
+            if (dictarr !=nil && dictarr.count >= 10) {
                 self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+            }
+            else
+            {
+                self.tableview.footer = nil;
             }
             if (dictarr.count>0) {
                 NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
@@ -115,23 +115,14 @@
     if (![dict2[@"UserImg"] isEqual:[NSNull null]]) {
         NSString *img=[NSString stringWithFormat:@"%@%@",urlt,dict2[@"UserImg"]];
         NSURL *imgurl=[NSURL URLWithString:img];
-        //cell.img.image=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
+
         [cell.img setImageWithURL:imgurl placeholderImage:[UIImage imageNamed:img]];
-        cell.img.layer.cornerRadius = cell.img.frame.size.width *0.4;
+        cell.img.layer.cornerRadius = cell.img.frame.size.width  /2;
         cell.img.clipsToBounds = YES;
     }
     
-    NSLog(@"%@",dict2);
-    
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
-    
     return cell;
-}
--(NSMutableArray *)repeatnetwork{
-    self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
-    
-    return _tgs;
 }
 
 -(void)loadMoreData
@@ -155,12 +146,12 @@
             return ;
         }else{
             NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
-            if (dictarr.count < 10) {
-                self.tableview.footer = nil;
-            }
-            else if(dictarr.count >= 10 && self.tableview.footer == nil)
-            {
+            if (dictarr !=nil && dictarr.count >= 10) {
                 self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+            }
+            else
+            {
+                self.tableview.footer = nil;
             }
             if (dictarr.count>0) {
                 NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];

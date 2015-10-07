@@ -65,7 +65,8 @@
                 [MBProgressHUD showSuccess:@"修改密码成功,请重新登录！"];
                 NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
                 NSString *g2=@"";
-                [userDefaults setObject:g2 forKey:@"passkey"];
+                [userDefaults setObject:g2 forKey:@"autopass"];
+                [userDefaults setObject:@"" forKey:@"myidt"];
                 [self performSegueWithIdentifier:@"fanhui1" sender:nil];
             }else{
                 [MBProgressHUD showError:@"您的原始密码错误！"];

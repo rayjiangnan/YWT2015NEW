@@ -33,7 +33,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     num=0;
-    [self repeatnetwork];
+
     self.tableview.rowHeight=60;
     
     [self network2];
@@ -64,6 +64,8 @@
     cell.CusShort.text= [NSString stringWithFormat:@"%@",dict2[@"CusShort"]];;
     
     cell.ContactMan.text= [NSString stringWithFormat:@"%@",dict2[@"ContactMan"]];
+    
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 
@@ -114,18 +116,6 @@
 }
 
 
-
--(NSMutableArray *)repeatnetwork{
-    
-    
-    self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
-    
-    return _tgs;
-    
-    
-}
-
-
 -(void)loadMoreData
 {
     num=num+1;
@@ -135,23 +125,29 @@
     
     AFHTTPRequestOperation *op=[self GETurlString:urlStr2];
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSMutableDictionary *dict=responseObject;
-        NSArray *dictarr=[dict objectForKey:@"ResultObject"];
-        if(![dictarr isEqual:[NSNull null]])
-        {
+        NSMutableDictionary *json=responseObject;
+        NSString *Status=[NSString stringWithFormat:@"%@",json[@"Status"]];
+        if ([Status isEqualToString:@"0"]){
+            NSString *ReturnMsg=[NSString stringWithFormat:@"%@",json[@"ReturnMsg"]];
+            [MBProgressHUD showError:ReturnMsg];
+            return ;
+        }else{
+            NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
+            if (dictarr !=nil && dictarr.count >= 10) {
+                self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+            }
+            else
+            {
+                self.tableview.footer = nil;
+            }
             [_tgs addObjectsFromArray:dictarr];
             [self.tableview reloadData];
         }
         [self.tableview.footer endRefreshing];
-        self.tableview.footer.autoChangeAlpha=YES;
-        
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        self.tableview.footer.autoChangeAlpha=YES;    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [MBProgressHUD showError:@"网络请求出错"];
     }];
     [[NSOperationQueue mainQueue] addOperation:op];
-    
-    
 }
 
 
@@ -159,11 +155,6 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     NSDictionary *dict2=[_tgs objectAtIndex:indexPath.row];
-    
-    //"CusShort":"简称","CusFullName":"名称","ContactMan","联系人","ContactMobile","联系电话","ContactAddress","地址","Create_User":""
-    
-    
-    
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults setObject:[NSString stringWithFormat:@"%@",dict2[@"CusShort"]] forKey:@"CusShort"];
     [userDefaults setObject:[NSString stringWithFormat:@"%@",dict2[@"ContactMan"]] forKey:@"ContactMan"];

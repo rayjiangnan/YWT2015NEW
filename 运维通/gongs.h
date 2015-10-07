@@ -1,13 +1,13 @@
+////
+////  gongs.h
+////  运维通
+////
+////  Created by ritacc on 15/7/18.
+////  Copyright (c) 2015年 ritacc. All rights reserved.
+////
 //
-//  gongs.h
-//  运维通
+//#import <UIKit/UIKit.h>
 //
-//  Created by ritacc on 15/7/18.
-//  Copyright (c) 2015年 ritacc. All rights reserved.
+//@interface gongs : UIViewController
 //
-
-#import <UIKit/UIKit.h>
-
-@interface gongs : UIViewController
-
-@end
+//@end

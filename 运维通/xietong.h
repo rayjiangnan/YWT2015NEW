@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
 #import <CoreLocation/CoreLocation.h>
-#import"hjnANNINOTION.h"
+#import"MapAnninotionOR.h"
 
 @interface xietong : UIViewController<CLLocationManagerDelegate>
 

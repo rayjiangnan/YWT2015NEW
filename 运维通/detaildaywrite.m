@@ -106,8 +106,6 @@
     cell.user.text=dict2[@"RealName"];
     cell.pl.text=dict2[@"ReplyContent"];
     cell.lc.text=[NSString stringWithFormat:@"%@",dict2[@"rowid"]];
-    
- 
     cell.time.text=[self DateFormartString:dict2[@"Create_Date"]];//[objDateformat3 stringFromDate: date3];
     
     if (![dict2[@"UserImg"] isEqual:[NSNull null]]) {
@@ -115,15 +113,11 @@
         NSURL *imgurl=[NSURL URLWithString:img];
         //cell.img.image=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
         [cell.img setImageWithURL:imgurl placeholderImage:[UIImage imageNamed:img]];
-        cell.img.layer.cornerRadius = cell.img.frame.size.width *0.4;
+        cell.img.layer.cornerRadius = cell.img.frame.size.width /2;
         cell.img.clipsToBounds = YES;
     }
     
-    NSLog(@"%@",dict2);
-    
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
-    
     return cell;
 }
 

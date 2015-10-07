@@ -9,7 +9,7 @@
 #import "xietong.h"
 #import <MapKit/MapKit.h>
 #import <CoreLocation/CoreLocation.h>
-#import"hjnANNINOTION.h"
+#import"MapAnninotionOR.h"
 
 
 @interface xietong ()<UIAlertViewDelegate,MKMapViewDelegate,CLLocationManagerDelegate>
@@ -114,7 +114,7 @@
     }else{
         int index=_tgs.count;
         for (int i=0; i<index; i++) {
-            hjnANNINOTION *annon=[[hjnANNINOTION alloc]init];
+            MapAnninotionOR *annon=[[MapAnninotionOR alloc]init];
             float x=[[_tgs objectAtIndex:i][@"latitude"] floatValue];
             CLLocationDegrees latitude=x;
             
@@ -149,7 +149,7 @@
     }else{
         int index=_tgs.count;
         for (int i=0; i<index; i++) {
-            hjnANNINOTION *annon=[[hjnANNINOTION alloc]init];
+            MapAnninotionOR *annon=[[MapAnninotionOR alloc]init];
             float x=[[_tgs objectAtIndex:i][@"latitude"] floatValue];
             CLLocationDegrees latitude=x;
             float y=[[_tgs objectAtIndex:i][@"longitude"] floatValue];
@@ -241,7 +241,7 @@
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation
 {
-    if (![annotation isKindOfClass:[hjnANNINOTION class]]) return nil;
+    if (![annotation isKindOfClass:[MapAnninotionOR class]]) return nil;
     
     static NSString *ID = @"tuangou";
     
@@ -261,7 +261,7 @@
     
     annoView.annotation = annotation;
     
-    hjnANNINOTION *tuangouAnno = annotation;
+    MapAnninotionOR *tuangouAnno = annotation;
     annoView.image = [UIImage imageNamed:tuangouAnno.icon];
     
     return annoView;

@@ -10,12 +10,13 @@
 #import "AFNetworkTool.h"
 #import"MBProgressHUD+MJ.h"
 #import "VPImageCropperViewController.h"
-#define ORIGINAL_MAX_WIDTH 640.0f
 #import"MBProgressHUD.h"
 #import "SDWebImageManager.h"
 #import "UIViewController+Extension.h"
+#import "UpFileSyn.h"
+#import "PhotoPerson.h"
 
-@interface center ()<UIWebViewDelegate,UITableViewDataSource, UITableViewDelegate,UIImagePickerControllerDelegate, UIActionSheetDelegate
+@interface center ()<UIWebViewDelegate,UIImagePickerControllerDelegate, UIActionSheetDelegate
 ,UIImagePickerControllerDelegate,UINavigationControllerDelegate, VPImageCropperDelegate>
 {
 
@@ -62,7 +63,7 @@
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     self.img.userInteractionEnabled=YES;
     
-    UITapGestureRecognizer *tap=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(didClickIconImageV)];
+    UITapGestureRecognizer *tap=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(SelectImg)];
     [self.img addGestureRecognizer:tap];
     
     //显示信息
@@ -73,27 +74,28 @@
     
     //认证
     NSString *Certify = [userDefaultes stringForKey:@"Certify"];
-    if ([Certify isEqualToString:@"0"]) {
-        [self.renz setTitle:@"未认证" forState:UIControlStateNormal];
-    }else if ([Certify isEqualToString:@"1"]) {
+    if ([Certify isEqualToString:@"99"]) {
         [self.renz setTitle:@"已认证" forState:UIControlStateNormal];
     }else if ([Certify isEqualToString:@"2"]) {
         [self.renz setTitle:@"审核中" forState:UIControlStateNormal];
     }else if ([Certify isEqualToString:@"10"]) {
         [self.renz setTitle:@"认证失败" forState:UIControlStateNormal];
     }
-
+    else
+    {
+        [self.renz setTitle:@"未认证" forState:UIControlStateNormal];
+    }
     
     
     NSString *usertype=[userDefaultes stringForKey:@"usertype"];
     if ([usertype isEqualToString:@"10"]) {
-        self.style.text=@"维运商";
+        self.style.text=@"运维商";
     }else if([usertype isEqualToString:@"20"]){
-        self.style.text=@"维运人员";
+        self.style.text=@"运维人员";
     }else if([usertype isEqualToString:@"30"]){
         self.style.text=@"调度";}
     else if([usertype isEqualToString:@"40"]){
-        self.style.text=@"第三方运维人员";
+        self.style.text=@"运维人员";
     }
     if ([usertype isEqualToString:@"10"]) {
         self.gerenbtn.hidden=NO;
@@ -123,186 +125,6 @@
     }
 }
 
--(void)didClickIconImageV
-{
-    UIActionSheet *choiceSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                             delegate:self
-                                                    cancelButtonTitle:@"取消"
-                                               destructiveButtonTitle:nil
-                                                    otherButtonTitles:@"拍照", @"从相册中选取", nil];
-    [choiceSheet showInView:self.view];
-    
-}
-#pragma mark UIActionSheetDelegate
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 0) {
-        // 拍照
-        if ([self isCameraAvailable] && [self doesCameraSupportTakingPhotos]) {
-            UIImagePickerController *controller = [[UIImagePickerController alloc] init];
-            controller.sourceType = UIImagePickerControllerSourceTypeCamera;
-            if ([self isFrontCameraAvailable]) {
-                controller.cameraDevice = UIImagePickerControllerCameraDeviceFront;
-            }
-            NSMutableArray *mediaTypes = [[NSMutableArray alloc] init];
-            [mediaTypes addObject:(__bridge NSString *)kUTTypeImage];
-            controller.mediaTypes = mediaTypes;
-            controller.delegate = self;
-            [self presentViewController:controller
-                               animated:YES
-                             completion:^(void){
-                                 NSLog(@"Picker View Controller is presented");
-                             }];
-        }
-        
-    } else if (buttonIndex == 1) {
-        // 从相册中选取
-        if ([self isPhotoLibraryAvailable]) {
-            UIImagePickerController *controller = [[UIImagePickerController alloc] init];
-            controller.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-            NSMutableArray *mediaTypes = [[NSMutableArray alloc] init];
-            [mediaTypes addObject:(__bridge NSString *)kUTTypeImage];
-            controller.mediaTypes = mediaTypes;
-            controller.delegate = self;
-            [self presentViewController:controller
-                               animated:YES
-                             completion:^(void){
-                                 NSLog(@"Picker View Controller is presented");
-                             }];
-        }
-    }
-}
-
-#pragma mark camera utility
-- (BOOL) isCameraAvailable{
-    return [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera];
-}
-
-- (BOOL) isRearCameraAvailable{
-    return [UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceRear];
-}
-
-- (BOOL) isFrontCameraAvailable {
-    return [UIImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceFront];
-}
-
-- (BOOL) doesCameraSupportTakingPhotos {
-    return [self cameraSupportsMedia:(__bridge NSString *)kUTTypeImage sourceType:UIImagePickerControllerSourceTypeCamera];
-}
-
-- (BOOL) isPhotoLibraryAvailable{
-    return [UIImagePickerController isSourceTypeAvailable:
-            UIImagePickerControllerSourceTypePhotoLibrary];
-}
-- (BOOL) canUserPickVideosFromPhotoLibrary{
-    return [self
-            cameraSupportsMedia:(__bridge NSString *)kUTTypeMovie sourceType:UIImagePickerControllerSourceTypePhotoLibrary];
-}
-- (BOOL) canUserPickPhotosFromPhotoLibrary{
-    return [self
-            cameraSupportsMedia:(__bridge NSString *)kUTTypeImage sourceType:UIImagePickerControllerSourceTypePhotoLibrary];
-}
-
-- (BOOL) cameraSupportsMedia:(NSString *)paramMediaType sourceType:(UIImagePickerControllerSourceType)paramSourceType{
-    __block BOOL result = NO;
-    if ([paramMediaType length] == 0) {
-        return NO;
-    }
-    NSArray *availableMediaTypes = [UIImagePickerController availableMediaTypesForSourceType:paramSourceType];
-    [availableMediaTypes enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
-        NSString *mediaType = (NSString *)obj;
-        if ([mediaType isEqualToString:paramMediaType]){
-            result = YES;
-            *stop= YES;
-        }
-    }];
-    return result;
-}
-
-
-#pragma mark - UIImagePickerControllerDelegate
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-    
-    
-    [picker dismissViewControllerAnimated:YES completion:^() {
-        UIImage *portraitImg = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
-        portraitImg = [self imageByScalingToMaxSize:portraitImg];
-        // 裁剪
-        VPImageCropperViewController *imgEditorVC = [[VPImageCropperViewController alloc] initWithImage:portraitImg cropFrame:CGRectMake(0, 100.0f, self.view.frame.size.width, self.view.frame.size.width) limitScaleRatio:3.0];
-        imgEditorVC.delegate = self;
-        [self presentViewController:imgEditorVC animated:YES completion:^{
-            // TO DO
-        }];
-    }];
-}
-
-
-#pragma mark image scale utility
-- (UIImage *)imageByScalingToMaxSize:(UIImage *)sourceImage {
-    if (sourceImage.size.width < ORIGINAL_MAX_WIDTH) return sourceImage;
-    CGFloat btWidth = 0.0f;
-    CGFloat btHeight = 0.0f;
-    if (sourceImage.size.width > sourceImage.size.height) {
-        btHeight = ORIGINAL_MAX_WIDTH;
-        btWidth = sourceImage.size.width * (ORIGINAL_MAX_WIDTH / sourceImage.size.height);
-    } else {
-        btWidth = ORIGINAL_MAX_WIDTH;
-        btHeight = sourceImage.size.height * (ORIGINAL_MAX_WIDTH / sourceImage.size.width);
-    }
-    CGSize targetSize = CGSizeMake(btWidth, btHeight);
-    return [self imageByScalingAndCroppingForSourceImage:sourceImage targetSize:targetSize];
-}
-
-- (UIImage *)imageByScalingAndCroppingForSourceImage:(UIImage *)sourceImage targetSize:(CGSize)targetSize {
-    UIImage *newImage = nil;
-    CGSize imageSize = sourceImage.size;
-    CGFloat width = imageSize.width;
-    CGFloat height = imageSize.height;
-    CGFloat targetWidth = targetSize.width;
-    CGFloat targetHeight = targetSize.height;
-    CGFloat scaleFactor = 0.0;
-    CGFloat scaledWidth = targetWidth;
-    CGFloat scaledHeight = targetHeight;
-    CGPoint thumbnailPoint = CGPointMake(0.0,0.0);
-    if (CGSizeEqualToSize(imageSize, targetSize) == NO)
-    {
-        CGFloat widthFactor = targetWidth / width;
-        CGFloat heightFactor = targetHeight / height;
-        
-        if (widthFactor > heightFactor)
-            scaleFactor = widthFactor; // scale to fit height
-        else
-            scaleFactor = heightFactor; // scale to fit width
-        scaledWidth  = width * scaleFactor;
-        scaledHeight = height * scaleFactor;
-        
-        // center the image
-        if (widthFactor > heightFactor)
-        {
-            thumbnailPoint.y = (targetHeight - scaledHeight) * 0.5;
-        }
-        else
-            if (widthFactor < heightFactor)
-            {
-                thumbnailPoint.x = (targetWidth - scaledWidth) * 0.5;
-            }
-    }
-    UIGraphicsBeginImageContext(targetSize); // this will crop
-    CGRect thumbnailRect = CGRectZero;
-    thumbnailRect.origin = thumbnailPoint;
-    thumbnailRect.size.width  = scaledWidth;
-    thumbnailRect.size.height = scaledHeight;
-    
-    [sourceImage drawInRect:thumbnailRect];
-    
-    newImage = UIGraphicsGetImageFromCurrentImageContext();
-    if(newImage == nil) NSLog(@"could not scale image");
-    
-    //pop the context to get back to the default
-    UIGraphicsEndImageContext();
-    return newImage;
-}
-
-
 #pragma mark VPImageCropperDelegate
 - (void)imageCropper:(VPImageCropperViewController *)cropperViewController didFinished:(UIImage *)editedImage {
     
@@ -310,127 +132,64 @@
     [editedImage drawInRect:CGRectMake(0, 0, 300, 300)];
     UIImage *reSizeImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    //NSLog(@"++++++++++++++++++++++%@",reSizeImage);
+    NSLog(@"++++++++++++++++++++++%@",reSizeImage);
     
     _receiveImage=reSizeImage;
-    [self btnupload_Click:nil];
-    [cropperViewController dismissViewControllerAnimated:YES completion:^{
     
-    }];
+    [self btnupload_Click:nil];
+    [cropperViewController dismissViewControllerAnimated:YES completion:^{}];
 }
-- (void)imageCropperDidCancel:(VPImageCropperViewController *)cropperViewController
-{
-    [cropperViewController dismissViewControllerAnimated:YES completion:^{
-        
-    }];
-}
- 
+
+
 
 - (void)btnupload_Click:(id)sender {
-
-    NSString *myString =[self GetUserID];
-
-    [self UpdateFileImage:_receiveImage action:@"userimg" userid:myString creatorid:myString uploadUrl:urlt];
+    loading = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:loading];
+    [loading show:YES];
+    [self UpdateFileImage];    //:_receiveImage action:@"" orderid:myString creatorid:myString uploadUrl:urlt];
+    
     NSLog(@"完成上传图片。");
 }
 
 
-- (void) UpdateFileImage:(UIImage *)currentImage
-                  action:(NSString *) straction
-                 userid:(NSString *) struserid
-               creatorid:(NSString *) strCreatorid //创建人ID
-               uploadUrl:(NSString *) strUploadUrl //上传路径
+- (void) UpdateFileImage
 {
-    
-    loading = [[MBProgressHUD alloc] initWithView:self.view];
-    
-    [self.view addSubview:loading];
-    
-    [loading show:YES];
-    
-    NSData *data = UIImageJPEGRepresentation(currentImage, 0.5);
-    
-    NSString *hyphens = @"--";
-    NSString *boundary = @"*****";
-    NSString *end = @"\r\n";
-    NSMutableData *myRequestData1=[NSMutableData data];
-    
-    [myRequestData1 appendData:[hyphens dataUsingEncoding:NSUTF8StringEncoding]];
-    [myRequestData1 appendData:[boundary dataUsingEncoding:NSUTF8StringEncoding]];
-    [myRequestData1 appendData:[end dataUsingEncoding:NSUTF8StringEncoding]];
-    
-    NSMutableString *fileTitle=[[NSMutableString alloc]init];
-    
-    [fileTitle appendFormat:@"Content-Disposition:form-data;name=\"%@\";filename=\"%@\"",[NSString stringWithFormat:@"file%d",1],[NSString stringWithFormat:@"image%d.png",1]];
-    
-    [fileTitle appendString:end];
-    
-    [fileTitle appendString:[NSString stringWithFormat:@"Content-Type:application/octet-stream%@",end]];
-    [fileTitle appendString:end];
-    
-    [myRequestData1 appendData:[fileTitle dataUsingEncoding:NSUTF8StringEncoding]];
-    
-    [myRequestData1 appendData:data];
-    
-    [myRequestData1 appendData:[end dataUsingEncoding:NSUTF8StringEncoding]];
-    
-    [myRequestData1 appendData:[hyphens dataUsingEncoding:NSUTF8StringEncoding]];
-    [myRequestData1 appendData:[boundary dataUsingEncoding:NSUTF8StringEncoding]];
-    [myRequestData1 appendData:[hyphens dataUsingEncoding:NSUTF8StringEncoding]];
-    [myRequestData1 appendData:[end dataUsingEncoding:NSUTF8StringEncoding]];
-    
-    NSString *url=[NSString stringWithFormat:@"%@/API/YWT_UPUserFile.ashx?from=ios&action=%@&q0=%@&q1=%@",strUploadUrl,straction,struserid,strCreatorid];
-    //根据url初始化request
-    
-    // NSLog(@"%@",url);
-    NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]
-                                                           cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
-                                                       timeoutInterval:5];
-    
-    //设置HTTPHeader中Content-Type的值
-    NSString *content=[[NSString alloc]initWithFormat:@"multipart/form-data; boundary=%@",boundary];
-    //设置HTTPHeader
-    [request setValue:content forHTTPHeaderField:@"Content-Type"];
-    //设置Content-Length
-    [request setValue:[NSString stringWithFormat:@"%d", [myRequestData1 length]] forHTTPHeaderField:@"Content-Length"];
-    //设置http body
-    [request setHTTPBody:myRequestData1];
-    //http method
-    [request setHTTPMethod:@"POST"];
-
-    NSHTTPURLResponse *urlResponese = nil;
-    NSError *error = [[NSError alloc]init];
-    NSData* resultData = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponese error:&error];
-    
-    
-    NSDictionary *dict=[NSJSONSerialization JSONObjectWithData:resultData options:NSJSONReadingMutableLeaves error:nil];
-    
-    NSString *Status=[NSString stringWithFormat:@"%@",dict[@"Status"]];
-    if ([Status isEqualToString:@"0"]){
+    NSData *data = UIImageJPEGRepresentation(_receiveImage, 0.5);
+    NSString *UserID =[self GetUserID];
+    NSString *url=[NSString stringWithFormat:@"%@/API/YWT_UPUserFile.ashx?from=ios&action=userimg&q0=%@&q1=%@",urlt,UserID,UserID];
+    UpFileSyn *_upfile=[UpFileSyn alloc];
+    [_upfile UpFile:data UpURL:url Success:^(NSDictionary *result) {
+        if (result!=nil)
+        {
+            NSString *Status=[NSString stringWithFormat:@"%@",result[@"Status"]];
+            if ([Status isEqualToString:@"0"]){
+                [loading hide:YES];
+                NSString *ReturnMsg=[NSString stringWithFormat:@"%@",result[@"ReturnMsg"]];
+                [MBProgressHUD showError:ReturnMsg];
+                NSLog(@"%@",ReturnMsg);
+            }
+            else
+            {
+                
+                NSString *img=[NSString stringWithFormat:@"%@/%@",urlt,result[@"ReturnMsg"]];
+                NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+                [userDefaults setObject:result[@"ReturnMsg"] forKey:@"UserImg"];
+                
+                NSURL *imgurl=[NSURL URLWithString:img];
+                SDWebImageManager *manager = [SDWebImageManager sharedManager];
+                [manager downloadWithURL:imgurl delegate:nil];
+                UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
+                [loading hide:YES];
+                [self.img setBackgroundImage:imgstr forState:UIControlStateNormal];
+            }
+            [loading hide:YES];
+        }
+    } Failure:^(NSError *error) {
+        NSLog(@"出错啦：%@",error);
         [loading hide:YES];
-        NSString *ReturnMsg=[NSString stringWithFormat:@"%@",dict[@"ReturnMsg"]];
-        [MBProgressHUD showError:ReturnMsg];
-        NSLog(@"%@",ReturnMsg);
-    }
-    else
-    {
-        NSString *img=[NSString stringWithFormat:@"%@/%@",urlt,dict[@"ReturnMsg"]];
-        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        [userDefaults setObject:dict[@"ReturnMsg"] forKey:@"UserImg"];
-
-        NSURL *imgurl=[NSURL URLWithString:img];
-        SDWebImageManager *manager = [SDWebImageManager sharedManager];
-        [manager downloadWithURL:imgurl delegate:nil];
-        UIImage *imgstr=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
-         [loading hide:YES];
-        [self.img setBackgroundImage:imgstr forState:UIControlStateNormal];
-    }
-
-    
+    }];
 }
 
-
- 
 
 - (IBAction)exit:(id)sender {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"消息提示" message:@"您确定注销登录吗？" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:nil];
@@ -448,7 +207,7 @@
     }else if(buttonIndex == 1){
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         NSString *g2=@"";
-        [userDefaults setObject:g2 forKey:@"passkey"];
+        
         [userDefaults setObject:g2 forKey:@"autopass"];
         [userDefaults setObject:g2 forKey:@"myidt"];
         [self performSegueWithIdentifier:@"fanhui" sender:nil];

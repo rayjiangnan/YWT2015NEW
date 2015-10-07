@@ -1,13 +1,13 @@
+////
+////  ritaccziliao.h
+////  运维通
+////
+////  Created by ritacc on 15/7/17.
+////  Copyright (c) 2015年 ritacc. All rights reserved.
+////
 //
-//  ritaccziliao.h
-//  运维通
+//#import <UIKit/UIKit.h>
 //
-//  Created by ritacc on 15/7/17.
-//  Copyright (c) 2015年 ritacc. All rights reserved.
+//@interface ritaccziliao : UIViewController
 //
-
-#import <UIKit/UIKit.h>
-
-@interface ritaccziliao : UIViewController
-
-@end
+//@end

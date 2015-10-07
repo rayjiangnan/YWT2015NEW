@@ -48,34 +48,13 @@
         [self pickerView:nil didSelectRow:0 inComponent:component];
     }
     
-    
     [self tapOnce];
     [self tapBackground];
     
 }
 
 - (IBAction)regbtn {
-     [self quzhi];
-
-    
-        [self postJSON:_zhi:self.phone.text :self.realname.text ];
-    
-
-    
-    
-}
-
--(NSString *)quzhi{
-
-if ([self.sty.text isEqualToString:@"运维人员"]) {
-       _zhi=@"20";
-   
-    }
-    if ([self.sty.text isEqualToString:@"调度人员"]) {
-        _zhi=@"30";
-     
-    }
-    return _zhi;
+    [self postJSON];
 }
 
 
@@ -87,67 +66,63 @@ if ([self.sty.text isEqualToString:@"运维人员"]) {
         
     }else{
     
-    _ac=@"0";
+        _ac=@"0";
     }
     
     return _ac;
 }
 
-- (void)postJSON:(NSString *)text1 :(NSString *)text2:(NSString *)text3 {
+- (void)postJSON
+{
+    
+    if ([self.sty.text isEqualToString:@"运维人员"]) {
+        _zhi=@"20";
+        
+    }
+    if ([self.sty.text isEqualToString:@"调度人员"]) {
+        _zhi=@"30";
+        
+    }
     
     // 1. URL
-    NSString *ur=[NSString stringWithFormat:@"%@/API/YWT_User.ashx",urlt];
-    NSURL *url = [NSURL URLWithString:ur];
+    NSString *urlStr=[NSString stringWithFormat:@"%@/API/YWT_User.ashx",urlt];
+    //NSURL *url = [NSURL URLWithString:ur];
     @try
     {
-        // 2. Request
-        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:0 timeoutInterval:2.0f];
-        
-        request.HTTPMethod = @"POST";
         
         NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
         NSString *myString = [userDefaultes stringForKey:@"myidt2"];
          
         [self getUniqueStrByUUID];
-       // NSLog(@"%@",_uuid);
        
         _ac=@"1";
 
-        NSString *dtr=[NSString stringWithFormat:@"{\"User\":{\"UserType\":\"%@\",\"Mobile\":\"%@\",\"RealName\":\"%@\",\"SupplierID\":\"%@\",\"PassWord\":\"%@\",\"Active\":\"1\"}}",text1,text2,text3,myString,self.pwd.text];
+        NSString *dtr=[NSString stringWithFormat:@"{\"User\":{\"UserType\":\"%@\",\"Mobile\":\"%@\",\"RealName\":\"%@\",\"SupplierID\":\"%@\",\"PassWord\":\"%@\",\"Active\":\"1\"}}",_zhi,self.phone.text,self.realname.text,myString,self.pwd.text];
         
-        NSString *str = [NSString stringWithFormat:@"action=addsupuser&q0=%@",dtr];
+        NSString *strparameters = [NSString stringWithFormat:@"action=addsupuser&q0=%@",dtr];
 
-       NSLog(@"%@?%@",ur,str);
-        request.HTTPBody = [str dataUsingEncoding:NSUTF8StringEncoding];
-
-        [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc]init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+        AFHTTPRequestOperation *op=  [self POSTurlString:urlStr parameters:strparameters];
+        [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSMutableDictionary *json=responseObject;
             
-            NSString *result = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-            NSLog(@"%@",result);
-            if (data!=nil) {
-                 NSDictionary *dict=[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:nil];
-            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            NSString *errstr2=[NSString stringWithFormat:@"%@",dict[@"Status"]];
-              
-                if ([errstr2 isEqualToString:@"0"]){
-                      NSString *str=[NSString stringWithFormat:@"%@",dict[@"ReturnMsg"]];
-                    [MBProgressHUD showError:str];
-                    return ;
-                }else{
-                    [MBProgressHUD showSuccess:@"注册成功"];
-                    [[self navigationController] popViewControllerAnimated:YES];
-                }
-            }];
-
-            }else{
-                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                    [MBProgressHUD showError:@"网络异常请检查！"];
-                return ;
-                }];
+            NSString *Status=[NSString stringWithFormat:@"%@",json[@"Status"]];
+            if ([Status isEqualToString:@"0"]){
+                NSString *ReturnMsg=[NSString stringWithFormat:@"%@",json[@"ReturnMsg"]];
+                [MBProgressHUD showError:ReturnMsg];
+                NSLog(@"%@",ReturnMsg);
+                return;
             }
-                       
-            
+            else
+            {
+                [MBProgressHUD showSuccess:@"保存成功"];
+                [[self navigationController] popViewControllerAnimated:YES];
+            }
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            [MBProgressHUD showError:@"网络异常！"];
+            return ;
         }];
+        
+        [[NSOperationQueue mainQueue] addOperation:op];
     }@catch (NSException * e) {
         
     }
@@ -157,10 +132,7 @@ if ([self.sty.text isEqualToString:@"运维人员"]) {
 
 - (NSString *)getUniqueStrByUUID
 {
-    CFUUIDRef    uuidObj = CFUUIDCreate(nil);//create a new UUID
-    
-    //get the string representation of the UUID
-    
+    CFUUIDRef    uuidObj = CFUUIDCreate(nil);
     NSString    *uuidString = (__bridge_transfer NSString *)CFUUIDCreateString(nil, uuidObj);
     
     CFRelease(uuidObj);
@@ -233,7 +205,7 @@ if ([self.sty.text isEqualToString:@"运维人员"]) {
     [self.phone resignFirstResponder];
     [self.pwd resignFirstResponder];
     [self.cpwd resignFirstResponder];
-[self.realname resignFirstResponder];
+    [self.realname resignFirstResponder];
     [self.eamil resignFirstResponder];
     [self.xueli resignFirstResponder];
 }

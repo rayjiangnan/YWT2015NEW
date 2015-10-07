@@ -50,7 +50,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self repeatnetwork];
+
     self.tableview.rowHeight=60;
     
     [self network2];
@@ -87,21 +87,11 @@
         NSString *img=[NSString stringWithFormat:@"%@%@",urlt,dict2[@"UserImg"]];
         NSURL *imgurl=[NSURL URLWithString:img];
         [cell.img setImageWithURL:imgurl placeholderImage:[UIImage imageNamed:img]];
-        cell.img.layer.cornerRadius = cell.img.frame.size.width *0.4;
+        cell.img.layer.cornerRadius = cell.img.frame.size.width  /2;
         cell.img.clipsToBounds = YES;
     }
     cell.name.text=dict2[@"RealName"];
-//    NSString *dt3=dict2[@"Create_Date"];
-//    dt3=[dt3 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
-//    dt3=[dt3 stringByReplacingOccurrencesOfString:@")/" withString:@""];
-//    // NSLog(@"%@",dt3);
-//    NSString * timeStampString3 =dt3;
-//    NSTimeInterval _interval3=[timeStampString3 doubleValue] / 1000;
-//    NSDate *date3 = [NSDate dateWithTimeIntervalSince1970:_interval3];
-//    NSDateFormatter *objDateformat3 = [[NSDateFormatter alloc] init];
-//    [objDateformat3 setDateFormat:@"yyyy年MM月dd日 hh:mm"];
-    cell.time.text=[self DateFormartKey:dict2[@"Create_Date"] FormartKey:@"yyyy年MM月dd日 hh:mm"];//[objDateformat3 stringFromDate: date3];
-    
+    cell.time.text=[self DateFormartKey:dict2[@"Create_Date"] FormartKey:@"yyyy年MM月dd日 hh:mm"];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
@@ -129,12 +119,12 @@
             return ;
         }else{
             NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
-            if (dictarr !=nil && dictarr.count < 10) {
-                self.tableview.footer = nil;
-            }
-            else if(dictarr.count >=10 && self.tableview.footer == nil)
-            {
+            if (dictarr !=nil && dictarr.count >= 10) {
                 self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+            }
+            else
+            {
+                self.tableview.footer = nil;
             }
             if (dictarr.count>0) {
                 NSDictionary *dict3=[dictarr objectAtIndex:[dictarr count]-1];
@@ -159,14 +149,6 @@
     
     
 }
-
-
--(NSMutableArray *)repeatnetwork{
-    self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
-    
-    return _tgs;
-}
-
 
 -(void) ChangeLoad
 {
@@ -196,12 +178,12 @@
             return ;
         }else{
             NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
-            if (dictarr.count < 10) {
-                self.tableview.footer = nil;
-            }
-            else if(dictarr.count >=10 &&  self.tableview.footer == nil)
-            {
+            if (dictarr !=nil && dictarr.count >= 10) {
                 self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+            }
+            else
+            {
+                self.tableview.footer = nil;
             }
             if (dictarr.count>0) {
                 if (_IsChange) {

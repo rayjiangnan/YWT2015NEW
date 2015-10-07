@@ -36,7 +36,7 @@
     self.tabBarController.tabBar.hidden=YES;
     
     [self netWorkRequest2];
-    [self repeatnetwork];
+
     num=0;
     self.tableview.rowHeight=130;
     
@@ -144,12 +144,7 @@
 
 #pragma mark  下拉加载
 
--(NSMutableArray *)repeatnetwork{
-    self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
-    
-    return _tgs;
-    
-}
+
 
 -(void)loadMoreData
 {
@@ -169,12 +164,12 @@
             return ;
         }else{
             NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
-            if (dictarr.count < 10) {
-                self.tableview.footer = nil;
-            }
-            else if(dictarr.count >= 10 && self.tableview.footer == nil)
-            {
+            if (dictarr !=nil && dictarr.count >= 10) {
                 self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+            }
+            else
+            {
+                self.tableview.footer = nil;
             }
             [_tgs addObjectsFromArray:dictarr];
             [self.tableview reloadData];        }
@@ -211,12 +206,12 @@
                 return ;
             }else{
                 NSMutableArray *dictarr=[[json objectForKey:@"ResultObject"] mutableCopy];
-                if (dictarr.count < 10) {
-                    self.tableview.footer = nil;
-                }
-                else if(dictarr.count >= 10 && self.tableview.footer == nil)
-                {
+                if (dictarr !=nil && dictarr.count >= 10) {
                     self.tableview.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+                }
+                else
+                {
+                    self.tableview.footer = nil;
                 }
                 [self netwok:dictarr];
                 [self.tableview reloadData];
