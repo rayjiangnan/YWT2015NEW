@@ -188,6 +188,8 @@
 		78541F661B61403900FD8958 /* finishion.m in Sources */ = {isa = PBXBuildFile; fileRef = 78541F651B61403900FD8958 /* finishion.m */; };
 		78590C1C1B5FF27A00AF38DD /* beginorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 78590C1B1B5FF27A00AF38DD /* beginorder.m */; };
 		785989D91B6339A500E296D3 /* pinjia.m in Sources */ = {isa = PBXBuildFile; fileRef = 785989D81B6339A500E296D3 /* pinjia.m */; };
+		785A4B621BC574FF009ADC71 /* ShowStrViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 785A4B5F1BC574FF009ADC71 /* ShowStrViewController.m */; };
+		785A4B631BC574FF009ADC71 /* ZoomScrollViewStr.m in Sources */ = {isa = PBXBuildFile; fileRef = 785A4B611BC574FF009ADC71 /* ZoomScrollViewStr.m */; };
 		7860A51E1B6395380067253C /* qiang.m in Sources */ = {isa = PBXBuildFile; fileRef = 7860A51D1B6395380067253C /* qiang.m */; };
 		7860A5211B63BE6C0067253C /* listViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7860A5201B63BE6C0067253C /* listViewController.m */; };
 		7860A5251B63BF260067253C /* listCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7860A5231B63BF260067253C /* listCell.m */; };
@@ -565,6 +567,10 @@
 		78590C1B1B5FF27A00AF38DD /* beginorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = beginorder.m; sourceTree = "<group>"; };
 		785989D71B6339A500E296D3 /* pinjia.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pinjia.h; sourceTree = "<group>"; };
 		785989D81B6339A500E296D3 /* pinjia.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = pinjia.m; sourceTree = "<group>"; };
+		785A4B5E1BC574FF009ADC71 /* ShowStrViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShowStrViewController.h; path = SDWebImage/ViewImg/ShowStrViewController.h; sourceTree = "<group>"; };
+		785A4B5F1BC574FF009ADC71 /* ShowStrViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ShowStrViewController.m; path = SDWebImage/ViewImg/ShowStrViewController.m; sourceTree = "<group>"; };
+		785A4B601BC574FF009ADC71 /* ZoomScrollViewStr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZoomScrollViewStr.h; path = SDWebImage/ViewImg/ZoomScrollViewStr.h; sourceTree = "<group>"; };
+		785A4B611BC574FF009ADC71 /* ZoomScrollViewStr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ZoomScrollViewStr.m; path = SDWebImage/ViewImg/ZoomScrollViewStr.m; sourceTree = "<group>"; };
 		7860A51C1B6395380067253C /* qiang.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = qiang.h; sourceTree = "<group>"; };
 		7860A51D1B6395380067253C /* qiang.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = qiang.m; sourceTree = "<group>"; };
 		7860A51F1B63BE6C0067253C /* listViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = listViewController.h; sourceTree = "<group>"; };
@@ -1288,6 +1294,7 @@
 		7850F4AA1BA5028D001116D6 /* SDWebImage */ = {
 			isa = PBXGroup;
 			children = (
+				785A4B641BC5750B009ADC71 /* ViewImg */,
 				7850F4AC1BA502B3001116D6 /* LICENSE */,
 				7850F4AD1BA502B3001116D6 /* README.md */,
 				7850F4AE1BA502B3001116D6 /* SDImageCache.h */,
@@ -1325,6 +1332,17 @@
 				284132181B7657E1005B5872 /* qiandao.m */,
 			);
 			name = MainPage;
+			sourceTree = "<group>";
+		};
+		785A4B641BC5750B009ADC71 /* ViewImg */ = {
+			isa = PBXGroup;
+			children = (
+				785A4B5E1BC574FF009ADC71 /* ShowStrViewController.h */,
+				785A4B5F1BC574FF009ADC71 /* ShowStrViewController.m */,
+				785A4B601BC574FF009ADC71 /* ZoomScrollViewStr.h */,
+				785A4B611BC574FF009ADC71 /* ZoomScrollViewStr.m */,
+			);
+			name = ViewImg;
 			sourceTree = "<group>";
 		};
 		7860A5271B63BFA60067253C /* MJRefresh */ = {
@@ -1648,6 +1666,7 @@
 				4E71A57A1BA6784500CD97FA /* applyperson.m in Sources */,
 				396B815D1B526D5B0017305D /* ritaccAppDelegate.m in Sources */,
 				289E4F121B7E2CEC00C19D13 /* SBJsonStreamWriter.m in Sources */,
+				785A4B631BC574FF009ADC71 /* ZoomScrollViewStr.m in Sources */,
 				284132131B764DB2005B5872 /* xietong.m in Sources */,
 				7850F4C51BA502B3001116D6 /* SDWebImageDecoder.m in Sources */,
 				39998D841B52B69D001D4BCA /* personview.m in Sources */,
@@ -1691,6 +1710,7 @@
 				78B453771B647A97000C70A7 /* plist.m in Sources */,
 				39998D881B52B752001D4BCA /* ChineseString.m in Sources */,
 				289E4EE81B7E2A1600C19D13 /* WarehouseAdd.m in Sources */,
+				785A4B621BC574FF009ADC71 /* ShowStrViewController.m in Sources */,
 				289E4EEC1B7E2A1600C19D13 /* WarehouseListYWUser.m in Sources */,
 				78B453731B647A6D000C70A7 /* mylist.m in Sources */,
 				786833EC1BC2C6B600E0256F /* RenzhenItemCell.m in Sources */,

@@ -12,6 +12,7 @@
 #import "MBProgressHUD+MJ.h"
 #import "UIImageView+WebCache.h"
 #import "UIViewController+Extension.h"
+#import "ShowStrViewController.h"
 
 @interface beginpiclist ()<UITableViewDataSource,UITableViewDelegate>
 {
@@ -24,7 +25,11 @@
 
 @implementation beginpiclist
 
-
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:YES];
+    self.navigationController.navigationBarHidden=NO;
+}
 -(void)viewDidAppear:(BOOL)animated{
     
     self.tabBarController.tabBar.hidden=YES;
@@ -124,8 +129,23 @@
     
     [userDefaults synchronize];
     
-    [self performSegueWithIdentifier:@"xiangxi" sender:nil];
+    //[self performSegueWithIdentifier:@"xiangxi" sender:nil];
+    NSMutableArray *imageArray=[NSMutableArray arrayWithCapacity:1];
+    ShowStrViewController * showVC = [[ShowStrViewController alloc] init];
+    showVC.idex = 0;
+    NSMutableArray *array=[rowdata objectForKey:@"Files"];
+    if (array.count>0) {
+        for(int i=0;i<array.count;i++)
+        {
+            NSString *imgpath=[array objectAtIndex:i];
+            imgpath= [imgpath stringByReplacingOccurrencesOfString:@"icon" withString:@""];;
+            NSString *img=[NSString stringWithFormat:@"%@/%@",urlt,imgpath];
+            [imageArray addObject:img];
+        }
+    }
     
+    showVC.receiveimageArray=imageArray;
+    [self.navigationController pushViewController:showVC animated:YES];
     
 }
 

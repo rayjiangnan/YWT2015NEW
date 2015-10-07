@@ -12,6 +12,7 @@
 #import "MBProgressHUD+MJ.h"
 #import "UIImageView+WebCache.h"
 #import "UIViewController+Extension.h"
+#import "ShowStrViewController.h"
 
 @interface beginpiclist1 ()<UITableViewDataSource,UITableViewDelegate>
 {
@@ -24,11 +25,14 @@
 
 @implementation beginpiclist1
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:YES];
+    self.navigationController.navigationBarHidden=NO;
+}
 
 -(void)viewDidAppear:(BOOL)animated{
-    
     self.tabBarController.tabBar.hidden=YES;
-    
 }
 
 - (void)viewDidLoad {
@@ -39,17 +43,12 @@
 
     num=0;
     self.tableview.rowHeight=130;
-    
-    
 }
 
 -(NSMutableArray *)netwok:(NSMutableArray *)array
 {
-    
     _tgs=array;
     return _tgs;
-    
-    
 }
 
 
@@ -73,8 +72,23 @@
     [userDefaults setObject:@"imgviewenditem" forKey:@"action"];
     [userDefaults synchronize];
     
-    [self performSegueWithIdentifier:@"xiangxi" sender:nil];
+    //[self performSegueWithIdentifier:@"xiangxi" sender:nil];
+    NSMutableArray *imageArray=[NSMutableArray arrayWithCapacity:1];
+    ShowStrViewController * showVC = [[ShowStrViewController alloc] init];
+    showVC.idex = 0;
+    NSMutableArray *array=[rowdata objectForKey:@"Files"];
+    if (array.count>0) {
+        for(int i=0;i<array.count;i++)
+        {
+            NSString *imgpath=[array objectAtIndex:i];
+            imgpath= [imgpath stringByReplacingOccurrencesOfString:@"icon" withString:@""];;
+            NSString *img=[NSString stringWithFormat:@"%@/%@",urlt,imgpath];
+            [imageArray addObject:img];
+        }
+    }
     
+    showVC.receiveimageArray=imageArray;
+    [self.navigationController pushViewController:showVC animated:YES];
     
 }
 
@@ -89,15 +103,7 @@
     }
     cell.orderno.text=[NSString stringWithFormat:@"单号：%@",dict2[@"OrderNo"]];
     
-//    NSString *dt3=dict2[@"CreateDateTime"];;
-//    dt3=[dt3 stringByReplacingOccurrencesOfString:@"/Date(" withString:@""];
-//    dt3=[dt3 stringByReplacingOccurrencesOfString:@")/" withString:@""];
-// 
-//    NSString * timeStampString3 =dt3;
-//    NSTimeInterval _interval3=[timeStampString3 doubleValue] / 1000;
-//    NSDate *date3 = [NSDate dateWithTimeIntervalSince1970:_interval3];
-//    NSDateFormatter *objDateformat3 = [[NSDateFormatter alloc] init];
-//    [objDateformat3 setDateFormat:@"MM-dd"];
+
     cell.time.text=[self DateFormartMD:dict2[@"CreateDateTime"]];//[objDateformat3 stringFromDate: date3];
     
     cell.title.text=[NSString stringWithFormat:@"%@",dict2[@"OrderTitle"]];
