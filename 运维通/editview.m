@@ -82,47 +82,49 @@
     
         NSString *urlStr = [NSString stringWithFormat:@"%@/API/YWT_User.ashx?action=getasupuser&q0=%@&q1=%@",urlt,myString,myString2];
         
-        NSURL *url = [NSURL URLWithString:urlStr];
-     
-        NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:2.0f];
-        [request setHTTPMethod:@"POST"];//设置请求方式为POST，默认为GET
-        NSString *str = @"type=focus-c";//设置参数
-        NSData *data = [str dataUsingEncoding:NSUTF8StringEncoding];
-        [request setHTTPBody:data];
-  
+    AFHTTPRequestOperation *op=[self GETurlString:urlStr];
+    [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSDictionary *json=responseObject;
+        NSString *Status=[NSString stringWithFormat:@"%@",json[@"Status"]];
+        if ([Status isEqualToString:@"0"]){
+            NSString *ReturnMsg=[NSString stringWithFormat:@"%@",json[@"ReturnMsg"]];
+            [MBProgressHUD showError:ReturnMsg];
+            NSLog(@"%@",ReturnMsg);
+        }
         
-        NSData *received = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
-        if (received==nil) {
-            return;
-        }else{
-         NSDictionary *dict=[NSJSONSerialization JSONObjectWithData:received options:NSJSONReadingMutableLeaves error:nil];
-        NSDictionary *dictarr2=[dict objectForKey:@"ResultObject"];
-       NSDictionary *dictarr=[dictarr2 objectForKey:@"User"];
+        NSDictionary *dictarr2=[json objectForKey:@"ResultObject"];
+        NSDictionary *dictarr=[dictarr2 objectForKey:@"User"];
 
- 
-     NSString *stye=[NSString stringWithFormat:@"%@",dictarr[@"UserType"]];
-if ([stye isEqualToString:@"20"]) {
-    self.sty.text=@"运维人员";
-}else if ([stye isEqualToString:@"30"]){
-  self.sty.text=@"调度人员";
- }
+
+        NSString *stye=[NSString stringWithFormat:@"%@",dictarr[@"UserType"]];
+        if ([stye isEqualToString:@"20"]) {
+            self.sty.text=@"运维人员";
+        }
+        else if ([stye isEqualToString:@"30"])
+        {
+            self.sty.text=@"调度人员";
+        }
         if ([stye isEqualToString:@"10"]) {
             self.xiugai.hidden=YES;
         }
         self.username.text=dictarr[@"UserName"];
-        self.sex.text=dictarr[@"UserName"];    self.realname.text=dictarr[@"RealName"];
+        self.sex.text=dictarr[@"UserName"];
+        self.realname.text=dictarr[@"RealName"];
         self.phone.text=dictarr[@"Mobile"];
         NSString *hg=[NSString stringWithFormat:@"%@",dictarr[@"Active"]];
-       
+
         if ([hg isEqualToString:@"1"]) {
             [self.swith setOn:YES];
         }else{
             [self.swith setOn:NO];
         }
-
-        }
-               
-      
+        
+     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+         NSLog(@"Error: %@", error);
+         [MBProgressHUD showError:@"网络异常！"];
+         return ;
+     }];
+    [[NSOperationQueue mainQueue] addOperation:op];
     
     
 }
@@ -132,60 +134,37 @@ if ([stye isEqualToString:@"20"]) {
 {
 
         NSString *strurl=[NSString stringWithFormat:@"%@/API/YWT_User.ashx",urlt];
-    NSURL *url = [NSURL URLWithString:strurl];
-   
-        // 2. Request
-        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:0 timeoutInterval:2.0f];
-        
-        request.HTTPMethod = @"POST";
-        
-        NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
-        NSString *myString = [userDefaultes stringForKey:@"myidt2"];
-        NSString *mystring2 = [userDefaultes stringForKey:@"personid"];
-    // NSString *mystring2=[NSString stringWithFormat:@"%@",strTtile];
-       // [self getUniqueStrByUUID];
-       // NSLog(@"%@",_uuid);
-        [self quzhi];
-        [self act];
-        NSString *dstr=[NSString stringWithFormat:@"{\"ID\":\"%@\",\"Mobile\":%@, \"UserType\":\"%@\",\"SupplierID\":\"%@\", \"RealName\":\"%@\", \"Active\":%@}",mystring2,text1,_zhi,myString,text2,_ac];
-        NSLog(@"---%@",dstr);
-        // ? 数据体
-        NSString *str = [NSString stringWithFormat:@"action=edit&q0=%@",dstr];
-        // 将字符串转换成数据
-        NSLog(@"%@",str);
-        request.HTTPBody = [str dataUsingEncoding:NSUTF8StringEncoding];
-        
-        [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc]init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-            if (data==nil) {
-                return ;
-            }else{
-            NSString *result = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-            NSLog(@"%@",result);
-            
-            NSDictionary *dict=[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:nil];
-            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                NSString *errstr2=[NSString stringWithFormat:@"%@",dict[@"Status"]];
-                
-                if ([errstr2 isEqualToString:@"0"]){
-                    NSString *str=[NSString stringWithFormat:@"%@",dict[@"ReturnMsg"]];
-                    [MBProgressHUD showError:str];
-                    return ;
-                    
-                    
-                }else{
-                    [MBProgressHUD showSuccess:@"修改成功"];
-                    [[self navigationController] popViewControllerAnimated:YES];
-                    
-                    
-                }
-                
-            }];
-            
-            }
-            
-        }];
-   
     
+    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
+    NSString *myString = [userDefaultes stringForKey:@"myidt2"];
+    NSString *mystring2 = [userDefaultes stringForKey:@"personid"];
+
+    [self quzhi];
+    [self act];
+    NSString *dstr=[NSString stringWithFormat:@"{\"ID\":\"%@\",\"Mobile\":%@, \"UserType\":\"%@\",\"SupplierID\":\"%@\", \"RealName\":\"%@\", \"Active\":%@}",mystring2,text1,_zhi,myString,text2,_ac];
+    NSLog(@"---%@",dstr);
+    // ? 数据体
+    NSString *strparameters = [NSString stringWithFormat:@"action=edit&q0=%@",dstr];
+ 
+    AFHTTPRequestOperation *op=[self POSTurlString:strurl parameters:strparameters];
+    [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSMutableDictionary *json=responseObject;
+        NSString *Status=[NSString stringWithFormat:@"%@",json[@"Status"]];
+        if ([Status isEqualToString:@"0"]){
+            NSString *ReturnMsg=[NSString stringWithFormat:@"%@",json[@"ReturnMsg"]];
+            [MBProgressHUD showError:ReturnMsg];
+            NSLog(@"%@",ReturnMsg);
+            return ;
+        }
+        [MBProgressHUD showSuccess:@"修改成功"];
+        [[self navigationController] popViewControllerAnimated:YES];
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [MBProgressHUD showError:@"网络异常！"];
+        return ;
+    }];
+    [[NSOperationQueue mainQueue] addOperation:op];
+
 }
 -(NSString *)quzhi{
     

@@ -197,7 +197,7 @@
             [self.postbtn setTitle:nextstatus forState:UIControlStateNormal];
             
             if (status ==90) {
-                [self.postbtn setTitle:@"维运评价" forState:UIControlStateNormal];
+                [self.postbtn setTitle:@"运维评价" forState:UIControlStateNormal];
             }
             else if (status ==25)
             {

@@ -101,11 +101,11 @@
         }
         else if ([status isEqualToString:@"30"]) {
             self.drtelbtn.hidden=NO;
-            [self.postbtn setTitle:@"完成维运" forState:UIControlStateNormal];
+            [self.postbtn setTitle:@"完成运维" forState:UIControlStateNormal];
             self.postbtn.hidden=NO;
         }else if ([status isEqualToString:@"90"]) {
             self.drtelbtn.hidden=NO;
-            [self.postbtn setTitle:@"维运评价" forState:UIControlStateNormal];
+            [self.postbtn setTitle:@"运维评价" forState:UIControlStateNormal];
             self.postbtn.hidden=NO;
         }
         else if ([status isEqualToString:@"99"]) {

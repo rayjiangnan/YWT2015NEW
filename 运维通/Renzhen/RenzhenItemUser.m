@@ -13,9 +13,12 @@
 #import "MJRefresh.h"
 #import "UIViewController+Extension.h"
 #import "UIImageView+WebCache.h"
-
+#import "ShowStrViewController.h"
 
 @interface RenzhenItemUser ()
+{
+    NSMutableArray *imageArray;
+}
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollview;
 
 @property (weak, nonatomic) IBOutlet UILabel *CertifyRealName;
@@ -31,6 +34,7 @@
 
 @property (nonatomic,strong)NSString *tempid;
 - (IBAction)btnSaveClick:(id)sender;
+- (IBAction)btnImgViewClick:(id)sender;
 
 @end
 
@@ -40,6 +44,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    imageArray=[NSMutableArray arrayWithCapacity:1];
     [self LoadItem];
     self.tempid=UserID;
     
@@ -50,11 +55,14 @@
     
     [self ChangeItemInit:@"Renzhen"];
 }
-
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:YES];
+    self.navigationController.navigationBarHidden=NO;
+}
 -(void)viewDidAppear:(BOOL)animated{
     
     self.tabBarController.tabBar.hidden=YES;
-    
 }
 
 -(void) LoadItem
@@ -78,7 +86,7 @@
             if (![arrray isEqual:[NSNull null]]) {
                 for (NSDictionary *str in arrray) {
                     NSString *imgpath=[NSString stringWithFormat:@"%@%@",urlt,str[@"FileName"]];
-                    
+                    [imageArray addObject:imgpath];
                     [self ShowImg:imgpath showType:str[@"FileType"]];
                 }
             }
@@ -144,6 +152,14 @@
     }];
     
     [[NSOperationQueue mainQueue] addOperation:op];
+}
+
+- (IBAction)btnImgViewClick:(id)sender {
+    ShowStrViewController * showVC = [[ShowStrViewController alloc] init];
+    showVC.idex = 0;
+    
+    showVC.receiveimageArray=imageArray;
+    [self.navigationController pushViewController:showVC animated:YES];
 }
 
 

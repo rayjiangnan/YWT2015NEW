@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="d95-iJ-JVg">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="d95-iJ-JVg">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
@@ -3043,7 +3043,7 @@
                             <constraint firstItem="UDW-J0-uQu" firstAttribute="leading" secondItem="409-zB-onj" secondAttribute="leadingMargin" constant="-10" id="xon-rW-ozA"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="维运单" image="icon_yd_a-1" id="XrE-tX-OBy"/>
+                    <tabBarItem key="tabBarItem" title="运维单" image="icon_yd_a-1" id="XrE-tX-OBy"/>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="运维单管理" id="yig-EP-rST">
                         <barButtonItem key="rightBarButtonItem" style="plain" id="RwD-qT-UyY">
@@ -4311,7 +4311,7 @@
                                         <color key="textColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
                                         <color key="highlightedColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="完成维运单" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bRS-ba-H4P">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="完成运维单" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bRS-ba-H4P">
                                         <rect key="frame" x="67" y="38" width="63" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                         <color key="textColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -5448,7 +5448,7 @@
                                                 <color key="textColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
                                                 <color key="highlightedColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="完成维运单" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jB1-4a-b4x">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="完成运维单" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jB1-4a-b4x">
                                                 <rect key="frame" x="67" y="38" width="63" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                 <color key="textColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -5708,11 +5708,11 @@
             </objects>
             <point key="canvasLocation" x="-2677" y="-1898"/>
         </scene>
-        <!--维运单-->
+        <!--运维单-->
         <scene sceneID="ffc-sa-OfD">
             <objects>
                 <navigationController id="93d-kE-iXS" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="维运单" image="ywd_gray" id="KBw-C7-Xh1"/>
+                    <tabBarItem key="tabBarItem" title="运维单" image="ywd_gray" id="KBw-C7-Xh1"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="R8S-Ff-MuC">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -5725,7 +5725,7 @@
             </objects>
             <point key="canvasLocation" x="-2683" y="-4520"/>
         </scene>
-        <!--维运通-->
+        <!--运维通-->
         <scene sceneID="y7A-6J-2sX">
             <objects>
                 <viewController id="M6k-ko-v8l" customClass="yworderlist" sceneMemberID="viewController">
@@ -5772,7 +5772,7 @@
                             <constraint firstAttribute="trailingMargin" secondItem="IlQ-ze-JPI" secondAttribute="trailing" constant="-6" id="yut-qn-FSZ"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="维运通" id="w1v-wh-WeL"/>
+                    <navigationItem key="navigationItem" title="运维通" id="w1v-wh-WeL"/>
                     <connections>
                         <outlet property="segmentControl" destination="IlQ-ze-JPI" id="qT3-iL-BNk"/>
                         <outlet property="tableView" destination="GB7-fV-sdf" id="FvG-Iq-tra"/>
@@ -6195,7 +6195,7 @@
             </objects>
             <point key="canvasLocation" x="-2684" y="-3860"/>
         </scene>
-        <!--维运日志-->
+        <!--运维日志-->
         <scene sceneID="g3N-vE-btv">
             <objects>
                 <viewController id="bOS-9A-AxF" customClass="daywrite" sceneMemberID="viewController">
@@ -6223,7 +6223,7 @@
                             <constraint firstAttribute="trailingMargin" secondItem="q8q-D1-T1f" secondAttribute="trailing" constant="-16" id="lef-Fn-Aaa"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="维运日志" id="tHc-yY-KVq">
+                    <navigationItem key="navigationItem" title="运维日志" id="tHc-yY-KVq">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="7SD-i0-s0c">
                             <connections>
                                 <segue destination="kwn-Kj-Zyc" kind="push" id="dgT-nG-fpw"/>
@@ -6285,7 +6285,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CDZ-Vo-Dgc">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CDZ-Vo-Dgc">
                                 <rect key="frame" x="-3" y="0.0" width="326" height="568"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gk6-UN-b4c">
@@ -6971,7 +6971,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Mie-19-Y7s">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Mie-19-Y7s">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <subviews>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hYM-Yi-j7R">
@@ -7399,7 +7399,7 @@
                                                 <color key="textColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
                                                 <color key="highlightedColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="完成维运单" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hY7-dl-qrK">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="完成运维单" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hY7-dl-qrK">
                                                 <rect key="frame" x="67" y="38" width="63" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                 <color key="textColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -7494,7 +7494,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="JgA-eJ-Uah"/>
                                 </constraints>
-                                <state key="normal" title="开始维运">
+                                <state key="normal" title="开始运维">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" red="0.66431897095959602" green="0.66431897095959602" blue="0.66431897095959602" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
@@ -10269,6 +10269,15 @@
                                                     <action selector="btnSaveClick:" destination="Y3n-gt-RrO" eventType="touchUpInside" id="ChE-TZ-zjN"/>
                                                 </connections>
                                             </button>
+                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nek-x4-lOl">
+                                                <rect key="frame" x="7" y="139" width="356" height="82"/>
+                                                <state key="normal">
+                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="btnImgViewClick:" destination="Y3n-gt-RrO" eventType="touchUpInside" id="6Qf-2N-BFA"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </view>
@@ -10407,6 +10416,15 @@
                                                     <action selector="btnSaveClick:" destination="5yG-By-87G" eventType="touchUpInside" id="sPL-t1-ofW"/>
                                                 </connections>
                                             </button>
+                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OXG-1v-rcd">
+                                                <rect key="frame" x="0.0" y="87" width="320" height="81"/>
+                                                <state key="normal">
+                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="btnImgViewClick:" destination="5yG-By-87G" eventType="touchUpInside" id="AVJ-fp-RzD"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </view>
@@ -10507,24 +10525,24 @@
         <segue reference="C3d-ET-Jd5"/>
         <segue reference="iYm-cE-ad0"/>
         <segue reference="7Sh-Gb-lvW"/>
-        <segue reference="nqA-Ux-qc4"/>
         <segue reference="lxC-IX-tI8"/>
         <segue reference="Th0-1i-tao"/>
-        <segue reference="rJg-SZ-34s"/>
+        <segue reference="nqA-Ux-qc4"/>
         <segue reference="Oas-do-MOp"/>
         <segue reference="2cH-fb-GsD"/>
+        <segue reference="rJg-SZ-34s"/>
         <segue reference="J3M-Lu-ZMf"/>
+        <segue reference="GV5-3J-q4j"/>
+        <segue reference="64d-NN-AQD"/>
+        <segue reference="nZZ-AE-M7a"/>
+        <segue reference="oSQ-Ye-m8c"/>
         <segue reference="h6l-iU-sy8"/>
         <segue reference="aCX-Aw-QYs"/>
         <segue reference="5io-Ku-tJx"/>
-        <segue reference="GV5-3J-q4j"/>
-        <segue reference="64d-NN-AQD"/>
-        <segue reference="oSQ-Ye-m8c"/>
-        <segue reference="nZZ-AE-M7a"/>
         <segue reference="EZI-rT-3TM"/>
-        <segue reference="VRG-cR-zY5"/>
-        <segue reference="EhQ-I1-eq4"/>
         <segue reference="uzX-Gq-cwu"/>
         <segue reference="DBg-wL-fJh"/>
+        <segue reference="VRG-cR-zY5"/>
+        <segue reference="EhQ-I1-eq4"/>
     </inferredMetricsTieBreakers>
 </document>

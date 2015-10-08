@@ -112,11 +112,10 @@
                 NSLog(@"%@",ReturnMsg);
                 return;
             }
-            else
-            {
-                [MBProgressHUD showSuccess:@"保存成功"];
-                [[self navigationController] popViewControllerAnimated:YES];
-            }
+           
+            [MBProgressHUD showSuccess:@"保存成功"];
+            [[self navigationController] popViewControllerAnimated:YES];
+            
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             [MBProgressHUD showError:@"网络异常！"];
             return ;

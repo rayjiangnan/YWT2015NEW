@@ -32,7 +32,9 @@
     
     int chageStatus=[self ChangePageInit:@"Customer"];
     if (chageStatus==4) {
-        
+        num=0;
+        [self network2];
+
     }
     else if (chageStatus==2) {
         
