@@ -36,6 +36,10 @@
 @property (weak, nonatomic) IBOutlet UITextField *email;
 @property (weak, nonatomic) IBOutlet UITextView *jineng;
 @property (weak, nonatomic) IBOutlet UITextView *zc;
+@property (weak, nonatomic) IBOutlet UIPickerView *pickerView;
+@property (weak, nonatomic) IBOutlet UIView *backview;
+
+@property (nonatomic, strong) NSArray *foods;
 
 @property (weak, nonatomic) IBOutlet UIImageView *men;
 
@@ -50,6 +54,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    for (int component = 0; component < self.foods.count; component++) {
+        [self pickerView:nil didSelectRow:0 inComponent:component];
+    }
     [self network];
     self.scrollView.contentSize=CGSizeMake(320,830);
     self.jineng.layer.borderColor = UIColor.grayColor.CGColor;
@@ -58,8 +65,69 @@
     self.zc.layer.borderWidth = 0.5;
     [self settingKeyboard];
     [self settingKeyboard2];
-
+    [self tapBackground];
+    [self tapOnce];
 }
+
+- (IBAction)xuelibtn:(id)sender {
+    self.backview.hidden=NO;
+    [self tapOnce];
+}
+- (IBAction)qu:(id)sender {
+    self.backview.hidden=YES;
+    self.xueli.text=@"高中";
+    [self tapOnce];
+}
+- (IBAction)que:(id)sender {
+    self.backview.hidden=YES;
+    [self tapOnce];
+}
+
+
+- (NSArray *)foods
+{
+    if (_foods == nil) {
+        
+        _foods = [NSArray arrayWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"xueli" ofType:@"plist"]];
+    }
+    return _foods;
+}
+
+#pragma mark - 数据源方法
+
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
+{
+    return self.foods.count;
+}
+
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    NSArray *subfoods = self.foods[component];
+    return subfoods.count;
+}
+
+#pragma mark - 代理方法
+
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    return self.foods[component][row];
+}
+
+
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    if (component == 0) {
+        self.xueli.text = self.foods[component][row];
+    }
+}
+
+
+
+
+
+
+
 - (IBAction)nanbtn:(id)sender {
     sexnum=1;
     self.men.image=[UIImage imageNamed:@"ch2"];
@@ -247,11 +315,6 @@
     [self tapOnce];
 }
 
-//-(void)quxiao2{
-//    
-//  self.btime.text=nil;
-//    [self tapOnce];
-//}
 
 
 - (NSString *)birthdayChange:(UIDatePicker *)picker
@@ -317,6 +380,16 @@
 {
     [self.time resignFirstResponder];
     [self.btime resignFirstResponder];
+    [self.sheng resignFirstResponder];
+    [self.city resignFirstResponder];
+    [self.qu resignFirstResponder];
+    [self.detail resignFirstResponder];
+    [self.xueli resignFirstResponder];
+    [self.xuexiao resignFirstResponder];
+    [self.zhuanye resignFirstResponder];
+    [self.email resignFirstResponder];
+    [self.jineng resignFirstResponder];
+    [self.zc resignFirstResponder];
 
 }
 @end

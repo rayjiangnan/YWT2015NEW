@@ -37,7 +37,7 @@
     
     
     
-    self.tableview.rowHeight=100;
+ 
     int chageStatus=[self ChangePageInit:@"Renzhen"];
 
     if (chageStatus==3) {
@@ -51,7 +51,7 @@
     num=0;
     [self network2];
     [self.tableview reloadData];
-    self.tableview.rowHeight=60;
+   self.tableview.rowHeight=100;
 }
 
 

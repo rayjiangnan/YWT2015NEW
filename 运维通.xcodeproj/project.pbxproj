@@ -128,6 +128,7 @@
 		39998D911B52B7DF001D4BCA /* addperson.m in Sources */ = {isa = PBXBuildFile; fileRef = 39998D901B52B7DF001D4BCA /* addperson.m */; };
 		4E71A57A1BA6784500CD97FA /* applyperson.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E71A5791BA6784500CD97FA /* applyperson.m */; };
 		4E72A9EE1BA7FCEF001FDC7A /* pinglunlist.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E72A9ED1BA7FCEF001FDC7A /* pinglunlist.m */; };
+		4E7462FE1BC611510039A47E /* xueli.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4E7462FD1BC611510039A47E /* xueli.plist */; };
 		4E7FA0E81BA27D52001769AE /* companyRenzhen.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E7FA0E71BA27D52001769AE /* companyRenzhen.m */; };
 		4EC9671B1B5C971D00A59F0B /* AMap.bundle in Frameworks */ = {isa = PBXBuildFile; fileRef = 78402A6D1B5BA73800908FA9 /* AMap.bundle */; };
 		4EC9671D1B5C979A00A59F0B /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4EC9671C1B5C979A00A59F0B /* OpenGLES.framework */; };
@@ -466,6 +467,7 @@
 		4E71A5791BA6784500CD97FA /* applyperson.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = applyperson.m; sourceTree = "<group>"; };
 		4E72A9EC1BA7FCEF001FDC7A /* pinglunlist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pinglunlist.h; sourceTree = "<group>"; };
 		4E72A9ED1BA7FCEF001FDC7A /* pinglunlist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = pinglunlist.m; sourceTree = "<group>"; };
+		4E7462FD1BC611510039A47E /* xueli.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = xueli.plist; sourceTree = "<group>"; };
 		4E7FA0E61BA27D52001769AE /* companyRenzhen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = companyRenzhen.h; sourceTree = "<group>"; };
 		4E7FA0E71BA27D52001769AE /* companyRenzhen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = companyRenzhen.m; sourceTree = "<group>"; };
 		4EC9671C1B5C979A00A59F0B /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -1020,6 +1022,7 @@
 				396B818C1B527C9E0017305D /* style.plist */,
 				396B81541B526D5B0017305D /* 运维通-Info.plist */,
 				28D6C8101B89EC26004301A3 /* danwei.plist */,
+				4E7462FD1BC611510039A47E /* xueli.plist */,
 				396B81551B526D5B0017305D /* InfoPlist.strings */,
 				784EF54F1B5B6A1700113C3C /* styname.plist */,
 				396B81581B526D5B0017305D /* main.m */,
@@ -1623,6 +1626,7 @@
 				78B453841B647C55000C70A7 /* postcell.xib in Resources */,
 				7850F4C21BA502B3001116D6 /* LICENSE in Resources */,
 				284C22D71B7F8453004B46D0 /* OnlineApprovalUserCell.xib in Resources */,
+				4E7462FE1BC611510039A47E /* xueli.plist in Resources */,
 				396B81571B526D5B0017305D /* InfoPlist.strings in Resources */,
 				396B81961B52801B0017305D /* MBProgressHUD.bundle in Resources */,
 				284C22D31B7F8453004B46D0 /* OnlineApprovalCompanyCell.xib in Resources */,
@@ -1892,8 +1896,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Wei wang (C565BH7ER2)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Wei wang (C565BH7ER2)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1931,8 +1935,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Wei wang (C565BH7ER2)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Wei wang (C565BH7ER2)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: China Brilliant Supply Chain Service Co., Ltd.";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1953,8 +1957,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Wei wang (C565BH7ER2)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Wei wang (C565BH7ER2)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1981,8 +1985,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Wei wang (C565BH7ER2)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Wei wang (C565BH7ER2)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: China Brilliant Supply Chain Service Co., Ltd.";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",

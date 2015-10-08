@@ -120,7 +120,7 @@
             
             
             NSString *fen=[NSString stringWithFormat:@"%@",dict[@"ScoreAvg"]];
-            if ([xin isEqualToString:@"0"]) {
+            if ([fen isEqualToString:@"0"]) {
                 self.f1.image=[UIImage imageNamed:@"hxx"];
                 self.f2.image=[UIImage imageNamed:@"hxx"];
                 self.f3.image=[UIImage imageNamed:@"hxx"];
