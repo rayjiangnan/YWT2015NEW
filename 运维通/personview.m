@@ -145,7 +145,21 @@
                 
                 NSString *img=[NSString stringWithFormat:@"%@%@",urlt,img2];
                 NSURL *imgurl=[NSURL URLWithString:img];
-                  UIImage *icon=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
+                UIImage *icon;//=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
+                
+                SDWebImageManager *manager = [SDWebImageManager sharedManager];
+                UIImage *cachedImage = [manager imageWithURL:imgurl];
+                if (cachedImage)
+                {
+                    //[self.img setBackgroundImage:cachedImage forState:UIControlStateNormal];
+                    icon=cachedImage;//
+                }
+                else
+                {
+                    [manager downloadWithURL:imgurl delegate:nil];
+                    icon=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
+                }
+                
                 CGSize itemSize = CGSizeMake(40, 40);
                 UIGraphicsBeginImageContextWithOptions(itemSize, NO,0.0);
                 CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
