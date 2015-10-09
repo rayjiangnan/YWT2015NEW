@@ -145,12 +145,19 @@
                 
                 NSString *img=[NSString stringWithFormat:@"%@%@",urlt,img2];
                 NSURL *imgurl=[NSURL URLWithString:img];
+                  UIImage *icon=[[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:imgurl]];
+                CGSize itemSize = CGSizeMake(40, 40);
+                UIGraphicsBeginImageContextWithOptions(itemSize, NO,0.0);
+                CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
+                [icon drawInRect:imageRect];
                 
-                [cell.imageView setImageWithURL:imgurl placeholderImage:[UIImage imageNamed:img]];
+                cell.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
+                UIGraphicsEndImageContext();
+
                         
             }else{
                 UIImage *icon = [UIImage imageNamed:@"icon_tx"];
-                CGSize itemSize = CGSizeMake(60, 60);
+                CGSize itemSize = CGSizeMake(40, 40);
                 UIGraphicsBeginImageContextWithOptions(itemSize, NO,0.0);
                 CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
                 [icon drawInRect:imageRect];
