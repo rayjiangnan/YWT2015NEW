@@ -269,7 +269,9 @@
     {
         NSUserDefaults *defau=[NSUserDefaults standardUserDefaults];
         NSString *UserID = [defau stringForKey:@"myidt"];
-        
+        if (UserID==NULL) {
+            return;
+        }
         NSString *urlStr = [NSString stringWithFormat:@"%@/API/YWT_MSG.ashx?action=get&q0=%@",urlt,UserID];
         NSURL *url = [NSURL URLWithString:urlStr];
         //第二步，创建请求

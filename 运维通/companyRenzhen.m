@@ -215,7 +215,17 @@
     NSLog(@"%@ %@",strurl,str);
     AFHTTPRequestOperation *op=[self POSTurlString:strurl parameters:str];
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        [MBProgressHUD showSuccess:@"提交成功"];
+        NSMutableDictionary *json=responseObject;
+        NSString *Status=[NSString stringWithFormat:@"%@",json[@"Status"]];
+        if ([Status isEqualToString:@"0"]){
+            NSString *ReturnMsg=[NSString stringWithFormat:@"%@",json[@"ReturnMsg"]];
+            [MBProgressHUD showError:ReturnMsg];
+            return ;
+        }
+        
+        [MBProgressHUD showSuccess:@"申请提交成功"];
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        [userDefaults setObject:@"2" forKey:@"Certify"];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [MBProgressHUD showError:@"数据请求出错"];

@@ -62,7 +62,13 @@
      NSLog(@"%@",urlStr);
     AFHTTPRequestOperation *op=[self GETurlString:urlStr];
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"%@",responseObject[@"ResultObject"]);
+        NSMutableDictionary *json=responseObject;
+        NSString *Status=[NSString stringWithFormat:@"%@",json[@"Status"]];
+        if ([Status isEqualToString:@"0"]){
+            NSString *ReturnMsg=[NSString stringWithFormat:@"%@",json[@"ReturnMsg"]];
+            [MBProgressHUD showError:ReturnMsg];
+            return ;
+        }
         
         NSMutableArray *arrray=responseObject[@"ResultObject"];
         if (![arrray isEqual:[NSNull null]]) {
@@ -218,6 +224,18 @@
     NSLog(@"%@ %@",strurl,str);
     AFHTTPRequestOperation *op=[self POSTurlString:strurl parameters:str];
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSMutableDictionary *json=responseObject;
+        NSString *Status=[NSString stringWithFormat:@"%@",json[@"Status"]];
+        if ([Status isEqualToString:@"0"]){
+            NSString *ReturnMsg=[NSString stringWithFormat:@"%@",json[@"ReturnMsg"]];
+            [MBProgressHUD showError:ReturnMsg];
+            return ;
+        }
+        
+        [MBProgressHUD showSuccess:@"认证提交成功"];
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        [userDefaults setObject:@"2" forKey:@"Certify"];
+        
         [MBProgressHUD showSuccess:@"提交成功"];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {

@@ -35,9 +35,6 @@
 -(void)viewDidAppear:(BOOL)animated{
     self.tabBarController.tabBar.hidden=NO;
     
-    
-    
- 
     int chageStatus=[self ChangePageInit:@"Renzhen"];
 
     if (chageStatus==3) {

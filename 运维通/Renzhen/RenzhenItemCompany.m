@@ -144,6 +144,7 @@
             NSLog(@"%@",ReturnMsg);
             return ;
         }else{
+           
             [self ChangeRecord: self.tempid key:@"Renzhen"];
             [MBProgressHUD showSuccess:@"保存成功！"];
             [[self navigationController] popViewControllerAnimated:YES];
