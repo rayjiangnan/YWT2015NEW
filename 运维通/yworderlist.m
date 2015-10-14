@@ -47,7 +47,7 @@
 
 @implementation yworderlist
 @synthesize title;
-//@synthesize _locationManager;
+
 
 -(void)viewDidAppear:(BOOL)animated{
     //[super viewDidAppear];

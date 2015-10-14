@@ -23,7 +23,7 @@
 #define RUNTIME 24*60*60
 
 @implementation ritaccViewController
-//@synthesize _locationManager;
+
 @synthesize _saveLocations;
 @synthesize coordinate,title,subtitle;
 //@synthesize _updateTimer;
@@ -179,15 +179,7 @@
 
 
 
-//-(void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation{
-//    userLocation.title=@"当前位置";
-//    //userLocation.subtitle=@"";
-//
-//    CLLocationCoordinate2D center=userLocation.location.coordinate;
-//  //  [self postJSON:lati:longti];
-//
-//
-//}
+
 
 -(void)initData{
         backgroundUpdateInterval = RUNTIME;
@@ -196,9 +188,7 @@
 
 -(void)updateloaction
 {
-    //[self._locationManager startUpdatingLocation];
-    //    [self._locationManager stopUpdatingLocation];
-    
+
 }
 
 
@@ -217,50 +207,8 @@
     
     MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
     annotation.coordinate = newLocation.coordinate;
-    //[self._mapview addAnnotation:annotation];//
+
     [self._saveLocations addObject:annotation];
-//    NSString *lati=[NSString stringWithFormat:@"%f",self._locationManager.location.coordinate.latitude-0.00420];
-//    NSString *longti=[NSString stringWithFormat:@"%f",self._locationManager.location.coordinate.longitude+0.00560];
-//    
-//    
-//    [self postJSON:lati:longti];
-    
-    //    if (UIApplication.sharedApplication.applicationState == UIApplicationStateActive)
-    //    {
-    //        if (backgroundTask != UIBackgroundTaskInvalid)
-    //        {
-    //            [[UIApplication sharedApplication] endBackgroundTask:backgroundTask];
-    //            backgroundTask = UIBackgroundTaskInvalid;
-    //        }
-    //
-    //
-    //        for (MKPointAnnotation *annotation in self._saveLocations)
-    //        {
-    //            CLLocationCoordinate2D coordinate = annotation.coordinate;
-    //
-    //            MKCoordinateRegion region=MKCoordinateRegionMakeWithDistance(coordinate,storedLatitudeDelta ,storedLongitudeDelta);
-    //      //      MKCoordinateRegion adjustedRegion = [self._mapview regionThatFits:region];
-    //         //   [self._mapview setRegion:adjustedRegion animated:NO];
-    //        }
-    //
-    //
-    //    }
-    //    else
-    //    {
-    //        NSString *lati=[NSString stringWithFormat:@"%f",self._locationManager.location.coordinate.latitude-0.00420];
-    //        NSString *longti=[NSString stringWithFormat:@"%f",self._locationManager.location.coordinate.longitude+0.00560];
-    //
-    //
-    //           [self postJSON:lati:longti];
-    //            NSLog(@"成功！");
-    //
-    //
-    //
-    //
-    //    }
-    
-    
-    
 }
 
 -(void)applicationDidEnterBackground:(NSNotificationCenter *)notication{
@@ -284,17 +232,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-//-(void)stopUpdate{
-//    //[self._locationManager stopUpdatingLocation];
-//    
-//    [_updateTimer2 invalidate];
-//    _updateTimer2 = nil;
-//    if (backgroundTask != UIBackgroundTaskInvalid)
-//    {
-//        [[UIApplication sharedApplication] endBackgroundTask:backgroundTask];
-//        backgroundTask = UIBackgroundTaskInvalid;
-//    }
-//}
+
 
 
 

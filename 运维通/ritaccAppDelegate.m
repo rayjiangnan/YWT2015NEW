@@ -228,6 +228,13 @@
     NSString *lati=[NSString stringWithFormat:@"%f",flati];
     NSString *longti=[NSString stringWithFormat:@"%f",flongti];
     [self postJSON:lati:longti];
+    
+    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
+    if (![lati isEqualToString:@""]) {
+         [userDefaultes setObject:lati forKey:@"lati"];
+         [userDefaultes setObject:longti forKey:@"longti"];
+    }
+    
 }
 
 - (void)postJSON:(NSString *)text1 :(NSString *)text2

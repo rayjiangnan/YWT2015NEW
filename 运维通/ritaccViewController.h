@@ -24,7 +24,7 @@
     float lati;
     float longtia;
 }
-//@property (nonatomic, strong) CLLocationManager *_locationManager;
+
 @property (nonatomic, strong) NSMutableArray *_saveLocations;
 @property (nonatomic, assign) CLLocationCoordinate2D coordinate;
 @property (nonatomic, copy) NSString *title;

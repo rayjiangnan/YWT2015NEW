@@ -121,13 +121,8 @@
         return;
         
     }else if(buttonIndex == 1){
-//        NSString *lati=[NSString stringWithFormat:@"%f",self._locationManager.location.coordinate.latitude];
-//        NSString *longtitu=[NSString stringWithFormat:@"%f",self._locationManager.location.coordinate.longitude];
-        
-        [self postJSON];
-        
-        
-        
+     
+        [self postJSON];         
     }}
 -(NSString *)idt:(NSString *)id1{
     _idtt=id1;

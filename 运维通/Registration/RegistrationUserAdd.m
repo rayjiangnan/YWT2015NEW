@@ -59,9 +59,18 @@
     self._locationManager.desiredAccuracy = kCLLocationAccuracyBest;
     _geocoder=[[CLGeocoder alloc]init];
     
+//    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
+//    NSString *lati=[userDefaultes  stringForKey:@"lati"];
+//    NSString *longti=[userDefaultes  stringForKey:@"longti"];
+//    
+//    if (![lati isEqualToString:@""]) {
+//        [self getAddressByLatitude2:_locationManager.location.coordinate.latitude longitude:self._locationManager.location.coordinate.longitude];
+//    }
+    
     [self getAddressByLatitude2:_locationManager.location.coordinate.latitude longitude:self._locationManager.location.coordinate.longitude];
     
-    
+    [_locationManager stopUpdatingLocation];
+     
 }
 
 - (void)didReceiveMemoryWarning {
